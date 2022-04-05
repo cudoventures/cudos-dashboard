@@ -35,7 +35,7 @@ const Footer = () => {
             item
             key={link.text}
             sx={({ palette }) => ({
-              padding: `0 12px`,
+              padding: `0 0.5rem`,
               '&:not(:last-child)': {
                 borderRight: `1px solid ${palette.text.secondary}`
               },
@@ -43,7 +43,11 @@ const Footer = () => {
             })}
             onClick={() => window.open(link.url, '_blank')?.focus()}
           >
-            <Typography color="text.secondary" fontSize="12px" fontWeight={500}>
+            <Typography
+              color="text.secondary"
+              fontSize="0.8rem"
+              fontWeight={500}
+            >
               {link.text}
             </Typography>
           </Grid>

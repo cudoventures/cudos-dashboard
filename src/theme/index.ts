@@ -19,14 +19,15 @@ const dark = createTheme({
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
+    fontSize: 16,
     htmlFontSize: 16
   },
   components: {
     MuiSelect: {
       styleOverrides: {
         select: {
-          padding: '14px, 20px',
-          fontSize: '14px',
+          padding: '0.9rem, 1.2rem',
+          fontSize: '0.9rem',
           '&:before': {
             border: 'none'
           }
@@ -62,8 +63,8 @@ const light = createTheme({
     MuiSelect: {
       styleOverrides: {
         select: {
-          padding: '14px, 20px',
-          fontSize: '14px',
+          padding: '0.9rem, 1.2rem',
+          fontSize: '0.9rem',
           '&:before': {
             border: 'none'
           }
@@ -73,6 +74,7 @@ const light = createTheme({
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
+    fontSize: 16,
     htmlFontSize: 16
   },
   backgrounds: {
