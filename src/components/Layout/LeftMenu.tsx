@@ -1,31 +1,46 @@
-import { Box, Grid, Toolbar, Typography } from '@mui/material'
+import { useState } from 'react'
+import { Grid } from '@mui/material'
+import { Link } from 'react-router-dom'
 
-const MenuItems = ['Dashboard', 'Staking', 'Validators', 'Settings']
+import DashboardIcon from '../../assets/vectors/dashboard.svg'
+import ProposalsIcon from '../../assets/vectors/proposals.svg'
+import SettingsIcon from '../../assets/vectors/settings.svg'
+import StakingIcon from '../../assets/vectors/staking.svg'
+import { StyledBox, StyledToggleButton } from './styles'
+
+const MenuItems = [
+  { icon: DashboardIcon, link: '/' },
+  { icon: StakingIcon, link: '/staking' },
+  { icon: ProposalsIcon, link: '/proposals' },
+  { icon: SettingsIcon, link: '/settings' }
+]
 
 const Menu = () => {
+  const [selected, setSelected] = useState<number>(0)
+
   return (
-    <Box
-      sx={{
-        background: 'transparent',
-        boxShadow: 'none',
-        width: '60px',
-        // height: '100%',
-        border: '1px solid red'
-      }}
-    >
-      <Toolbar>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="space-between"
-          flexDirection="column"
-        >
-          {MenuItems.map((mi) => (
-            <Typography key={mi}>{mi}</Typography>
-          ))}
-        </Grid>
-      </Toolbar>
-    </Box>
+    <StyledBox>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="space-between"
+        flexDirection="column"
+        gap={2}
+      >
+        {MenuItems.map((item, index) => (
+          <Link to={item.link} key={item.link}>
+            <StyledToggleButton
+              value={index}
+              key={item.link}
+              selected={selected === index}
+              onClick={() => setSelected(index)}
+            >
+              <img src={item.icon} alt="icon" />
+            </StyledToggleButton>
+          </Link>
+        ))}
+      </Grid>
+    </StyledBox>
   )
 }
 

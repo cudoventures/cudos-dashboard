@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export enum Theme {
+export enum ThemeType {
   LIGHT = 'light',
   DARK = 'dark'
 }
 
 export interface SettingsState {
-  theme: Theme
+  theme: ThemeType
 }
 
 const initialState: SettingsState = {
-  theme: Theme.DARK
+  theme: ThemeType.DARK
 }
 
 export const settingsSlice = createSlice({

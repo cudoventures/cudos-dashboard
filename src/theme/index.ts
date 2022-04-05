@@ -47,17 +47,39 @@ const light = createTheme({
     mode: 'light',
     primary: {
       light: '',
-      main: blue[500],
+      main: '#52A6F8',
       dark: ''
     },
     background: {
-      default: '#1C2030',
-      paper: '#1C2030'
+      default: '#E5E5E5',
+      paper: '#E5E5E5'
+    },
+    text: {
+      primary: '#20273E',
+      secondary: '#999FB1'
+    }
+  },
+  components: {
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          padding: '14px, 20px',
+          fontSize: '14px',
+          '&:before': {
+            border: 'none'
+          }
+        }
+      }
     }
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
     htmlFontSize: 16
+  },
+  backgrounds: {
+    light: '#F7F8FA',
+    primary: '#FFFFFF',
+    dark: '#E5E5E5'
   }
 })
 
