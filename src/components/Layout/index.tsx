@@ -11,8 +11,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Grid item>
           <Header />
         </Grid>
-        <Grid item xl={10} md={9} container>
-          <Grid item sm={1}>
+        <Grid item xl={10} md={9} container gap={8}>
+          <Grid item>
             <LeftMenu />
           </Grid>
           <Grid item>{children}</Grid>
