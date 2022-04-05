@@ -19,7 +19,7 @@ const dark = createTheme({
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
-    htmlFontSize: 18
+    htmlFontSize: 16
   },
   components: {
     MuiSelect: {
