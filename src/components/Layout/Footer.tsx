@@ -1,6 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material'
 
-import calculateRem from '../../utils/calculateRem'
 import { StyledFooter } from './styles'
 
 import FooterLogo from '../../assets/vectors/logo-footer.svg'
@@ -36,7 +35,7 @@ const Footer = () => {
             item
             key={link.text}
             sx={({ palette }) => ({
-              padding: `0 ${calculateRem(12)}rem`,
+              padding: `0 12px`,
               '&:not(:last-child)': {
                 borderRight: `1px solid ${palette.text.secondary}`
               },
@@ -44,11 +43,7 @@ const Footer = () => {
             })}
             onClick={() => window.open(link.url, '_blank')?.focus()}
           >
-            <Typography
-              color="text.secondary"
-              fontSize={`${calculateRem(12)}rem`}
-              fontWeight={500}
-            >
+            <Typography color="text.secondary" fontSize="12px" fontWeight={500}>
               {link.text}
             </Typography>
           </Grid>

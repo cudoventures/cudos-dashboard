@@ -1,19 +1,18 @@
 import { styled, Box, ToggleButton } from '@mui/material'
-import calculateRem from '../../utils/calculateRem'
 
 export const StyledBox = styled(Box)(({ theme }) => ({
   background: theme.backgrounds.primary,
-  width: `${calculateRem(88)}rem`,
-  borderRadius: `${calculateRem(20)}rem`,
+  width: '88px',
+  borderRadius: '20px',
   height: '100%',
-  padding: `${calculateRem(20)}rem 0`
+  padding: '20px 0'
 }))
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
-  padding: `${calculateRem(16)}rem`,
-  height: `${calculateRem(48)}rem`,
-  width: `${calculateRem(48)}rem`,
-  borderRadius: `${calculateRem(10)}rem`,
+  padding: '16px',
+  height: '48px',
+  width: '48px',
+  borderRadius: '10px',
   '&:hover': {
     backgroundColor: theme.backgrounds.light
   },

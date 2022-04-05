@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles'
-import { blue } from '@mui/material/colors'
 
 const dark = createTheme({
   palette: {
@@ -20,7 +19,7 @@ const dark = createTheme({
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
-    htmlFontSize: 16
+    htmlFontSize: 18
   },
   components: {
     MuiSelect: {
