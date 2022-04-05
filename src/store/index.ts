@@ -1,16 +1,27 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import storage from 'redux-persist/lib/storage'
+import { persistReducer } from 'redux-persist'
 import marketReducer from './market'
 import profileReducer from './profile'
 import validatorReducer from './validator'
 import settingsReducer from './settings'
 
+const rootReducer = combineReducers({
+  profile: profileReducer,
+  market: marketReducer,
+  validator: validatorReducer,
+  settings: settingsReducer
+})
+
+const persistConfig = {
+  key: 'root',
+  storage
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 export const store = configureStore({
-  reducer: {
-    profile: profileReducer,
-    market: marketReducer,
-    validator: validatorReducer,
-    settings: settingsReducer
-  }
+  reducer: persistedReducer
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

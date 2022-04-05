@@ -2,6 +2,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { useSelector, useDispatch } from 'react-redux'
 import { CssBaseline } from '@mui/material'
 
+import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import { updateSettings, Theme } from './store/settings'
 import Layout from './components/Layout'
 import theme from './theme'
@@ -22,6 +23,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme[themeColor]}>
       <CssBaseline />
+      <ConnectWallet />
       <Layout />
     </ThemeProvider>
   )

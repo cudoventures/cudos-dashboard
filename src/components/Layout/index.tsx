@@ -1,7 +1,8 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 import Header from './Header'
 import Footer from './Footer'
+import Card from '../Card/Card'
 
 const Layout = () => {
   return (
