@@ -1,15 +1,32 @@
-import { Box, Grid, Toolbar, Typography } from '@mui/material'
+import { Box, Grid, Switch } from '@mui/material'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../../store'
+import { ThemeType, updateSettings } from '../../store/settings'
+
+import LogoHeader from '../../assets/vectors/logo-header.svg'
 
 const Header = () => {
+  const { theme } = useSelector((state: RootState) => state.settings)
+  const dispatch = useDispatch()
+
+  const switchTheme = () => {
+    dispatch(
+      updateSettings({
+        theme: theme === ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK
+      })
+    )
+  }
+
   return (
-    <Box position="fixed" sx={{ top: 0 }}>
-      <Toolbar>
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Typography variant="h6" noWrap>
-            Header
-          </Typography>
-        </Grid>
-      </Toolbar>
+    <Box>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{ padding: '2rem' }}
+      >
+        <img src={LogoHeader} alt="logo" />
+      </Grid>
     </Box>
   )
 }
