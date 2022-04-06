@@ -33,6 +33,24 @@ const dark = createTheme({
           }
         }
       }
+    },
+    MuiButton: {
+      styleOverrides: {
+        sizeMedium: {
+          borderRadius: '26px',
+          background: '#52A6F8',
+          color: 'white',
+          padding: '10px 20px 10px 20px',
+          textTransform: 'none'
+        }
+      }
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundImage: 'url(src/assets/background.svg)'
+        }
+      }
     }
   },
   backgrounds: {
@@ -53,10 +71,6 @@ const light = createTheme({
     background: {
       default: '#E5E5E5',
       paper: '#E5E5E5'
-    },
-    text: {
-      primary: '#20273E',
-      secondary: '#999FB1'
     }
   },
   components: {

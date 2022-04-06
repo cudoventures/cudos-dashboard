@@ -4,6 +4,7 @@ import { CssBaseline } from '@mui/material'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Layout from './components/Layout'
+import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import Dashboard from './containers/Dashboard'
 import Proposals from './containers/Proposals'
 import ProposalDetails from './containers/Proposals/ProposalDetails'
@@ -22,6 +23,7 @@ const App = () => {
     <ThemeProvider theme={theme[themeColor]}>
       <CssBaseline />
       <BrowserRouter>
+        <ConnectWallet />
         <Layout>
           <Routes>
             <Route path="/">
