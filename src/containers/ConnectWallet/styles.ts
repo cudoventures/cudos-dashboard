@@ -9,7 +9,11 @@ export const styles = {
     left: '50%',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    maxWidth: '527px'
+    maxWidth: '535px'
+  },
+  subHeaderContainer: {
+    display: 'flex',
+    textAlign: 'center'
   },
   connectButton: {
     height: '50px',
@@ -18,14 +22,14 @@ export const styles = {
     marginBottom: '40px'
   },
   pluginWarning: {
-    width: '450px',
+    maxWidth: '490px',
     height: '60px',
     backgroundColor: 'rgba(82, 166, 248, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
     borderRadius: '10px',
-    padding: '10px'
+    padding: '10px 20px 10px 20px'
   },
   keplrLogo: {
     marginRight: '10px'

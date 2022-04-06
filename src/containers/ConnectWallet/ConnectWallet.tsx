@@ -14,10 +14,10 @@ const ConnectWallet = () => {
         <Box>
           <h1>Welcome to CUDOS Wallet!</h1>
         </Box>
-        <Box>
-          <Typography variant="h6" color="text.secondary">
-            CUDOS Wallet allows you to manage your CUDOS easily. In order to
-            continue you need to connect your Keplr Wallet.
+        <Box style={styles.subHeaderContainer}>
+          <Typography variant="subtitle1" color="text.secondary">
+            CUDOS Wallet allows you to manage your CUDOS easily. <br /> In order
+            to continue you need to connect your Keplr Wallet.
           </Typography>
         </Box>
         <Box>
