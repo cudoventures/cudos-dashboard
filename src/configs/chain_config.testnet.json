@@ -1,0 +1,51 @@
+{
+  "title": "Cudos Block Explorer",
+  "network": "cudos-testnet-public-2",
+  "icon": "https://wallet.cudos.org/img/logo-icon.cb505cad.svg?sanitize=true",
+  "logo": {
+    "default": "https://wallet.cudos.org/img/logo-dark.e500e625.svg?sanitize=true"
+  },
+  "prefix": {
+    "consensus": "cudosvalcons",
+    "validator": "cudosvaloper",
+    "account": "cudos"
+  },
+  "genesis": {
+    "time": "2021-07-13T08:00:00",
+    "height": 1
+  },
+  "primaryTokenUnit": "acudos",
+  "tokenUnits": {
+    "acudos": {
+      "display": "CUDOS",
+      "exponent": 18
+    },
+    "fcudos": {
+      "display": "CUDOS",
+      "exponent": 15
+    },
+    "pcudos": {
+      "display": "CUDOS",
+      "exponent": 12
+    },
+    "ncudos": {
+      "display": "CUDOS",
+      "exponent": 9
+    },
+    "ucudos": {
+      "display": "CUDOS",
+      "exponent": 6
+    },
+    "mcudos": {
+      "display": "CUDOS",
+      "exponent": 3
+    },
+    "cudos": {
+      "display": "CUDOS",
+      "exponent": 1
+    }
+  },
+  "extra": {
+    "profile": false
+  }
+}
