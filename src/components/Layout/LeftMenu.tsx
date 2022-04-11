@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Grid } from '@mui/material'
+import { Box } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 import DashboardIcon from '../../assets/vectors/dashboard.svg'
@@ -20,13 +20,7 @@ const Menu = () => {
 
   return (
     <StyledBox>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="space-between"
-        flexDirection="column"
-        gap={2}
-      >
+      <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
         {MenuItems.map((item, index) => (
           <Link to={item.link} key={item.link}>
             <StyledToggleButton
@@ -39,7 +33,7 @@ const Menu = () => {
             </StyledToggleButton>
           </Link>
         ))}
-      </Grid>
+      </Box>
     </StyledBox>
   )
 }
