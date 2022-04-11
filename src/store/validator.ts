@@ -1,30 +1,48 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface ValidatorState {
-  operatorAddress: string
-  selfDelegateAddress: string
-  status: string
-  commission: number
-  lastSeen: number
+export type ValidatorType = {
+  validator: string
   votingPower: number
+  votingPowerPercent: number
+  commission: number
+  selfPercent: number
+  condition: number
+  status: number
+  jailed: boolean
+  tombstoned: boolean
+  delegators: number
+  topVotingPower?: boolean // top 34% VP
+  avatarUrl: string
+  moniker: string
 }
 
-const initialState: ValidatorState[] = [
-  {
-    operatorAddress: '',
-    selfDelegateAddress: '',
-    status: '',
-    commission: 0,
-    lastSeen: 0,
-    votingPower: 0
-  }
-]
+export type ValidatorsState = {
+  loading: boolean
+  exists: boolean
+  tab: number
+  sortKey: string
+  sortDirection: 'asc' | 'desc'
+  votingPowerOverall: number
+  items: ValidatorType[]
+}
+
+export type ItemType = Override<ValidatorType, { validator: AvatarName }>
+
+const initialState: ValidatorsState = {
+  loading: true,
+  exists: true,
+  items: [],
+  votingPowerOverall: 0,
+  tab: 0,
+  sortKey: 'votingPower',
+  sortDirection: 'desc'
+}
 
 export const validatorsSlice = createSlice({
   name: 'validators',
   initialState,
   reducers: {
-    updateValidators: (state, action: PayloadAction<ValidatorState[]>) => {
+    updateValidators: (state, action: PayloadAction<ValidatorsState>) => {
       return { ...state, ...action.payload }
     }
   }
