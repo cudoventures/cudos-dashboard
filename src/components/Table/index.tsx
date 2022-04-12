@@ -1,7 +1,7 @@
 import {
   Typography,
   Box,
-  Table,
+  Table as MuiTable,
   TableBody,
   TableCell,
   TableHead,
@@ -10,15 +10,15 @@ import {
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'
 import { Column } from './types'
 
-type ValidatorsTableProps = {
-  items: []
+type TableProps = {
+  items: any[]
   columns: Column[]
   sortKey?: string
   handleSort?: (key: string) => void
   sortDirection?: 'desc' | 'asc'
 }
 
-const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
+const Table: React.FC<TableProps> = ({
   items,
   columns,
   sortKey,
@@ -27,7 +27,7 @@ const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
 }) => {
   return (
     <>
-      <Table sx={{ tableLayout: 'fixed' }}>
+      <MuiTable sx={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             {columns.map((col) => (
@@ -91,9 +91,9 @@ const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
             ))}
           </TableRow>
         </TableHead>
-      </Table>
+      </MuiTable>
       <Box sx={{ height: '100%', overflow: 'auto', width: '100%' }}>
-        <Table sx={{ tableLayout: 'fixed' }}>
+        <MuiTable sx={{ tableLayout: 'fixed' }}>
           <TableBody>
             {items.map((item: any) => (
               <TableRow key={item.idx}>
@@ -117,10 +117,10 @@ const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </MuiTable>
       </Box>
     </>
   )
 }
 
-export default ValidatorsTable
+export default Table
