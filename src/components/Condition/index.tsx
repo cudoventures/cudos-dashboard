@@ -1,9 +1,9 @@
-import StyledCondition from './styles'
+import ConditionContainer from './styles'
 
 const Condition: React.FC<{
   color?: string
 }> = ({ color }) => {
-  return <StyledCondition color={color} />
+  return <ConditionContainer color={color} />
 }
 
 export default Condition

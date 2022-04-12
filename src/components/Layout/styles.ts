@@ -1,6 +1,6 @@
 import { styled, Box, ToggleButton } from '@mui/material'
 
-export const StyledBox = styled(Box)(({ theme }) => ({
+export const MenuContainer = styled(Box)(({ theme }) => ({
   background: theme.custom.backgrounds.primary,
   width: '5.5rem',
   borderRadius: '1.3rem',
@@ -9,7 +9,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   flexShrink: 0
 }))
 
-export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+export const NavigationButton = styled(ToggleButton)(({ theme }) => ({
   padding: '1rem',
   height: '3rem',
   width: '3rem',
@@ -30,7 +30,7 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
   }
 }))
 
-export const StyledFooter = styled(Box)(() => ({
+export const FooterContainer = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',

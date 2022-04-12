@@ -6,7 +6,6 @@ import { ApolloProvider } from '@apollo/client'
 
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
-import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import Dashboard from './containers/Dashboard'
 import Proposals from './containers/Proposals'
 import ProposalDetails from './containers/Proposals/ProposalDetails'
@@ -27,7 +26,6 @@ const App = () => {
       <ThemeProvider theme={theme[themeColor]}>
         <CssBaseline />
         <BrowserRouter>
-          <ConnectWallet />
           <Layout>
             <Routes>
               <Route path="/">

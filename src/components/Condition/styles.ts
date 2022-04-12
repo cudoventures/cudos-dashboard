@@ -1,6 +1,6 @@
 import { styled } from '@mui/material'
 
-const StyledCondition = styled('div')(({ theme, color }) => ({
+const ConditionContainer = styled('div')(({ theme, color }) => ({
   width: '10px',
   height: '10px',
   background: theme.custom.conditions[color],
@@ -8,4 +8,4 @@ const StyledCondition = styled('div')(({ theme, color }) => ({
   borderRadius: '50%'
 }))
 
-export default StyledCondition
+export default ConditionContainer

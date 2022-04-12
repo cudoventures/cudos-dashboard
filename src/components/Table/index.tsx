@@ -13,9 +13,9 @@ import { Column } from './types'
 type ValidatorsTableProps = {
   items: []
   columns: Column[]
-  sortKey: string
-  handleSort: (key: string) => void
-  sortDirection: 'desc' | 'asc'
+  sortKey?: string
+  handleSort?: (key: string) => void
+  sortDirection?: 'desc' | 'asc'
 }
 
 const ValidatorsTable: React.FC<ValidatorsTableProps> = ({

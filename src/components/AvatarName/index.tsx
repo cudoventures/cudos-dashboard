@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import Avatar from '../Avatar'
-import StyledAvatarNameContainer from './styles'
+import AvatarNameContainer from './styles'
 
 type AvatarNameProps = {
   address: string
@@ -10,12 +10,12 @@ type AvatarNameProps = {
 
 const AvatarName: React.FC<AvatarNameProps> = ({ address, name, imageUrl }) => {
   return (
-    <StyledAvatarNameContainer>
+    <AvatarNameContainer>
       <Avatar address={address} imageUrl={imageUrl} />
       <Typography variant="body2" fontWeight={600}>
         {name}
       </Typography>
-    </StyledAvatarNameContainer>
+    </AvatarNameContainer>
   )
 }
 

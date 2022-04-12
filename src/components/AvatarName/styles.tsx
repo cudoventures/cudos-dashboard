@@ -1,6 +1,6 @@
 import { styled, Box } from '@mui/material'
 
-const StyledAvatarNameContainer = styled(Box)(() => ({
+const AvatarNameContainer = styled(Box)(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-start',
@@ -15,4 +15,4 @@ const StyledAvatarNameContainer = styled(Box)(() => ({
   }
 }))
 
-export default StyledAvatarNameContainer
+export default AvatarNameContainer

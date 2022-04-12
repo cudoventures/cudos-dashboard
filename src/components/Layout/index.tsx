@@ -1,4 +1,4 @@
-import { Grid, Box } from '@mui/material'
+import { Box } from '@mui/material'
 
 import Header from './Header'
 import Footer from './Footer'
