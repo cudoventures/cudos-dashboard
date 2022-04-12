@@ -2,10 +2,10 @@ import { styled, Box, ToggleButton } from '@mui/material'
 
 export const StyledBox = styled(Box)(({ theme }) => ({
   background: theme.backgrounds.primary,
-  width: '5.5rem',
+  width: '88px',
   borderRadius: '1.3rem',
   height: '100%',
-  padding: '1.3rem 0'
+  padding: '20px'
 }))
 
 export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
@@ -30,7 +30,6 @@ export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
 }))
 
 export const StyledFooter = styled(Box)(() => ({
-  position: 'fixed',
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
@@ -38,5 +37,5 @@ export const StyledFooter = styled(Box)(() => ({
   right: 0,
   left: 0,
   width: 'inherit',
-  padding: '2rem 4rem'
+  padding: '2rem'
 }))

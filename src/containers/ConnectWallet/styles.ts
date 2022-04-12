@@ -23,6 +23,7 @@ export const styles = {
   },
   pluginWarning: {
     maxWidth: '490px',
+    fontSize: '14px',
     height: '60px',
     backgroundColor: 'rgba(82, 166, 248, 0.1)',
     alignItems: 'center',

@@ -1,5 +1,9 @@
 import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../../store/profile'
+import { ConnectLedger } from '../../ledgers/KeplrLedger'
 import InfoIcon from '../../assets/vectors/info-icon.svg'
 import KeplrLogo from '../../assets/vectors/keplr-logo.svg'
 import Header from '../../components/Layout/Header'
@@ -7,6 +11,19 @@ import Header from '../../components/Layout/Header'
 import { styles } from './styles'
 
 const ConnectWallet = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const connect = async () => {
+    try {
+      const { address } = await ConnectLedger()
+      dispatch(updateUser({ address, balance: 0 }))
+      navigate('dashboard')
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
   return (
     <Box style={{ backgroundImage: 'url(/src/assets/background.svg)' }}>
       <Header />
@@ -21,7 +38,7 @@ const ConnectWallet = () => {
           </Typography>
         </Box>
         <Box>
-          <Button style={styles.connectButton}>
+          <Button onClick={() => connect()} style={styles.connectButton}>
             <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
             Connect Keplr wallet
           </Button>
