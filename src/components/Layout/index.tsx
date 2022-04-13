@@ -6,19 +6,21 @@ import LeftMenu from './LeftMenu'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <Box sx={{ padding: '0 2rem', height: '100vh' }}>
-      <Grid container direction="column" sx={{ height: '100%' }}>
-        <Grid item>
-          <Header />
-        </Grid>
-        <Grid item xl={10} md={9} container gap={8}>
-          <Grid item>
-            <LeftMenu />
-          </Grid>
-          <Grid item>{children}</Grid>
-        </Grid>
-        <Footer />
-      </Grid>
+    <Box
+      display="flex"
+      flexDirection="column"
+      sx={{
+        paddingLeft: '2rem',
+        height: '100vh',
+        marginRight: '50px'
+      }}
+    >
+      <Header />
+      <Box display="flex" gap={8} flexGrow={1}>
+        <LeftMenu />
+        <Box flexGrow={1}>{children}</Box>
+      </Box>
+      <Footer />
     </Box>
   )
 }
