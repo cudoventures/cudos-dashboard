@@ -9,7 +9,7 @@ import StakingIcon from '../../assets/vectors/staking.svg'
 import { MenuContainer, NavigationButton } from './styles'
 
 const MenuItems = [
-  { icon: DashboardIcon, link: '/' },
+  { icon: DashboardIcon, link: '/dashboard' },
   { icon: StakingIcon, link: '/staking' },
   { icon: ProposalsIcon, link: '/proposals' },
   { icon: SettingsIcon, link: '/settings' }

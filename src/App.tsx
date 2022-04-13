@@ -1,11 +1,13 @@
 import { ThemeProvider } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
 import { CssBaseline } from '@mui/material'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
+import { Routes, Route, useLocation } from 'react-router-dom'
 
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
+import RequireKeplr from './components/RequireKeplr/RequireKeplr'
+import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import Dashboard from './containers/Dashboard'
 import Proposals from './containers/Proposals'
 import ProposalDetails from './containers/Proposals/ProposalDetails'
@@ -18,6 +20,8 @@ import { RootState } from './store'
 import '@fontsource/poppins'
 
 const App = () => {
+  const location = useLocation()
+
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const apolloClient = useApollo(null)
 
@@ -25,11 +29,16 @@ const App = () => {
     <ApolloProvider client={apolloClient}>
       <ThemeProvider theme={theme[themeColor]}>
         <CssBaseline />
-        <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ConnectWallet />} />
+        </Routes>
+        {location.pathname === '/' ? null : (
           <Layout>
             <Routes>
-              <Route path="/">
-                <Route index element={<Dashboard />} />
+              <Route element={<RequireKeplr />}>
+                <Route path="dashboard">
+                  <Route index element={<Dashboard />} />
+                </Route>
                 <Route path="staking">
                   <Route index element={<Staking />} />
                   <Route path=":validatorId" element={<ValidatorDetails />} />
@@ -44,7 +53,7 @@ const App = () => {
               </Route>
             </Routes>
           </Layout>
-        </BrowserRouter>
+        )}
       </ThemeProvider>
     </ApolloProvider>
   )

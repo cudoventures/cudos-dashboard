@@ -10,14 +10,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       display="flex"
       flexDirection="column"
       sx={{
-        padding: '0 2rem',
+        paddingLeft: '2rem',
         height: '100vh'
       }}
     >
       <Header />
       <Box display="flex" gap={8} flexGrow={1} sx={{ overflow: 'auto' }}>
         <LeftMenu />
-        {children}
+        <Box flexGrow={1}>{children}</Box>
       </Box>
       <Footer />
     </Box>
