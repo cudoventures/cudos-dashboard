@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material'
 
-import { StyledFooter } from './styles'
+import { FooterContainer } from './styles'
 
 import FooterLogo from '../../assets/vectors/logo-footer.svg'
 import RedditIcon from '../../assets/vectors/reddit.svg'
@@ -25,7 +25,7 @@ const linksRight = [
 
 const Footer = () => {
   return (
-    <StyledFooter gap={6}>
+    <FooterContainer gap={6}>
       <Grid item>
         <img src={FooterLogo} alt="logo" />
       </Grid>
@@ -69,7 +69,7 @@ const Footer = () => {
           </Grid>
         ))}
       </Box>
-    </StyledFooter>
+    </FooterContainer>
   )
 }
 

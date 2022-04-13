@@ -1,26 +1,27 @@
+import { darkScrollbar } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
+import { COLORS_DARK_THEME, CONDITIONS } from './colors'
 
 const dark = createTheme({
   palette: {
     mode: 'dark',
     primary: {
       light: '',
-      main: '#52A6F8',
+      main: COLORS_DARK_THEME.PRIMARY_BLUE,
       dark: ''
     },
     background: {
-      default: '#1C2030',
-      paper: '#1C2030'
+      default: COLORS_DARK_THEME.DARK_BACKGROUND,
+      paper: COLORS_DARK_THEME.DARK_BACKGROUND
     },
     text: {
-      primary: '#F6F9FE',
-      secondary: '#7D87AA'
+      primary: COLORS_DARK_THEME.PRIMARY_TEXT,
+      secondary: COLORS_DARK_THEME.SECONDARY_TEXT
     }
   },
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
-    fontSize: 16,
-    htmlFontSize: 16
+    fontSize: 14
   },
   components: {
     MuiSelect: {
@@ -38,7 +39,7 @@ const dark = createTheme({
       styleOverrides: {
         sizeMedium: {
           borderRadius: '26px',
-          background: '#52A6F8',
+          background: COLORS_DARK_THEME.PRIMARY_BLUE,
           color: 'white',
           padding: '10px 20px 10px 20px',
           textTransform: 'none'
@@ -47,16 +48,107 @@ const dark = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: {
+        html: {
+          ...darkScrollbar({
+            track: 'transparent',
+            thumb: COLORS_DARK_THEME.SECONDARY_TEXT,
+            active: 'transparent'
+          }),
+          '*::-webkit-scrollbar': {
+            width: '4px'
+          },
+          '*::-webkit-scrollbar-track': {
+            background: COLORS_DARK_THEME.PRIMARY_BACKGROUND
+          },
+          '*::-webkit-scrollbar-thumb': {
+            background: COLORS_DARK_THEME.SECONDARY_TEXT,
+            borderRadius: '2px'
+          }
+        },
         body: {
-          backgroundImage: 'url(src/assets/background.svg)'
+          // backgroundImage: 'url(src/assets/background.svg)'
+        }
+      }
+    },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          background: COLORS_DARK_THEME.PRIMARY_BACKGROUND,
+          boxShadow: 'none',
+          borderRadius: '5px',
+          borderCollapse: 'collapse',
+          overflow: 'hidden'
+        }
+      }
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          border: 'none',
+          background: 'transparent'
+        }
+      }
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          background: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+          color: COLORS_DARK_THEME.SECONDARY_TEXT
+        }
+      }
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          border: 'none',
+          background: 'transparent',
+          backgroundColor: 'transparent'
+        }
+      }
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          background: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+          borderRadius: '30px',
+          minHeight: '34px',
+          height: '34px'
+        },
+        indicator: {
+          display: 'none'
+        }
+      }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          background: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+          borderRadius: '30px',
+          fontSize: '12px',
+          fontWeight: 600,
+          minHeight: '34px',
+          height: '34px',
+          textTransform: 'capitalize',
+          '&.Mui-selected': {
+            background: COLORS_DARK_THEME.PRIMARY_BLUE,
+            transition: 'background .3s ease-in-out'
+          }
         }
       }
     }
   },
-  backgrounds: {
-    light: '#28314E',
-    primary: '#20273E',
-    dark: '#1C2030'
+  custom: {
+    backgrounds: {
+      light: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+      primary: COLORS_DARK_THEME.PRIMARY_BACKGROUND,
+      dark: COLORS_DARK_THEME.DARK_BACKGROUND
+    },
+    conditions: {
+      grey: CONDITIONS.GREY,
+      green: CONDITIONS.GREEN,
+      yellow: CONDITIONS.YELLOW,
+      red: CONDITIONS.RED
+    }
   }
 })
 
@@ -91,10 +183,12 @@ const light = createTheme({
     fontSize: 16,
     htmlFontSize: 16
   },
-  backgrounds: {
-    light: '#F7F8FA',
-    primary: '#FFFFFF',
-    dark: '#E5E5E5'
+  custom: {
+    backgrounds: {
+      light: '#F7F8FA',
+      primary: '#FFFFFF',
+      dark: '#E5E5E5'
+    }
   }
 })
 

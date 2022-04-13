@@ -1,8 +1,10 @@
 import { ThemeProvider } from '@mui/material/styles'
 import { useSelector } from 'react-redux'
 import { CssBaseline } from '@mui/material'
+import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation } from 'react-router-dom'
 
+import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import RequireKeplr from './components/RequireKeplr/RequireKeplr'
 import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
@@ -21,19 +23,22 @@ const App = () => {
   const location = useLocation()
 
   const themeColor = useSelector((state: RootState) => state.settings.theme)
+  const apolloClient = useApollo(null)
 
   return (
-    <ThemeProvider theme={theme[themeColor]}>
-      <CssBaseline />
-      <Routes>
-        <Route path="/" element={<ConnectWallet />} />
-      </Routes>
-      {location.pathname === '/' ? null : (
-        <Layout>
-          <Routes>
-            <Route element={<RequireKeplr />}>
-              <Route path="dashboard">
-                <Route index element={<Dashboard />} />
+    <ApolloProvider client={apolloClient}>
+      <ThemeProvider theme={theme[themeColor]}>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<ConnectWallet />} />
+        </Routes>
+        {location.pathname === '/' ? null : (
+          <Layout>
+            <Routes>
+              <Route element={<RequireKeplr />}>
+                <Route path="dashboard">
+                  <Route index element={<Dashboard />} />
+                </Route>
                 <Route path="staking">
                   <Route index element={<Staking />} />
                   <Route path=":validatorId" element={<ValidatorDetails />} />
@@ -46,11 +51,11 @@ const App = () => {
                 </Route>
                 <Route path="settings" element={<Settings />} />
               </Route>
-            </Route>
-          </Routes>
-        </Layout>
-      )}
-    </ThemeProvider>
+            </Routes>
+          </Layout>
+        )}
+      </ThemeProvider>
+    </ApolloProvider>
   )
 }
 

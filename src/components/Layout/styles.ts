@@ -1,35 +1,36 @@
 import { styled, Box, ToggleButton } from '@mui/material'
 
-export const StyledBox = styled(Box)(({ theme }) => ({
-  background: theme.backgrounds.primary,
+export const MenuContainer = styled(Box)(({ theme }) => ({
+  background: theme.custom.backgrounds.primary,
   width: '88px',
   borderRadius: '1.3rem',
   height: '100%',
-  padding: '20px'
+  padding: '20px',
+  flexShrink: 0
 }))
 
-export const StyledToggleButton = styled(ToggleButton)(({ theme }) => ({
+export const NavigationButton = styled(ToggleButton)(({ theme }) => ({
   padding: '1rem',
   height: '3rem',
   width: '3rem',
   borderRadius: '10px',
   '&:hover': {
-    backgroundColor: theme.backgrounds.light
+    backgroundColor: theme.custom.backgrounds.light
   },
   border: 'none',
   '&.Mui-selected': {
-    background: theme.backgrounds.light,
+    background: theme.custom.backgrounds.light,
     color: theme.palette.primary.main,
     '&:focus': {
-      backgroundColor: theme.backgrounds.light
+      backgroundColor: theme.custom.backgrounds.light
     },
     '&:hover': {
-      backgroundColor: theme.backgrounds.light
+      backgroundColor: theme.custom.backgrounds.light
     }
   }
 }))
 
-export const StyledFooter = styled(Box)(() => ({
+export const FooterContainer = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',

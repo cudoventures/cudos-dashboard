@@ -37,7 +37,7 @@ export const styles = {
     display: 'flex',
     borderRadius: '5px',
     padding: '17px',
-    background: theme.dark.backgrounds.light,
+    background: theme.dark.custom.backgrounds.light,
     alignItems: 'baseline'
   },
   networkCardContentStyle: {
@@ -80,7 +80,7 @@ export const styles = {
   networkCardStyle: {
     height: '101px',
     borderRadius: '12px',
-    backgroundColor: theme.dark.backgrounds.light,
+    backgroundColor: theme.dark.custom.backgrounds.light,
     padding: '15px 20px 15px 20px',
     marginBottom: '20px'
   },
@@ -88,7 +88,7 @@ export const styles = {
     display: 'flex',
     borderRadius: '5px',
     padding: '17px',
-    background: theme.dark.backgrounds.light,
+    background: theme.dark.custom.backgrounds.light,
     alignItems: 'baseline'
   },
   networkInfo: {

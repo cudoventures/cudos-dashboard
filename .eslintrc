@@ -83,6 +83,7 @@
         "ignoreReadBeforeAssign": false
       }
     ],
+    "no-param-reassign": ["error", { "props": false }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",

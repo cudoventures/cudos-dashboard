@@ -3,23 +3,41 @@ import '@mui/material/styles'
 
 declare module '@mui/material/styles' {
   interface Theme {
-    backgrounds: {
-      light: string
-      primary: string
-      dark: string
+    custom: {
+      backgrounds: {
+        light: string
+        primary: string
+        dark: string
+      }
+      conditions: {
+        grey: string
+        green: string
+        yellow: string
+        red: string
+      }
     }
   }
   // allow configuration using `createTheme`
   interface ThemeOptions {
-    backgrounds?: {
-      light?: string
-      primary?: string
-      dark?: string
+    custom?: {
+      backgrounds?: {
+        light?: string
+        primary?: string
+        dark?: string
+      }
+      conditions?: {
+        grey?: string
+        green?: string
+        yellow?: string
+        red?: string
+      }
     }
   }
 }
 
 declare global {
+  type Override<T1, T2> = Omit<T1, keyof T2> & T2
+
   type ComponentDefault = {
     className?: string
   }
