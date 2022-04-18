@@ -37,12 +37,25 @@ const dark = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        sizeMedium: {
+        root: {
           borderRadius: '26px',
           background: COLORS_DARK_THEME.PRIMARY_BLUE,
           color: 'white',
           padding: '10px 20px 10px 20px',
           textTransform: 'none'
+        }
+      }
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button':
+            {
+              display: 'none'
+            },
+          '& input[type=number]': {
+            MozAppearance: 'textfield'
+          }
         }
       }
     },
@@ -56,9 +69,6 @@ const dark = createTheme({
           }),
           '*::-webkit-scrollbar': {
             width: '4px'
-          },
-          '*::-webkit-scrollbar-track': {
-            background: COLORS_DARK_THEME.PRIMARY_BACKGROUND
           },
           '*::-webkit-scrollbar-thumb': {
             background: COLORS_DARK_THEME.SECONDARY_TEXT,

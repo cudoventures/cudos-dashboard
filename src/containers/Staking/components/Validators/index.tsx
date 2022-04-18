@@ -6,9 +6,11 @@ import Tabs from './components/Tabs'
 import TableContainer from './components/Table/styles'
 import ValidatorsTable from './components/Table'
 import ValidatorsCount from './components/Count'
+import DelegationModal from './components/DelegationModal'
 
 const Validators = () => {
-  const { state, handleTabChange, handleSort, sortItems } = useValidators()
+  const { state, handleTabChange, handleSort, sortItems, handleModal } =
+    useValidators()
 
   const items = sortItems(state.items)
 
@@ -25,9 +27,11 @@ const Validators = () => {
           sortDirection={state.sortDirection}
           sortKey={state.sortKey}
           handleSort={handleSort}
+          handleModal={handleModal}
           items={items}
         />
       </Box>
+      <DelegationModal modalProps={state.modal} handleModal={handleModal} />
     </TableContainer>
   )
 }

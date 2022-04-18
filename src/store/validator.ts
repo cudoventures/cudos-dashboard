@@ -1,5 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+export enum DelegationStatus {
+  LOADING = 'LOADING',
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE'
+}
+
+export type ModalProps = {
+  open: boolean
+  validator: {
+    name: string
+    imageUrl: string
+    address: string
+  } | null
+  status: DelegationStatus | null
+  amount: string | null
+}
+
 export type ValidatorType = {
   validator: string
   votingPower: number
@@ -24,6 +41,7 @@ export type ValidatorsState = {
   sortDirection: 'asc' | 'desc'
   votingPowerOverall: number
   items: ValidatorType[]
+  modal: ModalProps
 }
 
 export type ItemType = Override<ValidatorType, { validator: AvatarName }>
@@ -35,7 +53,13 @@ const initialState: ValidatorsState = {
   votingPowerOverall: 0,
   tab: 0,
   sortKey: 'votingPower',
-  sortDirection: 'desc'
+  sortDirection: 'desc',
+  modal: {
+    open: false,
+    validator: null,
+    status: null,
+    amount: null
+  }
 }
 
 export const validatorsSlice = createSlice({
