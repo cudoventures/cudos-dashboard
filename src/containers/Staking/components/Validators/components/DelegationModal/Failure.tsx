@@ -20,7 +20,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
 
   return (
     <ModalContainer sx={{ padding: '4rem' }}>
-      <img src={FailureIcon} alt="success-icon" />
+      <img src={FailureIcon} alt="failure-icon" />
       <CancelRoundedIcon onClick={handleClose} />
       <Box
         display="flex"
