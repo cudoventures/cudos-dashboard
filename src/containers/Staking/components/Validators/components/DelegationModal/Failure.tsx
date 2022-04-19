@@ -4,12 +4,12 @@ import { ModalProps } from 'store/validator'
 import FailureIcon from '../../../../../../assets/vectors/failure.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
-type SuccessProps = {
+type FailureProps = {
   modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
 }
 
-const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
+const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
   const handleClose = () => {
     handleModal({ open: false, validator: null, amount: null, status: null })
   }
@@ -53,4 +53,4 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   )
 }
 
-export default Success
+export default Failure
