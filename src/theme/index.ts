@@ -64,9 +64,6 @@ const dark = createTheme({
             background: COLORS_DARK_THEME.SECONDARY_TEXT,
             borderRadius: '2px'
           }
-        },
-        body: {
-          // backgroundImage: 'url(src/assets/background.svg)'
         }
       }
     },

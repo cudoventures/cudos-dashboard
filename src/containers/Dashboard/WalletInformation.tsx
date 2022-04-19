@@ -1,5 +1,8 @@
-import React from 'react'
-import { Avatar, Box, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Avatar, Box, Typography, Tooltip } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { copyToClipboard, formatAddress } from '../../utils/projectUtils'
 import Card from '../../components/Card/Card'
 import TestAvatar from '../../assets/vectors/test-avatar.svg'
 import CopyIcon from '../../assets/vectors/copy-icon.svg'
@@ -11,6 +14,19 @@ import TickIcon from '../../assets/vectors/tick-icon.svg'
 import { styles } from './styles'
 
 const WalletInformation = () => {
+  const { address } = useSelector((state: RootState) => state.profile)
+
+  const [copied, setCopied] = useState<boolean>(false)
+
+  const handleCopy = (value: string) => {
+    copyToClipboard(value)
+    setCopied(true)
+
+    setTimeout(() => {
+      setCopied(false)
+    }, 3000)
+  }
+
   return (
     <Card style={styles.walletInfoCard}>
       <Box style={styles.walletInfoContainer}>
@@ -46,15 +62,28 @@ const WalletInformation = () => {
               color="text.secondary"
               sx={{ fontSize: '12px', marginBottom: '10px' }}
             >
-              cudos1wyv883wzp843...57qdd
-              <img style={{ marginLeft: '10px' }} src={CopyIcon} alt="Copy" />
-              <img style={{ marginLeft: '10px' }} src={LinkIcon} alt="Link" />
+              {formatAddress(address, 20)}
+              <Tooltip
+                onClick={() => handleCopy(address)}
+                title={copied ? 'Copied' : 'Copy to clipboard'}
+              >
+                <img
+                  style={{ marginLeft: '10px', cursor: 'pointer' }}
+                  src={CopyIcon}
+                  alt="Copy"
+                />
+              </Tooltip>
+              <img
+                style={{ marginLeft: '10px', cursor: 'pointer' }}
+                src={LinkIcon}
+                alt="Link"
+              />
             </Typography>
           </Box>
           <Box>
             <Typography
               color="primary.main"
-              sx={{ fontSize: '14px', fontWeight: '600' }}
+              sx={{ fontSize: '14px', fontWeight: '600', cursor: 'pointer' }}
             >
               View Profile
             </Typography>
