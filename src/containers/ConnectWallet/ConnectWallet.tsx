@@ -25,27 +25,29 @@ const ConnectWallet = () => {
   }
 
   return (
-    <Box style={{ backgroundImage: 'url(/src/assets/background.svg)' }}>
+    <Box style={styles.backgroundStyle}>
       <Header />
-      <Box style={styles.connectContainer}>
-        <Box>
-          <h1>Welcome to CUDOS Wallet!</h1>
-        </Box>
-        <Box style={styles.subHeaderContainer}>
-          <Typography variant="subtitle1" color="text.secondary">
-            CUDOS Wallet allows you to manage your CUDOS easily. <br /> In order
-            to continue you need to connect your Keplr Wallet.
-          </Typography>
-        </Box>
-        <Box>
-          <Button onClick={() => connect()} style={styles.connectButton}>
-            <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
-            Connect Keplr wallet
-          </Button>
-        </Box>
-        <Box style={styles.pluginWarning} color="primary.main">
-          <img style={styles.infoIcon} src={InfoIcon} alt="Info" />
-          Make sure you have Keplr plugin downloaded.
+      <Box>
+        <Box style={styles.connectContainer}>
+          <Box>
+            <h1>Welcome to CUDOS Wallet!</h1>
+          </Box>
+          <Box style={styles.subHeaderContainer}>
+            <Typography variant="subtitle1" color="text.secondary">
+              CUDOS Wallet allows you to manage your CUDOS easily. <br /> In
+              order to continue you need to connect your Keplr Wallet.
+            </Typography>
+          </Box>
+          <Box>
+            <Button onClick={() => connect()} style={styles.connectButton}>
+              <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
+              Connect Keplr wallet
+            </Button>
+          </Box>
+          <Box style={styles.pluginWarning} color="primary.main">
+            <img style={styles.infoIcon} src={InfoIcon} alt="Info" />
+            Make sure you have Keplr plugin downloaded.
+          </Box>
         </Box>
       </Box>
     </Box>

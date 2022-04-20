@@ -38,5 +38,12 @@ export const styles = {
   infoIcon: {
     display: 'flex',
     marginRight: '10px'
+  },
+  backgroundStyle: {
+    width: '100vw',
+    height: '100vh',
+    backgroundImage: 'url(src/assets/background.svg)',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat'
   }
 } as const

@@ -6,21 +6,37 @@ export const styles = {
     fontSize: '30px',
     fontWeight: '700'
   },
+  stickyHeader: {
+    position: 'fixed',
+    background: theme.dark.custom.backgrounds.dark,
+    width: '100%',
+    zIndex: '1'
+  },
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
-    fontSize: '14px'
+    fontSize: '14px',
+    marginBottom: '5px'
   },
   networkCardTitleStyle: {
     fontWeight: '600',
     fontSize: '14px',
-    marginBottom: '5px'
+    marginBottom: '10px',
+    display: 'flex',
+    alignItems: 'center'
   },
   editButtonStyle: {
     fontSize: '14px',
     fontWeight: '600',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    cursor: 'pointer'
+  },
+  claimButtonStyle: {
+    width: '80px',
+    height: '34px',
+    fontSize: '12px',
+    fontWeight: '600'
   },
   avatarStyle: {
     width: '120px',
@@ -61,7 +77,12 @@ export const styles = {
   },
   walletInfoCard: {
     minHeight: '319px',
-    minWidth: '438px',
+    width: '50%',
+    marginRight: '20px'
+  },
+  walletBalanceCard: {
+    minHeight: '319px',
+    width: '50%',
     marginRight: '20px'
   },
   editButton: {
@@ -69,13 +90,16 @@ export const styles = {
     right: '20px'
   },
   latestActivityCard: {
+    display: 'flex',
+    flexDirection: 'column',
     minHeight: '347px',
     marginTop: '20px',
-    maxWidth: '896px'
+    maxHeight: '250px',
+    overflow: 'hidden'
   },
   networkStatisticsCard: {
-    minHeight: '687px',
-    minWidth: '325px'
+    minHeight: '100%',
+    width: '100%'
   },
   networkCardStyle: {
     height: '101px',

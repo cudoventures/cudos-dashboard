@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Box } from '@mui/material'
 import { Link } from 'react-router-dom'
+import StickyBox from 'react-sticky-box'
 
 import DashboardIcon from '../../assets/vectors/dashboard.svg'
 import ProposalsIcon from '../../assets/vectors/proposals.svg'
 import SettingsIcon from '../../assets/vectors/settings.svg'
 import StakingIcon from '../../assets/vectors/staking.svg'
-import { MenuContainer, NavigationButton } from './styles'
+import { NavigationButton, styles } from './styles'
 
 const MenuItems = [
   { icon: DashboardIcon, link: '/dashboard' },
@@ -19,7 +20,7 @@ const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
 
   return (
-    <MenuContainer>
+    <StickyBox style={styles.menuContainer}>
       <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
         {MenuItems.map((item, index) => (
           <Link to={item.link} key={item.link}>
@@ -34,7 +35,7 @@ const Menu = () => {
           </Link>
         ))}
       </Box>
-    </MenuContainer>
+    </StickyBox>
   )
 }
 
