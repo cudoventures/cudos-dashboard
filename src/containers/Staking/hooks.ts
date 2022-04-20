@@ -4,7 +4,11 @@ import Big from 'big.js'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { RootState } from 'store'
-import { ValidatorType, updateValidators } from '../../store/validator'
+import {
+  ValidatorType,
+  updateValidators,
+  ModalProps
+} from '../../store/validator'
 import { getValidatorCondition } from '../../utils/get_validator_condition'
 import { formatToken } from '../../utils/format_token'
 import { useValidatorsQuery, ValidatorsQuery } from '../../graphql/types'
@@ -179,6 +183,15 @@ export default () => {
     return sorted
   }
 
+  const handleModal = (modalState: ModalProps) => {
+    dispatch(
+      updateValidators({
+        ...state,
+        modal: { ...state.modal, ...modalState }
+      })
+    )
+  }
+
   // ==========================
   // Fetch Data
   // ==========================
@@ -195,6 +208,7 @@ export default () => {
     state,
     handleTabChange,
     handleSort,
-    sortItems
+    sortItems,
+    handleModal
   }
 }

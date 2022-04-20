@@ -1,6 +1,7 @@
-import { ValidatorType } from 'store/validator'
+import { ValidatorType, ModalProps } from 'store/validator'
 import numeral from 'numeral'
 import { Box, Typography, Button } from '@mui/material'
+
 import { getValidatorConditionClass } from '../../../../../../utils/get_validator_condition'
 import columns from '../../../../utils'
 import Condition from '../../../../../../components/Condition'
@@ -12,13 +13,15 @@ type ValidatorsTableProps = {
   sortKey: string
   handleSort: (key: string) => void
   items: ValidatorType[]
+  handleModal: (modalProps: ModalProps) => void
 }
 
 const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
   items,
   sortKey,
   sortDirection,
-  handleSort
+  handleSort,
+  handleModal
 }) => {
   const formattedItems = items.map((x: ValidatorType, i: number) => {
     const condition =
@@ -66,6 +69,18 @@ const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
               background: theme.palette.primary.main
             }
           })}
+          onClick={() =>
+            handleModal({
+              open: true,
+              validator: {
+                name: x.moniker,
+                imageUrl: x.avatarUrl,
+                address: x.validator
+              },
+              status: null,
+              amount: null
+            })
+          }
         >
           Delegate
         </Button>
