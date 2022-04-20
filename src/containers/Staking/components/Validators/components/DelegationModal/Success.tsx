@@ -32,7 +32,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
             Success!
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-            Transaction was successfully executed
+            Transaction was successfully executed!
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column" gap={2}>

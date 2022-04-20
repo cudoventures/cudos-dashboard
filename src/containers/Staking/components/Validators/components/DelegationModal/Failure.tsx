@@ -33,7 +33,7 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
           Delegation failed!
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          Seems like something went wrong with executing the transaction . Try
+          Seems like something went wrong with executing the transaction. Try
           again or check your wallet balance.
         </Typography>
       </Box>
