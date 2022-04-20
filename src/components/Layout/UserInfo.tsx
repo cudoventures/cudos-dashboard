@@ -40,7 +40,7 @@ const UserInfo = () => {
     }, 3000)
   }
 
-  const handleDisonnect = () => {
+  const handleDisconnect = () => {
     dispatch(updateUser({ address: '', balance: 0 }))
     navigate('/')
   }
@@ -134,7 +134,7 @@ const UserInfo = () => {
                 marginTop: '30px'
               }}
             >
-              <Button onClick={() => handleDisonnect()}>Disconnect</Button>
+              <Button onClick={() => handleDisconnect()}>Disconnect</Button>
             </Box>
           </Box>
         </Box>
