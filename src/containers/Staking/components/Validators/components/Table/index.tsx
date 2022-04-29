@@ -70,7 +70,10 @@ const ValidatorsTable: React.FC = () => {
                 address: x.validator
               },
               status: null,
-              amount: null
+              amount: null,
+              fee: '',
+              gasUsed: 0,
+              txHash: ''
             })
           }
         >
@@ -80,7 +83,6 @@ const ValidatorsTable: React.FC = () => {
     }
   })
 
-  console.log('renderoni')
   return (
     <Table
       items={formattedItems}
