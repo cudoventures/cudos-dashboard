@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface WalletState {
   address: string
-  balance: number
+  balance: string
 }
 
 const initialState: WalletState = {
   address: '',
-  balance: 0
+  balance: ''
 }
 
 export const walletSlice = createSlice({
