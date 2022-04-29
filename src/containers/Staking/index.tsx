@@ -6,11 +6,16 @@ import { StakingContainer, ValidatorsContainer } from './styles'
 const Staking = () => {
   return (
     <StakingContainer>
-      <Typography variant="h5" fontWeight={700}>
+      <Typography fontSize={30} letterSpacing={1} fontWeight={700}>
         Staking
       </Typography>
-      <Typography variant="subtitle1" fontWeight={500} color="text.secondary">
-        Here are displayed the validator to which you can delegate CUDOS tokens
+      <Typography
+        variant="subtitle2"
+        fontWeight={700}
+        letterSpacing={2}
+        color="text.secondary"
+      >
+        Here are displayed the validators to which you can delegate CUDOS
       </Typography>
       <ValidatorsContainer>
         <Validators />

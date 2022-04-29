@@ -4,8 +4,10 @@ import {
   OpenInNewRounded as OpenInNewRoundedIcon
 } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { ModalProps } from 'store/validator'
+import { initialModalState, ModalProps } from 'store/validator'
 
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 import getMiddleEllipsis from '../../../../../../utils/get_middle_ellipsis'
 import SuccessIcon from '../../../../../../assets/vectors/success.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
@@ -16,10 +18,14 @@ type SuccessProps = {
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { validator, amount } = modalProps
+  const { validator, amount, gasUsed, txHash } = modalProps
+
+  const { address } = useSelector(({ profile }: RootState) => profile)
 
   const handleClose = () => {
-    handleModal({ open: false, validator: null, amount: null, status: null })
+    handleModal({
+      ...initialModalState
+    })
   }
 
   return (
@@ -47,13 +53,10 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                 From
               </Typography>
               <Typography variant="body2">
-                {getMiddleEllipsis(
-                  'cudos1e5zf59p7hflznwnsur84xuvcmjefwq6dl37l3e',
-                  {
-                    beginning: 12,
-                    ending: 4
-                  }
-                )}
+                {getMiddleEllipsis(address, {
+                  beginning: 12,
+                  ending: 4
+                })}
               </Typography>
             </Box>
             <ArrowCircleRightRoundedIcon
@@ -82,7 +85,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
           </Box>
           <Divider />
           <Box display="flex" alignItems="center" gap={1} padding="0.5rem 0">
-            <Typography variant="body2">Gas fee</Typography>
+            <Typography variant="body2">Gas used</Typography>
             <InfoRoundedIcon
               fontSize="small"
               sx={({ palette }) => ({ color: palette.primary.main })}
@@ -94,7 +97,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               letterSpacing={1}
               sx={{ marginLeft: 'auto' }}
             >
-              0.000123 CUDOS
+              {gasUsed} CUDOS
             </Typography>
           </Box>
           <Divider />
@@ -110,6 +113,16 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                 variant="body2"
                 color="primary.main"
                 sx={{ textDecoration: 'underline' }}
+                onClick={() =>
+                  window
+                    .open(
+                      `${
+                        import.meta.env.VITE_APP_EXPLORER_V2
+                      }/transactions/${txHash}`,
+                      '_blank'
+                    )
+                    ?.focus()
+                }
               >
                 Transaction link
               </Typography>
