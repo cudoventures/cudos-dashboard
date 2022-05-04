@@ -119,21 +119,24 @@ const WalletInformation = () => {
         </Typography>
       </Box>
       <Box style={styles.networkInfoContainer}>
-        <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>
-          CUDOS Mainnet
-        </Typography>
-        <Typography color="primary.main" style={styles.networkInfo}>
-          Change
-        </Typography>
         <Box>
-          <Typography style={styles.connectionStatus}>
-            <img
-              style={{ marginRight: '10px' }}
-              src={OnlineStatusIcon}
-              alt="Online Status"
-            />
-            Connected
-          </Typography>
+          <span>
+            <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>
+              CUDOS Mainnet
+            </Typography>
+          </span>
+        </Box>
+        <Box>
+          <span>
+            <Typography style={styles.connectionStatus}>
+              <img
+                style={{ marginRight: '10px' }}
+                src={OnlineStatusIcon}
+                alt="Online Status"
+              />
+              Connected
+            </Typography>
+          </span>
         </Box>
       </Box>
       <Box />

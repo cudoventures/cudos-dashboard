@@ -110,6 +110,7 @@ export const styles = {
   },
   networkInfoContainer: {
     display: 'flex',
+    justifyContent: 'space-between',
     borderRadius: '5px',
     padding: '17px',
     background: theme.dark.custom.backgrounds.light,
