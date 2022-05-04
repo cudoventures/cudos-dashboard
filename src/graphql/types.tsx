@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { gql } from '@apollo/client'
 import * as Apollo from '@apollo/client'
 
@@ -21,6 +20,11 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  ActionCoin: any
+  ActionDelegation: any
+  ActionPagination: any
+  ActionRedelegation: any
+  ActionUnbondingDelegation: any
   _coin: any
   _dec_coin: any
   _text: any
@@ -31,6 +35,47 @@ export type Scalars = {
   numeric: any
   smallint: any
   timestamp: any
+}
+
+export type ActionAddress = {
+  __typename?: 'ActionAddress'
+  address: Scalars['String']
+}
+
+export type ActionBalance = {
+  __typename?: 'ActionBalance'
+  coins?: Maybe<Array<Maybe<Scalars['ActionCoin']>>>
+}
+
+export type ActionDelegationResponse = {
+  __typename?: 'ActionDelegationResponse'
+  delegations?: Maybe<Array<Maybe<Scalars['ActionDelegation']>>>
+  pagination?: Maybe<Scalars['ActionPagination']>
+}
+
+export type ActionDelegationReward = {
+  __typename?: 'ActionDelegationReward'
+  coins?: Maybe<Array<Maybe<Scalars['ActionCoin']>>>
+  validator_address: Scalars['String']
+}
+
+export type ActionRedelegationResponse = {
+  __typename?: 'ActionRedelegationResponse'
+  pagination?: Maybe<Scalars['ActionPagination']>
+  redelegations?: Maybe<Array<Maybe<Scalars['ActionRedelegation']>>>
+}
+
+export type ActionUnbondingDelegationResponse = {
+  __typename?: 'ActionUnbondingDelegationResponse'
+  pagination?: Maybe<Scalars['ActionPagination']>
+  unbonding_delegations?: Maybe<
+    Array<Maybe<Scalars['ActionUnbondingDelegation']>>
+  >
+}
+
+export type ActionValidatorCommissionAmount = {
+  __typename?: 'ActionValidatorCommissionAmount'
+  coins?: Maybe<Array<Maybe<Scalars['ActionCoin']>>>
 }
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
@@ -134,23 +179,7 @@ export type _Text_Comparison_Exp = {
 /** columns and relationships of "account" */
 export type Account = {
   __typename?: 'account'
-  /** An array relationship */
-  account_balance_histories: Array<Account_Balance_History>
-  /** An aggregate relationship */
-  account_balance_histories_aggregate: Account_Balance_History_Aggregate
-  /** An array relationship */
-  account_balances: Array<Account_Balance>
-  /** An aggregate relationship */
-  account_balances_aggregate: Account_Balance_Aggregate
   address: Scalars['String']
-  /** An array relationship */
-  delegation_rewards: Array<Delegation_Reward>
-  /** An aggregate relationship */
-  delegation_rewards_aggregate: Delegation_Reward_Aggregate
-  /** An array relationship */
-  delegations: Array<Delegation>
-  /** An aggregate relationship */
-  delegations_aggregate: Delegation_Aggregate
   /** An array relationship */
   proposal_deposits: Array<Proposal_Deposit>
   /** An aggregate relationship */
@@ -164,91 +193,11 @@ export type Account = {
   /** An aggregate relationship */
   proposals_aggregate: Proposal_Aggregate
   /** An array relationship */
-  redelegations: Array<Redelegation>
-  /** An aggregate relationship */
-  redelegations_aggregate: Redelegation_Aggregate
-  /** An array relationship */
-  unbonding_delegations: Array<Unbonding_Delegation>
-  /** An aggregate relationship */
-  unbonding_delegations_aggregate: Unbonding_Delegation_Aggregate
-  /** An array relationship */
   validator_infos: Array<Validator_Info>
   /** An aggregate relationship */
   validator_infos_aggregate: Validator_Info_Aggregate
   /** An object relationship */
   vesting_account?: Maybe<Vesting_Account>
-}
-
-/** columns and relationships of "account" */
-export type AccountAccount_Balance_HistoriesArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_History_Order_By>>
-  where?: InputMaybe<Account_Balance_History_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountAccount_Balance_Histories_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_History_Order_By>>
-  where?: InputMaybe<Account_Balance_History_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountAccount_BalancesArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_Order_By>>
-  where?: InputMaybe<Account_Balance_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountAccount_Balances_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_Order_By>>
-  where?: InputMaybe<Account_Balance_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountDelegation_RewardsArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountDelegation_Rewards_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountDelegationsArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Order_By>>
-  where?: InputMaybe<Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountDelegations_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Order_By>>
-  where?: InputMaybe<Delegation_Bool_Exp>
 }
 
 /** columns and relationships of "account" */
@@ -306,42 +255,6 @@ export type AccountProposals_AggregateArgs = {
 }
 
 /** columns and relationships of "account" */
-export type AccountRedelegationsArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountRedelegations_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountUnbonding_DelegationsArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
-export type AccountUnbonding_Delegations_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "account" */
 export type AccountValidator_InfosArgs = {
   distinct_on?: InputMaybe<Array<Validator_Info_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -380,366 +293,15 @@ export type Account_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']>
 }
 
-/** columns and relationships of "account_balance" */
-export type Account_Balance = {
-  __typename?: 'account_balance'
-  /** An object relationship */
-  account: Account
-  address: Scalars['String']
-  /** An object relationship */
-  block?: Maybe<Block>
-  coins: Scalars['_coin']
-  height: Scalars['bigint']
-  /** A computed field, executes function "account_balance_tokens_prices" */
-  tokens_prices?: Maybe<Array<Token_Price>>
-}
-
-/** columns and relationships of "account_balance" */
-export type Account_BalanceTokens_PricesArgs = {
-  distinct_on?: InputMaybe<Array<Token_Price_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Token_Price_Order_By>>
-  where?: InputMaybe<Token_Price_Bool_Exp>
-}
-
-/** aggregated selection of "account_balance" */
-export type Account_Balance_Aggregate = {
-  __typename?: 'account_balance_aggregate'
-  aggregate?: Maybe<Account_Balance_Aggregate_Fields>
-  nodes: Array<Account_Balance>
-}
-
-/** aggregate fields of "account_balance" */
-export type Account_Balance_Aggregate_Fields = {
-  __typename?: 'account_balance_aggregate_fields'
-  avg?: Maybe<Account_Balance_Avg_Fields>
-  count: Scalars['Int']
-  max?: Maybe<Account_Balance_Max_Fields>
-  min?: Maybe<Account_Balance_Min_Fields>
-  stddev?: Maybe<Account_Balance_Stddev_Fields>
-  stddev_pop?: Maybe<Account_Balance_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Account_Balance_Stddev_Samp_Fields>
-  sum?: Maybe<Account_Balance_Sum_Fields>
-  var_pop?: Maybe<Account_Balance_Var_Pop_Fields>
-  var_samp?: Maybe<Account_Balance_Var_Samp_Fields>
-  variance?: Maybe<Account_Balance_Variance_Fields>
-}
-
-/** aggregate fields of "account_balance" */
-export type Account_Balance_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Account_Balance_Select_Column>>
-  distinct?: InputMaybe<Scalars['Boolean']>
-}
-
-/** order by aggregate values of table "account_balance" */
-export type Account_Balance_Aggregate_Order_By = {
-  avg?: InputMaybe<Account_Balance_Avg_Order_By>
-  count?: InputMaybe<Order_By>
-  max?: InputMaybe<Account_Balance_Max_Order_By>
-  min?: InputMaybe<Account_Balance_Min_Order_By>
-  stddev?: InputMaybe<Account_Balance_Stddev_Order_By>
-  stddev_pop?: InputMaybe<Account_Balance_Stddev_Pop_Order_By>
-  stddev_samp?: InputMaybe<Account_Balance_Stddev_Samp_Order_By>
-  sum?: InputMaybe<Account_Balance_Sum_Order_By>
-  var_pop?: InputMaybe<Account_Balance_Var_Pop_Order_By>
-  var_samp?: InputMaybe<Account_Balance_Var_Samp_Order_By>
-  variance?: InputMaybe<Account_Balance_Variance_Order_By>
-}
-
-/** aggregate avg on columns */
-export type Account_Balance_Avg_Fields = {
-  __typename?: 'account_balance_avg_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by avg() on columns of table "account_balance" */
-export type Account_Balance_Avg_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** Boolean expression to filter rows from the table "account_balance". All fields are combined with a logical 'AND'. */
-export type Account_Balance_Bool_Exp = {
-  _and?: InputMaybe<Array<Account_Balance_Bool_Exp>>
-  _not?: InputMaybe<Account_Balance_Bool_Exp>
-  _or?: InputMaybe<Array<Account_Balance_Bool_Exp>>
-  account?: InputMaybe<Account_Bool_Exp>
-  address?: InputMaybe<String_Comparison_Exp>
-  block?: InputMaybe<Block_Bool_Exp>
-  coins?: InputMaybe<_Coin_Comparison_Exp>
-  height?: InputMaybe<Bigint_Comparison_Exp>
-  tokens_prices?: InputMaybe<Token_Price_Bool_Exp>
-}
-
-/** columns and relationships of "account_balance_history" */
-export type Account_Balance_History = {
-  __typename?: 'account_balance_history'
-  /** An object relationship */
-  account: Account
-  address: Scalars['String']
-  balance: Scalars['_coin']
-  commission: Scalars['_dec_coin']
-  delegated: Scalars['_coin']
-  redelegating: Scalars['_coin']
-  reward: Scalars['_dec_coin']
-  timestamp?: Maybe<Scalars['timestamp']>
-  /** A computed field, executes function "account_balance_history_tokens_prices" */
-  token_prices_history?: Maybe<Array<Token_Price_History>>
-  unbonding: Scalars['_coin']
-}
-
-/** columns and relationships of "account_balance_history" */
-export type Account_Balance_HistoryToken_Prices_HistoryArgs = {
-  distinct_on?: InputMaybe<Array<Token_Price_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Token_Price_History_Order_By>>
-  where?: InputMaybe<Token_Price_History_Bool_Exp>
-}
-
-/** aggregated selection of "account_balance_history" */
-export type Account_Balance_History_Aggregate = {
-  __typename?: 'account_balance_history_aggregate'
-  aggregate?: Maybe<Account_Balance_History_Aggregate_Fields>
-  nodes: Array<Account_Balance_History>
-}
-
-/** aggregate fields of "account_balance_history" */
-export type Account_Balance_History_Aggregate_Fields = {
-  __typename?: 'account_balance_history_aggregate_fields'
-  count: Scalars['Int']
-  max?: Maybe<Account_Balance_History_Max_Fields>
-  min?: Maybe<Account_Balance_History_Min_Fields>
-}
-
-/** aggregate fields of "account_balance_history" */
-export type Account_Balance_History_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  distinct?: InputMaybe<Scalars['Boolean']>
-}
-
-/** order by aggregate values of table "account_balance_history" */
-export type Account_Balance_History_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>
-  max?: InputMaybe<Account_Balance_History_Max_Order_By>
-  min?: InputMaybe<Account_Balance_History_Min_Order_By>
-}
-
-/** Boolean expression to filter rows from the table "account_balance_history". All fields are combined with a logical 'AND'. */
-export type Account_Balance_History_Bool_Exp = {
-  _and?: InputMaybe<Array<Account_Balance_History_Bool_Exp>>
-  _not?: InputMaybe<Account_Balance_History_Bool_Exp>
-  _or?: InputMaybe<Array<Account_Balance_History_Bool_Exp>>
-  account?: InputMaybe<Account_Bool_Exp>
-  address?: InputMaybe<String_Comparison_Exp>
-  balance?: InputMaybe<_Coin_Comparison_Exp>
-  commission?: InputMaybe<_Dec_Coin_Comparison_Exp>
-  delegated?: InputMaybe<_Coin_Comparison_Exp>
-  redelegating?: InputMaybe<_Coin_Comparison_Exp>
-  reward?: InputMaybe<_Dec_Coin_Comparison_Exp>
-  timestamp?: InputMaybe<Timestamp_Comparison_Exp>
-  token_prices_history?: InputMaybe<Token_Price_History_Bool_Exp>
-  unbonding?: InputMaybe<_Coin_Comparison_Exp>
-}
-
-/** aggregate max on columns */
-export type Account_Balance_History_Max_Fields = {
-  __typename?: 'account_balance_history_max_fields'
-  address?: Maybe<Scalars['String']>
-  timestamp?: Maybe<Scalars['timestamp']>
-}
-
-/** order by max() on columns of table "account_balance_history" */
-export type Account_Balance_History_Max_Order_By = {
-  address?: InputMaybe<Order_By>
-  timestamp?: InputMaybe<Order_By>
-}
-
-/** aggregate min on columns */
-export type Account_Balance_History_Min_Fields = {
-  __typename?: 'account_balance_history_min_fields'
-  address?: Maybe<Scalars['String']>
-  timestamp?: Maybe<Scalars['timestamp']>
-}
-
-/** order by min() on columns of table "account_balance_history" */
-export type Account_Balance_History_Min_Order_By = {
-  address?: InputMaybe<Order_By>
-  timestamp?: InputMaybe<Order_By>
-}
-
-/** Ordering options when selecting data from "account_balance_history". */
-export type Account_Balance_History_Order_By = {
-  account?: InputMaybe<Account_Order_By>
-  address?: InputMaybe<Order_By>
-  balance?: InputMaybe<Order_By>
-  commission?: InputMaybe<Order_By>
-  delegated?: InputMaybe<Order_By>
-  redelegating?: InputMaybe<Order_By>
-  reward?: InputMaybe<Order_By>
-  timestamp?: InputMaybe<Order_By>
-  token_prices_history_aggregate?: InputMaybe<Token_Price_History_Aggregate_Order_By>
-  unbonding?: InputMaybe<Order_By>
-}
-
-/** select columns of table "account_balance_history" */
-export enum Account_Balance_History_Select_Column {
-  /** column name */
-  Address = 'address',
-  /** column name */
-  Balance = 'balance',
-  /** column name */
-  Commission = 'commission',
-  /** column name */
-  Delegated = 'delegated',
-  /** column name */
-  Redelegating = 'redelegating',
-  /** column name */
-  Reward = 'reward',
-  /** column name */
-  Timestamp = 'timestamp',
-  /** column name */
-  Unbonding = 'unbonding'
-}
-
-/** aggregate max on columns */
-export type Account_Balance_Max_Fields = {
-  __typename?: 'account_balance_max_fields'
-  address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by max() on columns of table "account_balance" */
-export type Account_Balance_Max_Order_By = {
-  address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate min on columns */
-export type Account_Balance_Min_Fields = {
-  __typename?: 'account_balance_min_fields'
-  address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by min() on columns of table "account_balance" */
-export type Account_Balance_Min_Order_By = {
-  address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-}
-
-/** Ordering options when selecting data from "account_balance". */
-export type Account_Balance_Order_By = {
-  account?: InputMaybe<Account_Order_By>
-  address?: InputMaybe<Order_By>
-  block?: InputMaybe<Block_Order_By>
-  coins?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  tokens_prices_aggregate?: InputMaybe<Token_Price_Aggregate_Order_By>
-}
-
-/** select columns of table "account_balance" */
-export enum Account_Balance_Select_Column {
-  /** column name */
-  Address = 'address',
-  /** column name */
-  Coins = 'coins',
-  /** column name */
-  Height = 'height'
-}
-
-/** aggregate stddev on columns */
-export type Account_Balance_Stddev_Fields = {
-  __typename?: 'account_balance_stddev_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev() on columns of table "account_balance" */
-export type Account_Balance_Stddev_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_pop on columns */
-export type Account_Balance_Stddev_Pop_Fields = {
-  __typename?: 'account_balance_stddev_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_pop() on columns of table "account_balance" */
-export type Account_Balance_Stddev_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_samp on columns */
-export type Account_Balance_Stddev_Samp_Fields = {
-  __typename?: 'account_balance_stddev_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_samp() on columns of table "account_balance" */
-export type Account_Balance_Stddev_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate sum on columns */
-export type Account_Balance_Sum_Fields = {
-  __typename?: 'account_balance_sum_fields'
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by sum() on columns of table "account_balance" */
-export type Account_Balance_Sum_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_pop on columns */
-export type Account_Balance_Var_Pop_Fields = {
-  __typename?: 'account_balance_var_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_pop() on columns of table "account_balance" */
-export type Account_Balance_Var_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_samp on columns */
-export type Account_Balance_Var_Samp_Fields = {
-  __typename?: 'account_balance_var_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_samp() on columns of table "account_balance" */
-export type Account_Balance_Var_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate variance on columns */
-export type Account_Balance_Variance_Fields = {
-  __typename?: 'account_balance_variance_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by variance() on columns of table "account_balance" */
-export type Account_Balance_Variance_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
 /** Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'. */
 export type Account_Bool_Exp = {
   _and?: InputMaybe<Array<Account_Bool_Exp>>
   _not?: InputMaybe<Account_Bool_Exp>
   _or?: InputMaybe<Array<Account_Bool_Exp>>
-  account_balance_histories?: InputMaybe<Account_Balance_History_Bool_Exp>
-  account_balances?: InputMaybe<Account_Balance_Bool_Exp>
   address?: InputMaybe<String_Comparison_Exp>
-  delegation_rewards?: InputMaybe<Delegation_Reward_Bool_Exp>
-  delegations?: InputMaybe<Delegation_Bool_Exp>
   proposal_deposits?: InputMaybe<Proposal_Deposit_Bool_Exp>
   proposal_votes?: InputMaybe<Proposal_Vote_Bool_Exp>
   proposals?: InputMaybe<Proposal_Bool_Exp>
-  redelegations?: InputMaybe<Redelegation_Bool_Exp>
-  unbonding_delegations?: InputMaybe<Unbonding_Delegation_Bool_Exp>
   validator_infos?: InputMaybe<Validator_Info_Bool_Exp>
   vesting_account?: InputMaybe<Vesting_Account_Bool_Exp>
 }
@@ -758,16 +320,10 @@ export type Account_Min_Fields = {
 
 /** Ordering options when selecting data from "account". */
 export type Account_Order_By = {
-  account_balance_histories_aggregate?: InputMaybe<Account_Balance_History_Aggregate_Order_By>
-  account_balances_aggregate?: InputMaybe<Account_Balance_Aggregate_Order_By>
   address?: InputMaybe<Order_By>
-  delegation_rewards_aggregate?: InputMaybe<Delegation_Reward_Aggregate_Order_By>
-  delegations_aggregate?: InputMaybe<Delegation_Aggregate_Order_By>
   proposal_deposits_aggregate?: InputMaybe<Proposal_Deposit_Aggregate_Order_By>
   proposal_votes_aggregate?: InputMaybe<Proposal_Vote_Aggregate_Order_By>
   proposals_aggregate?: InputMaybe<Proposal_Aggregate_Order_By>
-  redelegations_aggregate?: InputMaybe<Redelegation_Aggregate_Order_By>
-  unbonding_delegations_aggregate?: InputMaybe<Unbonding_Delegation_Aggregate_Order_By>
   validator_infos_aggregate?: InputMaybe<Validator_Info_Aggregate_Order_By>
   vesting_account?: InputMaybe<Vesting_Account_Order_By>
 }
@@ -1771,6 +1327,962 @@ export type Community_Pool_Variance_Fields = {
   height?: Maybe<Scalars['Float']>
 }
 
+/** columns and relationships of "cosmwasm_clear_admin" */
+export type Cosmwasm_Clear_Admin = {
+  __typename?: 'cosmwasm_clear_admin'
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** aggregated selection of "cosmwasm_clear_admin" */
+export type Cosmwasm_Clear_Admin_Aggregate = {
+  __typename?: 'cosmwasm_clear_admin_aggregate'
+  aggregate?: Maybe<Cosmwasm_Clear_Admin_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Clear_Admin>
+}
+
+/** aggregate fields of "cosmwasm_clear_admin" */
+export type Cosmwasm_Clear_Admin_Aggregate_Fields = {
+  __typename?: 'cosmwasm_clear_admin_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Clear_Admin_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Clear_Admin_Max_Fields>
+  min?: Maybe<Cosmwasm_Clear_Admin_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Clear_Admin_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Clear_Admin_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Clear_Admin_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Clear_Admin_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Clear_Admin_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Clear_Admin_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Clear_Admin_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_clear_admin" */
+export type Cosmwasm_Clear_Admin_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Clear_Admin_Avg_Fields = {
+  __typename?: 'cosmwasm_clear_admin_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_clear_admin". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Clear_Admin_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Clear_Admin_Max_Fields = {
+  __typename?: 'cosmwasm_clear_admin_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Clear_Admin_Min_Fields = {
+  __typename?: 'cosmwasm_clear_admin_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_clear_admin". */
+export type Cosmwasm_Clear_Admin_Order_By = {
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_clear_admin" */
+export enum Cosmwasm_Clear_Admin_Select_Column {
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Clear_Admin_Sum_Fields = {
+  __typename?: 'cosmwasm_clear_admin_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Clear_Admin_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_clear_admin_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Clear_Admin_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_clear_admin_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Clear_Admin_Variance_Fields = {
+  __typename?: 'cosmwasm_clear_admin_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_Execute = {
+  __typename?: 'cosmwasm_execute'
+  arguments?: Maybe<Scalars['jsonb']>
+  contract: Scalars['String']
+  funds?: Maybe<Scalars['jsonb']>
+  index: Scalars['bigint']
+  method: Scalars['String']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_ExecuteArgumentsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_ExecuteFundsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate = {
+  __typename?: 'cosmwasm_execute_aggregate'
+  aggregate?: Maybe<Cosmwasm_Execute_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Execute>
+}
+
+/** aggregate fields of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate_Fields = {
+  __typename?: 'cosmwasm_execute_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Execute_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Execute_Max_Fields>
+  min?: Maybe<Cosmwasm_Execute_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Execute_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Execute_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Execute_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Execute_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Execute_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Execute_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Execute_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Execute_Avg_Fields = {
+  __typename?: 'cosmwasm_execute_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_execute". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Execute_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Execute_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Execute_Bool_Exp>>
+  arguments?: InputMaybe<Jsonb_Comparison_Exp>
+  contract?: InputMaybe<String_Comparison_Exp>
+  funds?: InputMaybe<Jsonb_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  method?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Execute_Max_Fields = {
+  __typename?: 'cosmwasm_execute_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  method?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Execute_Min_Fields = {
+  __typename?: 'cosmwasm_execute_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  method?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_execute". */
+export type Cosmwasm_Execute_Order_By = {
+  arguments?: InputMaybe<Order_By>
+  contract?: InputMaybe<Order_By>
+  funds?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  method?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_execute" */
+export enum Cosmwasm_Execute_Select_Column {
+  /** column name */
+  Arguments = 'arguments',
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Funds = 'funds',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Method = 'method',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Execute_Stddev_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Execute_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Execute_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Execute_Sum_Fields = {
+  __typename?: 'cosmwasm_execute_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Execute_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_execute_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Execute_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_execute_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Execute_Variance_Fields = {
+  __typename?: 'cosmwasm_execute_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate = {
+  __typename?: 'cosmwasm_instantiate'
+  admin?: Maybe<Scalars['String']>
+  code_id: Scalars['String']
+  funds?: Maybe<Scalars['jsonb']>
+  index: Scalars['bigint']
+  label: Scalars['String']
+  result_contract_address?: Maybe<Scalars['String']>
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_instantiate" */
+export type Cosmwasm_InstantiateFundsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate = {
+  __typename?: 'cosmwasm_instantiate_aggregate'
+  aggregate?: Maybe<Cosmwasm_Instantiate_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Instantiate>
+}
+
+/** aggregate fields of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate_Fields = {
+  __typename?: 'cosmwasm_instantiate_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Instantiate_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Instantiate_Max_Fields>
+  min?: Maybe<Cosmwasm_Instantiate_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Instantiate_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Instantiate_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Instantiate_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Instantiate_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Instantiate_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Instantiate_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Instantiate_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Instantiate_Avg_Fields = {
+  __typename?: 'cosmwasm_instantiate_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_instantiate". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Instantiate_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Instantiate_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Instantiate_Bool_Exp>>
+  admin?: InputMaybe<String_Comparison_Exp>
+  code_id?: InputMaybe<String_Comparison_Exp>
+  funds?: InputMaybe<Jsonb_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  label?: InputMaybe<String_Comparison_Exp>
+  result_contract_address?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Instantiate_Max_Fields = {
+  __typename?: 'cosmwasm_instantiate_max_fields'
+  admin?: Maybe<Scalars['String']>
+  code_id?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  label?: Maybe<Scalars['String']>
+  result_contract_address?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Instantiate_Min_Fields = {
+  __typename?: 'cosmwasm_instantiate_min_fields'
+  admin?: Maybe<Scalars['String']>
+  code_id?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  label?: Maybe<Scalars['String']>
+  result_contract_address?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_instantiate". */
+export type Cosmwasm_Instantiate_Order_By = {
+  admin?: InputMaybe<Order_By>
+  code_id?: InputMaybe<Order_By>
+  funds?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  label?: InputMaybe<Order_By>
+  result_contract_address?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_instantiate" */
+export enum Cosmwasm_Instantiate_Select_Column {
+  /** column name */
+  Admin = 'admin',
+  /** column name */
+  CodeId = 'code_id',
+  /** column name */
+  Funds = 'funds',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Label = 'label',
+  /** column name */
+  ResultContractAddress = 'result_contract_address',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Instantiate_Stddev_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Instantiate_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Instantiate_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Instantiate_Sum_Fields = {
+  __typename?: 'cosmwasm_instantiate_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Instantiate_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_instantiate_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Instantiate_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_instantiate_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Instantiate_Variance_Fields = {
+  __typename?: 'cosmwasm_instantiate_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate = {
+  __typename?: 'cosmwasm_migrate'
+  arguments?: Maybe<Scalars['jsonb']>
+  code_id: Scalars['String']
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_migrate" */
+export type Cosmwasm_MigrateArgumentsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate = {
+  __typename?: 'cosmwasm_migrate_aggregate'
+  aggregate?: Maybe<Cosmwasm_Migrate_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Migrate>
+}
+
+/** aggregate fields of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate_Fields = {
+  __typename?: 'cosmwasm_migrate_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Migrate_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Migrate_Max_Fields>
+  min?: Maybe<Cosmwasm_Migrate_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Migrate_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Migrate_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Migrate_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Migrate_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Migrate_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Migrate_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Migrate_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Migrate_Avg_Fields = {
+  __typename?: 'cosmwasm_migrate_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_migrate". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Migrate_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Migrate_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Migrate_Bool_Exp>>
+  arguments?: InputMaybe<Jsonb_Comparison_Exp>
+  code_id?: InputMaybe<String_Comparison_Exp>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Migrate_Max_Fields = {
+  __typename?: 'cosmwasm_migrate_max_fields'
+  code_id?: Maybe<Scalars['String']>
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Migrate_Min_Fields = {
+  __typename?: 'cosmwasm_migrate_min_fields'
+  code_id?: Maybe<Scalars['String']>
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_migrate". */
+export type Cosmwasm_Migrate_Order_By = {
+  arguments?: InputMaybe<Order_By>
+  code_id?: InputMaybe<Order_By>
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_migrate" */
+export enum Cosmwasm_Migrate_Select_Column {
+  /** column name */
+  Arguments = 'arguments',
+  /** column name */
+  CodeId = 'code_id',
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Migrate_Stddev_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Migrate_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Migrate_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Migrate_Sum_Fields = {
+  __typename?: 'cosmwasm_migrate_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Migrate_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_migrate_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Migrate_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_migrate_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Migrate_Variance_Fields = {
+  __typename?: 'cosmwasm_migrate_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_store" */
+export type Cosmwasm_Store = {
+  __typename?: 'cosmwasm_store'
+  index: Scalars['bigint']
+  instantiate_permission?: Maybe<Scalars['jsonb']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_store" */
+export type Cosmwasm_StoreInstantiate_PermissionArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate = {
+  __typename?: 'cosmwasm_store_aggregate'
+  aggregate?: Maybe<Cosmwasm_Store_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Store>
+}
+
+/** aggregate fields of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate_Fields = {
+  __typename?: 'cosmwasm_store_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Store_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Store_Max_Fields>
+  min?: Maybe<Cosmwasm_Store_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Store_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Store_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Store_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Store_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Store_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Store_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Store_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Store_Avg_Fields = {
+  __typename?: 'cosmwasm_store_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_store". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Store_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Store_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Store_Bool_Exp>>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  instantiate_permission?: InputMaybe<Jsonb_Comparison_Exp>
+  result_code_id?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Store_Max_Fields = {
+  __typename?: 'cosmwasm_store_max_fields'
+  index?: Maybe<Scalars['bigint']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Store_Min_Fields = {
+  __typename?: 'cosmwasm_store_min_fields'
+  index?: Maybe<Scalars['bigint']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_store". */
+export type Cosmwasm_Store_Order_By = {
+  index?: InputMaybe<Order_By>
+  instantiate_permission?: InputMaybe<Order_By>
+  result_code_id?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_store" */
+export enum Cosmwasm_Store_Select_Column {
+  /** column name */
+  Index = 'index',
+  /** column name */
+  InstantiatePermission = 'instantiate_permission',
+  /** column name */
+  ResultCodeId = 'result_code_id',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Store_Stddev_Fields = {
+  __typename?: 'cosmwasm_store_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Store_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_store_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Store_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_store_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Store_Sum_Fields = {
+  __typename?: 'cosmwasm_store_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Store_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_store_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Store_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_store_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Store_Variance_Fields = {
+  __typename?: 'cosmwasm_store_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin = {
+  __typename?: 'cosmwasm_update_admin'
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  new_admin: Scalars['String']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** aggregated selection of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate = {
+  __typename?: 'cosmwasm_update_admin_aggregate'
+  aggregate?: Maybe<Cosmwasm_Update_Admin_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Update_Admin>
+}
+
+/** aggregate fields of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate_Fields = {
+  __typename?: 'cosmwasm_update_admin_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Update_Admin_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Update_Admin_Max_Fields>
+  min?: Maybe<Cosmwasm_Update_Admin_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Update_Admin_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Update_Admin_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Update_Admin_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Update_Admin_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Update_Admin_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Update_Admin_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Update_Admin_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Update_Admin_Avg_Fields = {
+  __typename?: 'cosmwasm_update_admin_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_update_admin". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Update_Admin_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Update_Admin_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Update_Admin_Bool_Exp>>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  new_admin?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Update_Admin_Max_Fields = {
+  __typename?: 'cosmwasm_update_admin_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  new_admin?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Update_Admin_Min_Fields = {
+  __typename?: 'cosmwasm_update_admin_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  new_admin?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_update_admin". */
+export type Cosmwasm_Update_Admin_Order_By = {
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  new_admin?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_update_admin" */
+export enum Cosmwasm_Update_Admin_Select_Column {
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  NewAdmin = 'new_admin',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Update_Admin_Stddev_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Update_Admin_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Update_Admin_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Update_Admin_Sum_Fields = {
+  __typename?: 'cosmwasm_update_admin_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Update_Admin_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_update_admin_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Update_Admin_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_update_admin_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Update_Admin_Variance_Fields = {
+  __typename?: 'cosmwasm_update_admin_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
 /** columns and relationships of "delegation" */
 export type Delegation = {
   __typename?: 'delegation'
@@ -1778,13 +2290,9 @@ export type Delegation = {
   account: Account
   amount: Scalars['coin']
   delegator_address: Scalars['String']
-  height: Scalars['bigint']
-  id: Scalars['Int']
-  /** A computed field, executes function "is_delegation_self_delegate" */
-  is_self_delegate?: Maybe<Scalars['Boolean']>
-  /** An object relationship */
-  validator: Validator
   validator_address: Scalars['String']
+  /** An object relationship */
+  validator_info: Validator_Info
 }
 
 /** aggregated selection of "delegation" */
@@ -1797,17 +2305,9 @@ export type Delegation_Aggregate = {
 /** aggregate fields of "delegation" */
 export type Delegation_Aggregate_Fields = {
   __typename?: 'delegation_aggregate_fields'
-  avg?: Maybe<Delegation_Avg_Fields>
   count: Scalars['Int']
   max?: Maybe<Delegation_Max_Fields>
   min?: Maybe<Delegation_Min_Fields>
-  stddev?: Maybe<Delegation_Stddev_Fields>
-  stddev_pop?: Maybe<Delegation_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Delegation_Stddev_Samp_Fields>
-  sum?: Maybe<Delegation_Sum_Fields>
-  var_pop?: Maybe<Delegation_Var_Pop_Fields>
-  var_samp?: Maybe<Delegation_Var_Samp_Fields>
-  variance?: Maybe<Delegation_Variance_Fields>
 }
 
 /** aggregate fields of "delegation" */
@@ -1818,30 +2318,9 @@ export type Delegation_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "delegation" */
 export type Delegation_Aggregate_Order_By = {
-  avg?: InputMaybe<Delegation_Avg_Order_By>
   count?: InputMaybe<Order_By>
   max?: InputMaybe<Delegation_Max_Order_By>
   min?: InputMaybe<Delegation_Min_Order_By>
-  stddev?: InputMaybe<Delegation_Stddev_Order_By>
-  stddev_pop?: InputMaybe<Delegation_Stddev_Pop_Order_By>
-  stddev_samp?: InputMaybe<Delegation_Stddev_Samp_Order_By>
-  sum?: InputMaybe<Delegation_Sum_Order_By>
-  var_pop?: InputMaybe<Delegation_Var_Pop_Order_By>
-  var_samp?: InputMaybe<Delegation_Var_Samp_Order_By>
-  variance?: InputMaybe<Delegation_Variance_Order_By>
-}
-
-/** aggregate avg on columns */
-export type Delegation_Avg_Fields = {
-  __typename?: 'delegation_avg_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by avg() on columns of table "delegation" */
-export type Delegation_Avg_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
 }
 
 /** Boolean expression to filter rows from the table "delegation". All fields are combined with a logical 'AND'. */
@@ -1852,27 +2331,20 @@ export type Delegation_Bool_Exp = {
   account?: InputMaybe<Account_Bool_Exp>
   amount?: InputMaybe<Coin_Comparison_Exp>
   delegator_address?: InputMaybe<String_Comparison_Exp>
-  height?: InputMaybe<Bigint_Comparison_Exp>
-  id?: InputMaybe<Int_Comparison_Exp>
-  is_self_delegate?: InputMaybe<Boolean_Comparison_Exp>
-  validator?: InputMaybe<Validator_Bool_Exp>
   validator_address?: InputMaybe<String_Comparison_Exp>
+  validator_info?: InputMaybe<Validator_Info_Bool_Exp>
 }
 
 /** aggregate max on columns */
 export type Delegation_Max_Fields = {
   __typename?: 'delegation_max_fields'
   delegator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  id?: Maybe<Scalars['Int']>
   validator_address?: Maybe<Scalars['String']>
 }
 
 /** order by max() on columns of table "delegation" */
 export type Delegation_Max_Order_By = {
   delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
   validator_address?: InputMaybe<Order_By>
 }
 
@@ -1880,16 +2352,12 @@ export type Delegation_Max_Order_By = {
 export type Delegation_Min_Fields = {
   __typename?: 'delegation_min_fields'
   delegator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  id?: Maybe<Scalars['Int']>
   validator_address?: Maybe<Scalars['String']>
 }
 
 /** order by min() on columns of table "delegation" */
 export type Delegation_Min_Order_By = {
   delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
   validator_address?: InputMaybe<Order_By>
 }
 
@@ -1898,230 +2366,8 @@ export type Delegation_Order_By = {
   account?: InputMaybe<Account_Order_By>
   amount?: InputMaybe<Order_By>
   delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-  is_self_delegate?: InputMaybe<Order_By>
-  validator?: InputMaybe<Validator_Order_By>
   validator_address?: InputMaybe<Order_By>
-}
-
-/** columns and relationships of "delegation_reward" */
-export type Delegation_Reward = {
-  __typename?: 'delegation_reward'
-  /** An object relationship */
-  account: Account
-  amount: Scalars['_dec_coin']
-  delegator_address: Scalars['String']
-  height: Scalars['bigint']
-  /** An object relationship */
-  validator: Validator
-  validator_address: Scalars['String']
-  withdraw_address: Scalars['String']
-}
-
-/** aggregated selection of "delegation_reward" */
-export type Delegation_Reward_Aggregate = {
-  __typename?: 'delegation_reward_aggregate'
-  aggregate?: Maybe<Delegation_Reward_Aggregate_Fields>
-  nodes: Array<Delegation_Reward>
-}
-
-/** aggregate fields of "delegation_reward" */
-export type Delegation_Reward_Aggregate_Fields = {
-  __typename?: 'delegation_reward_aggregate_fields'
-  avg?: Maybe<Delegation_Reward_Avg_Fields>
-  count: Scalars['Int']
-  max?: Maybe<Delegation_Reward_Max_Fields>
-  min?: Maybe<Delegation_Reward_Min_Fields>
-  stddev?: Maybe<Delegation_Reward_Stddev_Fields>
-  stddev_pop?: Maybe<Delegation_Reward_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Delegation_Reward_Stddev_Samp_Fields>
-  sum?: Maybe<Delegation_Reward_Sum_Fields>
-  var_pop?: Maybe<Delegation_Reward_Var_Pop_Fields>
-  var_samp?: Maybe<Delegation_Reward_Var_Samp_Fields>
-  variance?: Maybe<Delegation_Reward_Variance_Fields>
-}
-
-/** aggregate fields of "delegation_reward" */
-export type Delegation_Reward_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  distinct?: InputMaybe<Scalars['Boolean']>
-}
-
-/** order by aggregate values of table "delegation_reward" */
-export type Delegation_Reward_Aggregate_Order_By = {
-  avg?: InputMaybe<Delegation_Reward_Avg_Order_By>
-  count?: InputMaybe<Order_By>
-  max?: InputMaybe<Delegation_Reward_Max_Order_By>
-  min?: InputMaybe<Delegation_Reward_Min_Order_By>
-  stddev?: InputMaybe<Delegation_Reward_Stddev_Order_By>
-  stddev_pop?: InputMaybe<Delegation_Reward_Stddev_Pop_Order_By>
-  stddev_samp?: InputMaybe<Delegation_Reward_Stddev_Samp_Order_By>
-  sum?: InputMaybe<Delegation_Reward_Sum_Order_By>
-  var_pop?: InputMaybe<Delegation_Reward_Var_Pop_Order_By>
-  var_samp?: InputMaybe<Delegation_Reward_Var_Samp_Order_By>
-  variance?: InputMaybe<Delegation_Reward_Variance_Order_By>
-}
-
-/** aggregate avg on columns */
-export type Delegation_Reward_Avg_Fields = {
-  __typename?: 'delegation_reward_avg_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by avg() on columns of table "delegation_reward" */
-export type Delegation_Reward_Avg_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** Boolean expression to filter rows from the table "delegation_reward". All fields are combined with a logical 'AND'. */
-export type Delegation_Reward_Bool_Exp = {
-  _and?: InputMaybe<Array<Delegation_Reward_Bool_Exp>>
-  _not?: InputMaybe<Delegation_Reward_Bool_Exp>
-  _or?: InputMaybe<Array<Delegation_Reward_Bool_Exp>>
-  account?: InputMaybe<Account_Bool_Exp>
-  amount?: InputMaybe<_Dec_Coin_Comparison_Exp>
-  delegator_address?: InputMaybe<String_Comparison_Exp>
-  height?: InputMaybe<Bigint_Comparison_Exp>
-  validator?: InputMaybe<Validator_Bool_Exp>
-  validator_address?: InputMaybe<String_Comparison_Exp>
-  withdraw_address?: InputMaybe<String_Comparison_Exp>
-}
-
-/** aggregate max on columns */
-export type Delegation_Reward_Max_Fields = {
-  __typename?: 'delegation_reward_max_fields'
-  delegator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  validator_address?: Maybe<Scalars['String']>
-  withdraw_address?: Maybe<Scalars['String']>
-}
-
-/** order by max() on columns of table "delegation_reward" */
-export type Delegation_Reward_Max_Order_By = {
-  delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator_address?: InputMaybe<Order_By>
-  withdraw_address?: InputMaybe<Order_By>
-}
-
-/** aggregate min on columns */
-export type Delegation_Reward_Min_Fields = {
-  __typename?: 'delegation_reward_min_fields'
-  delegator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  validator_address?: Maybe<Scalars['String']>
-  withdraw_address?: Maybe<Scalars['String']>
-}
-
-/** order by min() on columns of table "delegation_reward" */
-export type Delegation_Reward_Min_Order_By = {
-  delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator_address?: InputMaybe<Order_By>
-  withdraw_address?: InputMaybe<Order_By>
-}
-
-/** Ordering options when selecting data from "delegation_reward". */
-export type Delegation_Reward_Order_By = {
-  account?: InputMaybe<Account_Order_By>
-  amount?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator?: InputMaybe<Validator_Order_By>
-  validator_address?: InputMaybe<Order_By>
-  withdraw_address?: InputMaybe<Order_By>
-}
-
-/** select columns of table "delegation_reward" */
-export enum Delegation_Reward_Select_Column {
-  /** column name */
-  Amount = 'amount',
-  /** column name */
-  DelegatorAddress = 'delegator_address',
-  /** column name */
-  Height = 'height',
-  /** column name */
-  ValidatorAddress = 'validator_address',
-  /** column name */
-  WithdrawAddress = 'withdraw_address'
-}
-
-/** aggregate stddev on columns */
-export type Delegation_Reward_Stddev_Fields = {
-  __typename?: 'delegation_reward_stddev_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev() on columns of table "delegation_reward" */
-export type Delegation_Reward_Stddev_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_pop on columns */
-export type Delegation_Reward_Stddev_Pop_Fields = {
-  __typename?: 'delegation_reward_stddev_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_pop() on columns of table "delegation_reward" */
-export type Delegation_Reward_Stddev_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_samp on columns */
-export type Delegation_Reward_Stddev_Samp_Fields = {
-  __typename?: 'delegation_reward_stddev_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_samp() on columns of table "delegation_reward" */
-export type Delegation_Reward_Stddev_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate sum on columns */
-export type Delegation_Reward_Sum_Fields = {
-  __typename?: 'delegation_reward_sum_fields'
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by sum() on columns of table "delegation_reward" */
-export type Delegation_Reward_Sum_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_pop on columns */
-export type Delegation_Reward_Var_Pop_Fields = {
-  __typename?: 'delegation_reward_var_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_pop() on columns of table "delegation_reward" */
-export type Delegation_Reward_Var_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_samp on columns */
-export type Delegation_Reward_Var_Samp_Fields = {
-  __typename?: 'delegation_reward_var_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_samp() on columns of table "delegation_reward" */
-export type Delegation_Reward_Var_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate variance on columns */
-export type Delegation_Reward_Variance_Fields = {
-  __typename?: 'delegation_reward_variance_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by variance() on columns of table "delegation_reward" */
-export type Delegation_Reward_Variance_Order_By = {
-  height?: InputMaybe<Order_By>
+  validator_info?: InputMaybe<Validator_Info_Order_By>
 }
 
 /** select columns of table "delegation" */
@@ -2131,102 +2377,7 @@ export enum Delegation_Select_Column {
   /** column name */
   DelegatorAddress = 'delegator_address',
   /** column name */
-  Height = 'height',
-  /** column name */
-  Id = 'id',
-  /** column name */
   ValidatorAddress = 'validator_address'
-}
-
-/** aggregate stddev on columns */
-export type Delegation_Stddev_Fields = {
-  __typename?: 'delegation_stddev_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev() on columns of table "delegation" */
-export type Delegation_Stddev_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_pop on columns */
-export type Delegation_Stddev_Pop_Fields = {
-  __typename?: 'delegation_stddev_pop_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_pop() on columns of table "delegation" */
-export type Delegation_Stddev_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_samp on columns */
-export type Delegation_Stddev_Samp_Fields = {
-  __typename?: 'delegation_stddev_samp_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_samp() on columns of table "delegation" */
-export type Delegation_Stddev_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-}
-
-/** aggregate sum on columns */
-export type Delegation_Sum_Fields = {
-  __typename?: 'delegation_sum_fields'
-  height?: Maybe<Scalars['bigint']>
-  id?: Maybe<Scalars['Int']>
-}
-
-/** order by sum() on columns of table "delegation" */
-export type Delegation_Sum_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-}
-
-/** aggregate var_pop on columns */
-export type Delegation_Var_Pop_Fields = {
-  __typename?: 'delegation_var_pop_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by var_pop() on columns of table "delegation" */
-export type Delegation_Var_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-}
-
-/** aggregate var_samp on columns */
-export type Delegation_Var_Samp_Fields = {
-  __typename?: 'delegation_var_samp_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by var_samp() on columns of table "delegation" */
-export type Delegation_Var_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
-}
-
-/** aggregate variance on columns */
-export type Delegation_Variance_Fields = {
-  __typename?: 'delegation_variance_fields'
-  height?: Maybe<Scalars['Float']>
-  id?: Maybe<Scalars['Float']>
-}
-
-/** order by variance() on columns of table "delegation" */
-export type Delegation_Variance_Order_By = {
-  height?: InputMaybe<Order_By>
-  id?: InputMaybe<Order_By>
 }
 
 /** columns and relationships of "distribution_params" */
@@ -5797,24 +5948,184 @@ export type Proposal_Vote_Variance_Order_By = {
   proposal_id?: InputMaybe<Order_By>
 }
 
+/** columns and relationships of "proposal_vote_weighted" */
+export type Proposal_Vote_Weighted = {
+  __typename?: 'proposal_vote_weighted'
+  /** An object relationship */
+  account: Account
+  height: Scalars['bigint']
+  option: Scalars['String']
+  /** An object relationship */
+  proposal: Proposal
+  proposal_id: Scalars['Int']
+  voter_address: Scalars['String']
+  weight: Scalars['String']
+}
+
+/** aggregated selection of "proposal_vote_weighted" */
+export type Proposal_Vote_Weighted_Aggregate = {
+  __typename?: 'proposal_vote_weighted_aggregate'
+  aggregate?: Maybe<Proposal_Vote_Weighted_Aggregate_Fields>
+  nodes: Array<Proposal_Vote_Weighted>
+}
+
+/** aggregate fields of "proposal_vote_weighted" */
+export type Proposal_Vote_Weighted_Aggregate_Fields = {
+  __typename?: 'proposal_vote_weighted_aggregate_fields'
+  avg?: Maybe<Proposal_Vote_Weighted_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Proposal_Vote_Weighted_Max_Fields>
+  min?: Maybe<Proposal_Vote_Weighted_Min_Fields>
+  stddev?: Maybe<Proposal_Vote_Weighted_Stddev_Fields>
+  stddev_pop?: Maybe<Proposal_Vote_Weighted_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Proposal_Vote_Weighted_Stddev_Samp_Fields>
+  sum?: Maybe<Proposal_Vote_Weighted_Sum_Fields>
+  var_pop?: Maybe<Proposal_Vote_Weighted_Var_Pop_Fields>
+  var_samp?: Maybe<Proposal_Vote_Weighted_Var_Samp_Fields>
+  variance?: Maybe<Proposal_Vote_Weighted_Variance_Fields>
+}
+
+/** aggregate fields of "proposal_vote_weighted" */
+export type Proposal_Vote_Weighted_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Proposal_Vote_Weighted_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Proposal_Vote_Weighted_Avg_Fields = {
+  __typename?: 'proposal_vote_weighted_avg_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "proposal_vote_weighted". All fields are combined with a logical 'AND'. */
+export type Proposal_Vote_Weighted_Bool_Exp = {
+  _and?: InputMaybe<Array<Proposal_Vote_Weighted_Bool_Exp>>
+  _not?: InputMaybe<Proposal_Vote_Weighted_Bool_Exp>
+  _or?: InputMaybe<Array<Proposal_Vote_Weighted_Bool_Exp>>
+  account?: InputMaybe<Account_Bool_Exp>
+  height?: InputMaybe<Bigint_Comparison_Exp>
+  option?: InputMaybe<String_Comparison_Exp>
+  proposal?: InputMaybe<Proposal_Bool_Exp>
+  proposal_id?: InputMaybe<Int_Comparison_Exp>
+  voter_address?: InputMaybe<String_Comparison_Exp>
+  weight?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Proposal_Vote_Weighted_Max_Fields = {
+  __typename?: 'proposal_vote_weighted_max_fields'
+  height?: Maybe<Scalars['bigint']>
+  option?: Maybe<Scalars['String']>
+  proposal_id?: Maybe<Scalars['Int']>
+  voter_address?: Maybe<Scalars['String']>
+  weight?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Proposal_Vote_Weighted_Min_Fields = {
+  __typename?: 'proposal_vote_weighted_min_fields'
+  height?: Maybe<Scalars['bigint']>
+  option?: Maybe<Scalars['String']>
+  proposal_id?: Maybe<Scalars['Int']>
+  voter_address?: Maybe<Scalars['String']>
+  weight?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "proposal_vote_weighted". */
+export type Proposal_Vote_Weighted_Order_By = {
+  account?: InputMaybe<Account_Order_By>
+  height?: InputMaybe<Order_By>
+  option?: InputMaybe<Order_By>
+  proposal?: InputMaybe<Proposal_Order_By>
+  proposal_id?: InputMaybe<Order_By>
+  voter_address?: InputMaybe<Order_By>
+  weight?: InputMaybe<Order_By>
+}
+
+/** select columns of table "proposal_vote_weighted" */
+export enum Proposal_Vote_Weighted_Select_Column {
+  /** column name */
+  Height = 'height',
+  /** column name */
+  Option = 'option',
+  /** column name */
+  ProposalId = 'proposal_id',
+  /** column name */
+  VoterAddress = 'voter_address',
+  /** column name */
+  Weight = 'weight'
+}
+
+/** aggregate stddev on columns */
+export type Proposal_Vote_Weighted_Stddev_Fields = {
+  __typename?: 'proposal_vote_weighted_stddev_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Proposal_Vote_Weighted_Stddev_Pop_Fields = {
+  __typename?: 'proposal_vote_weighted_stddev_pop_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Proposal_Vote_Weighted_Stddev_Samp_Fields = {
+  __typename?: 'proposal_vote_weighted_stddev_samp_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Proposal_Vote_Weighted_Sum_Fields = {
+  __typename?: 'proposal_vote_weighted_sum_fields'
+  height?: Maybe<Scalars['bigint']>
+  proposal_id?: Maybe<Scalars['Int']>
+}
+
+/** aggregate var_pop on columns */
+export type Proposal_Vote_Weighted_Var_Pop_Fields = {
+  __typename?: 'proposal_vote_weighted_var_pop_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Proposal_Vote_Weighted_Var_Samp_Fields = {
+  __typename?: 'proposal_vote_weighted_var_samp_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Proposal_Vote_Weighted_Variance_Fields = {
+  __typename?: 'proposal_vote_weighted_variance_fields'
+  height?: Maybe<Scalars['Float']>
+  proposal_id?: Maybe<Scalars['Float']>
+}
+
 export type Query_Root = {
   __typename?: 'query_root'
   /** fetch data from the table: "account" */
   account: Array<Account>
   /** fetch aggregated fields from the table: "account" */
   account_aggregate: Account_Aggregate
-  /** fetch data from the table: "account_balance" */
-  account_balance: Array<Account_Balance>
-  /** fetch aggregated fields from the table: "account_balance" */
-  account_balance_aggregate: Account_Balance_Aggregate
-  /** fetch data from the table: "account_balance" using primary key columns */
-  account_balance_by_pk?: Maybe<Account_Balance>
-  /** fetch data from the table: "account_balance_history" */
-  account_balance_history: Array<Account_Balance_History>
-  /** fetch aggregated fields from the table: "account_balance_history" */
-  account_balance_history_aggregate: Account_Balance_History_Aggregate
   /** fetch data from the table: "account" using primary key columns */
   account_by_pk?: Maybe<Account>
+  action_account_balance?: Maybe<ActionBalance>
+  action_delegation?: Maybe<ActionDelegationResponse>
+  action_delegation_reward?: Maybe<Array<Maybe<ActionDelegationReward>>>
+  action_delegation_total?: Maybe<ActionBalance>
+  action_delegator_withdraw_address: ActionAddress
+  action_redelegation?: Maybe<ActionRedelegationResponse>
+  action_unbonding_delegation?: Maybe<ActionUnbondingDelegationResponse>
+  action_unbonding_delegation_total?: Maybe<ActionBalance>
+  action_validator_commission_amount?: Maybe<ActionValidatorCommissionAmount>
+  action_validator_delegations?: Maybe<ActionDelegationResponse>
+  action_validator_redelegations_from?: Maybe<ActionRedelegationResponse>
+  action_validator_unbonding_delegations?: Maybe<ActionUnbondingDelegationResponse>
   /** fetch data from the table: "average_block_time_from_genesis" */
   average_block_time_from_genesis: Array<Average_Block_Time_From_Genesis>
   /** fetch aggregated fields from the table: "average_block_time_from_genesis" */
@@ -5841,16 +6152,48 @@ export type Query_Root = {
   community_pool: Array<Community_Pool>
   /** fetch aggregated fields from the table: "community_pool" */
   community_pool_aggregate: Community_Pool_Aggregate
+  /** fetch data from the table: "cosmwasm_clear_admin" */
+  cosmwasm_clear_admin: Array<Cosmwasm_Clear_Admin>
+  /** fetch aggregated fields from the table: "cosmwasm_clear_admin" */
+  cosmwasm_clear_admin_aggregate: Cosmwasm_Clear_Admin_Aggregate
+  /** fetch data from the table: "cosmwasm_clear_admin" using primary key columns */
+  cosmwasm_clear_admin_by_pk?: Maybe<Cosmwasm_Clear_Admin>
+  /** fetch data from the table: "cosmwasm_execute" */
+  cosmwasm_execute: Array<Cosmwasm_Execute>
+  /** fetch aggregated fields from the table: "cosmwasm_execute" */
+  cosmwasm_execute_aggregate: Cosmwasm_Execute_Aggregate
+  /** fetch data from the table: "cosmwasm_execute" using primary key columns */
+  cosmwasm_execute_by_pk?: Maybe<Cosmwasm_Execute>
+  /** fetch data from the table: "cosmwasm_instantiate" */
+  cosmwasm_instantiate: Array<Cosmwasm_Instantiate>
+  /** fetch aggregated fields from the table: "cosmwasm_instantiate" */
+  cosmwasm_instantiate_aggregate: Cosmwasm_Instantiate_Aggregate
+  /** fetch data from the table: "cosmwasm_instantiate" using primary key columns */
+  cosmwasm_instantiate_by_pk?: Maybe<Cosmwasm_Instantiate>
+  /** fetch data from the table: "cosmwasm_migrate" */
+  cosmwasm_migrate: Array<Cosmwasm_Migrate>
+  /** fetch aggregated fields from the table: "cosmwasm_migrate" */
+  cosmwasm_migrate_aggregate: Cosmwasm_Migrate_Aggregate
+  /** fetch data from the table: "cosmwasm_migrate" using primary key columns */
+  cosmwasm_migrate_by_pk?: Maybe<Cosmwasm_Migrate>
+  /** fetch data from the table: "cosmwasm_store" */
+  cosmwasm_store: Array<Cosmwasm_Store>
+  /** fetch aggregated fields from the table: "cosmwasm_store" */
+  cosmwasm_store_aggregate: Cosmwasm_Store_Aggregate
+  /** fetch data from the table: "cosmwasm_store" using primary key columns */
+  cosmwasm_store_by_pk?: Maybe<Cosmwasm_Store>
+  /** fetch data from the table: "cosmwasm_update_admin" */
+  cosmwasm_update_admin: Array<Cosmwasm_Update_Admin>
+  /** fetch aggregated fields from the table: "cosmwasm_update_admin" */
+  cosmwasm_update_admin_aggregate: Cosmwasm_Update_Admin_Aggregate
+  /** fetch data from the table: "cosmwasm_update_admin" using primary key columns */
+  cosmwasm_update_admin_by_pk?: Maybe<Cosmwasm_Update_Admin>
   /** fetch data from the table: "delegation" */
   delegation: Array<Delegation>
   /** fetch aggregated fields from the table: "delegation" */
   delegation_aggregate: Delegation_Aggregate
   /** fetch data from the table: "delegation" using primary key columns */
   delegation_by_pk?: Maybe<Delegation>
-  /** fetch data from the table: "delegation_reward" */
-  delegation_reward: Array<Delegation_Reward>
-  /** fetch aggregated fields from the table: "delegation_reward" */
-  delegation_reward_aggregate: Delegation_Reward_Aggregate
   /** fetch data from the table: "distribution_params" */
   distribution_params: Array<Distribution_Params>
   /** fetch aggregated fields from the table: "distribution_params" */
@@ -5943,10 +6286,10 @@ export type Query_Root = {
   proposal_vote: Array<Proposal_Vote>
   /** fetch aggregated fields from the table: "proposal_vote" */
   proposal_vote_aggregate: Proposal_Vote_Aggregate
-  /** fetch data from the table: "redelegation" */
-  redelegation: Array<Redelegation>
-  /** fetch aggregated fields from the table: "redelegation" */
-  redelegation_aggregate: Redelegation_Aggregate
+  /** fetch data from the table: "proposal_vote_weighted" */
+  proposal_vote_weighted: Array<Proposal_Vote_Weighted>
+  /** fetch aggregated fields from the table: "proposal_vote_weighted" */
+  proposal_vote_weighted_aggregate: Proposal_Vote_Weighted_Aggregate
   /** fetch data from the table: "slashing_params" */
   slashing_params: Array<Slashing_Params>
   /** fetch aggregated fields from the table: "slashing_params" */
@@ -5991,10 +6334,6 @@ export type Query_Root = {
   transaction_aggregate: Transaction_Aggregate
   /** fetch data from the table: "transaction" using primary key columns */
   transaction_by_pk?: Maybe<Transaction>
-  /** fetch data from the table: "unbonding_delegation" */
-  unbonding_delegation: Array<Unbonding_Delegation>
-  /** fetch aggregated fields from the table: "unbonding_delegation" */
-  unbonding_delegation_aggregate: Unbonding_Delegation_Aggregate
   /** fetch data from the table: "validator" */
   validator: Array<Validator>
   /** fetch aggregated fields from the table: "validator" */
@@ -6005,12 +6344,6 @@ export type Query_Root = {
   validator_commission: Array<Validator_Commission>
   /** fetch aggregated fields from the table: "validator_commission" */
   validator_commission_aggregate: Validator_Commission_Aggregate
-  /** fetch data from the table: "validator_commission_amount" */
-  validator_commission_amount: Array<Validator_Commission_Amount>
-  /** fetch aggregated fields from the table: "validator_commission_amount" */
-  validator_commission_amount_aggregate: Validator_Commission_Amount_Aggregate
-  /** fetch data from the table: "validator_commission_amount" using primary key columns */
-  validator_commission_amount_by_pk?: Maybe<Validator_Commission_Amount>
   /** fetch data from the table: "validator_commission" using primary key columns */
   validator_commission_by_pk?: Maybe<Validator_Commission>
   /** fetch data from the table: "validator_description" */
@@ -6071,44 +6404,82 @@ export type Query_RootAccount_AggregateArgs = {
   where?: InputMaybe<Account_Bool_Exp>
 }
 
-export type Query_RootAccount_BalanceArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_Order_By>>
-  where?: InputMaybe<Account_Balance_Bool_Exp>
-}
-
-export type Query_RootAccount_Balance_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_Order_By>>
-  where?: InputMaybe<Account_Balance_Bool_Exp>
-}
-
-export type Query_RootAccount_Balance_By_PkArgs = {
-  address: Scalars['String']
-}
-
-export type Query_RootAccount_Balance_HistoryArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_History_Order_By>>
-  where?: InputMaybe<Account_Balance_History_Bool_Exp>
-}
-
-export type Query_RootAccount_Balance_History_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_History_Order_By>>
-  where?: InputMaybe<Account_Balance_History_Bool_Exp>
-}
-
 export type Query_RootAccount_By_PkArgs = {
   address: Scalars['String']
+}
+
+export type Query_RootAction_Account_BalanceArgs = {
+  address: Scalars['String']
+  height?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_DelegationArgs = {
+  address: Scalars['String']
+  count_total?: InputMaybe<Scalars['Boolean']>
+  height?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Delegation_RewardArgs = {
+  address: Scalars['String']
+  height?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Delegation_TotalArgs = {
+  address: Scalars['String']
+  height?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Delegator_Withdraw_AddressArgs = {
+  address: Scalars['String']
+}
+
+export type Query_RootAction_RedelegationArgs = {
+  address: Scalars['String']
+  count_total?: InputMaybe<Scalars['Boolean']>
+  height?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Unbonding_DelegationArgs = {
+  address: Scalars['String']
+  count_total?: InputMaybe<Scalars['Boolean']>
+  height?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Unbonding_Delegation_TotalArgs = {
+  address: Scalars['String']
+  height?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Validator_Commission_AmountArgs = {
+  address: Scalars['String']
+}
+
+export type Query_RootAction_Validator_DelegationsArgs = {
+  address: Scalars['String']
+  count_total?: InputMaybe<Scalars['Boolean']>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Validator_Redelegations_FromArgs = {
+  address: Scalars['String']
+  count_total?: InputMaybe<Scalars['Boolean']>
+  height?: InputMaybe<Scalars['Int']>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}
+
+export type Query_RootAction_Validator_Unbonding_DelegationsArgs = {
+  address: Scalars['String']
+  count_total?: InputMaybe<Scalars['Boolean']>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
 }
 
 export type Query_RootAverage_Block_Time_From_GenesisArgs = {
@@ -6211,6 +6582,132 @@ export type Query_RootCommunity_Pool_AggregateArgs = {
   where?: InputMaybe<Community_Pool_Bool_Exp>
 }
 
+export type Query_RootCosmwasm_Clear_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Clear_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Clear_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_ExecuteArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Execute_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Execute_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_InstantiateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Instantiate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Instantiate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_MigrateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Migrate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Migrate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_StoreArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Store_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Store_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_Update_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Update_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Update_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
 export type Query_RootDelegationArgs = {
   distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -6228,23 +6725,8 @@ export type Query_RootDelegation_AggregateArgs = {
 }
 
 export type Query_RootDelegation_By_PkArgs = {
-  id: Scalars['Int']
-}
-
-export type Query_RootDelegation_RewardArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
-}
-
-export type Query_RootDelegation_Reward_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
+  delegator_address: Scalars['String']
+  validator_address: Scalars['String']
 }
 
 export type Query_RootDistribution_ParamsArgs = {
@@ -6581,20 +7063,20 @@ export type Query_RootProposal_Vote_AggregateArgs = {
   where?: InputMaybe<Proposal_Vote_Bool_Exp>
 }
 
-export type Query_RootRedelegationArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
+export type Query_RootProposal_Vote_WeightedArgs = {
+  distinct_on?: InputMaybe<Array<Proposal_Vote_Weighted_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
+  order_by?: InputMaybe<Array<Proposal_Vote_Weighted_Order_By>>
+  where?: InputMaybe<Proposal_Vote_Weighted_Bool_Exp>
 }
 
-export type Query_RootRedelegation_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
+export type Query_RootProposal_Vote_Weighted_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Proposal_Vote_Weighted_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
+  order_by?: InputMaybe<Array<Proposal_Vote_Weighted_Order_By>>
+  where?: InputMaybe<Proposal_Vote_Weighted_Bool_Exp>
 }
 
 export type Query_RootSlashing_ParamsArgs = {
@@ -6757,22 +7239,6 @@ export type Query_RootTransaction_By_PkArgs = {
   hash: Scalars['String']
 }
 
-export type Query_RootUnbonding_DelegationArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
-export type Query_RootUnbonding_Delegation_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
 export type Query_RootValidatorArgs = {
   distinct_on?: InputMaybe<Array<Validator_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -6807,26 +7273,6 @@ export type Query_RootValidator_Commission_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Validator_Commission_Order_By>>
   where?: InputMaybe<Validator_Commission_Bool_Exp>
-}
-
-export type Query_RootValidator_Commission_AmountArgs = {
-  distinct_on?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Validator_Commission_Amount_Order_By>>
-  where?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
-}
-
-export type Query_RootValidator_Commission_Amount_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Validator_Commission_Amount_Order_By>>
-  where?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
-}
-
-export type Query_RootValidator_Commission_Amount_By_PkArgs = {
-  validator_address: Scalars['String']
 }
 
 export type Query_RootValidator_Commission_By_PkArgs = {
@@ -6967,238 +7413,6 @@ export type Query_RootVesting_Period_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Vesting_Period_Order_By>>
   where?: InputMaybe<Vesting_Period_Bool_Exp>
-}
-
-/** columns and relationships of "redelegation" */
-export type Redelegation = {
-  __typename?: 'redelegation'
-  /** An object relationship */
-  account: Account
-  amount: Scalars['coin']
-  completion_time: Scalars['timestamp']
-  delegator_address: Scalars['String']
-  dst_validator_address: Scalars['String']
-  height: Scalars['bigint']
-  src_validator_address: Scalars['String']
-  /** An object relationship */
-  validator: Validator
-  /** An object relationship */
-  validatorByDstValidatorAddress: Validator
-}
-
-/** aggregated selection of "redelegation" */
-export type Redelegation_Aggregate = {
-  __typename?: 'redelegation_aggregate'
-  aggregate?: Maybe<Redelegation_Aggregate_Fields>
-  nodes: Array<Redelegation>
-}
-
-/** aggregate fields of "redelegation" */
-export type Redelegation_Aggregate_Fields = {
-  __typename?: 'redelegation_aggregate_fields'
-  avg?: Maybe<Redelegation_Avg_Fields>
-  count: Scalars['Int']
-  max?: Maybe<Redelegation_Max_Fields>
-  min?: Maybe<Redelegation_Min_Fields>
-  stddev?: Maybe<Redelegation_Stddev_Fields>
-  stddev_pop?: Maybe<Redelegation_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Redelegation_Stddev_Samp_Fields>
-  sum?: Maybe<Redelegation_Sum_Fields>
-  var_pop?: Maybe<Redelegation_Var_Pop_Fields>
-  var_samp?: Maybe<Redelegation_Var_Samp_Fields>
-  variance?: Maybe<Redelegation_Variance_Fields>
-}
-
-/** aggregate fields of "redelegation" */
-export type Redelegation_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Redelegation_Select_Column>>
-  distinct?: InputMaybe<Scalars['Boolean']>
-}
-
-/** order by aggregate values of table "redelegation" */
-export type Redelegation_Aggregate_Order_By = {
-  avg?: InputMaybe<Redelegation_Avg_Order_By>
-  count?: InputMaybe<Order_By>
-  max?: InputMaybe<Redelegation_Max_Order_By>
-  min?: InputMaybe<Redelegation_Min_Order_By>
-  stddev?: InputMaybe<Redelegation_Stddev_Order_By>
-  stddev_pop?: InputMaybe<Redelegation_Stddev_Pop_Order_By>
-  stddev_samp?: InputMaybe<Redelegation_Stddev_Samp_Order_By>
-  sum?: InputMaybe<Redelegation_Sum_Order_By>
-  var_pop?: InputMaybe<Redelegation_Var_Pop_Order_By>
-  var_samp?: InputMaybe<Redelegation_Var_Samp_Order_By>
-  variance?: InputMaybe<Redelegation_Variance_Order_By>
-}
-
-/** aggregate avg on columns */
-export type Redelegation_Avg_Fields = {
-  __typename?: 'redelegation_avg_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by avg() on columns of table "redelegation" */
-export type Redelegation_Avg_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** Boolean expression to filter rows from the table "redelegation". All fields are combined with a logical 'AND'. */
-export type Redelegation_Bool_Exp = {
-  _and?: InputMaybe<Array<Redelegation_Bool_Exp>>
-  _not?: InputMaybe<Redelegation_Bool_Exp>
-  _or?: InputMaybe<Array<Redelegation_Bool_Exp>>
-  account?: InputMaybe<Account_Bool_Exp>
-  amount?: InputMaybe<Coin_Comparison_Exp>
-  completion_time?: InputMaybe<Timestamp_Comparison_Exp>
-  delegator_address?: InputMaybe<String_Comparison_Exp>
-  dst_validator_address?: InputMaybe<String_Comparison_Exp>
-  height?: InputMaybe<Bigint_Comparison_Exp>
-  src_validator_address?: InputMaybe<String_Comparison_Exp>
-  validator?: InputMaybe<Validator_Bool_Exp>
-  validatorByDstValidatorAddress?: InputMaybe<Validator_Bool_Exp>
-}
-
-/** aggregate max on columns */
-export type Redelegation_Max_Fields = {
-  __typename?: 'redelegation_max_fields'
-  completion_time?: Maybe<Scalars['timestamp']>
-  delegator_address?: Maybe<Scalars['String']>
-  dst_validator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  src_validator_address?: Maybe<Scalars['String']>
-}
-
-/** order by max() on columns of table "redelegation" */
-export type Redelegation_Max_Order_By = {
-  completion_time?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  dst_validator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  src_validator_address?: InputMaybe<Order_By>
-}
-
-/** aggregate min on columns */
-export type Redelegation_Min_Fields = {
-  __typename?: 'redelegation_min_fields'
-  completion_time?: Maybe<Scalars['timestamp']>
-  delegator_address?: Maybe<Scalars['String']>
-  dst_validator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  src_validator_address?: Maybe<Scalars['String']>
-}
-
-/** order by min() on columns of table "redelegation" */
-export type Redelegation_Min_Order_By = {
-  completion_time?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  dst_validator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  src_validator_address?: InputMaybe<Order_By>
-}
-
-/** Ordering options when selecting data from "redelegation". */
-export type Redelegation_Order_By = {
-  account?: InputMaybe<Account_Order_By>
-  amount?: InputMaybe<Order_By>
-  completion_time?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  dst_validator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  src_validator_address?: InputMaybe<Order_By>
-  validator?: InputMaybe<Validator_Order_By>
-  validatorByDstValidatorAddress?: InputMaybe<Validator_Order_By>
-}
-
-/** select columns of table "redelegation" */
-export enum Redelegation_Select_Column {
-  /** column name */
-  Amount = 'amount',
-  /** column name */
-  CompletionTime = 'completion_time',
-  /** column name */
-  DelegatorAddress = 'delegator_address',
-  /** column name */
-  DstValidatorAddress = 'dst_validator_address',
-  /** column name */
-  Height = 'height',
-  /** column name */
-  SrcValidatorAddress = 'src_validator_address'
-}
-
-/** aggregate stddev on columns */
-export type Redelegation_Stddev_Fields = {
-  __typename?: 'redelegation_stddev_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev() on columns of table "redelegation" */
-export type Redelegation_Stddev_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_pop on columns */
-export type Redelegation_Stddev_Pop_Fields = {
-  __typename?: 'redelegation_stddev_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_pop() on columns of table "redelegation" */
-export type Redelegation_Stddev_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_samp on columns */
-export type Redelegation_Stddev_Samp_Fields = {
-  __typename?: 'redelegation_stddev_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_samp() on columns of table "redelegation" */
-export type Redelegation_Stddev_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate sum on columns */
-export type Redelegation_Sum_Fields = {
-  __typename?: 'redelegation_sum_fields'
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by sum() on columns of table "redelegation" */
-export type Redelegation_Sum_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_pop on columns */
-export type Redelegation_Var_Pop_Fields = {
-  __typename?: 'redelegation_var_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_pop() on columns of table "redelegation" */
-export type Redelegation_Var_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_samp on columns */
-export type Redelegation_Var_Samp_Fields = {
-  __typename?: 'redelegation_var_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_samp() on columns of table "redelegation" */
-export type Redelegation_Var_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate variance on columns */
-export type Redelegation_Variance_Fields = {
-  __typename?: 'redelegation_variance_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by variance() on columns of table "redelegation" */
-export type Redelegation_Variance_Order_By = {
-  height?: InputMaybe<Order_By>
 }
 
 /** columns and relationships of "slashing_params" */
@@ -7622,16 +7836,6 @@ export type Subscription_Root = {
   account: Array<Account>
   /** fetch aggregated fields from the table: "account" */
   account_aggregate: Account_Aggregate
-  /** fetch data from the table: "account_balance" */
-  account_balance: Array<Account_Balance>
-  /** fetch aggregated fields from the table: "account_balance" */
-  account_balance_aggregate: Account_Balance_Aggregate
-  /** fetch data from the table: "account_balance" using primary key columns */
-  account_balance_by_pk?: Maybe<Account_Balance>
-  /** fetch data from the table: "account_balance_history" */
-  account_balance_history: Array<Account_Balance_History>
-  /** fetch aggregated fields from the table: "account_balance_history" */
-  account_balance_history_aggregate: Account_Balance_History_Aggregate
   /** fetch data from the table: "account" using primary key columns */
   account_by_pk?: Maybe<Account>
   /** fetch data from the table: "average_block_time_from_genesis" */
@@ -7660,16 +7864,48 @@ export type Subscription_Root = {
   community_pool: Array<Community_Pool>
   /** fetch aggregated fields from the table: "community_pool" */
   community_pool_aggregate: Community_Pool_Aggregate
+  /** fetch data from the table: "cosmwasm_clear_admin" */
+  cosmwasm_clear_admin: Array<Cosmwasm_Clear_Admin>
+  /** fetch aggregated fields from the table: "cosmwasm_clear_admin" */
+  cosmwasm_clear_admin_aggregate: Cosmwasm_Clear_Admin_Aggregate
+  /** fetch data from the table: "cosmwasm_clear_admin" using primary key columns */
+  cosmwasm_clear_admin_by_pk?: Maybe<Cosmwasm_Clear_Admin>
+  /** fetch data from the table: "cosmwasm_execute" */
+  cosmwasm_execute: Array<Cosmwasm_Execute>
+  /** fetch aggregated fields from the table: "cosmwasm_execute" */
+  cosmwasm_execute_aggregate: Cosmwasm_Execute_Aggregate
+  /** fetch data from the table: "cosmwasm_execute" using primary key columns */
+  cosmwasm_execute_by_pk?: Maybe<Cosmwasm_Execute>
+  /** fetch data from the table: "cosmwasm_instantiate" */
+  cosmwasm_instantiate: Array<Cosmwasm_Instantiate>
+  /** fetch aggregated fields from the table: "cosmwasm_instantiate" */
+  cosmwasm_instantiate_aggregate: Cosmwasm_Instantiate_Aggregate
+  /** fetch data from the table: "cosmwasm_instantiate" using primary key columns */
+  cosmwasm_instantiate_by_pk?: Maybe<Cosmwasm_Instantiate>
+  /** fetch data from the table: "cosmwasm_migrate" */
+  cosmwasm_migrate: Array<Cosmwasm_Migrate>
+  /** fetch aggregated fields from the table: "cosmwasm_migrate" */
+  cosmwasm_migrate_aggregate: Cosmwasm_Migrate_Aggregate
+  /** fetch data from the table: "cosmwasm_migrate" using primary key columns */
+  cosmwasm_migrate_by_pk?: Maybe<Cosmwasm_Migrate>
+  /** fetch data from the table: "cosmwasm_store" */
+  cosmwasm_store: Array<Cosmwasm_Store>
+  /** fetch aggregated fields from the table: "cosmwasm_store" */
+  cosmwasm_store_aggregate: Cosmwasm_Store_Aggregate
+  /** fetch data from the table: "cosmwasm_store" using primary key columns */
+  cosmwasm_store_by_pk?: Maybe<Cosmwasm_Store>
+  /** fetch data from the table: "cosmwasm_update_admin" */
+  cosmwasm_update_admin: Array<Cosmwasm_Update_Admin>
+  /** fetch aggregated fields from the table: "cosmwasm_update_admin" */
+  cosmwasm_update_admin_aggregate: Cosmwasm_Update_Admin_Aggregate
+  /** fetch data from the table: "cosmwasm_update_admin" using primary key columns */
+  cosmwasm_update_admin_by_pk?: Maybe<Cosmwasm_Update_Admin>
   /** fetch data from the table: "delegation" */
   delegation: Array<Delegation>
   /** fetch aggregated fields from the table: "delegation" */
   delegation_aggregate: Delegation_Aggregate
   /** fetch data from the table: "delegation" using primary key columns */
   delegation_by_pk?: Maybe<Delegation>
-  /** fetch data from the table: "delegation_reward" */
-  delegation_reward: Array<Delegation_Reward>
-  /** fetch aggregated fields from the table: "delegation_reward" */
-  delegation_reward_aggregate: Delegation_Reward_Aggregate
   /** fetch data from the table: "distribution_params" */
   distribution_params: Array<Distribution_Params>
   /** fetch aggregated fields from the table: "distribution_params" */
@@ -7762,10 +7998,10 @@ export type Subscription_Root = {
   proposal_vote: Array<Proposal_Vote>
   /** fetch aggregated fields from the table: "proposal_vote" */
   proposal_vote_aggregate: Proposal_Vote_Aggregate
-  /** fetch data from the table: "redelegation" */
-  redelegation: Array<Redelegation>
-  /** fetch aggregated fields from the table: "redelegation" */
-  redelegation_aggregate: Redelegation_Aggregate
+  /** fetch data from the table: "proposal_vote_weighted" */
+  proposal_vote_weighted: Array<Proposal_Vote_Weighted>
+  /** fetch aggregated fields from the table: "proposal_vote_weighted" */
+  proposal_vote_weighted_aggregate: Proposal_Vote_Weighted_Aggregate
   /** fetch data from the table: "slashing_params" */
   slashing_params: Array<Slashing_Params>
   /** fetch aggregated fields from the table: "slashing_params" */
@@ -7810,10 +8046,6 @@ export type Subscription_Root = {
   transaction_aggregate: Transaction_Aggregate
   /** fetch data from the table: "transaction" using primary key columns */
   transaction_by_pk?: Maybe<Transaction>
-  /** fetch data from the table: "unbonding_delegation" */
-  unbonding_delegation: Array<Unbonding_Delegation>
-  /** fetch aggregated fields from the table: "unbonding_delegation" */
-  unbonding_delegation_aggregate: Unbonding_Delegation_Aggregate
   /** fetch data from the table: "validator" */
   validator: Array<Validator>
   /** fetch aggregated fields from the table: "validator" */
@@ -7824,12 +8056,6 @@ export type Subscription_Root = {
   validator_commission: Array<Validator_Commission>
   /** fetch aggregated fields from the table: "validator_commission" */
   validator_commission_aggregate: Validator_Commission_Aggregate
-  /** fetch data from the table: "validator_commission_amount" */
-  validator_commission_amount: Array<Validator_Commission_Amount>
-  /** fetch aggregated fields from the table: "validator_commission_amount" */
-  validator_commission_amount_aggregate: Validator_Commission_Amount_Aggregate
-  /** fetch data from the table: "validator_commission_amount" using primary key columns */
-  validator_commission_amount_by_pk?: Maybe<Validator_Commission_Amount>
   /** fetch data from the table: "validator_commission" using primary key columns */
   validator_commission_by_pk?: Maybe<Validator_Commission>
   /** fetch data from the table: "validator_description" */
@@ -7888,42 +8114,6 @@ export type Subscription_RootAccount_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Account_Order_By>>
   where?: InputMaybe<Account_Bool_Exp>
-}
-
-export type Subscription_RootAccount_BalanceArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_Order_By>>
-  where?: InputMaybe<Account_Balance_Bool_Exp>
-}
-
-export type Subscription_RootAccount_Balance_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_Order_By>>
-  where?: InputMaybe<Account_Balance_Bool_Exp>
-}
-
-export type Subscription_RootAccount_Balance_By_PkArgs = {
-  address: Scalars['String']
-}
-
-export type Subscription_RootAccount_Balance_HistoryArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_History_Order_By>>
-  where?: InputMaybe<Account_Balance_History_Bool_Exp>
-}
-
-export type Subscription_RootAccount_Balance_History_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Account_Balance_History_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Account_Balance_History_Order_By>>
-  where?: InputMaybe<Account_Balance_History_Bool_Exp>
 }
 
 export type Subscription_RootAccount_By_PkArgs = {
@@ -8030,6 +8220,132 @@ export type Subscription_RootCommunity_Pool_AggregateArgs = {
   where?: InputMaybe<Community_Pool_Bool_Exp>
 }
 
+export type Subscription_RootCosmwasm_Clear_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_ExecuteArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Execute_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Execute_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_InstantiateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Instantiate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Instantiate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_MigrateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Migrate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Migrate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_StoreArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Store_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Store_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_Update_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Update_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Update_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
 export type Subscription_RootDelegationArgs = {
   distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -8047,23 +8363,8 @@ export type Subscription_RootDelegation_AggregateArgs = {
 }
 
 export type Subscription_RootDelegation_By_PkArgs = {
-  id: Scalars['Int']
-}
-
-export type Subscription_RootDelegation_RewardArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
-}
-
-export type Subscription_RootDelegation_Reward_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
+  delegator_address: Scalars['String']
+  validator_address: Scalars['String']
 }
 
 export type Subscription_RootDistribution_ParamsArgs = {
@@ -8401,20 +8702,20 @@ export type Subscription_RootProposal_Vote_AggregateArgs = {
   where?: InputMaybe<Proposal_Vote_Bool_Exp>
 }
 
-export type Subscription_RootRedelegationArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
+export type Subscription_RootProposal_Vote_WeightedArgs = {
+  distinct_on?: InputMaybe<Array<Proposal_Vote_Weighted_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
+  order_by?: InputMaybe<Array<Proposal_Vote_Weighted_Order_By>>
+  where?: InputMaybe<Proposal_Vote_Weighted_Bool_Exp>
 }
 
-export type Subscription_RootRedelegation_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
+export type Subscription_RootProposal_Vote_Weighted_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Proposal_Vote_Weighted_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
+  order_by?: InputMaybe<Array<Proposal_Vote_Weighted_Order_By>>
+  where?: InputMaybe<Proposal_Vote_Weighted_Bool_Exp>
 }
 
 export type Subscription_RootSlashing_ParamsArgs = {
@@ -8577,22 +8878,6 @@ export type Subscription_RootTransaction_By_PkArgs = {
   hash: Scalars['String']
 }
 
-export type Subscription_RootUnbonding_DelegationArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
-export type Subscription_RootUnbonding_Delegation_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
 export type Subscription_RootValidatorArgs = {
   distinct_on?: InputMaybe<Array<Validator_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -8627,26 +8912,6 @@ export type Subscription_RootValidator_Commission_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Validator_Commission_Order_By>>
   where?: InputMaybe<Validator_Commission_Bool_Exp>
-}
-
-export type Subscription_RootValidator_Commission_AmountArgs = {
-  distinct_on?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Validator_Commission_Amount_Order_By>>
-  where?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
-}
-
-export type Subscription_RootValidator_Commission_Amount_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Validator_Commission_Amount_Order_By>>
-  where?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
-}
-
-export type Subscription_RootValidator_Commission_Amount_By_PkArgs = {
-  validator_address: Scalars['String']
 }
 
 export type Subscription_RootValidator_Commission_By_PkArgs = {
@@ -10081,225 +10346,6 @@ export type Transaction_Variance_Order_By = {
   height?: InputMaybe<Order_By>
 }
 
-/** columns and relationships of "unbonding_delegation" */
-export type Unbonding_Delegation = {
-  __typename?: 'unbonding_delegation'
-  /** An object relationship */
-  account: Account
-  amount: Scalars['coin']
-  completion_timestamp: Scalars['timestamp']
-  delegator_address: Scalars['String']
-  height: Scalars['bigint']
-  /** An object relationship */
-  validator: Validator
-  validator_address: Scalars['String']
-}
-
-/** aggregated selection of "unbonding_delegation" */
-export type Unbonding_Delegation_Aggregate = {
-  __typename?: 'unbonding_delegation_aggregate'
-  aggregate?: Maybe<Unbonding_Delegation_Aggregate_Fields>
-  nodes: Array<Unbonding_Delegation>
-}
-
-/** aggregate fields of "unbonding_delegation" */
-export type Unbonding_Delegation_Aggregate_Fields = {
-  __typename?: 'unbonding_delegation_aggregate_fields'
-  avg?: Maybe<Unbonding_Delegation_Avg_Fields>
-  count: Scalars['Int']
-  max?: Maybe<Unbonding_Delegation_Max_Fields>
-  min?: Maybe<Unbonding_Delegation_Min_Fields>
-  stddev?: Maybe<Unbonding_Delegation_Stddev_Fields>
-  stddev_pop?: Maybe<Unbonding_Delegation_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Unbonding_Delegation_Stddev_Samp_Fields>
-  sum?: Maybe<Unbonding_Delegation_Sum_Fields>
-  var_pop?: Maybe<Unbonding_Delegation_Var_Pop_Fields>
-  var_samp?: Maybe<Unbonding_Delegation_Var_Samp_Fields>
-  variance?: Maybe<Unbonding_Delegation_Variance_Fields>
-}
-
-/** aggregate fields of "unbonding_delegation" */
-export type Unbonding_Delegation_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  distinct?: InputMaybe<Scalars['Boolean']>
-}
-
-/** order by aggregate values of table "unbonding_delegation" */
-export type Unbonding_Delegation_Aggregate_Order_By = {
-  avg?: InputMaybe<Unbonding_Delegation_Avg_Order_By>
-  count?: InputMaybe<Order_By>
-  max?: InputMaybe<Unbonding_Delegation_Max_Order_By>
-  min?: InputMaybe<Unbonding_Delegation_Min_Order_By>
-  stddev?: InputMaybe<Unbonding_Delegation_Stddev_Order_By>
-  stddev_pop?: InputMaybe<Unbonding_Delegation_Stddev_Pop_Order_By>
-  stddev_samp?: InputMaybe<Unbonding_Delegation_Stddev_Samp_Order_By>
-  sum?: InputMaybe<Unbonding_Delegation_Sum_Order_By>
-  var_pop?: InputMaybe<Unbonding_Delegation_Var_Pop_Order_By>
-  var_samp?: InputMaybe<Unbonding_Delegation_Var_Samp_Order_By>
-  variance?: InputMaybe<Unbonding_Delegation_Variance_Order_By>
-}
-
-/** aggregate avg on columns */
-export type Unbonding_Delegation_Avg_Fields = {
-  __typename?: 'unbonding_delegation_avg_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by avg() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Avg_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** Boolean expression to filter rows from the table "unbonding_delegation". All fields are combined with a logical 'AND'. */
-export type Unbonding_Delegation_Bool_Exp = {
-  _and?: InputMaybe<Array<Unbonding_Delegation_Bool_Exp>>
-  _not?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-  _or?: InputMaybe<Array<Unbonding_Delegation_Bool_Exp>>
-  account?: InputMaybe<Account_Bool_Exp>
-  amount?: InputMaybe<Coin_Comparison_Exp>
-  completion_timestamp?: InputMaybe<Timestamp_Comparison_Exp>
-  delegator_address?: InputMaybe<String_Comparison_Exp>
-  height?: InputMaybe<Bigint_Comparison_Exp>
-  validator?: InputMaybe<Validator_Bool_Exp>
-  validator_address?: InputMaybe<String_Comparison_Exp>
-}
-
-/** aggregate max on columns */
-export type Unbonding_Delegation_Max_Fields = {
-  __typename?: 'unbonding_delegation_max_fields'
-  completion_timestamp?: Maybe<Scalars['timestamp']>
-  delegator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  validator_address?: Maybe<Scalars['String']>
-}
-
-/** order by max() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Max_Order_By = {
-  completion_timestamp?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator_address?: InputMaybe<Order_By>
-}
-
-/** aggregate min on columns */
-export type Unbonding_Delegation_Min_Fields = {
-  __typename?: 'unbonding_delegation_min_fields'
-  completion_timestamp?: Maybe<Scalars['timestamp']>
-  delegator_address?: Maybe<Scalars['String']>
-  height?: Maybe<Scalars['bigint']>
-  validator_address?: Maybe<Scalars['String']>
-}
-
-/** order by min() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Min_Order_By = {
-  completion_timestamp?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator_address?: InputMaybe<Order_By>
-}
-
-/** Ordering options when selecting data from "unbonding_delegation". */
-export type Unbonding_Delegation_Order_By = {
-  account?: InputMaybe<Account_Order_By>
-  amount?: InputMaybe<Order_By>
-  completion_timestamp?: InputMaybe<Order_By>
-  delegator_address?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator?: InputMaybe<Validator_Order_By>
-  validator_address?: InputMaybe<Order_By>
-}
-
-/** select columns of table "unbonding_delegation" */
-export enum Unbonding_Delegation_Select_Column {
-  /** column name */
-  Amount = 'amount',
-  /** column name */
-  CompletionTimestamp = 'completion_timestamp',
-  /** column name */
-  DelegatorAddress = 'delegator_address',
-  /** column name */
-  Height = 'height',
-  /** column name */
-  ValidatorAddress = 'validator_address'
-}
-
-/** aggregate stddev on columns */
-export type Unbonding_Delegation_Stddev_Fields = {
-  __typename?: 'unbonding_delegation_stddev_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Stddev_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_pop on columns */
-export type Unbonding_Delegation_Stddev_Pop_Fields = {
-  __typename?: 'unbonding_delegation_stddev_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_pop() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Stddev_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_samp on columns */
-export type Unbonding_Delegation_Stddev_Samp_Fields = {
-  __typename?: 'unbonding_delegation_stddev_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_samp() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Stddev_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate sum on columns */
-export type Unbonding_Delegation_Sum_Fields = {
-  __typename?: 'unbonding_delegation_sum_fields'
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by sum() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Sum_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_pop on columns */
-export type Unbonding_Delegation_Var_Pop_Fields = {
-  __typename?: 'unbonding_delegation_var_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_pop() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Var_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_samp on columns */
-export type Unbonding_Delegation_Var_Samp_Fields = {
-  __typename?: 'unbonding_delegation_var_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_samp() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Var_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate variance on columns */
-export type Unbonding_Delegation_Variance_Fields = {
-  __typename?: 'unbonding_delegation_variance_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by variance() on columns of table "unbonding_delegation" */
-export type Unbonding_Delegation_Variance_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
 /** columns and relationships of "validator" */
 export type Validator = {
   __typename?: 'validator'
@@ -10310,14 +10356,6 @@ export type Validator = {
   consensus_address: Scalars['String']
   consensus_pubkey: Scalars['String']
   /** An array relationship */
-  delegation_rewards: Array<Delegation_Reward>
-  /** An aggregate relationship */
-  delegation_rewards_aggregate: Delegation_Reward_Aggregate
-  /** An array relationship */
-  delegations: Array<Delegation>
-  /** An aggregate relationship */
-  delegations_aggregate: Delegation_Aggregate
-  /** An array relationship */
   double_sign_votes: Array<Double_Sign_Vote>
   /** An aggregate relationship */
   double_sign_votes_aggregate: Double_Sign_Vote_Aggregate
@@ -10325,24 +10363,6 @@ export type Validator = {
   pre_commits: Array<Pre_Commit>
   /** An aggregate relationship */
   pre_commits_aggregate: Pre_Commit_Aggregate
-  /** An array relationship */
-  redelegationsByDstValidatorAddress: Array<Redelegation>
-  /** An aggregate relationship */
-  redelegationsByDstValidatorAddress_aggregate: Redelegation_Aggregate
-  /** An array relationship */
-  redelegationsBySrcValidatorAddress: Array<Redelegation>
-  /** An aggregate relationship */
-  redelegationsBySrcValidatorAddress_aggregate: Redelegation_Aggregate
-  /** A computed field, executes function "self_delegations" */
-  self_delegations?: Maybe<Array<Delegation>>
-  /** An array relationship */
-  unbonding_delegations: Array<Unbonding_Delegation>
-  /** An aggregate relationship */
-  unbonding_delegations_aggregate: Unbonding_Delegation_Aggregate
-  /** An array relationship */
-  validator_commission_amounts: Array<Validator_Commission_Amount>
-  /** An aggregate relationship */
-  validator_commission_amounts_aggregate: Validator_Commission_Amount_Aggregate
   /** An array relationship */
   validator_commissions: Array<Validator_Commission>
   /** An aggregate relationship */
@@ -10390,42 +10410,6 @@ export type ValidatorBlocks_AggregateArgs = {
 }
 
 /** columns and relationships of "validator" */
-export type ValidatorDelegation_RewardsArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorDelegation_Rewards_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Reward_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Reward_Order_By>>
-  where?: InputMaybe<Delegation_Reward_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorDelegationsArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Order_By>>
-  where?: InputMaybe<Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorDelegations_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Order_By>>
-  where?: InputMaybe<Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
 export type ValidatorDouble_Sign_VotesArgs = {
   distinct_on?: InputMaybe<Array<Double_Sign_Vote_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -10459,87 +10443,6 @@ export type ValidatorPre_Commits_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Pre_Commit_Order_By>>
   where?: InputMaybe<Pre_Commit_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorRedelegationsByDstValidatorAddressArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorRedelegationsByDstValidatorAddress_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorRedelegationsBySrcValidatorAddressArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorRedelegationsBySrcValidatorAddress_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Redelegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Redelegation_Order_By>>
-  where?: InputMaybe<Redelegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorSelf_DelegationsArgs = {
-  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Delegation_Order_By>>
-  where?: InputMaybe<Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorUnbonding_DelegationsArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorUnbonding_Delegations_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Unbonding_Delegation_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Unbonding_Delegation_Order_By>>
-  where?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorValidator_Commission_AmountsArgs = {
-  distinct_on?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Validator_Commission_Amount_Order_By>>
-  where?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
-}
-
-/** columns and relationships of "validator" */
-export type ValidatorValidator_Commission_Amounts_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  limit?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  order_by?: InputMaybe<Array<Validator_Commission_Amount_Order_By>>
-  where?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
 }
 
 /** columns and relationships of "validator" */
@@ -10679,15 +10582,8 @@ export type Validator_Bool_Exp = {
   blocks?: InputMaybe<Block_Bool_Exp>
   consensus_address?: InputMaybe<String_Comparison_Exp>
   consensus_pubkey?: InputMaybe<String_Comparison_Exp>
-  delegation_rewards?: InputMaybe<Delegation_Reward_Bool_Exp>
-  delegations?: InputMaybe<Delegation_Bool_Exp>
   double_sign_votes?: InputMaybe<Double_Sign_Vote_Bool_Exp>
   pre_commits?: InputMaybe<Pre_Commit_Bool_Exp>
-  redelegationsByDstValidatorAddress?: InputMaybe<Redelegation_Bool_Exp>
-  redelegationsBySrcValidatorAddress?: InputMaybe<Redelegation_Bool_Exp>
-  self_delegations?: InputMaybe<Delegation_Bool_Exp>
-  unbonding_delegations?: InputMaybe<Unbonding_Delegation_Bool_Exp>
-  validator_commission_amounts?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
   validator_commissions?: InputMaybe<Validator_Commission_Bool_Exp>
   validator_descriptions?: InputMaybe<Validator_Description_Bool_Exp>
   validator_info?: InputMaybe<Validator_Info_Bool_Exp>
@@ -10750,203 +10646,6 @@ export type Validator_Commission_Aggregate_Order_By = {
   var_pop?: InputMaybe<Validator_Commission_Var_Pop_Order_By>
   var_samp?: InputMaybe<Validator_Commission_Var_Samp_Order_By>
   variance?: InputMaybe<Validator_Commission_Variance_Order_By>
-}
-
-/** columns and relationships of "validator_commission_amount" */
-export type Validator_Commission_Amount = {
-  __typename?: 'validator_commission_amount'
-  amount: Scalars['_dec_coin']
-  height: Scalars['bigint']
-  /** An object relationship */
-  validator: Validator
-  validator_address: Scalars['String']
-}
-
-/** aggregated selection of "validator_commission_amount" */
-export type Validator_Commission_Amount_Aggregate = {
-  __typename?: 'validator_commission_amount_aggregate'
-  aggregate?: Maybe<Validator_Commission_Amount_Aggregate_Fields>
-  nodes: Array<Validator_Commission_Amount>
-}
-
-/** aggregate fields of "validator_commission_amount" */
-export type Validator_Commission_Amount_Aggregate_Fields = {
-  __typename?: 'validator_commission_amount_aggregate_fields'
-  avg?: Maybe<Validator_Commission_Amount_Avg_Fields>
-  count: Scalars['Int']
-  max?: Maybe<Validator_Commission_Amount_Max_Fields>
-  min?: Maybe<Validator_Commission_Amount_Min_Fields>
-  stddev?: Maybe<Validator_Commission_Amount_Stddev_Fields>
-  stddev_pop?: Maybe<Validator_Commission_Amount_Stddev_Pop_Fields>
-  stddev_samp?: Maybe<Validator_Commission_Amount_Stddev_Samp_Fields>
-  sum?: Maybe<Validator_Commission_Amount_Sum_Fields>
-  var_pop?: Maybe<Validator_Commission_Amount_Var_Pop_Fields>
-  var_samp?: Maybe<Validator_Commission_Amount_Var_Samp_Fields>
-  variance?: Maybe<Validator_Commission_Amount_Variance_Fields>
-}
-
-/** aggregate fields of "validator_commission_amount" */
-export type Validator_Commission_Amount_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Validator_Commission_Amount_Select_Column>>
-  distinct?: InputMaybe<Scalars['Boolean']>
-}
-
-/** order by aggregate values of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Aggregate_Order_By = {
-  avg?: InputMaybe<Validator_Commission_Amount_Avg_Order_By>
-  count?: InputMaybe<Order_By>
-  max?: InputMaybe<Validator_Commission_Amount_Max_Order_By>
-  min?: InputMaybe<Validator_Commission_Amount_Min_Order_By>
-  stddev?: InputMaybe<Validator_Commission_Amount_Stddev_Order_By>
-  stddev_pop?: InputMaybe<Validator_Commission_Amount_Stddev_Pop_Order_By>
-  stddev_samp?: InputMaybe<Validator_Commission_Amount_Stddev_Samp_Order_By>
-  sum?: InputMaybe<Validator_Commission_Amount_Sum_Order_By>
-  var_pop?: InputMaybe<Validator_Commission_Amount_Var_Pop_Order_By>
-  var_samp?: InputMaybe<Validator_Commission_Amount_Var_Samp_Order_By>
-  variance?: InputMaybe<Validator_Commission_Amount_Variance_Order_By>
-}
-
-/** aggregate avg on columns */
-export type Validator_Commission_Amount_Avg_Fields = {
-  __typename?: 'validator_commission_amount_avg_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by avg() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Avg_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** Boolean expression to filter rows from the table "validator_commission_amount". All fields are combined with a logical 'AND'. */
-export type Validator_Commission_Amount_Bool_Exp = {
-  _and?: InputMaybe<Array<Validator_Commission_Amount_Bool_Exp>>
-  _not?: InputMaybe<Validator_Commission_Amount_Bool_Exp>
-  _or?: InputMaybe<Array<Validator_Commission_Amount_Bool_Exp>>
-  amount?: InputMaybe<_Dec_Coin_Comparison_Exp>
-  height?: InputMaybe<Bigint_Comparison_Exp>
-  validator?: InputMaybe<Validator_Bool_Exp>
-  validator_address?: InputMaybe<String_Comparison_Exp>
-}
-
-/** aggregate max on columns */
-export type Validator_Commission_Amount_Max_Fields = {
-  __typename?: 'validator_commission_amount_max_fields'
-  height?: Maybe<Scalars['bigint']>
-  validator_address?: Maybe<Scalars['String']>
-}
-
-/** order by max() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Max_Order_By = {
-  height?: InputMaybe<Order_By>
-  validator_address?: InputMaybe<Order_By>
-}
-
-/** aggregate min on columns */
-export type Validator_Commission_Amount_Min_Fields = {
-  __typename?: 'validator_commission_amount_min_fields'
-  height?: Maybe<Scalars['bigint']>
-  validator_address?: Maybe<Scalars['String']>
-}
-
-/** order by min() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Min_Order_By = {
-  height?: InputMaybe<Order_By>
-  validator_address?: InputMaybe<Order_By>
-}
-
-/** Ordering options when selecting data from "validator_commission_amount". */
-export type Validator_Commission_Amount_Order_By = {
-  amount?: InputMaybe<Order_By>
-  height?: InputMaybe<Order_By>
-  validator?: InputMaybe<Validator_Order_By>
-  validator_address?: InputMaybe<Order_By>
-}
-
-/** select columns of table "validator_commission_amount" */
-export enum Validator_Commission_Amount_Select_Column {
-  /** column name */
-  Amount = 'amount',
-  /** column name */
-  Height = 'height',
-  /** column name */
-  ValidatorAddress = 'validator_address'
-}
-
-/** aggregate stddev on columns */
-export type Validator_Commission_Amount_Stddev_Fields = {
-  __typename?: 'validator_commission_amount_stddev_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Stddev_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_pop on columns */
-export type Validator_Commission_Amount_Stddev_Pop_Fields = {
-  __typename?: 'validator_commission_amount_stddev_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_pop() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Stddev_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate stddev_samp on columns */
-export type Validator_Commission_Amount_Stddev_Samp_Fields = {
-  __typename?: 'validator_commission_amount_stddev_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by stddev_samp() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Stddev_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate sum on columns */
-export type Validator_Commission_Amount_Sum_Fields = {
-  __typename?: 'validator_commission_amount_sum_fields'
-  height?: Maybe<Scalars['bigint']>
-}
-
-/** order by sum() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Sum_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_pop on columns */
-export type Validator_Commission_Amount_Var_Pop_Fields = {
-  __typename?: 'validator_commission_amount_var_pop_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_pop() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Var_Pop_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate var_samp on columns */
-export type Validator_Commission_Amount_Var_Samp_Fields = {
-  __typename?: 'validator_commission_amount_var_samp_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by var_samp() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Var_Samp_Order_By = {
-  height?: InputMaybe<Order_By>
-}
-
-/** aggregate variance on columns */
-export type Validator_Commission_Amount_Variance_Fields = {
-  __typename?: 'validator_commission_amount_variance_fields'
-  height?: Maybe<Scalars['Float']>
-}
-
-/** order by variance() on columns of table "validator_commission_amount" */
-export type Validator_Commission_Amount_Variance_Order_By = {
-  height?: InputMaybe<Order_By>
 }
 
 /** aggregate avg on columns */
@@ -11388,12 +11087,34 @@ export type Validator_Info = {
   /** An object relationship */
   account?: Maybe<Account>
   consensus_address: Scalars['String']
+  /** An array relationship */
+  delegations: Array<Delegation>
+  /** An aggregate relationship */
+  delegations_aggregate: Delegation_Aggregate
   max_change_rate: Scalars['String']
   max_rate: Scalars['String']
   operator_address: Scalars['String']
   self_delegate_address?: Maybe<Scalars['String']>
   /** An object relationship */
   validator: Validator
+}
+
+/** columns and relationships of "validator_info" */
+export type Validator_InfoDelegationsArgs = {
+  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Delegation_Order_By>>
+  where?: InputMaybe<Delegation_Bool_Exp>
+}
+
+/** columns and relationships of "validator_info" */
+export type Validator_InfoDelegations_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Delegation_Order_By>>
+  where?: InputMaybe<Delegation_Bool_Exp>
 }
 
 /** aggregated selection of "validator_info" */
@@ -11431,6 +11152,7 @@ export type Validator_Info_Bool_Exp = {
   _or?: InputMaybe<Array<Validator_Info_Bool_Exp>>
   account?: InputMaybe<Account_Bool_Exp>
   consensus_address?: InputMaybe<String_Comparison_Exp>
+  delegations?: InputMaybe<Delegation_Bool_Exp>
   max_change_rate?: InputMaybe<String_Comparison_Exp>
   max_rate?: InputMaybe<String_Comparison_Exp>
   operator_address?: InputMaybe<String_Comparison_Exp>
@@ -11480,6 +11202,7 @@ export type Validator_Info_Min_Order_By = {
 export type Validator_Info_Order_By = {
   account?: InputMaybe<Account_Order_By>
   consensus_address?: InputMaybe<Order_By>
+  delegations_aggregate?: InputMaybe<Delegation_Aggregate_Order_By>
   max_change_rate?: InputMaybe<Order_By>
   max_rate?: InputMaybe<Order_By>
   operator_address?: InputMaybe<Order_By>
@@ -11520,15 +11243,8 @@ export type Validator_Order_By = {
   blocks_aggregate?: InputMaybe<Block_Aggregate_Order_By>
   consensus_address?: InputMaybe<Order_By>
   consensus_pubkey?: InputMaybe<Order_By>
-  delegation_rewards_aggregate?: InputMaybe<Delegation_Reward_Aggregate_Order_By>
-  delegations_aggregate?: InputMaybe<Delegation_Aggregate_Order_By>
   double_sign_votes_aggregate?: InputMaybe<Double_Sign_Vote_Aggregate_Order_By>
   pre_commits_aggregate?: InputMaybe<Pre_Commit_Aggregate_Order_By>
-  redelegationsByDstValidatorAddress_aggregate?: InputMaybe<Redelegation_Aggregate_Order_By>
-  redelegationsBySrcValidatorAddress_aggregate?: InputMaybe<Redelegation_Aggregate_Order_By>
-  self_delegations_aggregate?: InputMaybe<Delegation_Aggregate_Order_By>
-  unbonding_delegations_aggregate?: InputMaybe<Unbonding_Delegation_Aggregate_Order_By>
-  validator_commission_amounts_aggregate?: InputMaybe<Validator_Commission_Amount_Aggregate_Order_By>
   validator_commissions_aggregate?: InputMaybe<Validator_Commission_Aggregate_Order_By>
   validator_descriptions_aggregate?: InputMaybe<Validator_Description_Aggregate_Order_By>
   validator_info?: InputMaybe<Validator_Info_Order_By>
@@ -12680,115 +12396,996 @@ export type Vesting_Period_Variance_Order_By = {
   vesting_account_id?: InputMaybe<Order_By>
 }
 
-export type ValidatorsQueryVariables = Exact<{ [key: string]: never }>
+export type ActiveValidatorCountQueryVariables = Exact<{ [key: string]: never }>
 
-export type ValidatorsQuery = {
-  stakingParams: Array<{ __typename?: 'staking_params'; params: any }>
-  stakingPool: Array<{ __typename?: 'staking_pool'; bondedTokens: any }>
-  validator: Array<{
-    __typename?: 'validator'
-    validatorStatuses: Array<{
-      __typename?: 'validator_status'
-      status: number
-      jailed: boolean
-      height: any
-    }>
-    validatorSigningInfos: Array<{
-      __typename?: 'validator_signing_info'
-      tombstoned: boolean
-      missedBlocksCounter: any
-    }>
-    validatorInfo?: {
-      __typename?: 'validator_info'
-      operatorAddress: string
-      selfDelegateAddress?: string | null
+export type ActiveValidatorCountQuery = {
+  activeTotal: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
     } | null
-    validatorVotingPowers: Array<{
-      __typename?: 'validator_voting_power'
-      votingPower: any
-    }>
-    validatorCommissions: Array<{
-      __typename?: 'validator_commission'
-      commission: any
-    }>
-    delegations: Array<{
-      __typename?: 'delegation'
-      amount: any
-      delegatorAddress: string
-    }>
-    validatorDescription: Array<{
-      __typename?: 'validator_description'
-      moniker?: string | null
-      avatarUrl?: string | null
-    }>
-  }>
-  slashingParams: Array<{ __typename?: 'slashing_params'; params: any }>
+  }
+  inactiveTotal: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
+  total: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
 }
 
-export const ValidatorsDocument = gql`
-  query Validators {
-    stakingParams: staking_params(limit: 1) {
-      params
+export type LatestBlockHeightListenerSubscriptionVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type LatestBlockHeightListenerSubscription = {
+  height: Array<{ __typename?: 'block'; height: any }>
+}
+
+export type AverageBlockTimeQueryVariables = Exact<{ [key: string]: never }>
+
+export type AverageBlockTimeQuery = {
+  averageBlockTime: Array<{
+    __typename?: 'average_block_time_per_hour'
+    averageTime: any
+  }>
+}
+
+export type LatestBlockTimestampQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type LatestBlockTimestampQuery = {
+  block: Array<{ __typename?: 'block'; timestamp: any }>
+}
+
+export type AccountDelegationRewardsQueryVariables = Exact<{
+  address: Scalars['String']
+}>
+
+export type AccountDelegationRewardsQuery = {
+  delegationRewards?: Array<{
+    __typename?: 'ActionDelegationReward'
+    coins?: Array<any | null> | null
+    validatorAddress: string
+  } | null> | null
+}
+
+export type MarketDataQueryVariables = Exact<{
+  denom?: InputMaybe<Scalars['String']>
+}>
+
+export type MarketDataQuery = {
+  communityPool: Array<{ __typename?: 'community_pool'; coins: any }>
+  inflation: Array<{ __typename?: 'inflation'; value: any }>
+  tokenPrice: Array<{ __typename?: 'token_price'; price: any; marketCap: any }>
+  supply: Array<{ __typename?: 'supply'; coins: any }>
+  bondedTokens: Array<{ __typename?: 'staking_pool'; bonded_tokens: any }>
+}
+
+export type GetMessagesByAddressListenerSubscriptionVariables = Exact<{
+  address?: InputMaybe<Scalars['_text']>
+  limit?: InputMaybe<Scalars['bigint']>
+  offset?: InputMaybe<Scalars['bigint']>
+  types?: InputMaybe<Scalars['_text']>
+}>
+
+export type GetMessagesByAddressListenerSubscription = {
+  messagesByAddress: Array<{
+    __typename?: 'message'
+    transaction: {
+      __typename?: 'transaction'
+      height: any
+      hash: string
+      success: boolean
+      messages: any
+      logs?: any | null
+      block: { __typename?: 'block'; height: any; timestamp: any }
     }
-    stakingPool: staking_pool(limit: 1, order_by: { height: desc }) {
-      bondedTokens: bonded_tokens
+  }>
+}
+
+export type GetMessagesByAddressQueryVariables = Exact<{
+  address?: InputMaybe<Scalars['_text']>
+  limit?: InputMaybe<Scalars['bigint']>
+  offset?: InputMaybe<Scalars['bigint']>
+  types?: InputMaybe<Scalars['_text']>
+}>
+
+export type GetMessagesByAddressQuery = {
+  messagesByAddress: Array<{
+    __typename?: 'message'
+    transaction: {
+      __typename?: 'transaction'
+      height: any
+      hash: string
+      success: boolean
+      messages: any
+      logs?: any | null
+      block: { __typename?: 'block'; height: any; timestamp: any }
     }
-    validator {
-      validatorStatuses: validator_statuses(
-        order_by: { height: desc }
-        limit: 1
-      ) {
-        status
-        jailed
+  }>
+}
+
+export type VotingPowerAggregateSubscriptionVariables = Exact<{
+  [key: string]: never
+}>
+
+export type VotingPowerAggregateSubscription = {
+  validatorVotingPowerAggregate: {
+    __typename?: 'validator_voting_power_aggregate'
+    aggregate?: {
+      __typename?: 'validator_voting_power_aggregate_fields'
+      sum?: {
+        __typename?: 'validator_voting_power_sum_fields'
+        votingPower?: any | null
+      } | null
+    } | null
+  }
+}
+
+export type StakingPoolSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type StakingPoolSubscription = {
+  stakingPool: Array<{ __typename?: 'staking_pool'; bonded: any }>
+}
+
+export type OnlineVotingPowerQueryVariables = Exact<{ [key: string]: never }>
+
+export type OnlineVotingPowerQuery = {
+  activeTotal: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
+  validatorVotingPowerAggregate: {
+    __typename?: 'validator_voting_power_aggregate'
+    aggregate?: {
+      __typename?: 'validator_voting_power_aggregate_fields'
+      sum?: {
+        __typename?: 'validator_voting_power_sum_fields'
+        votingPower?: any | null
+      } | null
+    } | null
+  }
+  stakingPool: Array<{ __typename?: 'staking_pool'; bonded: any }>
+  stakingParams: Array<{ __typename?: 'staking_params'; params: any }>
+}
+
+export type TransactionsListenerSubscriptionVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type TransactionsListenerSubscription = {
+  transactions: Array<{
+    __typename?: 'transaction'
+    height: any
+    hash: string
+    success: boolean
+    messages: any
+    logs?: any | null
+    block: { __typename?: 'block'; timestamp: any }
+  }>
+}
+
+export type TransactionsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type TransactionsQuery = {
+  transactions: Array<{
+    __typename?: 'transaction'
+    height: any
+    hash: string
+    success: boolean
+    messages: any
+    logs?: any | null
+    block: { __typename?: 'block'; timestamp: any }
+  }>
+}
+
+export const ActiveValidatorCountDocument = gql`
+  query ActiveValidatorCount {
+    activeTotal: validator_status_aggregate(where: { status: { _eq: 3 } }) {
+      aggregate {
+        count
+      }
+    }
+    inactiveTotal: validator_status_aggregate(where: { status: { _neq: 3 } }) {
+      aggregate {
+        count
+      }
+    }
+    total: validator_status_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+/**
+ * __useActiveValidatorCountQuery__
+ *
+ * To run a query within a React component, call `useActiveValidatorCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useActiveValidatorCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useActiveValidatorCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useActiveValidatorCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >(ActiveValidatorCountDocument, options)
+}
+export function useActiveValidatorCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >(ActiveValidatorCountDocument, options)
+}
+export type ActiveValidatorCountQueryHookResult = ReturnType<
+  typeof useActiveValidatorCountQuery
+>
+export type ActiveValidatorCountLazyQueryHookResult = ReturnType<
+  typeof useActiveValidatorCountLazyQuery
+>
+export type ActiveValidatorCountQueryResult = Apollo.QueryResult<
+  ActiveValidatorCountQuery,
+  ActiveValidatorCountQueryVariables
+>
+export const LatestBlockHeightListenerDocument = gql`
+  subscription LatestBlockHeightListener($offset: Int = 0) {
+    height: block(order_by: { height: desc }, limit: 1, offset: $offset) {
+      height
+    }
+  }
+`
+
+/**
+ * __useLatestBlockHeightListenerSubscription__
+ *
+ * To run a query within a React component, call `useLatestBlockHeightListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useLatestBlockHeightListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestBlockHeightListenerSubscription({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useLatestBlockHeightListenerSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    LatestBlockHeightListenerSubscription,
+    LatestBlockHeightListenerSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    LatestBlockHeightListenerSubscription,
+    LatestBlockHeightListenerSubscriptionVariables
+  >(LatestBlockHeightListenerDocument, options)
+}
+export type LatestBlockHeightListenerSubscriptionHookResult = ReturnType<
+  typeof useLatestBlockHeightListenerSubscription
+>
+export type LatestBlockHeightListenerSubscriptionResult =
+  Apollo.SubscriptionResult<LatestBlockHeightListenerSubscription>
+export const AverageBlockTimeDocument = gql`
+  query AverageBlockTime {
+    averageBlockTime: average_block_time_per_hour(
+      limit: 1
+      order_by: { height: desc }
+    ) {
+      averageTime: average_time
+    }
+  }
+`
+
+/**
+ * __useAverageBlockTimeQuery__
+ *
+ * To run a query within a React component, call `useAverageBlockTimeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAverageBlockTimeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAverageBlockTimeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAverageBlockTimeQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AverageBlockTimeQuery,
+    AverageBlockTimeQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AverageBlockTimeQuery, AverageBlockTimeQueryVariables>(
+    AverageBlockTimeDocument,
+    options
+  )
+}
+export function useAverageBlockTimeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AverageBlockTimeQuery,
+    AverageBlockTimeQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    AverageBlockTimeQuery,
+    AverageBlockTimeQueryVariables
+  >(AverageBlockTimeDocument, options)
+}
+export type AverageBlockTimeQueryHookResult = ReturnType<
+  typeof useAverageBlockTimeQuery
+>
+export type AverageBlockTimeLazyQueryHookResult = ReturnType<
+  typeof useAverageBlockTimeLazyQuery
+>
+export type AverageBlockTimeQueryResult = Apollo.QueryResult<
+  AverageBlockTimeQuery,
+  AverageBlockTimeQueryVariables
+>
+export const LatestBlockTimestampDocument = gql`
+  query LatestBlockTimestamp($offset: Int = 0) {
+    block: block(order_by: { height: desc }, limit: 1, offset: $offset) {
+      timestamp
+    }
+  }
+`
+
+/**
+ * __useLatestBlockTimestampQuery__
+ *
+ * To run a query within a React component, call `useLatestBlockTimestampQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestBlockTimestampQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestBlockTimestampQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useLatestBlockTimestampQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >(LatestBlockTimestampDocument, options)
+}
+export function useLatestBlockTimestampLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >(LatestBlockTimestampDocument, options)
+}
+export type LatestBlockTimestampQueryHookResult = ReturnType<
+  typeof useLatestBlockTimestampQuery
+>
+export type LatestBlockTimestampLazyQueryHookResult = ReturnType<
+  typeof useLatestBlockTimestampLazyQuery
+>
+export type LatestBlockTimestampQueryResult = Apollo.QueryResult<
+  LatestBlockTimestampQuery,
+  LatestBlockTimestampQueryVariables
+>
+export const AccountDelegationRewardsDocument = gql`
+  query AccountDelegationRewards($address: String!) {
+    delegationRewards: action_delegation_reward(address: $address) {
+      validatorAddress: validator_address
+      coins
+    }
+  }
+`
+
+/**
+ * __useAccountDelegationRewardsQuery__
+ *
+ * To run a query within a React component, call `useAccountDelegationRewardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAccountDelegationRewardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAccountDelegationRewardsQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useAccountDelegationRewardsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >(AccountDelegationRewardsDocument, options)
+}
+export function useAccountDelegationRewardsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >(AccountDelegationRewardsDocument, options)
+}
+export type AccountDelegationRewardsQueryHookResult = ReturnType<
+  typeof useAccountDelegationRewardsQuery
+>
+export type AccountDelegationRewardsLazyQueryHookResult = ReturnType<
+  typeof useAccountDelegationRewardsLazyQuery
+>
+export type AccountDelegationRewardsQueryResult = Apollo.QueryResult<
+  AccountDelegationRewardsQuery,
+  AccountDelegationRewardsQueryVariables
+>
+export const MarketDataDocument = gql`
+  query MarketData($denom: String) {
+    communityPool: community_pool(order_by: { height: desc }, limit: 1) {
+      coins
+    }
+    inflation: inflation(order_by: { height: desc }, limit: 1) {
+      value
+    }
+    tokenPrice: token_price(where: { unit_name: { _eq: $denom } }) {
+      marketCap: market_cap
+      price
+    }
+    supply {
+      coins
+    }
+    bondedTokens: staking_pool(order_by: { height: desc }, limit: 1) {
+      bonded_tokens
+    }
+  }
+`
+
+/**
+ * __useMarketDataQuery__
+ *
+ * To run a query within a React component, call `useMarketDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMarketDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMarketDataQuery({
+ *   variables: {
+ *      denom: // value for 'denom'
+ *   },
+ * });
+ */
+export function useMarketDataQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MarketDataQuery,
+    MarketDataQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MarketDataQuery, MarketDataQueryVariables>(
+    MarketDataDocument,
+    options
+  )
+}
+export function useMarketDataLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MarketDataQuery,
+    MarketDataQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MarketDataQuery, MarketDataQueryVariables>(
+    MarketDataDocument,
+    options
+  )
+}
+export type MarketDataQueryHookResult = ReturnType<typeof useMarketDataQuery>
+export type MarketDataLazyQueryHookResult = ReturnType<
+  typeof useMarketDataLazyQuery
+>
+export type MarketDataQueryResult = Apollo.QueryResult<
+  MarketDataQuery,
+  MarketDataQueryVariables
+>
+export const GetMessagesByAddressListenerDocument = gql`
+  subscription GetMessagesByAddressListener(
+    $address: _text
+    $limit: bigint = 50
+    $offset: bigint = 0
+    $types: _text = "{}"
+  ) {
+    messagesByAddress: messages_by_address(
+      args: {
+        addresses: $address
+        types: $types
+        limit: $limit
+        offset: $offset
+      }
+      order_by: { transaction: { block: { timestamp: desc } } }
+    ) {
+      transaction {
         height
-      }
-      validatorSigningInfos: validator_signing_infos(
-        order_by: { height: desc }
-        limit: 1
-      ) {
-        missedBlocksCounter: missed_blocks_counter
-        tombstoned
-      }
-      validatorInfo: validator_info {
-        operatorAddress: operator_address
-        selfDelegateAddress: self_delegate_address
-      }
-      validatorVotingPowers: validator_voting_powers(
-        offset: 0
-        limit: 1
-        order_by: { height: desc }
-      ) {
-        votingPower: voting_power
-      }
-      validatorCommissions: validator_commissions(
-        order_by: { height: desc }
-        limit: 1
-      ) {
-        commission
-      }
-      delegations {
-        amount
-        delegatorAddress: delegator_address
-      }
-      validatorSigningInfos: validator_signing_infos(
-        order_by: { height: desc }
-        limit: 1
-      ) {
-        missedBlocksCounter: missed_blocks_counter
-      }
-      validatorDescription: validator_descriptions(
-        limit: 1
-        order_by: { height: desc }
-      ) {
-        avatarUrl: avatar_url
-        moniker
+        hash
+        success
+        messages
+        logs
+        block {
+          height
+          timestamp
+        }
       }
     }
-    slashingParams: slashing_params(order_by: { height: desc }, limit: 1) {
+  }
+`
+
+/**
+ * __useGetMessagesByAddressListenerSubscription__
+ *
+ * To run a query within a React component, call `useGetMessagesByAddressListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesByAddressListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesByAddressListenerSubscription({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      types: // value for 'types'
+ *   },
+ * });
+ */
+export function useGetMessagesByAddressListenerSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    GetMessagesByAddressListenerSubscription,
+    GetMessagesByAddressListenerSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    GetMessagesByAddressListenerSubscription,
+    GetMessagesByAddressListenerSubscriptionVariables
+  >(GetMessagesByAddressListenerDocument, options)
+}
+export type GetMessagesByAddressListenerSubscriptionHookResult = ReturnType<
+  typeof useGetMessagesByAddressListenerSubscription
+>
+export type GetMessagesByAddressListenerSubscriptionResult =
+  Apollo.SubscriptionResult<GetMessagesByAddressListenerSubscription>
+export const GetMessagesByAddressDocument = gql`
+  query GetMessagesByAddress(
+    $address: _text
+    $limit: bigint = 50
+    $offset: bigint = 0
+    $types: _text = "{}"
+  ) {
+    messagesByAddress: messages_by_address(
+      args: {
+        addresses: $address
+        types: $types
+        limit: $limit
+        offset: $offset
+      }
+      order_by: { transaction: { block: { timestamp: desc } } }
+    ) {
+      transaction {
+        height
+        hash
+        success
+        messages
+        logs
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetMessagesByAddressQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesByAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesByAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesByAddressQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      types: // value for 'types'
+ *   },
+ * });
+ */
+export function useGetMessagesByAddressQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >(GetMessagesByAddressDocument, options)
+}
+export function useGetMessagesByAddressLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >(GetMessagesByAddressDocument, options)
+}
+export type GetMessagesByAddressQueryHookResult = ReturnType<
+  typeof useGetMessagesByAddressQuery
+>
+export type GetMessagesByAddressLazyQueryHookResult = ReturnType<
+  typeof useGetMessagesByAddressLazyQuery
+>
+export type GetMessagesByAddressQueryResult = Apollo.QueryResult<
+  GetMessagesByAddressQuery,
+  GetMessagesByAddressQueryVariables
+>
+export const VotingPowerAggregateDocument = gql`
+  subscription VotingPowerAggregate {
+    validatorVotingPowerAggregate: validator_voting_power_aggregate(
+      where: { validator: { validator_statuses: { status: { _eq: 3 } } } }
+    ) {
+      aggregate {
+        sum {
+          votingPower: voting_power
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useVotingPowerAggregateSubscription__
+ *
+ * To run a query within a React component, call `useVotingPowerAggregateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useVotingPowerAggregateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVotingPowerAggregateSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useVotingPowerAggregateSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    VotingPowerAggregateSubscription,
+    VotingPowerAggregateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    VotingPowerAggregateSubscription,
+    VotingPowerAggregateSubscriptionVariables
+  >(VotingPowerAggregateDocument, options)
+}
+export type VotingPowerAggregateSubscriptionHookResult = ReturnType<
+  typeof useVotingPowerAggregateSubscription
+>
+export type VotingPowerAggregateSubscriptionResult =
+  Apollo.SubscriptionResult<VotingPowerAggregateSubscription>
+export const StakingPoolDocument = gql`
+  subscription StakingPool {
+    stakingPool: staking_pool(order_by: { height: desc }, limit: 1) {
+      bonded: bonded_tokens
+    }
+  }
+`
+
+/**
+ * __useStakingPoolSubscription__
+ *
+ * To run a query within a React component, call `useStakingPoolSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useStakingPoolSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStakingPoolSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStakingPoolSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    StakingPoolSubscription,
+    StakingPoolSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    StakingPoolSubscription,
+    StakingPoolSubscriptionVariables
+  >(StakingPoolDocument, options)
+}
+export type StakingPoolSubscriptionHookResult = ReturnType<
+  typeof useStakingPoolSubscription
+>
+export type StakingPoolSubscriptionResult =
+  Apollo.SubscriptionResult<StakingPoolSubscription>
+export const OnlineVotingPowerDocument = gql`
+  query OnlineVotingPower {
+    activeTotal: validator_status_aggregate(where: { status: { _eq: 3 } }) {
+      aggregate {
+        count
+      }
+    }
+    validatorVotingPowerAggregate: validator_voting_power_aggregate(
+      where: { validator: { validator_statuses: { status: { _eq: 3 } } } }
+    ) {
+      aggregate {
+        sum {
+          votingPower: voting_power
+        }
+      }
+    }
+    stakingPool: staking_pool(order_by: { height: desc }, limit: 1) {
+      bonded: bonded_tokens
+    }
+    stakingParams: staking_params(limit: 1) {
       params
     }
   }
 `
+
+/**
+ * __useOnlineVotingPowerQuery__
+ *
+ * To run a query within a React component, call `useOnlineVotingPowerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnlineVotingPowerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnlineVotingPowerQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnlineVotingPowerQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >(OnlineVotingPowerDocument, options)
+}
+export function useOnlineVotingPowerLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >(OnlineVotingPowerDocument, options)
+}
+export type OnlineVotingPowerQueryHookResult = ReturnType<
+  typeof useOnlineVotingPowerQuery
+>
+export type OnlineVotingPowerLazyQueryHookResult = ReturnType<
+  typeof useOnlineVotingPowerLazyQuery
+>
+export type OnlineVotingPowerQueryResult = Apollo.QueryResult<
+  OnlineVotingPowerQuery,
+  OnlineVotingPowerQueryVariables
+>
+export const TransactionsListenerDocument = gql`
+  subscription TransactionsListener($limit: Int = 20, $offset: Int = 0) {
+    transactions: transaction(
+      limit: $limit
+      offset: $offset
+      order_by: { height: desc }
+    ) {
+      height
+      hash
+      success
+      block {
+        timestamp
+      }
+      messages
+      logs
+    }
+  }
+`
+
+/**
+ * __useTransactionsListenerSubscription__
+ *
+ * To run a query within a React component, call `useTransactionsListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTransactionsListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransactionsListenerSubscription({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useTransactionsListenerSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TransactionsListenerSubscription,
+    TransactionsListenerSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    TransactionsListenerSubscription,
+    TransactionsListenerSubscriptionVariables
+  >(TransactionsListenerDocument, options)
+}
+export type TransactionsListenerSubscriptionHookResult = ReturnType<
+  typeof useTransactionsListenerSubscription
+>
+export type TransactionsListenerSubscriptionResult =
+  Apollo.SubscriptionResult<TransactionsListenerSubscription>
+export const TransactionsDocument = gql`
+  query Transactions($limit: Int = 20, $offset: Int = 0) {
+    transactions: transaction(
+      limit: $limit
+      offset: $offset
+      order_by: { height: desc }
+    ) {
+      height
+      hash
+      success
+      block {
+        timestamp
+      }
+      messages
+      logs
+    }
+  }
+`
+
+/**
+ * __useTransactionsQuery__
+ *
+ * To run a query within a React component, call `useTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransactionsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useTransactionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    TransactionsQuery,
+    TransactionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<TransactionsQuery, TransactionsQueryVariables>(
+    TransactionsDocument,
+    options
+  )
+}
+export function useTransactionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TransactionsQuery,
+    TransactionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<TransactionsQuery, TransactionsQueryVariables>(
+    TransactionsDocument,
+    options
+  )
+}
+export type TransactionsQueryHookResult = ReturnType<
+  typeof useTransactionsQuery
+>
+export type TransactionsLazyQueryHookResult = ReturnType<
+  typeof useTransactionsLazyQuery
+>
+export type TransactionsQueryResult = Apollo.QueryResult<
+  TransactionsQuery,
+  TransactionsQueryVariables
+>
 
 /**
  * __useValidatorsQuery__
@@ -12837,3 +13434,68 @@ export type ValidatorsQueryResult = Apollo.QueryResult<
   ValidatorsQuery,
   ValidatorsQueryVariables
 >
+export const ValidatorsAddressListDocument = gql`
+  query ValidatorsAddressList {
+    validator {
+      validatorInfo: validator_info {
+        operatorAddress: operator_address
+        selfDelegateAddress: self_delegate_address
+        consensusAddress: consensus_address
+      }
+      validatorDescriptions: validator_descriptions(
+        limit: 1
+        order_by: { height: desc }
+      ) {
+        moniker
+        identity
+        avatarUrl: avatar_url
+      }
+    }
+  }
+`
+
+export type ValidatorsQuery = {
+  stakingPool: Array<
+    { __typename?: 'staking_pool' } & {
+      bondedTokens: Staking_Pool['bonded_tokens']
+    }
+  >
+  validator: Array<
+    { __typename?: 'validator' } & {
+      validatorStatuses: Array<
+        { __typename?: 'validator_status' } & Pick<
+          Validator_Status,
+          'status' | 'jailed' | 'height'
+        >
+      >
+      validatorSigningInfos: Array<
+        { __typename?: 'validator_signing_info' } & Pick<
+          Validator_Signing_Info,
+          'tombstoned'
+        > & {
+            missedBlocksCounter: Validator_Signing_Info['missed_blocks_counter']
+          }
+      >
+      validatorInfo?: Maybe<
+        { __typename?: 'validator_info' } & {
+          operatorAddress: Validator_Info['operator_address']
+          selfDelegateAddress: Validator_Info['self_delegate_address']
+        }
+      >
+      validatorVotingPowers: Array<
+        { __typename?: 'validator_voting_power' } & {
+          votingPower: Validator_Voting_Power['voting_power']
+        }
+      >
+      validatorCommissions: Array<
+        { __typename?: 'validator_commission' } & Pick<
+          Validator_Commission,
+          'commission'
+        >
+      >
+    }
+  >
+  slashingParams: Array<
+    { __typename?: 'slashing_params' } & Pick<Slashing_Params, 'params'>
+  >
+}

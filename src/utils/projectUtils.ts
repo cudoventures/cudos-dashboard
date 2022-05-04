@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import copy from 'copy-to-clipboard'
+import { StargateClient } from '@cosmjs/stargate'
+import BigNumber from 'bignumber.js'
+import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
 
 export const copyToClipboard = (value: string): void => {
   copy(value)
@@ -14,4 +17,26 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
     return text
   }
   return `${text.slice(0, sliceIndex)}...${text.slice(len - 4, len)}`
+}
+
+export const getWalletBalance = async (address: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const broadcaster = await StargateClient.connect(
+    import.meta.env.VITE_APP_RPC!
+  )
+
+  const updateWalletBalance = await broadcaster.getBalance(
+    address,
+    CosmosNetworkConfig.CURRENCY_DENOM
+  )
+
+  return new BigNumber(updateWalletBalance.amount)
+    .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+    .toString(10)
+}
+
+export const formatBigNum = (number: BigNumber): string => {
+  return new BigNumber(number)
+    .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+    .toString(10)
 }

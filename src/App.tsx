@@ -4,6 +4,7 @@ import { CssBaseline } from '@mui/material'
 import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation } from 'react-router-dom'
 
+import { RecoilRoot } from 'recoil'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import Footer from './components/Layout/Footer'
@@ -27,37 +28,39 @@ const App = () => {
   const apolloClient = useApollo(null)
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <ThemeProvider theme={theme[themeColor]}>
-        <CssBaseline />
-        <Routes>
-          <Route path="/" element={<ConnectWallet />} />
-        </Routes>
-        {location.pathname === '/' ? null : (
-          <Layout>
-            <Routes>
-              <Route element={<RequireKeplr />}>
-                <Route path="dashboard">
-                  <Route index element={<Dashboard />} />
+    <RecoilRoot>
+      <ApolloProvider client={apolloClient}>
+        <ThemeProvider theme={theme[themeColor]}>
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<ConnectWallet />} />
+          </Routes>
+          {location.pathname === '/' ? null : (
+            <Layout>
+              <Routes>
+                <Route element={<RequireKeplr />}>
+                  <Route path="dashboard">
+                    <Route index element={<Dashboard />} />
+                  </Route>
+                  <Route path="staking">
+                    <Route index element={<Staking />} />
+                    <Route path=":validatorId" element={<ValidatorDetails />} />
+                  </Route>
+                  <Route path="proposals" element={<Proposals />}>
+                    <Route
+                      path="proposals/:proposalId"
+                      element={<ProposalDetails />}
+                    />
+                  </Route>
+                  <Route path="settings" element={<Settings />} />
                 </Route>
-                <Route path="staking">
-                  <Route index element={<Staking />} />
-                  <Route path=":validatorId" element={<ValidatorDetails />} />
-                </Route>
-                <Route path="proposals" element={<Proposals />}>
-                  <Route
-                    path="proposals/:proposalId"
-                    element={<ProposalDetails />}
-                  />
-                </Route>
-                <Route path="settings" element={<Settings />} />
-              </Route>
-            </Routes>
-            <Footer />
-          </Layout>
-        )}
-      </ThemeProvider>
-    </ApolloProvider>
+              </Routes>
+              <Footer />
+            </Layout>
+          )}
+        </ThemeProvider>
+      </ApolloProvider>
+    </RecoilRoot>
   )
 }
 

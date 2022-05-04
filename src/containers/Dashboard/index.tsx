@@ -1,9 +1,8 @@
 import { Box, Typography } from '@mui/material'
-import theme from '../../theme'
-import WalletInformation from './WalletInformation'
-import WalletBalance from './WalletBalance'
-import NetworkStatistics from './NetworkStatistics'
-import LatestActivity from './LatestActivity'
+import WalletInformation from './WalletInformation/WalletInformation'
+import WalletBalance from './WalletBalance/WalletBalance'
+import NetworkStatistics from './NetworkStatistics/NetworkStatistics'
+import LatestActivity from './LatestActivity/LatestActivity'
 
 import { styles } from './styles'
 

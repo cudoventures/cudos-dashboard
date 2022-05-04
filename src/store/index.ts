@@ -5,12 +5,16 @@ import marketReducer from './market'
 import profileReducer from './profile'
 import validatorReducer from './validator'
 import settingsReducer from './settings'
+import networkReducer from './network'
+import userTransactionsReducer from './userTransactions'
 
 const rootReducer = combineReducers({
   profile: profileReducer,
   market: marketReducer,
   validator: validatorReducer,
-  settings: settingsReducer
+  settings: settingsReducer,
+  network: networkReducer,
+  userTransactions: userTransactionsReducer
 })
 
 const persistConfig = {
@@ -21,7 +25,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-  reducer: persistedReducer
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    })
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

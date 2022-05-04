@@ -9,6 +9,7 @@ import {
   Button,
   Tooltip
 } from '@mui/material'
+import BigNumber from 'bignumber.js'
 import { RootState } from '../../store'
 import { updateUser } from '../../store/profile'
 import { copyToClipboard, formatAddress } from '../../utils/projectUtils'
@@ -27,10 +28,6 @@ const UserInfo = () => {
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState<boolean>(false)
 
-  const toggleOpen = () => {
-    setOpen(!open)
-  }
-
   const handleCopy = (value: string) => {
     copyToClipboard(value)
     setCopied(true)
@@ -40,14 +37,24 @@ const UserInfo = () => {
     }, 3000)
   }
 
+  const handleExplorer = () => {
+    window.open(`${import.meta.env.VITE_APP_EXPLORER_V2?.toString()}`, '_blank')
+  }
+
   const handleDisconnect = () => {
-    dispatch(updateUser({ address: '', balance: 0 }))
+    dispatch(
+      updateUser({
+        address: '',
+        balance: new BigNumber(0),
+        availableRewards: new BigNumber(0)
+      })
+    )
     navigate('/')
   }
 
   return (
-    <StyledUser>
-      <Box onClick={() => toggleOpen()} style={styles.userContainer}>
+    <StyledUser onMouseLeave={() => setOpen(false)}>
+      <Box onMouseEnter={() => setOpen(true)} style={styles.userContainer}>
         <Box style={styles.userInnerContainer}>
           <Box
             sx={{
@@ -60,7 +67,7 @@ const UserInfo = () => {
               alt="Avatar"
             />
           </Box>
-          <Typography>Hi, james.eth</Typography>
+          <Typography>Hi, stefan.eth</Typography>
           <Box style={{ marginLeft: '35px' }}>
             <img
               style={{
@@ -73,11 +80,7 @@ const UserInfo = () => {
           </Box>
         </Box>
       </Box>
-      <Collapse
-        onMouseLeave={() => setOpen(false)}
-        style={{ marginTop: '-28px', zIndex: '-1' }}
-        in={open}
-      >
+      <Collapse style={{ marginTop: '-28px', zIndex: '-1' }} in={open}>
         <Box style={styles.dropdownMenuContainer}>
           <Box style={{ marginTop: '40px' }}>
             <Box
@@ -119,7 +122,7 @@ const UserInfo = () => {
                   alt="Copy"
                 />
               </Tooltip>
-              <Tooltip title="Go to Explorer">
+              <Tooltip onClick={() => handleExplorer()} title="Go to Explorer">
                 <img
                   style={{ marginLeft: '10px', cursor: 'pointer' }}
                   src={LinkIcon}

@@ -42,7 +42,16 @@ const dark = createTheme({
           background: COLORS_DARK_THEME.PRIMARY_BLUE,
           color: 'white',
           padding: '10px 20px 10px 20px',
-          textTransform: 'none'
+          textTransform: 'none',
+          '&:hover': {
+            background: COLORS_DARK_THEME.PRIMARY_BLUE_HOVER
+          },
+          '&:click': {
+            background: COLORS_DARK_THEME.PRIMARY_BLUE_CLICK
+          },
+          '&:disabled': {
+            background: COLORS_DARK_THEME.PRIMARY_BLUE_DISABLED
+          }
         }
       }
     },

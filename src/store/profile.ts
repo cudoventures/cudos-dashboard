@@ -1,13 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 
 export interface WalletState {
   address: string
-  balance: number
+  balance: BigNumber
+  availableRewards: BigNumber
 }
 
 const initialState: WalletState = {
   address: '',
-  balance: 0
+  balance: new BigNumber(0),
+  availableRewards: new BigNumber(0)
+}
+
+export enum TransactionCurrency {
+  USD = 'usd'
 }
 
 export const walletSlice = createSlice({

@@ -7,6 +7,7 @@ export interface MarketState {
   inflation: number
   communityPool: TokenUnit
   apr: number
+  bondedTokens: number | null
 }
 
 const initialState: MarketState = {
@@ -25,7 +26,8 @@ const initialState: MarketState = {
     baseDenom: '',
     exponent: 0
   },
-  apr: 0
+  apr: 0,
+  bondedTokens: 0
 }
 
 export const marketSlice = createSlice({

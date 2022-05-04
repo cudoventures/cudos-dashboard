@@ -2,8 +2,11 @@ import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { fetchRewards } from '../../api/getRewards'
 import { updateUser } from '../../store/profile'
 import { ConnectLedger } from '../../ledgers/KeplrLedger'
+import { getWalletBalance } from '../../utils/projectUtils'
 import InfoIcon from '../../assets/vectors/info-icon.svg'
 import KeplrLogo from '../../assets/vectors/keplr-logo.svg'
 import Header from '../../components/Layout/Header'
@@ -17,7 +20,16 @@ const ConnectWallet = () => {
   const connect = async () => {
     try {
       const { address } = await ConnectLedger()
-      dispatch(updateUser({ address, balance: 0 }))
+      const balance = await getWalletBalance(address)
+      const rewards = await fetchRewards(address)
+
+      dispatch(
+        updateUser({
+          address,
+          balance: new BigNumber(balance),
+          availableRewards: new BigNumber(rewards)
+        })
+      )
       navigate('dashboard')
     } catch (error) {
       alert(error.message)
