@@ -1,14 +1,26 @@
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon,
   InfoRounded as InfoRoundedIcon
 } from '@mui/icons-material'
-import { ModalProps } from 'store/validator'
+import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
+import { coin, MsgDelegateEncodeObject, StargateClient } from 'cudosjs'
 
-import getMiddleEllipsis from '../../../../../../utils/get_middle_ellipsis'
-import CudosLogo from '../../../../../../assets/vectors/cudos-logo.svg'
-import AvatarName from '../../../../../../components/AvatarName'
+import {
+  DelegationStatus,
+  initialModalState,
+  ModalProps
+} from 'store/validator'
+import { calculateFee, delegate } from 'ledgers/transactions'
+import getMiddleEllipsis from 'utils/get_middle_ellipsis'
+import CudosLogo from 'assets/vectors/cudos-logo.svg'
+import AvatarName from 'components/AvatarName'
+import { useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { RootState } from 'store'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import {
   ModalContainer,
   StyledTextField,
@@ -22,12 +34,88 @@ type DelegationProps = {
 }
 
 const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
-  const { validator, amount } = modalProps
+  const [balance, setBalance] = useState<string>('')
+  const { validator, amount, fee } = modalProps
 
-  const handleSubmit = () => {}
+  const { address } = useSelector(({ profile }: RootState) => profile)
+
+  useEffect(() => {
+    const loadBalance = async () => {
+      const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
+      const walletBalance = await client.getBalance(
+        address,
+        CosmosNetworkConfig.CURRENCY_DENOM
+      )
+
+      setBalance(
+        new BigNumber(walletBalance.amount)
+          .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+          .toString(10)
+      )
+    }
+
+    loadBalance()
+  }, [address])
+
+  const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
+    handleModal({ ...modalProps, amount: ev.target.value })
+    let fee = ''
+
+    if (Number(ev.target.value) > 0) {
+      const msg = MsgDelegate.fromPartial({
+        delegatorAddress: address,
+        validatorAddress: validator?.address,
+        amount: coin(
+          Number(ev.target.value),
+          CosmosNetworkConfig.CURRENCY_DENOM
+        )
+      })
+
+      const msgAny: MsgDelegateEncodeObject = {
+        typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+        value: msg
+      }
+
+      fee = (await calculateFee(address, msgAny, 'something')).gas
+    }
+
+    handleModal({
+      ...modalProps,
+      fee,
+      amount: ev.target.value
+    })
+  }
+
+  const handleSubmit = async (): Promise<void> => {
+    handleModal({ ...modalProps, status: DelegationStatus.LOADING })
+
+    try {
+      const walletAccount = await window.keplr.getKey(
+        import.meta.env.VITE_APP_CHAIN_ID
+      )
+
+      const delegationResult = await delegate(
+        walletAccount.bech32Address,
+        validator?.address,
+        amount,
+        'something'
+      )
+
+      handleModal({
+        ...modalProps,
+        status: DelegationStatus.SUCCESS,
+        gasUsed: delegationResult.gasUsed,
+        txHash: delegationResult.transactionHash
+      })
+    } catch (e) {
+      handleModal({ ...modalProps, status: DelegationStatus.FAILURE })
+    }
+  }
 
   const handleClose = () => {
-    handleModal({ open: false, validator: null, amount: null, status: null })
+    handleModal({
+      ...initialModalState
+    })
   }
 
   return (
@@ -76,7 +164,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                 margin="dense"
                 fullWidth
                 disabled
-                value="cudos1e5zf59p7hflznwnsur84xuvcmjefwq6dl37l3e"
+                value={address}
                 InputProps={{
                   disableUnderline: true,
                   sx: {
@@ -161,7 +249,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    3217.4 CUDOS
+                    {Number(balance.toString()).toFixed(2)} CUDOS
                   </Typography>
                 </Box>
               </Box>
@@ -205,9 +293,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   background: theme.custom.backgrounds.light
                 })}
                 size="small"
-                onChange={(ev) =>
-                  handleModal({ ...modalProps, amount: ev.target.value })
-                }
+                onChange={handleAmount}
               />
             </Box>
           </Box>
@@ -243,13 +329,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                 From
               </Typography>
               <Typography variant="body2">
-                {getMiddleEllipsis(
-                  'cudos1e5zf59p7hflznwnsur84xuvcmjefwq6dl37l3e',
-                  {
-                    beginning: 12,
-                    ending: 4
-                  }
-                )}
+                {getMiddleEllipsis(address, {
+                  beginning: 12,
+                  ending: 4
+                })}
               </Typography>
             </Box>
             <ArrowCircleRightRoundedIcon
@@ -286,7 +369,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   sx={{ fontSize: '16px', color: 'primary.main' }}
                 />
               </Stack>
-              <Typography variant="body2">0.000123 CUDOS</Typography>
+              <Typography variant="body2">{fee}</Typography>
             </Box>
           </Box>
         </SummaryContainer>

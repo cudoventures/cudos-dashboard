@@ -1,5 +1,5 @@
 import { Box, Typography, Button } from '@mui/material'
-import { ModalProps } from 'store/validator'
+import { initialModalState, ModalProps } from 'store/validator'
 
 import FailureIcon from '../../../../../../assets/vectors/failure.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
@@ -11,7 +11,9 @@ type FailureProps = {
 
 const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
   const handleClose = () => {
-    handleModal({ open: false, validator: null, amount: null, status: null })
+    handleModal({
+      ...initialModalState
+    })
   }
 
   const handleTryAgain = () => {

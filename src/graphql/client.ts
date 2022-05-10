@@ -27,12 +27,12 @@ const defaultOptions: any = {
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 const httpLink = new HttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_URL?.toString()
+  uri: import.meta.env.VITE_GRAPHQL_URL
 })
 
 const subscriptionLink = new GraphQLWsLink(
   createClient({
-    url: import.meta.env.VITE_GRAPHQL_WS?.toString() || 'ws://localhost:3000'
+    url: import.meta.env.VITE_GRAPHQL_WS || 'ws://localhost:3000'
   })
 )
 

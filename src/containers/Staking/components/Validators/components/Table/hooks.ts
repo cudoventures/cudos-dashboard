@@ -8,15 +8,24 @@ import {
   ValidatorType,
   updateValidators,
   ModalProps
-} from '../../store/validator'
-import { getValidatorCondition } from '../../utils/get_validator_condition'
-import { formatToken } from '../../utils/format_token'
-import { useValidatorsQuery, ValidatorsQuery } from '../../graphql/types'
-import { StakingParams, SlashingParams } from '../../models'
+} from '../../../../../../store/validator'
+import { getValidatorCondition } from '../../../../../../utils/get_validator_condition'
+import { formatToken } from '../../../../../../utils/format_token'
+import {
+  useValidatorsQuery,
+  ValidatorsQuery
+} from '../../../../../../graphql/types'
+import { StakingParams, SlashingParams } from '../../../../../../models'
 
 export default () => {
   const dispatch = useDispatch()
-  const state = useSelector((state: RootState) => state.validator)
+
+  const sortKey = useSelector((state: RootState) => state.validator.sortKey)
+  const sortDirection = useSelector(
+    (state: RootState) => state.validator.sortDirection
+  )
+  const items = useSelector((state: RootState) => state.validator.items)
+  const tab = useSelector((state: RootState) => state.validator.tab)
 
   const handleSetState = (stateChange: any) => {
     dispatch(updateValidators({ ...stateChange }))
@@ -49,13 +58,13 @@ export default () => {
         )
         const votingPowerPercent =
           numeral((votingPower / votingPowerOverall) * 100).value() || 0
-        const totalDelegations = x.delegations.reduce((a, b) => {
+        const totalDelegations = x.validatorInfo.delegations.reduce((a, b) => {
           return (
             a + (numeral(R.pathOr(0, ['amount', 'amount'], b)).value() || 0)
           )
         }, 0)
 
-        const [selfDelegation] = x.delegations.filter((y) => {
+        const [selfDelegation] = x.validatorInfo.delegations.filter((y) => {
           return y.delegatorAddress === x.validatorInfo?.selfDelegateAddress
         })
         const self = numeral(
@@ -89,7 +98,7 @@ export default () => {
             ['validatorSigningInfos', 0, 'tombstoned'],
             x
           ),
-          delegators: x.delegations.length,
+          delegators: x.validatorInfo.delegations.length,
           avatarUrl: R.pathOr('', ['validatorDescription', 0, 'avatarUrl'], x),
           moniker: R.pathOr('', ['validatorDescription', 0, 'moniker'], x)
         }
@@ -125,22 +134,16 @@ export default () => {
     }
   }
 
-  const handleTabChange = (_event: any, newValue: number) => {
-    dispatch(updateValidators({ ...state, tab: newValue }))
-  }
-
   const handleSort = (key: string) => {
-    if (key === state.sortKey) {
+    if (key === sortKey) {
       dispatch(
         updateValidators({
-          ...state,
-          sortDirection: state.sortDirection === 'asc' ? 'desc' : 'asc'
+          sortDirection: sortDirection === 'asc' ? 'desc' : 'asc'
         })
       )
     } else {
       dispatch(
         updateValidators({
-          ...state,
           sortKey: key,
           sortDirection: 'desc' // new key so we start the sort by asc
         })
@@ -151,18 +154,18 @@ export default () => {
   const sortItems = (items: ValidatorType[]) => {
     let sorted: ValidatorType[] = R.clone(items)
 
-    if (state.tab === 0) {
+    if (tab === 0) {
       sorted = sorted.filter((x) => x.status === 3)
     }
 
-    if (state.tab === 1) {
+    if (tab === 1) {
       sorted = sorted.filter((x) => x.status !== 3)
     }
 
-    if (state.sortKey && state.sortDirection) {
+    if (sortKey && sortDirection) {
       sorted.sort((a, b) => {
-        let compareA = R.pathOr<number | string>(0, [state.sortKey], a)
-        let compareB = R.pathOr<number | string>(0, [state.sortKey], b)
+        let compareA = R.pathOr<number | string>(0, [sortKey], a)
+        let compareB = R.pathOr<number | string>(0, [sortKey], b)
 
         if (typeof compareA === 'string' && typeof compareB === 'string') {
           compareA = compareA.toLowerCase()
@@ -170,10 +173,10 @@ export default () => {
         }
 
         if (compareA < compareB) {
-          return state.sortDirection === 'asc' ? -1 : 1
+          return sortDirection === 'asc' ? -1 : 1
         }
         if (compareA > compareB) {
-          return state.sortDirection === 'asc' ? 1 : -1
+          return sortDirection === 'asc' ? 1 : -1
         }
 
         return 0
@@ -181,15 +184,6 @@ export default () => {
     }
 
     return sorted
-  }
-
-  const handleModal = (modalState: ModalProps) => {
-    dispatch(
-      updateValidators({
-        ...state,
-        modal: { ...state.modal, ...modalState }
-      })
-    )
   }
 
   // ==========================
@@ -204,9 +198,16 @@ export default () => {
     }
   })
 
+  const handleModal = (modalState: ModalProps) => {
+    dispatch(updateValidators({ modal: { ...modalState } }))
+  }
+
   return {
-    state,
-    handleTabChange,
+    state: {
+      sortDirection,
+      sortKey,
+      items
+    },
     handleSort,
     sortItems,
     handleModal

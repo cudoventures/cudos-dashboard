@@ -121,4 +121,15 @@ declare global {
     denom: string
     amount: string
   }
+
+  interface ImportMetaEnv {
+    VITE_APP_CHAIN_ID: string
+    VITE_APP_RPC: string
+    VITE_GRAPHQL_URL: string
+    VITE_GRAPHQL_WS: string
+    VITE_APP_GAS_PRICE: decimal
+    VITE_APP_CHAIN_NAME: string
+    VITE_APP_API: string
+    VITE_APP_EXPLORER_V2: string
+  }
 }

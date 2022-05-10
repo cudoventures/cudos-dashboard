@@ -7,22 +7,14 @@ import columns from '../../../../utils'
 import Condition from '../../../../../../components/Condition'
 import AvatarName from '../../../../../../components/AvatarName'
 import Table from '../../../../../../components/Table'
+import useTable from './hooks'
 
-type ValidatorsTableProps = {
-  sortDirection: 'desc' | 'asc'
-  sortKey: string
-  handleSort: (key: string) => void
-  items: ValidatorType[]
-  handleModal: (modalProps: ModalProps) => void
-}
+const ValidatorsTable: React.FC = () => {
+  const { state, handleSort, sortItems, handleModal } = useTable()
 
-const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
-  items,
-  sortKey,
-  sortDirection,
-  handleSort,
-  handleModal
-}) => {
+  const { sortKey, sortDirection } = state
+  const items = sortItems(state.items)
+
   const formattedItems = items.map((x: ValidatorType, i: number) => {
     const condition =
       x.status === 3 ? getValidatorConditionClass(x.condition) : undefined
@@ -78,7 +70,10 @@ const ValidatorsTable: React.FC<ValidatorsTableProps> = ({
                 address: x.validator
               },
               status: null,
-              amount: null
+              amount: null,
+              fee: '',
+              gasUsed: 0,
+              txHash: ''
             })
           }
         >
