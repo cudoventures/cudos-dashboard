@@ -110,6 +110,7 @@ export const styles = {
   },
   networkInfoContainer: {
     display: 'flex',
+    justifyContent: 'space-between',
     borderRadius: '5px',
     padding: '17px',
     background: theme.dark.custom.backgrounds.light,
@@ -132,5 +133,16 @@ export const styles = {
     alignItems: 'center',
     fontSize: '16px',
     fontWeight: '600'
+  },
+  latestActivityAction: {
+    borderRadius: '10px',
+    background: '#52A6F8',
+    color: 'white',
+    padding: '6px 17px 6px 17px',
+    fontSize: '12px',
+    fontWeight: '600',
+    letterSpacing: '2px',
+    maxWidth: '255px',
+    overflowWrap: 'anywhere'
   }
 } as const

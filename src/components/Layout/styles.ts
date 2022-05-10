@@ -14,13 +14,15 @@ export const styles = {
     padding: '15px 20px 15px 20px',
     position: 'relative',
     background: theme.dark.custom.backgrounds.primary,
-    borderRadius: '35px'
+    borderRadius: '35px',
+    height: '48px'
   },
   userInnerContainer: {
     fontSize: '14px',
     fontWeight: '500',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: '-2px'
   },
   dropdownMenuContainer: {
     background: theme.dark.custom.backgrounds.light,
@@ -31,7 +33,8 @@ export const styles = {
     display: 'flex',
     borderRadius: '0px 0px 20px 20px',
     marginTop: '3px',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    boxShadow: '2px 10px 20px rgba(2, 6, 20, 0.6)'
   }
 } as const
 

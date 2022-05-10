@@ -1,11 +1,26 @@
-import { Box, Typography } from '@mui/material'
 import React from 'react'
+import { Box, Typography } from '@mui/material'
+import numeral from 'numeral'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../store'
+import { useOnlineVotingPower } from '../VotingPower/hooks'
+import { useDataBlocks } from './Blocks/hooks'
+import { useMarketRecoil } from './Market/hooks'
+import Card from '../../../components/Card/Card'
 
-import Card from '../../components/Card/Card'
-
-import { styles } from './styles'
+import { styles } from '../styles'
 
 const NetworkStatistics = () => {
+  const { price } = useSelector((state: RootState) => state.market)
+  const { state: votingState } = useOnlineVotingPower()
+  const { state: blockState } = useDataBlocks()
+  useMarketRecoil()
+
+  const votingPowerPercent =
+    votingState.totalVotingPower === 0
+      ? numeral(0)
+      : numeral((votingState.votingPower / votingState.totalVotingPower) * 100)
+
   return (
     <Card style={styles.networkStatisticsCard}>
       <Box>
@@ -19,14 +34,16 @@ const NetworkStatistics = () => {
             color="text.secondary"
             style={styles.networkCardTitleStyle}
           >
-            REWARDS
+            PRICE
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>11%</Typography>
+          <Typography style={styles.networkCardContentStyle}>
+            {`$${price}`}
+          </Typography>
           <Typography
             color="primary.main"
             style={styles.networkCardFooterStyle}
           >
-            Annual Percentage Rate
+            USD
           </Typography>
         </Box>
         <Box style={styles.networkCardStyle}>
@@ -37,7 +54,7 @@ const NetworkStatistics = () => {
             TOTAL AMOUNT STAKED
           </Typography>
           <Typography style={styles.networkCardContentStyle}>
-            20,160,261,982.41
+            {numeral(votingState.totalVotingPower).format('0,0')}
           </Typography>
           <Typography
             color="primary.main"
@@ -53,12 +70,14 @@ const NetworkStatistics = () => {
           >
             ACTIVE VALIDATORS
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>15</Typography>
+          <Typography style={styles.networkCardContentStyle}>
+            {blockState.validators.active}
+          </Typography>
           <Typography
             color="primary.main"
             style={styles.networkCardFooterStyle}
           >
-            All validators: 36
+            All validators: {blockState.validators.total}
           </Typography>
         </Box>
         <Box style={styles.networkCardStyle}>
@@ -68,12 +87,15 @@ const NetworkStatistics = () => {
           >
             ONLINE VOTING POWER
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>99.99%</Typography>
+          <Typography
+            style={styles.networkCardContentStyle}
+          >{`${votingPowerPercent.format('0,0.00', (n) => ~~n)}%`}</Typography>
           <Typography
             color="primary.main"
             style={styles.networkCardFooterStyle}
           >
-            72,544,241 / 72,544,259
+            {numeral(votingState.votingPower).format('0,0')} /{' '}
+            {numeral(votingState.totalVotingPower).format('0,0')}
           </Typography>
         </Box>
         <Box style={{ marginBottom: '0px' }} sx={styles.networkCardStyle}>
@@ -84,7 +106,7 @@ const NetworkStatistics = () => {
             LATEST BLOCK
           </Typography>
           <Typography style={styles.networkCardContentStyle}>
-            2,345,699
+            {numeral(blockState.blockHeight).format('0,0')}
           </Typography>
           <Typography
             color="primary.main"

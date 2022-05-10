@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { gql } from '@apollo/client'
 import * as Apollo from '@apollo/client'
 
@@ -1382,6 +1381,16 @@ export type Cosmwasm_Clear_Admin_Bool_Exp = {
   _or?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
   contract?: InputMaybe<String_Comparison_Exp>
   index?: InputMaybe<Bigint_Comparison_Exp>
+=======
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_clear_admin". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Clear_Admin_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
   sender?: InputMaybe<String_Comparison_Exp>
   success?: InputMaybe<Boolean_Comparison_Exp>
   transaction?: InputMaybe<Transaction_Bool_Exp>
@@ -1549,6 +1558,31 @@ export type Cosmwasm_Execute_Bool_Exp = {
 }
 
 /** aggregate max on columns */
+export type Cosmwasm_Clear_Admin_Max_Fields = {
+  __typename?: 'cosmwasm_clear_admin_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Clear_Admin_Min_Fields = {
+  __typename?: 'cosmwasm_clear_admin_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_clear_admin". */
+export type Cosmwasm_Clear_Admin_Order_By = {
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+=======
+}
+
+/** aggregate max on columns */
 export type Cosmwasm_Execute_Max_Fields = {
   __typename?: 'cosmwasm_execute_max_fields'
   contract?: Maybe<Scalars['String']>
@@ -1593,6 +1627,624 @@ export enum Cosmwasm_Execute_Select_Column {
   Index = 'index',
   /** column name */
   Method = 'method',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Execute_Stddev_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Execute_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Execute_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Execute_Sum_Fields = {
+  __typename?: 'cosmwasm_execute_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Execute_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_execute_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Execute_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_execute_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Execute_Variance_Fields = {
+  __typename?: 'cosmwasm_execute_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate = {
+  __typename?: 'cosmwasm_instantiate'
+  admin?: Maybe<Scalars['String']>
+  code_id: Scalars['String']
+  funds?: Maybe<Scalars['jsonb']>
+  index: Scalars['bigint']
+  label: Scalars['String']
+  result_contract_address?: Maybe<Scalars['String']>
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_instantiate" */
+export type Cosmwasm_InstantiateFundsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate = {
+  __typename?: 'cosmwasm_instantiate_aggregate'
+  aggregate?: Maybe<Cosmwasm_Instantiate_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Instantiate>
+}
+
+/** aggregate fields of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate_Fields = {
+  __typename?: 'cosmwasm_instantiate_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Instantiate_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Instantiate_Max_Fields>
+  min?: Maybe<Cosmwasm_Instantiate_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Instantiate_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Instantiate_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Instantiate_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Instantiate_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Instantiate_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Instantiate_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Instantiate_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Instantiate_Avg_Fields = {
+  __typename?: 'cosmwasm_instantiate_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_instantiate". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Instantiate_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Instantiate_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Instantiate_Bool_Exp>>
+  admin?: InputMaybe<String_Comparison_Exp>
+  code_id?: InputMaybe<String_Comparison_Exp>
+  funds?: InputMaybe<Jsonb_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  label?: InputMaybe<String_Comparison_Exp>
+  result_contract_address?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Instantiate_Max_Fields = {
+  __typename?: 'cosmwasm_instantiate_max_fields'
+  admin?: Maybe<Scalars['String']>
+  code_id?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  label?: Maybe<Scalars['String']>
+  result_contract_address?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Instantiate_Min_Fields = {
+  __typename?: 'cosmwasm_instantiate_min_fields'
+  admin?: Maybe<Scalars['String']>
+  code_id?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  label?: Maybe<Scalars['String']>
+  result_contract_address?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_instantiate". */
+export type Cosmwasm_Instantiate_Order_By = {
+  admin?: InputMaybe<Order_By>
+  code_id?: InputMaybe<Order_By>
+  funds?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  label?: InputMaybe<Order_By>
+  result_contract_address?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_clear_admin" */
+export enum Cosmwasm_Clear_Admin_Select_Column {
+=======
+}
+
+/** select columns of table "cosmwasm_instantiate" */
+export enum Cosmwasm_Instantiate_Select_Column {
+  /** column name */
+  Admin = 'admin',
+  /** column name */
+  CodeId = 'code_id',
+  /** column name */
+  Funds = 'funds',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Label = 'label',
+  /** column name */
+  ResultContractAddress = 'result_contract_address',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Instantiate_Stddev_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Instantiate_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Instantiate_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Instantiate_Sum_Fields = {
+  __typename?: 'cosmwasm_instantiate_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Instantiate_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_instantiate_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Instantiate_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_instantiate_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Instantiate_Variance_Fields = {
+  __typename?: 'cosmwasm_instantiate_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate = {
+  __typename?: 'cosmwasm_migrate'
+  arguments?: Maybe<Scalars['jsonb']>
+  code_id: Scalars['String']
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_migrate" */
+export type Cosmwasm_MigrateArgumentsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate = {
+  __typename?: 'cosmwasm_migrate_aggregate'
+  aggregate?: Maybe<Cosmwasm_Migrate_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Migrate>
+}
+
+/** aggregate fields of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate_Fields = {
+  __typename?: 'cosmwasm_migrate_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Migrate_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Migrate_Max_Fields>
+  min?: Maybe<Cosmwasm_Migrate_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Migrate_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Migrate_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Migrate_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Migrate_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Migrate_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Migrate_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Migrate_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Migrate_Avg_Fields = {
+  __typename?: 'cosmwasm_migrate_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_migrate". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Migrate_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Migrate_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Migrate_Bool_Exp>>
+  arguments?: InputMaybe<Jsonb_Comparison_Exp>
+  code_id?: InputMaybe<String_Comparison_Exp>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Migrate_Max_Fields = {
+  __typename?: 'cosmwasm_migrate_max_fields'
+  code_id?: Maybe<Scalars['String']>
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Migrate_Min_Fields = {
+  __typename?: 'cosmwasm_migrate_min_fields'
+  code_id?: Maybe<Scalars['String']>
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_migrate". */
+export type Cosmwasm_Migrate_Order_By = {
+  arguments?: InputMaybe<Order_By>
+  code_id?: InputMaybe<Order_By>
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_migrate" */
+export enum Cosmwasm_Migrate_Select_Column {
+  /** column name */
+  Arguments = 'arguments',
+  /** column name */
+  CodeId = 'code_id',
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_fields'
+export type Cosmwasm_Migrate_Stddev_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_pop_fields'
+export type Cosmwasm_Migrate_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_samp_fields'
+export type Cosmwasm_Migrate_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Clear_Admin_Sum_Fields = {
+  __typename?: 'cosmwasm_clear_admin_sum_fields'
+export type Cosmwasm_Migrate_Sum_Fields = {
+  __typename?: 'cosmwasm_migrate_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Clear_Admin_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_clear_admin_var_pop_fields'
+export type Cosmwasm_Migrate_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_migrate_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Clear_Admin_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_clear_admin_var_samp_fields'
+export type Cosmwasm_Migrate_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_migrate_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Clear_Admin_Variance_Fields = {
+  __typename?: 'cosmwasm_clear_admin_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_Execute = {
+  __typename?: 'cosmwasm_execute'
+  arguments?: Maybe<Scalars['jsonb']>
+  contract: Scalars['String']
+  funds?: Maybe<Scalars['jsonb']>
+  index: Scalars['bigint']
+  method: Scalars['String']
+export type Cosmwasm_Migrate_Variance_Fields = {
+  __typename?: 'cosmwasm_migrate_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_store" */
+export type Cosmwasm_Store = {
+  __typename?: 'cosmwasm_store'
+  index: Scalars['bigint']
+  instantiate_permission?: Maybe<Scalars['jsonb']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_ExecuteArgumentsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_ExecuteFundsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate = {
+  __typename?: 'cosmwasm_execute_aggregate'
+  aggregate?: Maybe<Cosmwasm_Execute_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Execute>
+}
+
+/** aggregate fields of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate_Fields = {
+  __typename?: 'cosmwasm_execute_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Execute_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Execute_Max_Fields>
+  min?: Maybe<Cosmwasm_Execute_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Execute_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Execute_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Execute_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Execute_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Execute_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Execute_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Execute_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Execute_Avg_Fields = {
+  __typename?: 'cosmwasm_execute_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_execute". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Execute_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Execute_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Execute_Bool_Exp>>
+  arguments?: InputMaybe<Jsonb_Comparison_Exp>
+  contract?: InputMaybe<String_Comparison_Exp>
+  funds?: InputMaybe<Jsonb_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  method?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Execute_Max_Fields = {
+  __typename?: 'cosmwasm_execute_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  method?: Maybe<Scalars['String']>
+/** columns and relationships of "cosmwasm_store" */
+export type Cosmwasm_StoreInstantiate_PermissionArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate = {
+  __typename?: 'cosmwasm_store_aggregate'
+  aggregate?: Maybe<Cosmwasm_Store_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Store>
+}
+
+/** aggregate fields of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate_Fields = {
+  __typename?: 'cosmwasm_store_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Store_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Store_Max_Fields>
+  min?: Maybe<Cosmwasm_Store_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Store_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Store_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Store_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Store_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Store_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Store_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Store_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Store_Avg_Fields = {
+  __typename?: 'cosmwasm_store_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_store". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Store_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Store_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Store_Bool_Exp>>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  instantiate_permission?: InputMaybe<Jsonb_Comparison_Exp>
+  result_code_id?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Store_Max_Fields = {
+  __typename?: 'cosmwasm_store_max_fields'
+  index?: Maybe<Scalars['bigint']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Store_Min_Fields = {
+  __typename?: 'cosmwasm_store_min_fields'
+  index?: Maybe<Scalars['bigint']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+  
+/** aggregate min on columns */
+export type Cosmwasm_Execute_Min_Fields = {
+  __typename?: 'cosmwasm_execute_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  method?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_execute". */
+export type Cosmwasm_Execute_Order_By = {
+  arguments?: InputMaybe<Order_By>
+  contract?: InputMaybe<Order_By>
+  funds?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  method?: InputMaybe<Order_By>
+
+/** Ordering options when selecting data from "cosmwasm_store". */
+export type Cosmwasm_Store_Order_By = {
+  index?: InputMaybe<Order_By>
+  instantiate_permission?: InputMaybe<Order_By>
+  result_code_id?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_execute" */
+export enum Cosmwasm_Execute_Select_Column {
+  /** column name */
+  Arguments = 'arguments',
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Funds = 'funds',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Method = 'method',
+  /** column name */
+/** select columns of table "cosmwasm_store" */
+export enum Cosmwasm_Store_Select_Column {
+  /** column name */
+  Index = 'index',
+  /** column name */
+  InstantiatePermission = 'instantiate_permission',
+  /** column name */
+  ResultCodeId = 'result_code_id',
   /** column name */
   Sender = 'sender',
   /** column name */
@@ -1810,6 +2462,294 @@ export type Cosmwasm_Instantiate_Var_Pop_Fields = {
 export type Cosmwasm_Instantiate_Var_Samp_Fields = {
   __typename?: 'cosmwasm_instantiate_var_samp_fields'
   index?: Maybe<Scalars['Float']>
+=======
+export type Cosmwasm_Store_Stddev_Fields = {
+  __typename?: 'cosmwasm_store_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Store_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_store_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Store_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_store_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Store_Sum_Fields = {
+  __typename?: 'cosmwasm_store_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Store_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_store_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Store_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_store_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Store_Variance_Fields = {
+  __typename?: 'cosmwasm_store_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin = {
+  __typename?: 'cosmwasm_update_admin'
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  new_admin: Scalars['String']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** aggregated selection of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate = {
+  __typename?: 'cosmwasm_update_admin_aggregate'
+  aggregate?: Maybe<Cosmwasm_Update_Admin_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Update_Admin>
+}
+
+/** aggregate fields of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate_Fields = {
+  __typename?: 'cosmwasm_update_admin_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Update_Admin_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Update_Admin_Max_Fields>
+  min?: Maybe<Cosmwasm_Update_Admin_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Update_Admin_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Update_Admin_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Update_Admin_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Update_Admin_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Update_Admin_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Update_Admin_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Update_Admin_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Update_Admin_Avg_Fields = {
+  __typename?: 'cosmwasm_update_admin_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_update_admin". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Update_Admin_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Update_Admin_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Update_Admin_Bool_Exp>>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  new_admin?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Update_Admin_Max_Fields = {
+  __typename?: 'cosmwasm_update_admin_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  new_admin?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Update_Admin_Min_Fields = {
+  __typename?: 'cosmwasm_update_admin_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  new_admin?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_update_admin". */
+export type Cosmwasm_Update_Admin_Order_By = {
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  new_admin?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_update_admin" */
+export enum Cosmwasm_Update_Admin_Select_Column {
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  NewAdmin = 'new_admin',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Update_Admin_Stddev_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Update_Admin_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Update_Admin_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Update_Admin_Sum_Fields = {
+  __typename?: 'cosmwasm_update_admin_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Update_Admin_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_update_admin_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Update_Admin_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_update_admin_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Update_Admin_Variance_Fields = {
+  __typename?: 'cosmwasm_update_admin_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "delegation" */
+export type Delegation = {
+  __typename?: 'delegation'
+  /** An object relationship */
+  account: Account
+  amount: Scalars['coin']
+  delegator_address: Scalars['String']
+  validator_address: Scalars['String']
+  /** An object relationship */
+  validator_info: Validator_Info
+}
+
+/** aggregated selection of "delegation" */
+export type Delegation_Aggregate = {
+  __typename?: 'delegation_aggregate'
+  aggregate?: Maybe<Delegation_Aggregate_Fields>
+  nodes: Array<Delegation>
+}
+
+/** aggregate fields of "delegation" */
+export type Delegation_Aggregate_Fields = {
+  __typename?: 'delegation_aggregate_fields'
+  count: Scalars['Int']
+  max?: Maybe<Delegation_Max_Fields>
+  min?: Maybe<Delegation_Min_Fields>
+}
+
+/** aggregate fields of "delegation" */
+export type Delegation_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Delegation_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** order by aggregate values of table "delegation" */
+export type Delegation_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>
+  max?: InputMaybe<Delegation_Max_Order_By>
+  min?: InputMaybe<Delegation_Min_Order_By>
+}
+
+/** Boolean expression to filter rows from the table "delegation". All fields are combined with a logical 'AND'. */
+export type Delegation_Bool_Exp = {
+  _and?: InputMaybe<Array<Delegation_Bool_Exp>>
+  _not?: InputMaybe<Delegation_Bool_Exp>
+  _or?: InputMaybe<Array<Delegation_Bool_Exp>>
+  account?: InputMaybe<Account_Bool_Exp>
+  amount?: InputMaybe<Coin_Comparison_Exp>
+  delegator_address?: InputMaybe<String_Comparison_Exp>
+  validator_address?: InputMaybe<String_Comparison_Exp>
+  validator_info?: InputMaybe<Validator_Info_Bool_Exp>
+}
+
+/** aggregate max on columns */
+export type Delegation_Max_Fields = {
+  __typename?: 'delegation_max_fields'
+  delegator_address?: Maybe<Scalars['String']>
+  validator_address?: Maybe<Scalars['String']>
+}
+
+/** order by max() on columns of table "delegation" */
+export type Delegation_Max_Order_By = {
+  delegator_address?: InputMaybe<Order_By>
+  validator_address?: InputMaybe<Order_By>
+}
+
+/** aggregate min on columns */
+export type Delegation_Min_Fields = {
+  __typename?: 'delegation_min_fields'
+  delegator_address?: Maybe<Scalars['String']>
+  validator_address?: Maybe<Scalars['String']>
+}
+
+/** order by min() on columns of table "delegation" */
+export type Delegation_Min_Order_By = {
+  delegator_address?: InputMaybe<Order_By>
+  validator_address?: InputMaybe<Order_By>
+}
+
+/** Ordering options when selecting data from "delegation". */
+export type Delegation_Order_By = {
+  account?: InputMaybe<Account_Order_By>
+  amount?: InputMaybe<Order_By>
+  delegator_address?: InputMaybe<Order_By>
+  validator_address?: InputMaybe<Order_By>
+  validator_info?: InputMaybe<Validator_Info_Order_By>
+}
+
+/** select columns of table "delegation" */
+export enum Delegation_Select_Column {
+  /** column name */
+  Amount = 'amount',
+  /** column name */
+  DelegatorAddress = 'delegator_address',
+  /** column name */
+  ValidatorAddress = 'validator_address'
 }
 
 /** aggregate variance on columns */
@@ -6709,6 +7649,132 @@ export type Query_RootCosmwasm_Update_Admin_By_PkArgs = {
   transaction_hash: Scalars['String']
 }
 
+export type Query_RootCosmwasm_Clear_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Clear_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Clear_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_ExecuteArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Execute_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Execute_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_InstantiateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Instantiate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Instantiate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_MigrateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Migrate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Migrate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_StoreArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Store_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Store_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_Update_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Update_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Update_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
 export type Query_RootDelegationArgs = {
   distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -8219,6 +9285,132 @@ export type Subscription_RootCommunity_Pool_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Community_Pool_Order_By>>
   where?: InputMaybe<Community_Pool_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_ExecuteArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Execute_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Execute_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_InstantiateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Instantiate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Instantiate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_MigrateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Migrate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Migrate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_StoreArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Store_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Store_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_Update_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Update_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Update_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
 }
 
 export type Subscription_RootCosmwasm_Clear_AdminArgs = {
@@ -12397,6 +13589,793 @@ export type Vesting_Period_Variance_Order_By = {
   vesting_account_id?: InputMaybe<Order_By>
 }
 
+export type ActiveValidatorCountQueryVariables = Exact<{ [key: string]: never }>
+
+export type ActiveValidatorCountQuery = {
+  activeTotal: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
+  inactiveTotal: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
+  total: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
+}
+
+export type LatestBlockHeightListenerSubscriptionVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type LatestBlockHeightListenerSubscription = {
+  height: Array<{ __typename?: 'block'; height: any }>
+}
+
+export type AverageBlockTimeQueryVariables = Exact<{ [key: string]: never }>
+
+export type AverageBlockTimeQuery = {
+  averageBlockTime: Array<{
+    __typename?: 'average_block_time_per_hour'
+    averageTime: any
+  }>
+}
+
+export type LatestBlockTimestampQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type LatestBlockTimestampQuery = {
+  block: Array<{ __typename?: 'block'; timestamp: any }>
+}
+
+export type AccountDelegationRewardsQueryVariables = Exact<{
+  address: Scalars['String']
+}>
+
+export type AccountDelegationRewardsQuery = {
+  delegationRewards?: Array<{
+    __typename?: 'ActionDelegationReward'
+    coins?: Array<any | null> | null
+    validatorAddress: string
+  } | null> | null
+}
+
+export type MarketDataQueryVariables = Exact<{
+  denom?: InputMaybe<Scalars['String']>
+}>
+
+export type MarketDataQuery = {
+  communityPool: Array<{ __typename?: 'community_pool'; coins: any }>
+  inflation: Array<{ __typename?: 'inflation'; value: any }>
+  tokenPrice: Array<{ __typename?: 'token_price'; price: any; marketCap: any }>
+  supply: Array<{ __typename?: 'supply'; coins: any }>
+  bondedTokens: Array<{ __typename?: 'staking_pool'; bonded_tokens: any }>
+}
+
+export type GetMessagesByAddressListenerSubscriptionVariables = Exact<{
+  address?: InputMaybe<Scalars['_text']>
+  limit?: InputMaybe<Scalars['bigint']>
+  offset?: InputMaybe<Scalars['bigint']>
+  types?: InputMaybe<Scalars['_text']>
+}>
+
+export type GetMessagesByAddressListenerSubscription = {
+  messagesByAddress: Array<{
+    __typename?: 'message'
+    transaction: {
+      __typename?: 'transaction'
+      height: any
+      hash: string
+      success: boolean
+      messages: any
+      logs?: any | null
+      block: { __typename?: 'block'; height: any; timestamp: any }
+    }
+  }>
+}
+
+export type GetMessagesByAddressQueryVariables = Exact<{
+  address?: InputMaybe<Scalars['_text']>
+  limit?: InputMaybe<Scalars['bigint']>
+  offset?: InputMaybe<Scalars['bigint']>
+  types?: InputMaybe<Scalars['_text']>
+}>
+
+export type GetMessagesByAddressQuery = {
+  messagesByAddress: Array<{
+    __typename?: 'message'
+    transaction: {
+      __typename?: 'transaction'
+      height: any
+      hash: string
+      success: boolean
+      messages: any
+      logs?: any | null
+      block: { __typename?: 'block'; height: any; timestamp: any }
+    }
+  }>
+}
+
+export type VotingPowerAggregateSubscriptionVariables = Exact<{
+  [key: string]: never
+}>
+
+export type VotingPowerAggregateSubscription = {
+  validatorVotingPowerAggregate: {
+    __typename?: 'validator_voting_power_aggregate'
+    aggregate?: {
+      __typename?: 'validator_voting_power_aggregate_fields'
+      sum?: {
+        __typename?: 'validator_voting_power_sum_fields'
+        votingPower?: any | null
+      } | null
+    } | null
+  }
+}
+
+export type StakingPoolSubscriptionVariables = Exact<{ [key: string]: never }>
+
+export type StakingPoolSubscription = {
+  stakingPool: Array<{ __typename?: 'staking_pool'; bonded: any }>
+}
+
+export type OnlineVotingPowerQueryVariables = Exact<{ [key: string]: never }>
+
+export type OnlineVotingPowerQuery = {
+  activeTotal: {
+    __typename?: 'validator_status_aggregate'
+    aggregate?: {
+      __typename?: 'validator_status_aggregate_fields'
+      count: number
+    } | null
+  }
+  validatorVotingPowerAggregate: {
+    __typename?: 'validator_voting_power_aggregate'
+    aggregate?: {
+      __typename?: 'validator_voting_power_aggregate_fields'
+      sum?: {
+        __typename?: 'validator_voting_power_sum_fields'
+        votingPower?: any | null
+      } | null
+    } | null
+  }
+  stakingPool: Array<{ __typename?: 'staking_pool'; bonded: any }>
+  stakingParams: Array<{ __typename?: 'staking_params'; params: any }>
+}
+
+export type TransactionsListenerSubscriptionVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type TransactionsListenerSubscription = {
+  transactions: Array<{
+    __typename?: 'transaction'
+    height: any
+    hash: string
+    success: boolean
+    messages: any
+    logs?: any | null
+    block: { __typename?: 'block'; timestamp: any }
+  }>
+}
+
+export type TransactionsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+}>
+
+export type TransactionsQuery = {
+  transactions: Array<{
+    __typename?: 'transaction'
+    height: any
+    hash: string
+    success: boolean
+    messages: any
+    logs?: any | null
+    block: { __typename?: 'block'; timestamp: any }
+  }>
+}
+
+export const ActiveValidatorCountDocument = gql`
+  query ActiveValidatorCount {
+    activeTotal: validator_status_aggregate(where: { status: { _eq: 3 } }) {
+      aggregate {
+        count
+      }
+    }
+    inactiveTotal: validator_status_aggregate(where: { status: { _neq: 3 } }) {
+      aggregate {
+        count
+      }
+    }
+    total: validator_status_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
+/**
+ * __useActiveValidatorCountQuery__
+ *
+ * To run a query within a React component, call `useActiveValidatorCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useActiveValidatorCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useActiveValidatorCountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useActiveValidatorCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >(ActiveValidatorCountDocument, options)
+}
+export function useActiveValidatorCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    ActiveValidatorCountQuery,
+    ActiveValidatorCountQueryVariables
+  >(ActiveValidatorCountDocument, options)
+}
+export type ActiveValidatorCountQueryHookResult = ReturnType<
+  typeof useActiveValidatorCountQuery
+>
+export type ActiveValidatorCountLazyQueryHookResult = ReturnType<
+  typeof useActiveValidatorCountLazyQuery
+>
+export type ActiveValidatorCountQueryResult = Apollo.QueryResult<
+  ActiveValidatorCountQuery,
+  ActiveValidatorCountQueryVariables
+>
+export const LatestBlockHeightListenerDocument = gql`
+  subscription LatestBlockHeightListener($offset: Int = 0) {
+    height: block(order_by: { height: desc }, limit: 1, offset: $offset) {
+      height
+    }
+  }
+`
+
+/**
+ * __useLatestBlockHeightListenerSubscription__
+ *
+ * To run a query within a React component, call `useLatestBlockHeightListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useLatestBlockHeightListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestBlockHeightListenerSubscription({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useLatestBlockHeightListenerSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    LatestBlockHeightListenerSubscription,
+    LatestBlockHeightListenerSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    LatestBlockHeightListenerSubscription,
+    LatestBlockHeightListenerSubscriptionVariables
+  >(LatestBlockHeightListenerDocument, options)
+}
+export type LatestBlockHeightListenerSubscriptionHookResult = ReturnType<
+  typeof useLatestBlockHeightListenerSubscription
+>
+export type LatestBlockHeightListenerSubscriptionResult =
+  Apollo.SubscriptionResult<LatestBlockHeightListenerSubscription>
+export const AverageBlockTimeDocument = gql`
+  query AverageBlockTime {
+    averageBlockTime: average_block_time_per_hour(
+      limit: 1
+      order_by: { height: desc }
+    ) {
+      averageTime: average_time
+    }
+  }
+`
+
+/**
+ * __useAverageBlockTimeQuery__
+ *
+ * To run a query within a React component, call `useAverageBlockTimeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAverageBlockTimeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAverageBlockTimeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAverageBlockTimeQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AverageBlockTimeQuery,
+    AverageBlockTimeQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AverageBlockTimeQuery, AverageBlockTimeQueryVariables>(
+    AverageBlockTimeDocument,
+    options
+  )
+}
+export function useAverageBlockTimeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AverageBlockTimeQuery,
+    AverageBlockTimeQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    AverageBlockTimeQuery,
+    AverageBlockTimeQueryVariables
+  >(AverageBlockTimeDocument, options)
+}
+export type AverageBlockTimeQueryHookResult = ReturnType<
+  typeof useAverageBlockTimeQuery
+>
+export type AverageBlockTimeLazyQueryHookResult = ReturnType<
+  typeof useAverageBlockTimeLazyQuery
+>
+export type AverageBlockTimeQueryResult = Apollo.QueryResult<
+  AverageBlockTimeQuery,
+  AverageBlockTimeQueryVariables
+>
+export const LatestBlockTimestampDocument = gql`
+  query LatestBlockTimestamp($offset: Int = 0) {
+    block: block(order_by: { height: desc }, limit: 1, offset: $offset) {
+      timestamp
+    }
+  }
+`
+
+/**
+ * __useLatestBlockTimestampQuery__
+ *
+ * To run a query within a React component, call `useLatestBlockTimestampQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLatestBlockTimestampQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLatestBlockTimestampQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useLatestBlockTimestampQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >(LatestBlockTimestampDocument, options)
+}
+export function useLatestBlockTimestampLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    LatestBlockTimestampQuery,
+    LatestBlockTimestampQueryVariables
+  >(LatestBlockTimestampDocument, options)
+}
+export type LatestBlockTimestampQueryHookResult = ReturnType<
+  typeof useLatestBlockTimestampQuery
+>
+export type LatestBlockTimestampLazyQueryHookResult = ReturnType<
+  typeof useLatestBlockTimestampLazyQuery
+>
+export type LatestBlockTimestampQueryResult = Apollo.QueryResult<
+  LatestBlockTimestampQuery,
+  LatestBlockTimestampQueryVariables
+>
+export const AccountDelegationRewardsDocument = gql`
+  query AccountDelegationRewards($address: String!) {
+    delegationRewards: action_delegation_reward(address: $address) {
+      validatorAddress: validator_address
+      coins
+    }
+  }
+`
+
+/**
+ * __useAccountDelegationRewardsQuery__
+ *
+ * To run a query within a React component, call `useAccountDelegationRewardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAccountDelegationRewardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAccountDelegationRewardsQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useAccountDelegationRewardsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >(AccountDelegationRewardsDocument, options)
+}
+export function useAccountDelegationRewardsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    AccountDelegationRewardsQuery,
+    AccountDelegationRewardsQueryVariables
+  >(AccountDelegationRewardsDocument, options)
+}
+export type AccountDelegationRewardsQueryHookResult = ReturnType<
+  typeof useAccountDelegationRewardsQuery
+>
+export type AccountDelegationRewardsLazyQueryHookResult = ReturnType<
+  typeof useAccountDelegationRewardsLazyQuery
+>
+export type AccountDelegationRewardsQueryResult = Apollo.QueryResult<
+  AccountDelegationRewardsQuery,
+  AccountDelegationRewardsQueryVariables
+>
+export const MarketDataDocument = gql`
+  query MarketData($denom: String) {
+    communityPool: community_pool(order_by: { height: desc }, limit: 1) {
+      coins
+    }
+    inflation: inflation(order_by: { height: desc }, limit: 1) {
+      value
+    }
+    tokenPrice: token_price(where: { unit_name: { _eq: $denom } }) {
+      marketCap: market_cap
+      price
+    }
+    supply {
+      coins
+    }
+    bondedTokens: staking_pool(order_by: { height: desc }, limit: 1) {
+      bonded_tokens
+    }
+  }
+`
+
+/**
+ * __useMarketDataQuery__
+ *
+ * To run a query within a React component, call `useMarketDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMarketDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMarketDataQuery({
+ *   variables: {
+ *      denom: // value for 'denom'
+ *   },
+ * });
+ */
+export function useMarketDataQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MarketDataQuery,
+    MarketDataQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MarketDataQuery, MarketDataQueryVariables>(
+    MarketDataDocument,
+    options
+  )
+}
+export function useMarketDataLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MarketDataQuery,
+    MarketDataQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MarketDataQuery, MarketDataQueryVariables>(
+    MarketDataDocument,
+    options
+  )
+}
+export type MarketDataQueryHookResult = ReturnType<typeof useMarketDataQuery>
+export type MarketDataLazyQueryHookResult = ReturnType<
+  typeof useMarketDataLazyQuery
+>
+export type MarketDataQueryResult = Apollo.QueryResult<
+  MarketDataQuery,
+  MarketDataQueryVariables
+>
+export const GetMessagesByAddressListenerDocument = gql`
+  subscription GetMessagesByAddressListener(
+    $address: _text
+    $limit: bigint = 50
+    $offset: bigint = 0
+    $types: _text = "{}"
+  ) {
+    messagesByAddress: messages_by_address(
+      args: {
+        addresses: $address
+        types: $types
+        limit: $limit
+        offset: $offset
+      }
+      order_by: { transaction: { block: { timestamp: desc } } }
+    ) {
+      transaction {
+        height
+        hash
+        success
+        messages
+        logs
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetMessagesByAddressListenerSubscription__
+ *
+ * To run a query within a React component, call `useGetMessagesByAddressListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesByAddressListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesByAddressListenerSubscription({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      types: // value for 'types'
+ *   },
+ * });
+ */
+export function useGetMessagesByAddressListenerSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    GetMessagesByAddressListenerSubscription,
+    GetMessagesByAddressListenerSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    GetMessagesByAddressListenerSubscription,
+    GetMessagesByAddressListenerSubscriptionVariables
+  >(GetMessagesByAddressListenerDocument, options)
+}
+export type GetMessagesByAddressListenerSubscriptionHookResult = ReturnType<
+  typeof useGetMessagesByAddressListenerSubscription
+>
+export type GetMessagesByAddressListenerSubscriptionResult =
+  Apollo.SubscriptionResult<GetMessagesByAddressListenerSubscription>
+export const GetMessagesByAddressDocument = gql`
+  query GetMessagesByAddress(
+    $address: _text
+    $limit: bigint = 50
+    $offset: bigint = 0
+    $types: _text = "{}"
+  ) {
+    messagesByAddress: messages_by_address(
+      args: {
+        addresses: $address
+        types: $types
+        limit: $limit
+        offset: $offset
+      }
+      order_by: { transaction: { block: { timestamp: desc } } }
+    ) {
+      transaction {
+        height
+        hash
+        success
+        messages
+        logs
+        block {
+          height
+          timestamp
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useGetMessagesByAddressQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesByAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesByAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesByAddressQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      types: // value for 'types'
+ *   },
+ * });
+ */
+export function useGetMessagesByAddressQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >(GetMessagesByAddressDocument, options)
+}
+export function useGetMessagesByAddressLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    GetMessagesByAddressQuery,
+    GetMessagesByAddressQueryVariables
+  >(GetMessagesByAddressDocument, options)
+}
+export type GetMessagesByAddressQueryHookResult = ReturnType<
+  typeof useGetMessagesByAddressQuery
+>
+export type GetMessagesByAddressLazyQueryHookResult = ReturnType<
+  typeof useGetMessagesByAddressLazyQuery
+>
+export type GetMessagesByAddressQueryResult = Apollo.QueryResult<
+  GetMessagesByAddressQuery,
+  GetMessagesByAddressQueryVariables
+>
+export const VotingPowerAggregateDocument = gql`
+  subscription VotingPowerAggregate {
+    validatorVotingPowerAggregate: validator_voting_power_aggregate(
+      where: { validator: { validator_statuses: { status: { _eq: 3 } } } }
+    ) {
+      aggregate {
+        sum {
+          votingPower: voting_power
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useVotingPowerAggregateSubscription__
+ *
+ * To run a query within a React component, call `useVotingPowerAggregateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useVotingPowerAggregateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useVotingPowerAggregateSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useVotingPowerAggregateSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    VotingPowerAggregateSubscription,
+    VotingPowerAggregateSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    VotingPowerAggregateSubscription,
+    VotingPowerAggregateSubscriptionVariables
+  >(VotingPowerAggregateDocument, options)
+}
+export type VotingPowerAggregateSubscriptionHookResult = ReturnType<
+  typeof useVotingPowerAggregateSubscription
+>
+export type VotingPowerAggregateSubscriptionResult =
+  Apollo.SubscriptionResult<VotingPowerAggregateSubscription>
+export const StakingPoolDocument = gql`
+  subscription StakingPool {
+    stakingPool: staking_pool(order_by: { height: desc }, limit: 1) {
+      bonded: bonded_tokens
+    }
+  }
+`
+
+/**
+ * __useStakingPoolSubscription__
+ *
+ * To run a query within a React component, call `useStakingPoolSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useStakingPoolSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStakingPoolSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStakingPoolSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    StakingPoolSubscription,
+    StakingPoolSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    StakingPoolSubscription,
+    StakingPoolSubscriptionVariables
+  >(StakingPoolDocument, options)
 export type ValidatorsQueryVariables = Exact<{ [key: string]: never }>
 
 export type ValidatorsQuery = {
@@ -12441,12 +14420,97 @@ export type ValidatorsQuery = {
   }>
   slashingParams: Array<{ __typename?: 'slashing_params'; params: any }>
 }
-
-export const ValidatorsDocument = gql`
-  query Validators {
+export type StakingPoolSubscriptionHookResult = ReturnType<
+  typeof useStakingPoolSubscription
+>
+export type StakingPoolSubscriptionResult =
+  Apollo.SubscriptionResult<StakingPoolSubscription>
+export const OnlineVotingPowerDocument = gql`
+  query OnlineVotingPower {
+    activeTotal: validator_status_aggregate(where: { status: { _eq: 3 } }) {
+      aggregate {
+        count
+      }
+    }
+    validatorVotingPowerAggregate: validator_voting_power_aggregate(
+      where: { validator: { validator_statuses: { status: { _eq: 3 } } } }
+    ) {
+      aggregate {
+        sum {
+          votingPower: voting_power
+        }
+      }
+    }
+    stakingPool: staking_pool(order_by: { height: desc }, limit: 1) {
+      bonded: bonded_tokens
+    }
     stakingParams: staking_params(limit: 1) {
       params
     }
+  }
+`
+
+/**
+ * __useOnlineVotingPowerQuery__
+ *
+ * To run a query within a React component, call `useOnlineVotingPowerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnlineVotingPowerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnlineVotingPowerQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnlineVotingPowerQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >(OnlineVotingPowerDocument, options)
+}
+export function useOnlineVotingPowerLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    OnlineVotingPowerQuery,
+    OnlineVotingPowerQueryVariables
+  >(OnlineVotingPowerDocument, options)
+}
+export type OnlineVotingPowerQueryHookResult = ReturnType<
+  typeof useOnlineVotingPowerQuery
+>
+export type OnlineVotingPowerLazyQueryHookResult = ReturnType<
+  typeof useOnlineVotingPowerLazyQuery
+>
+export type OnlineVotingPowerQueryResult = Apollo.QueryResult<
+  OnlineVotingPowerQuery,
+  OnlineVotingPowerQueryVariables
+>
+export const TransactionsListenerDocument = gql`
+  subscription TransactionsListener($limit: Int = 20, $offset: Int = 0) {
+    transactions: transaction(
+      limit: $limit
+      offset: $offset
+      order_by: { height: desc }
+    ) {
+      height
+      hash
+      success
+      block {
+        timestamp
     stakingPool: staking_pool(limit: 1, order_by: { height: desc }) {
       bondedTokens: bonded_tokens
     }
@@ -12500,12 +14564,116 @@ export const ValidatorsDocument = gql`
         avatarUrl: avatar_url
         moniker
       }
-    }
-    slashingParams: slashing_params(order_by: { height: desc }, limit: 1) {
-      params
+      messages
+      logs
     }
   }
 `
+
+/**
+ * __useTransactionsListenerSubscription__
+ *
+ * To run a query within a React component, call `useTransactionsListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTransactionsListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransactionsListenerSubscription({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useTransactionsListenerSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TransactionsListenerSubscription,
+    TransactionsListenerSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSubscription<
+    TransactionsListenerSubscription,
+    TransactionsListenerSubscriptionVariables
+  >(TransactionsListenerDocument, options)
+}
+export type TransactionsListenerSubscriptionHookResult = ReturnType<
+  typeof useTransactionsListenerSubscription
+>
+export type TransactionsListenerSubscriptionResult =
+  Apollo.SubscriptionResult<TransactionsListenerSubscription>
+export const TransactionsDocument = gql`
+  query Transactions($limit: Int = 20, $offset: Int = 0) {
+    transactions: transaction(
+      limit: $limit
+      offset: $offset
+      order_by: { height: desc }
+    ) {
+      height
+      hash
+      success
+      block {
+        timestamp
+      }
+      messages
+      logs
+    }
+  }
+`
+
+/**
+ * __useTransactionsQuery__
+ *
+ * To run a query within a React component, call `useTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransactionsQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useTransactionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    TransactionsQuery,
+    TransactionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<TransactionsQuery, TransactionsQueryVariables>(
+    TransactionsDocument,
+    options
+  )
+}
+export function useTransactionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    TransactionsQuery,
+    TransactionsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<TransactionsQuery, TransactionsQueryVariables>(
+    TransactionsDocument,
+    options
+  )
+}
+export type TransactionsQueryHookResult = ReturnType<
+  typeof useTransactionsQuery
+>
+export type TransactionsLazyQueryHookResult = ReturnType<
+  typeof useTransactionsLazyQuery
+>
+export type TransactionsQueryResult = Apollo.QueryResult<
+  TransactionsQuery,
+  TransactionsQueryVariables
+>
 
 /**
  * __useValidatorsQuery__
@@ -12554,3 +14722,68 @@ export type ValidatorsQueryResult = Apollo.QueryResult<
   ValidatorsQuery,
   ValidatorsQueryVariables
 >
+export const ValidatorsAddressListDocument = gql`
+  query ValidatorsAddressList {
+    validator {
+      validatorInfo: validator_info {
+        operatorAddress: operator_address
+        selfDelegateAddress: self_delegate_address
+        consensusAddress: consensus_address
+      }
+      validatorDescriptions: validator_descriptions(
+        limit: 1
+        order_by: { height: desc }
+      ) {
+        moniker
+        identity
+        avatarUrl: avatar_url
+      }
+    }
+  }
+`
+
+export type ValidatorsQuery = {
+  stakingPool: Array<
+    { __typename?: 'staking_pool' } & {
+      bondedTokens: Staking_Pool['bonded_tokens']
+    }
+  >
+  validator: Array<
+    { __typename?: 'validator' } & {
+      validatorStatuses: Array<
+        { __typename?: 'validator_status' } & Pick<
+          Validator_Status,
+          'status' | 'jailed' | 'height'
+        >
+      >
+      validatorSigningInfos: Array<
+        { __typename?: 'validator_signing_info' } & Pick<
+          Validator_Signing_Info,
+          'tombstoned'
+        > & {
+            missedBlocksCounter: Validator_Signing_Info['missed_blocks_counter']
+          }
+      >
+      validatorInfo?: Maybe<
+        { __typename?: 'validator_info' } & {
+          operatorAddress: Validator_Info['operator_address']
+          selfDelegateAddress: Validator_Info['self_delegate_address']
+        }
+      >
+      validatorVotingPowers: Array<
+        { __typename?: 'validator_voting_power' } & {
+          votingPower: Validator_Voting_Power['voting_power']
+        }
+      >
+      validatorCommissions: Array<
+        { __typename?: 'validator_commission' } & Pick<
+          Validator_Commission,
+          'commission'
+        >
+      >
+    }
+  >
+  slashingParams: Array<
+    { __typename?: 'slashing_params' } & Pick<Slashing_Params, 'params'>
+  >
+}
