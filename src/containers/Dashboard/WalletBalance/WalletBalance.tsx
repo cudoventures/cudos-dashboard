@@ -3,6 +3,9 @@ import { Typography, Box, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import BigNumber from 'bignumber.js'
+import { SigningStargateClient } from 'cudosjs'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
 import { getWalletBalance } from '../../../utils/projectUtils'
 import getCurrencyRate from '../../../api/getCurrency'
 import Card from '../../../components/Card/Card'
@@ -11,11 +14,16 @@ import { fetchRewards } from '../../../api/getRewards'
 
 import { styles } from '../styles'
 import { updateUser, TransactionCurrency } from '../../../store/profile'
+import CosmosNetworkConfig from '../../../ledgers/CosmosNetworkConfig'
 
 const WalletBalance = () => {
-  const { balance, address, availableRewards } = useSelector(
-    (state: RootState) => state.profile
-  )
+  const {
+    balance,
+    address,
+    availableRewards,
+    stakedValidators,
+    lastLoggedAddress
+  } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
 
@@ -35,13 +43,18 @@ const WalletBalance = () => {
     const controller = new AbortController()
     const fetchData = async () => {
       try {
-        const totalRewards = await fetchRewards(address, controller.signal)
+        const { totalRewards, validatorArray } = await fetchRewards(
+          address,
+          controller.signal
+        )
         const walletBalance = await getWalletBalance(address)
         dispatch(
           updateUser({
             address,
             balance: new BigNumber(walletBalance),
-            availableRewards: new BigNumber(totalRewards)
+            availableRewards: new BigNumber(totalRewards),
+            stakedValidators: validatorArray,
+            lastLoggedAddress
           })
         )
       } catch (error: any) {
@@ -57,6 +70,61 @@ const WalletBalance = () => {
       controller?.abort()
     }
   }, [address, dispatch])
+
+  const handleRewardClaim = async () => {
+    if (
+      isNaN(new BigNumber(availableRewards)) ||
+      availableRewards === new BigNumber(0)
+    ) {
+      alert('No available rewards to claim.')
+      return
+    }
+    const msgFee = {
+      amount: [
+        {
+          denom: CosmosNetworkConfig.CURRENCY_DENOM,
+          amount: '0'
+        }
+      ],
+      gas: '300000'
+    }
+
+    const msgMemo = ''
+
+    const msgAny = []
+
+    stakedValidators.map((validator) =>
+      msgAny.push({
+        typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+        value: MsgWithdrawDelegatorReward.fromPartial({
+          delegatorAddress: address,
+          validatorAddress: validator
+        })
+      })
+    )
+
+    const offlineSigner = window.getOfflineSignerOnlyAmino(
+      import.meta.env.VITE_APP_CHAIN_ID
+    )
+
+    const client = await SigningStargateClient.connectWithSigner(
+      import.meta.env.VITE_APP_RPC,
+      offlineSigner
+    )
+
+    const result = await client.signAndBroadcast(
+      address,
+      msgAny,
+      msgFee,
+      msgMemo
+    )
+
+    if (result.transactionHash && result.code === 0) {
+      alert('Success')
+    } else {
+      alert('Transaction Failed')
+    }
+  }
 
   return (
     <Card style={styles.walletBalanceCard}>
@@ -112,7 +180,12 @@ const WalletBalance = () => {
             <Box
               style={{ display: 'flex', justifyContent: 'flex-end', flex: '1' }}
             >
-              <Button style={styles.claimButtonStyle}>Claim</Button>
+              <Button
+                onClick={() => handleRewardClaim()}
+                style={styles.claimButtonStyle}
+              >
+                Claim
+              </Button>
             </Box>
           </Typography>
           <Box sx={{ display: 'flex' }}>
@@ -125,7 +198,9 @@ const WalletBalance = () => {
                 src={CudosLogo}
                 alt="Cudos Logo"
               />
-              {!availableRewards ? '0.00' : Number(availableRewards).toFixed(2)}
+              {!availableRewards || Number.isNaN(Number(availableRewards))
+                ? '0.00'
+                : Number(availableRewards).toFixed(2)}
             </Typography>
             <Typography
               color="text.secondary"
@@ -139,7 +214,9 @@ const WalletBalance = () => {
               sx={{ marginLeft: '5px' }}
               style={styles.amountDollarStyle}
             >
-              {`$${(rate * Number(availableRewards)).toFixed(2)}`}
+              {!availableRewards || Number.isNaN(Number(availableRewards))
+                ? '$0.00'
+                : `$${(rate * Number(availableRewards)).toFixed(2)}`}
             </Typography>
           </Box>
         </Box>

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import copy from 'copy-to-clipboard'
-import { StargateClient } from '@cosmjs/stargate'
+import { StargateClient } from 'cudosjs'
 import BigNumber from 'bignumber.js'
 import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
 
