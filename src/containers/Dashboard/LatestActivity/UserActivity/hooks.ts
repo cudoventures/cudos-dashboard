@@ -51,7 +51,7 @@ export const useUserTransactions = () => {
       offset: 0,
       address: `{${address}}`
     },
-    onSubscriptionData: (data: { subscriptionData: { data: any } }) => {
+    onSubscriptionData: (data: any) => {
       const stateChange = {
         data: formatTransactions(data.subscriptionData.data),
         offsetCount: state.offsetCount + LIMIT

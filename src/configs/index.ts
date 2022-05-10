@@ -14,6 +14,6 @@ const getChainConfig = () => {
   return chainConfigTestnet
 }
 
-const chainConfig = getChainConfig()
+const chainConfig: any = getChainConfig()
 
 export { chainConfig, generalConfig, chainConfigTemp }
