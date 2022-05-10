@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import StickyBox from 'react-sticky-box'
 
 import DashboardIcon from '../../assets/vectors/dashboard.svg'
@@ -18,6 +18,14 @@ const MenuItems = [
 
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    const selectedIndex = MenuItems.findIndex(
+      (menuItem) => menuItem.link === pathname
+    )
+    setSelected(selectedIndex)
+  }, [pathname])
 
   return (
     <StickyBox style={styles.menuContainer}>

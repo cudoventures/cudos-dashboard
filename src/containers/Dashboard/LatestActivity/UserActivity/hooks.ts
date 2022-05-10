@@ -15,21 +15,6 @@ export const useUserTransactions = () => {
   const { address } = useSelector((state: RootState) => state.profile)
   const state = useSelector((state: RootState) => state.userTransactions)
 
-  useGetMessagesByAddressListenerSubscription({
-    variables: {
-      limit: LIMIT,
-      offset: 0,
-      address: `{${address}}`
-    },
-    onSubscriptionData: (data: { subscriptionData: { data: any } }) => {
-      const stateChange = {
-        data: formatTransactions(data.subscriptionData.data),
-        offsetCount: state.offsetCount + LIMIT
-      }
-      dispatch(updateUserTransactions(stateChange))
-    }
-  })
-
   const formatTransactions = (data: GetMessagesByAddressQuery) => {
     let formattedData = data.messagesByAddress
     formattedData = formattedData.filter(
@@ -59,6 +44,21 @@ export const useUserTransactions = () => {
       }
     })
   }
+
+  useGetMessagesByAddressListenerSubscription({
+    variables: {
+      limit: LIMIT,
+      offset: 0,
+      address: `{${address}}`
+    },
+    onSubscriptionData: (data: any) => {
+      const stateChange = {
+        data: formatTransactions(data.subscriptionData.data),
+        offsetCount: state.offsetCount + LIMIT
+      }
+      dispatch(updateUserTransactions(stateChange))
+    }
+  })
 
   return {
     state

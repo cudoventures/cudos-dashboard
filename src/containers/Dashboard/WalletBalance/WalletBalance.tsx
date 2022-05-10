@@ -73,7 +73,7 @@ const WalletBalance = () => {
 
   const handleRewardClaim = async () => {
     if (
-      isNaN(new BigNumber(availableRewards)) ||
+      Number.isNaN(new BigNumber(availableRewards)) ||
       availableRewards === new BigNumber(0)
     ) {
       alert('No available rewards to claim.')
@@ -91,7 +91,7 @@ const WalletBalance = () => {
 
     const msgMemo = ''
 
-    const msgAny = []
+    const msgAny: any[] = []
 
     stakedValidators.map((validator) =>
       msgAny.push({

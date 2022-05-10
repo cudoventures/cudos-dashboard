@@ -35,7 +35,7 @@ export const useOnlineVotingPower = () => {
           totalVotingPower: numeral(
             formatToken(
               data?.subscriptionData.data?.stakingPool[0]?.bonded,
-              chainConfig.votingPowerTokenUnit
+              chainConfig.tokenUnits.acudos.display
             ).value
           ).value()
         })

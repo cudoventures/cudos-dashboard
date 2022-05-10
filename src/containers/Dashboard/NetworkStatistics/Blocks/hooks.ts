@@ -15,6 +15,17 @@ export const useDataBlocks = () => {
   const dispatch = useDispatch()
   const state = useSelector((state: RootState) => state.network)
 
+  const formatAverageBlockTime = (data: AverageBlockTimeQuery) => {
+    return data.averageBlockTime[0]?.averageTime ?? state.blockTime
+  }
+
+  const formatActiveValidatorsCount = (data: ActiveValidatorCountQuery) => {
+    return {
+      active: data.activeTotal.aggregate?.count,
+      total: data.total.aggregate?.count
+    }
+  }
+
   // ====================================
   // block height
   // ====================================
@@ -48,10 +59,6 @@ export const useDataBlocks = () => {
     }
   })
 
-  const formatAverageBlockTime = (data: AverageBlockTimeQuery) => {
-    return data.averageBlockTime[0]?.averageTime ?? state.blockTime
-  }
-
   // ====================================
   // validators
   // ====================================
@@ -65,13 +72,6 @@ export const useDataBlocks = () => {
       )
     }
   })
-
-  const formatActiveValidatorsCount = (data: ActiveValidatorCountQuery) => {
-    return {
-      active: data.activeTotal.aggregate.count,
-      total: data.total.aggregate.count
-    }
-  }
 
   return {
     state

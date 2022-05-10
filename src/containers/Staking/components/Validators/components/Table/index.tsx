@@ -17,7 +17,7 @@ const ValidatorsTable: React.FC = () => {
 
   const formattedItems = items.map((x: ValidatorType, i: number) => {
     const condition =
-      x.status === 3 ? getValidatorConditionClass(x.condition) : undefined
+      x.status === 3 ? getValidatorConditionClass(x.condition) : 'grey'
     const percentDisplay =
       x.status === 3
         ? `${numeral(x.votingPowerPercent).format('0.[00]')}%`

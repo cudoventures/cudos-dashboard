@@ -12,7 +12,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, imageUrl }) => {
   const [error, setError] = useState<boolean>(false)
 
   useEffect(() => {
-    jdenticon.update(icon.current, address)
+    jdenticon.update(icon.current!, address)
   }, [address, error, imageUrl])
 
   const handleError = () => {

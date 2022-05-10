@@ -1,11 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import { formatBigNum } from 'utils/projectUtils'
+import { useAccountDelegationRewardsQuery } from 'graphql/types'
 import { RootState } from '../../../store'
-import {
-  useAccountDelegationRewardsQuery,
-  AccountDelegationRewardsQuery
-} from '../../../graphql/types'
 import { updateUser } from '../../../store/profile'
 
 export const useDelegationRewards = () => {
@@ -18,8 +16,8 @@ export const useDelegationRewards = () => {
     dispatch(updateUser({ ...stateChange }))
   }
 
-  const formatDelegationRewards = (data: AccountDelegationRewardsQuery) => {
-    Object.values(data.data.delegationRewards).map((value: any) => {
+  const formatDelegationRewards = (data: any) => {
+    data.delegationRewards.map((value: any) => {
       rewardArray.push(value.coins[0].amount)
       return value
     })
