@@ -1,10 +1,16 @@
+import { useCallback, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { CssBaseline } from '@mui/material'
 import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { StargateClient } from 'cudosjs'
+import BigNumber from 'bignumber.js'
 
 import { RecoilRoot } from 'recoil'
+import { ConnectLedger } from 'ledgers/KeplrLedger'
+import { updateUser } from 'store/profile'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import Footer from './components/Layout/Footer'
@@ -26,6 +32,37 @@ const App = () => {
 
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const apolloClient = useApollo(null)
+
+  const dispatch = useDispatch()
+
+  const connectAccount = useCallback(async () => {
+    try {
+      const account = await ConnectLedger()
+
+      const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
+      const walletBalance = await client.getBalance(
+        account.address,
+        CosmosNetworkConfig.CURRENCY_DENOM
+      )
+
+      dispatch(
+        updateUser({
+          address: account.address,
+          balance: new BigNumber(walletBalance.amount)
+            .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+            .toString(10)
+        })
+      )
+    } catch (e) {
+      throw new Error('Failed to connect!')
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    window.addEventListener('keplr_keystorechange', async () => {
+      connectAccount()
+    })
+  }, [connectAccount])
 
   return (
     <RecoilRoot>

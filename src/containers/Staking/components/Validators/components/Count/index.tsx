@@ -1,6 +1,9 @@
 import { Box, Typography, Chip } from '@mui/material'
+import useCount from './hooks'
 
-const ValidatorsCount: React.FC<{ count: number }> = ({ count }) => {
+const ValidatorsCount: React.FC = () => {
+  const { count } = useCount()
+
   return (
     <Box display="flex" alignItems="center" gap={1}>
       <Typography

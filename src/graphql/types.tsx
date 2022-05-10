@@ -1381,6 +1381,16 @@ export type Cosmwasm_Clear_Admin_Bool_Exp = {
   _or?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
   contract?: InputMaybe<String_Comparison_Exp>
   index?: InputMaybe<Bigint_Comparison_Exp>
+=======
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_clear_admin". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Clear_Admin_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Clear_Admin_Bool_Exp>>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
   sender?: InputMaybe<String_Comparison_Exp>
   success?: InputMaybe<Boolean_Comparison_Exp>
   transaction?: InputMaybe<Transaction_Bool_Exp>
@@ -1548,6 +1558,31 @@ export type Cosmwasm_Execute_Bool_Exp = {
 }
 
 /** aggregate max on columns */
+export type Cosmwasm_Clear_Admin_Max_Fields = {
+  __typename?: 'cosmwasm_clear_admin_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Clear_Admin_Min_Fields = {
+  __typename?: 'cosmwasm_clear_admin_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_clear_admin". */
+export type Cosmwasm_Clear_Admin_Order_By = {
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+=======
+}
+
+/** aggregate max on columns */
 export type Cosmwasm_Execute_Max_Fields = {
   __typename?: 'cosmwasm_execute_max_fields'
   contract?: Maybe<Scalars['String']>
@@ -1592,6 +1627,624 @@ export enum Cosmwasm_Execute_Select_Column {
   Index = 'index',
   /** column name */
   Method = 'method',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Execute_Stddev_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Execute_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Execute_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_execute_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Execute_Sum_Fields = {
+  __typename?: 'cosmwasm_execute_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Execute_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_execute_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Execute_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_execute_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Execute_Variance_Fields = {
+  __typename?: 'cosmwasm_execute_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate = {
+  __typename?: 'cosmwasm_instantiate'
+  admin?: Maybe<Scalars['String']>
+  code_id: Scalars['String']
+  funds?: Maybe<Scalars['jsonb']>
+  index: Scalars['bigint']
+  label: Scalars['String']
+  result_contract_address?: Maybe<Scalars['String']>
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_instantiate" */
+export type Cosmwasm_InstantiateFundsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate = {
+  __typename?: 'cosmwasm_instantiate_aggregate'
+  aggregate?: Maybe<Cosmwasm_Instantiate_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Instantiate>
+}
+
+/** aggregate fields of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate_Fields = {
+  __typename?: 'cosmwasm_instantiate_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Instantiate_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Instantiate_Max_Fields>
+  min?: Maybe<Cosmwasm_Instantiate_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Instantiate_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Instantiate_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Instantiate_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Instantiate_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Instantiate_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Instantiate_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Instantiate_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_instantiate" */
+export type Cosmwasm_Instantiate_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Instantiate_Avg_Fields = {
+  __typename?: 'cosmwasm_instantiate_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_instantiate". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Instantiate_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Instantiate_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Instantiate_Bool_Exp>>
+  admin?: InputMaybe<String_Comparison_Exp>
+  code_id?: InputMaybe<String_Comparison_Exp>
+  funds?: InputMaybe<Jsonb_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  label?: InputMaybe<String_Comparison_Exp>
+  result_contract_address?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Instantiate_Max_Fields = {
+  __typename?: 'cosmwasm_instantiate_max_fields'
+  admin?: Maybe<Scalars['String']>
+  code_id?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  label?: Maybe<Scalars['String']>
+  result_contract_address?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Instantiate_Min_Fields = {
+  __typename?: 'cosmwasm_instantiate_min_fields'
+  admin?: Maybe<Scalars['String']>
+  code_id?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  label?: Maybe<Scalars['String']>
+  result_contract_address?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_instantiate". */
+export type Cosmwasm_Instantiate_Order_By = {
+  admin?: InputMaybe<Order_By>
+  code_id?: InputMaybe<Order_By>
+  funds?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  label?: InputMaybe<Order_By>
+  result_contract_address?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_clear_admin" */
+export enum Cosmwasm_Clear_Admin_Select_Column {
+=======
+}
+
+/** select columns of table "cosmwasm_instantiate" */
+export enum Cosmwasm_Instantiate_Select_Column {
+  /** column name */
+  Admin = 'admin',
+  /** column name */
+  CodeId = 'code_id',
+  /** column name */
+  Funds = 'funds',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Label = 'label',
+  /** column name */
+  ResultContractAddress = 'result_contract_address',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Instantiate_Stddev_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Instantiate_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Instantiate_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_instantiate_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Instantiate_Sum_Fields = {
+  __typename?: 'cosmwasm_instantiate_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Instantiate_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_instantiate_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Instantiate_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_instantiate_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Instantiate_Variance_Fields = {
+  __typename?: 'cosmwasm_instantiate_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate = {
+  __typename?: 'cosmwasm_migrate'
+  arguments?: Maybe<Scalars['jsonb']>
+  code_id: Scalars['String']
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_migrate" */
+export type Cosmwasm_MigrateArgumentsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate = {
+  __typename?: 'cosmwasm_migrate_aggregate'
+  aggregate?: Maybe<Cosmwasm_Migrate_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Migrate>
+}
+
+/** aggregate fields of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate_Fields = {
+  __typename?: 'cosmwasm_migrate_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Migrate_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Migrate_Max_Fields>
+  min?: Maybe<Cosmwasm_Migrate_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Migrate_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Migrate_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Migrate_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Migrate_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Migrate_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Migrate_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Migrate_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_migrate" */
+export type Cosmwasm_Migrate_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Migrate_Avg_Fields = {
+  __typename?: 'cosmwasm_migrate_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_migrate". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Migrate_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Migrate_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Migrate_Bool_Exp>>
+  arguments?: InputMaybe<Jsonb_Comparison_Exp>
+  code_id?: InputMaybe<String_Comparison_Exp>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Migrate_Max_Fields = {
+  __typename?: 'cosmwasm_migrate_max_fields'
+  code_id?: Maybe<Scalars['String']>
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Migrate_Min_Fields = {
+  __typename?: 'cosmwasm_migrate_min_fields'
+  code_id?: Maybe<Scalars['String']>
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_migrate". */
+export type Cosmwasm_Migrate_Order_By = {
+  arguments?: InputMaybe<Order_By>
+  code_id?: InputMaybe<Order_By>
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_migrate" */
+export enum Cosmwasm_Migrate_Select_Column {
+  /** column name */
+  Arguments = 'arguments',
+  /** column name */
+  CodeId = 'code_id',
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_fields'
+export type Cosmwasm_Migrate_Stddev_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_pop_fields'
+export type Cosmwasm_Migrate_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Clear_Admin_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_clear_admin_stddev_samp_fields'
+export type Cosmwasm_Migrate_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_migrate_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Clear_Admin_Sum_Fields = {
+  __typename?: 'cosmwasm_clear_admin_sum_fields'
+export type Cosmwasm_Migrate_Sum_Fields = {
+  __typename?: 'cosmwasm_migrate_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Clear_Admin_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_clear_admin_var_pop_fields'
+export type Cosmwasm_Migrate_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_migrate_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Clear_Admin_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_clear_admin_var_samp_fields'
+export type Cosmwasm_Migrate_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_migrate_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Clear_Admin_Variance_Fields = {
+  __typename?: 'cosmwasm_clear_admin_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_Execute = {
+  __typename?: 'cosmwasm_execute'
+  arguments?: Maybe<Scalars['jsonb']>
+  contract: Scalars['String']
+  funds?: Maybe<Scalars['jsonb']>
+  index: Scalars['bigint']
+  method: Scalars['String']
+export type Cosmwasm_Migrate_Variance_Fields = {
+  __typename?: 'cosmwasm_migrate_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_store" */
+export type Cosmwasm_Store = {
+  __typename?: 'cosmwasm_store'
+  index: Scalars['bigint']
+  instantiate_permission?: Maybe<Scalars['jsonb']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_ExecuteArgumentsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** columns and relationships of "cosmwasm_execute" */
+export type Cosmwasm_ExecuteFundsArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate = {
+  __typename?: 'cosmwasm_execute_aggregate'
+  aggregate?: Maybe<Cosmwasm_Execute_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Execute>
+}
+
+/** aggregate fields of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate_Fields = {
+  __typename?: 'cosmwasm_execute_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Execute_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Execute_Max_Fields>
+  min?: Maybe<Cosmwasm_Execute_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Execute_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Execute_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Execute_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Execute_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Execute_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Execute_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Execute_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_execute" */
+export type Cosmwasm_Execute_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Execute_Avg_Fields = {
+  __typename?: 'cosmwasm_execute_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_execute". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Execute_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Execute_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Execute_Bool_Exp>>
+  arguments?: InputMaybe<Jsonb_Comparison_Exp>
+  contract?: InputMaybe<String_Comparison_Exp>
+  funds?: InputMaybe<Jsonb_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  method?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Execute_Max_Fields = {
+  __typename?: 'cosmwasm_execute_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  method?: Maybe<Scalars['String']>
+/** columns and relationships of "cosmwasm_store" */
+export type Cosmwasm_StoreInstantiate_PermissionArgs = {
+  path?: InputMaybe<Scalars['String']>
+}
+
+/** aggregated selection of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate = {
+  __typename?: 'cosmwasm_store_aggregate'
+  aggregate?: Maybe<Cosmwasm_Store_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Store>
+}
+
+/** aggregate fields of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate_Fields = {
+  __typename?: 'cosmwasm_store_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Store_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Store_Max_Fields>
+  min?: Maybe<Cosmwasm_Store_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Store_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Store_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Store_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Store_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Store_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Store_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Store_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_store" */
+export type Cosmwasm_Store_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Store_Avg_Fields = {
+  __typename?: 'cosmwasm_store_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_store". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Store_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Store_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Store_Bool_Exp>>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  instantiate_permission?: InputMaybe<Jsonb_Comparison_Exp>
+  result_code_id?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Store_Max_Fields = {
+  __typename?: 'cosmwasm_store_max_fields'
+  index?: Maybe<Scalars['bigint']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Store_Min_Fields = {
+  __typename?: 'cosmwasm_store_min_fields'
+  index?: Maybe<Scalars['bigint']>
+  result_code_id?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+  
+/** aggregate min on columns */
+export type Cosmwasm_Execute_Min_Fields = {
+  __typename?: 'cosmwasm_execute_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  method?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_execute". */
+export type Cosmwasm_Execute_Order_By = {
+  arguments?: InputMaybe<Order_By>
+  contract?: InputMaybe<Order_By>
+  funds?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  method?: InputMaybe<Order_By>
+
+/** Ordering options when selecting data from "cosmwasm_store". */
+export type Cosmwasm_Store_Order_By = {
+  index?: InputMaybe<Order_By>
+  instantiate_permission?: InputMaybe<Order_By>
+  result_code_id?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_execute" */
+export enum Cosmwasm_Execute_Select_Column {
+  /** column name */
+  Arguments = 'arguments',
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Funds = 'funds',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  Method = 'method',
+  /** column name */
+/** select columns of table "cosmwasm_store" */
+export enum Cosmwasm_Store_Select_Column {
+  /** column name */
+  Index = 'index',
+  /** column name */
+  InstantiatePermission = 'instantiate_permission',
+  /** column name */
+  ResultCodeId = 'result_code_id',
   /** column name */
   Sender = 'sender',
   /** column name */
@@ -1809,6 +2462,294 @@ export type Cosmwasm_Instantiate_Var_Pop_Fields = {
 export type Cosmwasm_Instantiate_Var_Samp_Fields = {
   __typename?: 'cosmwasm_instantiate_var_samp_fields'
   index?: Maybe<Scalars['Float']>
+=======
+export type Cosmwasm_Store_Stddev_Fields = {
+  __typename?: 'cosmwasm_store_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Store_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_store_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Store_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_store_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Store_Sum_Fields = {
+  __typename?: 'cosmwasm_store_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Store_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_store_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Store_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_store_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Store_Variance_Fields = {
+  __typename?: 'cosmwasm_store_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin = {
+  __typename?: 'cosmwasm_update_admin'
+  contract: Scalars['String']
+  index: Scalars['bigint']
+  new_admin: Scalars['String']
+  sender: Scalars['String']
+  success: Scalars['Boolean']
+  /** An object relationship */
+  transaction: Transaction
+  transaction_hash: Scalars['String']
+}
+
+/** aggregated selection of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate = {
+  __typename?: 'cosmwasm_update_admin_aggregate'
+  aggregate?: Maybe<Cosmwasm_Update_Admin_Aggregate_Fields>
+  nodes: Array<Cosmwasm_Update_Admin>
+}
+
+/** aggregate fields of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate_Fields = {
+  __typename?: 'cosmwasm_update_admin_aggregate_fields'
+  avg?: Maybe<Cosmwasm_Update_Admin_Avg_Fields>
+  count: Scalars['Int']
+  max?: Maybe<Cosmwasm_Update_Admin_Max_Fields>
+  min?: Maybe<Cosmwasm_Update_Admin_Min_Fields>
+  stddev?: Maybe<Cosmwasm_Update_Admin_Stddev_Fields>
+  stddev_pop?: Maybe<Cosmwasm_Update_Admin_Stddev_Pop_Fields>
+  stddev_samp?: Maybe<Cosmwasm_Update_Admin_Stddev_Samp_Fields>
+  sum?: Maybe<Cosmwasm_Update_Admin_Sum_Fields>
+  var_pop?: Maybe<Cosmwasm_Update_Admin_Var_Pop_Fields>
+  var_samp?: Maybe<Cosmwasm_Update_Admin_Var_Samp_Fields>
+  variance?: Maybe<Cosmwasm_Update_Admin_Variance_Fields>
+}
+
+/** aggregate fields of "cosmwasm_update_admin" */
+export type Cosmwasm_Update_Admin_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** aggregate avg on columns */
+export type Cosmwasm_Update_Admin_Avg_Fields = {
+  __typename?: 'cosmwasm_update_admin_avg_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** Boolean expression to filter rows from the table "cosmwasm_update_admin". All fields are combined with a logical 'AND'. */
+export type Cosmwasm_Update_Admin_Bool_Exp = {
+  _and?: InputMaybe<Array<Cosmwasm_Update_Admin_Bool_Exp>>
+  _not?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+  _or?: InputMaybe<Array<Cosmwasm_Update_Admin_Bool_Exp>>
+  contract?: InputMaybe<String_Comparison_Exp>
+  index?: InputMaybe<Bigint_Comparison_Exp>
+  new_admin?: InputMaybe<String_Comparison_Exp>
+  sender?: InputMaybe<String_Comparison_Exp>
+  success?: InputMaybe<Boolean_Comparison_Exp>
+  transaction?: InputMaybe<Transaction_Bool_Exp>
+  transaction_hash?: InputMaybe<String_Comparison_Exp>
+}
+
+/** aggregate max on columns */
+export type Cosmwasm_Update_Admin_Max_Fields = {
+  __typename?: 'cosmwasm_update_admin_max_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  new_admin?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** aggregate min on columns */
+export type Cosmwasm_Update_Admin_Min_Fields = {
+  __typename?: 'cosmwasm_update_admin_min_fields'
+  contract?: Maybe<Scalars['String']>
+  index?: Maybe<Scalars['bigint']>
+  new_admin?: Maybe<Scalars['String']>
+  sender?: Maybe<Scalars['String']>
+  transaction_hash?: Maybe<Scalars['String']>
+}
+
+/** Ordering options when selecting data from "cosmwasm_update_admin". */
+export type Cosmwasm_Update_Admin_Order_By = {
+  contract?: InputMaybe<Order_By>
+  index?: InputMaybe<Order_By>
+  new_admin?: InputMaybe<Order_By>
+  sender?: InputMaybe<Order_By>
+  success?: InputMaybe<Order_By>
+  transaction?: InputMaybe<Transaction_Order_By>
+  transaction_hash?: InputMaybe<Order_By>
+}
+
+/** select columns of table "cosmwasm_update_admin" */
+export enum Cosmwasm_Update_Admin_Select_Column {
+  /** column name */
+  Contract = 'contract',
+  /** column name */
+  Index = 'index',
+  /** column name */
+  NewAdmin = 'new_admin',
+  /** column name */
+  Sender = 'sender',
+  /** column name */
+  Success = 'success',
+  /** column name */
+  TransactionHash = 'transaction_hash'
+}
+
+/** aggregate stddev on columns */
+export type Cosmwasm_Update_Admin_Stddev_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_pop on columns */
+export type Cosmwasm_Update_Admin_Stddev_Pop_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate stddev_samp on columns */
+export type Cosmwasm_Update_Admin_Stddev_Samp_Fields = {
+  __typename?: 'cosmwasm_update_admin_stddev_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate sum on columns */
+export type Cosmwasm_Update_Admin_Sum_Fields = {
+  __typename?: 'cosmwasm_update_admin_sum_fields'
+  index?: Maybe<Scalars['bigint']>
+}
+
+/** aggregate var_pop on columns */
+export type Cosmwasm_Update_Admin_Var_Pop_Fields = {
+  __typename?: 'cosmwasm_update_admin_var_pop_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate var_samp on columns */
+export type Cosmwasm_Update_Admin_Var_Samp_Fields = {
+  __typename?: 'cosmwasm_update_admin_var_samp_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** aggregate variance on columns */
+export type Cosmwasm_Update_Admin_Variance_Fields = {
+  __typename?: 'cosmwasm_update_admin_variance_fields'
+  index?: Maybe<Scalars['Float']>
+}
+
+/** columns and relationships of "delegation" */
+export type Delegation = {
+  __typename?: 'delegation'
+  /** An object relationship */
+  account: Account
+  amount: Scalars['coin']
+  delegator_address: Scalars['String']
+  validator_address: Scalars['String']
+  /** An object relationship */
+  validator_info: Validator_Info
+}
+
+/** aggregated selection of "delegation" */
+export type Delegation_Aggregate = {
+  __typename?: 'delegation_aggregate'
+  aggregate?: Maybe<Delegation_Aggregate_Fields>
+  nodes: Array<Delegation>
+}
+
+/** aggregate fields of "delegation" */
+export type Delegation_Aggregate_Fields = {
+  __typename?: 'delegation_aggregate_fields'
+  count: Scalars['Int']
+  max?: Maybe<Delegation_Max_Fields>
+  min?: Maybe<Delegation_Min_Fields>
+}
+
+/** aggregate fields of "delegation" */
+export type Delegation_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Delegation_Select_Column>>
+  distinct?: InputMaybe<Scalars['Boolean']>
+}
+
+/** order by aggregate values of table "delegation" */
+export type Delegation_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>
+  max?: InputMaybe<Delegation_Max_Order_By>
+  min?: InputMaybe<Delegation_Min_Order_By>
+}
+
+/** Boolean expression to filter rows from the table "delegation". All fields are combined with a logical 'AND'. */
+export type Delegation_Bool_Exp = {
+  _and?: InputMaybe<Array<Delegation_Bool_Exp>>
+  _not?: InputMaybe<Delegation_Bool_Exp>
+  _or?: InputMaybe<Array<Delegation_Bool_Exp>>
+  account?: InputMaybe<Account_Bool_Exp>
+  amount?: InputMaybe<Coin_Comparison_Exp>
+  delegator_address?: InputMaybe<String_Comparison_Exp>
+  validator_address?: InputMaybe<String_Comparison_Exp>
+  validator_info?: InputMaybe<Validator_Info_Bool_Exp>
+}
+
+/** aggregate max on columns */
+export type Delegation_Max_Fields = {
+  __typename?: 'delegation_max_fields'
+  delegator_address?: Maybe<Scalars['String']>
+  validator_address?: Maybe<Scalars['String']>
+}
+
+/** order by max() on columns of table "delegation" */
+export type Delegation_Max_Order_By = {
+  delegator_address?: InputMaybe<Order_By>
+  validator_address?: InputMaybe<Order_By>
+}
+
+/** aggregate min on columns */
+export type Delegation_Min_Fields = {
+  __typename?: 'delegation_min_fields'
+  delegator_address?: Maybe<Scalars['String']>
+  validator_address?: Maybe<Scalars['String']>
+}
+
+/** order by min() on columns of table "delegation" */
+export type Delegation_Min_Order_By = {
+  delegator_address?: InputMaybe<Order_By>
+  validator_address?: InputMaybe<Order_By>
+}
+
+/** Ordering options when selecting data from "delegation". */
+export type Delegation_Order_By = {
+  account?: InputMaybe<Account_Order_By>
+  amount?: InputMaybe<Order_By>
+  delegator_address?: InputMaybe<Order_By>
+  validator_address?: InputMaybe<Order_By>
+  validator_info?: InputMaybe<Validator_Info_Order_By>
+}
+
+/** select columns of table "delegation" */
+export enum Delegation_Select_Column {
+  /** column name */
+  Amount = 'amount',
+  /** column name */
+  DelegatorAddress = 'delegator_address',
+  /** column name */
+  ValidatorAddress = 'validator_address'
 }
 
 /** aggregate variance on columns */
@@ -6708,6 +7649,132 @@ export type Query_RootCosmwasm_Update_Admin_By_PkArgs = {
   transaction_hash: Scalars['String']
 }
 
+export type Query_RootCosmwasm_Clear_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Clear_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Clear_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_ExecuteArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Execute_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Execute_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_InstantiateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Instantiate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Instantiate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_MigrateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Migrate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Migrate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_StoreArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Store_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Store_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Query_RootCosmwasm_Update_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Update_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Query_RootCosmwasm_Update_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
 export type Query_RootDelegationArgs = {
   distinct_on?: InputMaybe<Array<Delegation_Select_Column>>
   limit?: InputMaybe<Scalars['Int']>
@@ -8218,6 +9285,132 @@ export type Subscription_RootCommunity_Pool_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>
   order_by?: InputMaybe<Array<Community_Pool_Order_By>>
   where?: InputMaybe<Community_Pool_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Clear_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Clear_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Clear_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Clear_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_ExecuteArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Execute_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Execute_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Execute_Order_By>>
+  where?: InputMaybe<Cosmwasm_Execute_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Execute_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_InstantiateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Instantiate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Instantiate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Instantiate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Instantiate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Instantiate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_MigrateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Migrate_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Migrate_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Migrate_Order_By>>
+  where?: InputMaybe<Cosmwasm_Migrate_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Migrate_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_StoreArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Store_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Store_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Store_Order_By>>
+  where?: InputMaybe<Cosmwasm_Store_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Store_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
+}
+
+export type Subscription_RootCosmwasm_Update_AdminArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Update_Admin_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Cosmwasm_Update_Admin_Select_Column>>
+  limit?: InputMaybe<Scalars['Int']>
+  offset?: InputMaybe<Scalars['Int']>
+  order_by?: InputMaybe<Array<Cosmwasm_Update_Admin_Order_By>>
+  where?: InputMaybe<Cosmwasm_Update_Admin_Bool_Exp>
+}
+
+export type Subscription_RootCosmwasm_Update_Admin_By_PkArgs = {
+  index: Scalars['bigint']
+  transaction_hash: Scalars['String']
 }
 
 export type Subscription_RootCosmwasm_Clear_AdminArgs = {
@@ -13183,6 +14376,49 @@ export function useStakingPoolSubscription(
     StakingPoolSubscription,
     StakingPoolSubscriptionVariables
   >(StakingPoolDocument, options)
+export type ValidatorsQueryVariables = Exact<{ [key: string]: never }>
+
+export type ValidatorsQuery = {
+  stakingParams: Array<{ __typename?: 'staking_params'; params: any }>
+  stakingPool: Array<{ __typename?: 'staking_pool'; bondedTokens: any }>
+  validator: Array<{
+    __typename?: 'validator'
+    validatorStatuses: Array<{
+      __typename?: 'validator_status'
+      status: number
+      jailed: boolean
+      height: any
+    }>
+    validatorSigningInfos: Array<{
+      __typename?: 'validator_signing_info'
+      tombstoned: boolean
+      missedBlocksCounter: any
+    }>
+    validatorInfo?: {
+      __typename?: 'validator_info'
+      operatorAddress: string
+      selfDelegateAddress?: string | null
+      delegations: Array<{
+        __typename?: 'delegation'
+        amount: any
+        delegatorAddress: string
+      }>
+    } | null
+    validatorVotingPowers: Array<{
+      __typename?: 'validator_voting_power'
+      votingPower: any
+    }>
+    validatorCommissions: Array<{
+      __typename?: 'validator_commission'
+      commission: any
+    }>
+    validatorDescription: Array<{
+      __typename?: 'validator_description'
+      moniker?: string | null
+      avatarUrl?: string | null
+    }>
+  }>
+  slashingParams: Array<{ __typename?: 'slashing_params'; params: any }>
 }
 export type StakingPoolSubscriptionHookResult = ReturnType<
   typeof useStakingPoolSubscription
@@ -13275,6 +14511,58 @@ export const TransactionsListenerDocument = gql`
       success
       block {
         timestamp
+    stakingPool: staking_pool(limit: 1, order_by: { height: desc }) {
+      bondedTokens: bonded_tokens
+    }
+    validator {
+      validatorStatuses: validator_statuses(
+        order_by: { height: desc }
+        limit: 1
+      ) {
+        status
+        jailed
+        height
+      }
+      validatorSigningInfos: validator_signing_infos(
+        order_by: { height: desc }
+        limit: 1
+      ) {
+        missedBlocksCounter: missed_blocks_counter
+        tombstoned
+      }
+      validatorInfo: validator_info {
+        operatorAddress: operator_address
+        selfDelegateAddress: self_delegate_address
+        delegations {
+          amount
+          delegatorAddress: delegator_address
+        }
+      }
+      validatorVotingPowers: validator_voting_powers(
+        offset: 0
+        limit: 1
+        order_by: { height: desc }
+      ) {
+        votingPower: voting_power
+      }
+      validatorCommissions: validator_commissions(
+        order_by: { height: desc }
+        limit: 1
+      ) {
+        commission
+      }
+      validatorSigningInfos: validator_signing_infos(
+        order_by: { height: desc }
+        limit: 1
+      ) {
+        missedBlocksCounter: missed_blocks_counter
+      }
+      validatorDescription: validator_descriptions(
+        limit: 1
+        order_by: { height: desc }
+      ) {
+        avatarUrl: avatar_url
+        moniker
       }
       messages
       logs

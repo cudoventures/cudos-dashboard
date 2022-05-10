@@ -20,6 +20,8 @@
     "big.js": "^6.1.1",
     "bignumber.js": "^9.0.2",
     "copy-to-clipboard": "^3.3.1",
+    "cosmjs-types": "^0.4.1",
+    "cudosjs": "^0.0.21",
     "graphql": "^16.3.0",
     "graphql-ws": "^5.6.4",
     "jdenticon": "^3.1.1",
@@ -66,10 +68,10 @@
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "prettier": "^2.6.1",
     "typescript": "^4.5.4",
-    "vite": "^2.8.0"
-  },
   "resolutions": {
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2"
+    "vite": "^2.8.0",
+    "vite-tsconfig-paths": "^3.4.1"
   }
 }

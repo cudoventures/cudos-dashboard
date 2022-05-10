@@ -1,23 +1,22 @@
-import { DelegationStatus, ModalProps } from '../../../../../../store/validator'
+import {
+  DelegationStatus,
+  initialModalState
+} from '../../../../../../store/validator'
 import Dialog from '../../../../../../components/Dialog'
 import Delegation from './Delegation'
 import Loading from './Loading'
 import Success from './Success'
 import Failure from './Failure'
+import useModal from './hooks'
 
-type DelegationModalProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
-}
-
-const DelegationModal: React.FC<DelegationModalProps> = ({
-  modalProps,
-  handleModal
-}) => {
-  const { open, status } = modalProps
+const DelegationModal: React.FC = () => {
+  const { modal, handleModal } = useModal()
+  const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({ open: false, validator: null, amount: null, status: null })
+    handleModal({
+      ...initialModalState
+    })
   }
 
   const renderComponent = () => {
@@ -25,11 +24,11 @@ const DelegationModal: React.FC<DelegationModalProps> = ({
       case DelegationStatus.LOADING:
         return <Loading />
       case DelegationStatus.SUCCESS:
-        return <Success modalProps={modalProps} handleModal={handleModal} />
+        return <Success modalProps={modal} handleModal={handleModal} />
       case DelegationStatus.FAILURE:
-        return <Failure modalProps={modalProps} handleModal={handleModal} />
+        return <Failure modalProps={modal} handleModal={handleModal} />
       default:
-        return <Delegation modalProps={modalProps} handleModal={handleModal} />
+        return <Delegation modalProps={modal} handleModal={handleModal} />
     }
   }
 

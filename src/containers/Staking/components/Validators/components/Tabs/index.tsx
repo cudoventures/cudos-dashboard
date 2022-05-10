@@ -1,13 +1,11 @@
 import { Tabs, Tab } from '@mui/material'
-
-type TabsProps = {
-  tab: number
-  handleTabChange: (event: any, newvalue: number) => void
-}
+import useTabs from './hooks'
 
 const labels = ['Active', 'Inactive', 'Favourites']
 
-const TabsHeader: React.FC<TabsProps> = ({ tab, handleTabChange }) => {
+const TabsHeader: React.FC = () => {
+  const { tab, handleTabChange } = useTabs()
+
   return (
     <Tabs value={tab} onChange={handleTabChange} textColor="inherit">
       {labels.map((label, i) => (

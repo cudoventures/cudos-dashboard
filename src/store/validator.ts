@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 export enum DelegationStatus {
   LOADING = 'LOADING',
@@ -15,6 +15,9 @@ export type ModalProps = {
   } | null
   status: DelegationStatus | null
   amount: string | null
+  fee: any
+  gasUsed: number
+  txHash: string
 }
 
 export type ValidatorType = {
@@ -46,6 +49,16 @@ export type ValidatorsState = {
 
 export type ItemType = Override<ValidatorType, { validator: AvatarName }>
 
+export const initialModalState = {
+  open: false,
+  validator: null,
+  status: null,
+  amount: null,
+  fee: '',
+  gasUsed: 0,
+  txHash: ''
+}
+
 const initialState: ValidatorsState = {
   loading: true,
   exists: true,
@@ -55,10 +68,7 @@ const initialState: ValidatorsState = {
   sortKey: 'votingPower',
   sortDirection: 'desc',
   modal: {
-    open: false,
-    validator: null,
-    status: null,
-    amount: null
+    ...initialModalState
   }
 }
 
@@ -66,7 +76,7 @@ export const validatorsSlice = createSlice({
   name: 'validators',
   initialState,
   reducers: {
-    updateValidators: (state, action: PayloadAction<ValidatorsState>) => {
+    updateValidators: (state, action) => {
       return { ...state, ...action.payload }
     }
   }
