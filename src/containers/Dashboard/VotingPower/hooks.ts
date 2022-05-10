@@ -16,7 +16,6 @@ export const useOnlineVotingPower = () => {
 
   useVotingPowerAggregateSubscription({
     onSubscriptionData: (data) => {
-      console.log('data22222', data)
       dispatch(
         updateNetwork({
           ...state,
@@ -30,7 +29,6 @@ export const useOnlineVotingPower = () => {
 
   useStakingPoolSubscription({
     onSubscriptionData: (data) => {
-      console.log('data111111', data)
       dispatch(
         updateNetwork({
           ...state,

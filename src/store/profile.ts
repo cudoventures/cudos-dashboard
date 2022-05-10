@@ -5,7 +5,6 @@ export interface WalletState {
   address: string
   balance: BigNumber
   availableRewards: BigNumber
-  balance: string
 }
 
 const initialState: WalletState = {
@@ -16,7 +15,6 @@ const initialState: WalletState = {
 
 export enum TransactionCurrency {
   USD = 'usd'
-  balance: ''
 }
 
 export const walletSlice = createSlice({

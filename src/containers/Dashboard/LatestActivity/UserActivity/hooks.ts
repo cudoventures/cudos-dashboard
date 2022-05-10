@@ -21,17 +21,10 @@ export const useUserTransactions = () => {
       address: `{${address}}`
     },
     onSubscriptionData: (data: { subscriptionData: { data: any } }) => {
-      console.log('data', data)
-
-      //   const newItems = R.uniq([
-      //     state.data,
-      //     formatTransactions(data.subscriptionData.data)
-      //   ])
       const stateChange = {
         data: formatTransactions(data.subscriptionData.data),
         offsetCount: state.offsetCount + LIMIT
       }
-      console.log('stateChange', stateChange)
       dispatch(updateUserTransactions(stateChange))
     }
   })
