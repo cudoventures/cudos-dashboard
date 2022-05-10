@@ -7,7 +7,8 @@ import {
 import { RootState } from '../../../../store'
 import { updateUserTransactions } from '../../../../store/userTransactions'
 
-const LIMIT = 20
+const LIMIT = 50
+const FILTER = 20
 
 export const useUserTransactions = () => {
   const dispatch = useDispatch()
@@ -31,8 +32,16 @@ export const useUserTransactions = () => {
 
   const formatTransactions = (data: GetMessagesByAddressQuery) => {
     let formattedData = data.messagesByAddress
-    if (data.messagesByAddress.length === LIMIT + 1) {
-      formattedData = data.messagesByAddress.slice(0, LIMIT + 1)
+    formattedData = formattedData.filter(
+      (ele, ind) =>
+        ind ===
+        formattedData.findIndex(
+          (elem) => elem.transaction.hash === ele.transaction.hash
+        )
+    )
+
+    if (data.messagesByAddress.length > FILTER + 1) {
+      formattedData = formattedData.slice(0, FILTER)
     }
     return formattedData.map((x) => {
       const { transaction } = x

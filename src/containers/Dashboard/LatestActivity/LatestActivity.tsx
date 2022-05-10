@@ -1,20 +1,21 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
+import ClockIcon from '../../../assets/vectors/clock-icon.svg'
 import { formatAddress } from '../../../utils/projectUtils'
 import Card from '../../../components/Card/Card'
 import Table from '../../../components/Table'
-import ClockIcon from '../../../assets/vectors/clock-icon.svg'
 import { columnNames } from '../../../store/userTransactions'
 
 import { styles } from '../styles'
 import { useUserTransactions } from './UserActivity/hooks'
 
 const LatestActivity = () => {
+  useUserTransactions()
   const { address } = useSelector((state: RootState) => state.profile)
-  const { state: userState } = useUserTransactions()
+  const { data } = useSelector((state: RootState) => state.userTransactions)
 
   const handleHashRedirect = (hash: string) => {
     window.open(`${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${hash}`)
@@ -104,7 +105,7 @@ const LatestActivity = () => {
     }
   }
 
-  const formattedItems = userState.data.map((tr: any, index: number) => ({
+  const formattedItems = data.map((tr: any, index: number) => ({
     index: index + 1,
     txHash: (
       <Box onClick={() => handleHashRedirect(tr.hash)}>
@@ -140,7 +141,21 @@ const LatestActivity = () => {
       >
         LATEST ACTIVITY
       </Typography>
-      <Table items={formattedItems} columns={columnNames} />
+      {!data.length ? (
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: '40%',
+            left: '48%'
+          }}
+        >
+          <CircularProgress size={60} />
+        </Box>
+      ) : (
+        <Table items={formattedItems} columns={columnNames} />
+      )}
     </Card>
   )
 }

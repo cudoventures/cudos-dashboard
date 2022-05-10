@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CssBaseline } from '@mui/material'
 import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { StargateClient } from 'cudosjs'
 import BigNumber from 'bignumber.js'
 
 import { RecoilRoot } from 'recoil'
 import { ConnectLedger } from 'ledgers/KeplrLedger'
 import { updateUser } from 'store/profile'
-import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
+import { updateUserTransactions } from 'store/userTransactions'
+import { fetchRewards } from 'api/getRewards'
+import { getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import Footer from './components/Layout/Footer'
@@ -32,35 +33,36 @@ const App = () => {
 
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const apolloClient = useApollo(null)
+  const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
 
   const connectAccount = useCallback(async () => {
     try {
-      const account = await ConnectLedger()
-
-      const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
-      const walletBalance = await client.getBalance(
-        account.address,
-        CosmosNetworkConfig.CURRENCY_DENOM
-      )
+      const { address } = await ConnectLedger()
+      if (address !== lastLoggedAddress) {
+        dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
+      }
+      const balance = await getWalletBalance(address)
+      const { totalRewards, validatorArray } = await fetchRewards(address)
 
       dispatch(
         updateUser({
-          address: account.address,
-          balance: new BigNumber(walletBalance.amount)
-            .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
-            .toString(10)
+          address,
+          lastLoggedAddress: address,
+          balance: new BigNumber(balance),
+          availableRewards: new BigNumber(totalRewards),
+          stakedValidators: validatorArray
         })
       )
     } catch (e) {
       throw new Error('Failed to connect!')
     }
-  }, [dispatch])
+  }, [dispatch, lastLoggedAddress])
 
   useEffect(() => {
     window.addEventListener('keplr_keystorechange', async () => {
-      connectAccount()
+      await connectAccount()
     })
   }, [connectAccount])
 

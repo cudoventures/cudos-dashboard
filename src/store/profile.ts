@@ -3,14 +3,18 @@ import BigNumber from 'bignumber.js'
 
 export interface WalletState {
   address: string
+  lastLoggedAddress: string
   balance: BigNumber
   availableRewards: BigNumber
+  stakedValidators: string[]
 }
 
 const initialState: WalletState = {
   address: '',
+  lastLoggedAddress: '',
   balance: new BigNumber(0),
-  availableRewards: new BigNumber(0)
+  availableRewards: new BigNumber(0),
+  stakedValidators: []
 }
 
 export enum TransactionCurrency {

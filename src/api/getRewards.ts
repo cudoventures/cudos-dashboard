@@ -7,6 +7,7 @@ import { AccountDelegationRewardsDocument } from '../graphql/account_actions'
 export const fetchRewards = async (address: string, signal?: AbortSignal) => {
   const defaultReturnValue = new BigNumber(0)
   const rewardArray: Array<BigNumber> = []
+  const validatorArray: Array<string> = []
   try {
     const { data } = await axios.post(
       import.meta.env.VITE_GRAPHQL_URL?.toString(),
@@ -21,6 +22,7 @@ export const fetchRewards = async (address: string, signal?: AbortSignal) => {
 
     Object.values(data.data.delegationRewards).map((value: any) => {
       rewardArray.push(value.coins[0].amount)
+      validatorArray.push(value.validatorAddress)
       return value
     })
 
@@ -28,7 +30,7 @@ export const fetchRewards = async (address: string, signal?: AbortSignal) => {
       rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))
     )
 
-    return totalRewards
+    return { totalRewards, validatorArray }
   } catch (error) {
     return defaultReturnValue
   }

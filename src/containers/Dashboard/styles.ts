@@ -95,7 +95,8 @@ export const styles = {
     minHeight: '347px',
     marginTop: '20px',
     maxHeight: '250px',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    position: 'relative'
   },
   networkStatisticsCard: {
     minHeight: '100%',

@@ -60,7 +60,7 @@ const WalletInformation = () => {
         <Avatar src={TestAvatar} alt="Avatar" style={styles.avatarStyle} />
         <Box sx={{ marginLeft: '20px' }}>
           <Box sx={{ display: 'flex' }}>
-            <Typography style={styles.usernameStyle}>!stef</Typography>
+            <Typography style={styles.usernameStyle}>!cudos</Typography>
             <img
               style={{ marginLeft: '5px', marginBottom: '10px' }}
               src={TickIcon}

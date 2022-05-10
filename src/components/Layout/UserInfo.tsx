@@ -23,7 +23,9 @@ import ArrowIcon from '../../assets/vectors/arrow-down.svg'
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { address } = useSelector((state: RootState) => state.profile)
+  const { address, lastLoggedAddress } = useSelector(
+    (state: RootState) => state.profile
+  )
 
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState<boolean>(false)
@@ -45,8 +47,10 @@ const UserInfo = () => {
     dispatch(
       updateUser({
         address: '',
+        lastLoggedAddress,
         balance: new BigNumber(0),
-        availableRewards: new BigNumber(0)
+        availableRewards: new BigNumber(0),
+        stakedValidators: []
       })
     )
     navigate('/')
@@ -67,7 +71,7 @@ const UserInfo = () => {
               alt="Avatar"
             />
           </Box>
-          <Typography>Hi, stefan.eth</Typography>
+          <Typography>Hi, cudos.eth</Typography>
           <Box style={{ marginLeft: '35px' }}>
             <img
               style={{

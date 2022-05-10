@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
-    "@cosmjs/stargate": "^0.28.4",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fontsource/poppins": "^4.5.5",
