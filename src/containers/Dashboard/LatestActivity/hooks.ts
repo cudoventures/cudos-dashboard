@@ -11,17 +11,6 @@ export const useTransactions = () => {
     items: []
   })
 
-  // ================================
-  // txs subscription
-  // ================================
-  useTransactionsListenerSubscription({
-    onSubscriptionData: (data: { subscriptionData: { data: any } }) => {
-      setState({
-        items: formatTransactions(data.subscriptionData.data)
-      })
-    }
-  })
-
   const formatTransactions = (data: TransactionsListenerSubscription) => {
     return data.transactions.map(
       (x: {
@@ -41,6 +30,17 @@ export const useTransactions = () => {
       }
     )
   }
+
+  // ================================
+  // txs subscription
+  // ================================
+  useTransactionsListenerSubscription({
+    onSubscriptionData: (data: { subscriptionData: { data: any } }) => {
+      setState({
+        items: formatTransactions(data.subscriptionData.data)
+      })
+    }
+  })
 
   return {
     state

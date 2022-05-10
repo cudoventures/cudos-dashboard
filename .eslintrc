@@ -87,7 +87,8 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "no-unsafe-optional-chaining": "off"
   },
   "globals": {
     "React": true,

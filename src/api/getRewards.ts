@@ -32,6 +32,6 @@ export const fetchRewards = async (address: string, signal?: AbortSignal) => {
 
     return { totalRewards, validatorArray }
   } catch (error) {
-    return defaultReturnValue
+    return { totalRewards: defaultReturnValue, validatorArray: [] }
   }
 }

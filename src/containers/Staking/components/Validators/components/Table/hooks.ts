@@ -58,15 +58,15 @@ export default () => {
         )
         const votingPowerPercent =
           numeral((votingPower / votingPowerOverall) * 100).value() || 0
-        const totalDelegations = x.validatorInfo.delegations.reduce((a, b) => {
+        const totalDelegations = x.validatorInfo?.delegations.reduce((a, b) => {
           return (
             a + (numeral(R.pathOr(0, ['amount', 'amount'], b)).value() || 0)
           )
         }, 0)
 
-        const [selfDelegation] = x.validatorInfo.delegations.filter((y) => {
+        const [selfDelegation] = x.validatorInfo?.delegations.filter((y) => {
           return y.delegatorAddress === x.validatorInfo?.selfDelegateAddress
-        })
+        }) || [0]
         const self = numeral(
           R.pathOr(0, ['amount', 'amount'], selfDelegation)
         ).value()
@@ -98,7 +98,7 @@ export default () => {
             ['validatorSigningInfos', 0, 'tombstoned'],
             x
           ),
-          delegators: x.validatorInfo.delegations.length,
+          delegators: x.validatorInfo?.delegations.length || 0,
           avatarUrl: R.pathOr('', ['validatorDescription', 0, 'avatarUrl'], x),
           moniker: R.pathOr('', ['validatorDescription', 0, 'moniker'], x)
         }

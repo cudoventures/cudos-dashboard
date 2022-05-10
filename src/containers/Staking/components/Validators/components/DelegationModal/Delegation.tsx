@@ -96,8 +96,8 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
       const delegationResult = await delegate(
         walletAccount.bech32Address,
-        validator?.address,
-        amount,
+        validator?.address || '',
+        amount || '',
         'something'
       )
 
@@ -282,7 +282,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                         }
                       })}
                       onClick={() =>
-                        handleModal({ ...modalProps, amount: '3217.4' })
+                        handleModal({
+                          ...modalProps,
+                          amount: Math.floor(Number(balance)).toString()
+                        })
                       }
                     >
                       MAX

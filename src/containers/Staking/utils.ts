@@ -1,4 +1,6 @@
-const columns = [
+import { Column } from 'components/Table/types'
+
+const columns: Column[] = [
   {
     key: 'idx',
     label: '#',

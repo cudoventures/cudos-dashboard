@@ -28,7 +28,7 @@ export const networkSlice = createSlice({
   name: 'network',
   initialState,
   reducers: {
-    updateNetwork: (state, action: PayloadAction<NetworkState>) => {
+    updateNetwork: (state, action) => {
       return { ...state, ...action.payload }
     }
   }

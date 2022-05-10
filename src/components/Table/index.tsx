@@ -51,6 +51,7 @@ const Table: React.FC<TableProps> = ({
                     {col.label}
                   </Typography>
                   {col.sortKey &&
+                    handleSort &&
                     (col.sortKey === sortKey ? (
                       <ArrowDownwardRoundedIcon
                         sx={(theme) => ({
@@ -67,7 +68,7 @@ const Table: React.FC<TableProps> = ({
                               : null
                         })}
                         onClick={() =>
-                          col.sortKey ? handleSort(col?.sortKey) : null
+                          col.sortKey ? handleSort(col.sortKey) : null
                         }
                       />
                     ) : (
@@ -82,7 +83,7 @@ const Table: React.FC<TableProps> = ({
                           transition: 'all 0.3s'
                         })}
                         onClick={() =>
-                          col.sortKey ? handleSort(col?.sortKey) : null
+                          col.sortKey ? handleSort(col.sortKey) : null
                         }
                       />
                     ))}

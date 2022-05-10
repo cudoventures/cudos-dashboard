@@ -1,8 +1,8 @@
 import ConditionContainer from './styles'
 
 const Condition: React.FC<{
-  color?: string
-}> = ({ color }) => {
+  color: string
+}> = ({ color = 'grey' }) => {
   return <ConditionContainer color={color} />
 }
 
