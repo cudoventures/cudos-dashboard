@@ -72,10 +72,7 @@ const WalletBalance = () => {
   }, [address, dispatch])
 
   const handleRewardClaim = async () => {
-    if (
-      Number.isNaN(new BigNumber(availableRewards)) ||
-      availableRewards === new BigNumber(0)
-    ) {
+    if (Number.isNaN(new BigNumber(availableRewards))) {
       alert('No available rewards to claim.')
       return
     }
@@ -183,6 +180,7 @@ const WalletBalance = () => {
               <Button
                 onClick={() => handleRewardClaim()}
                 style={styles.claimButtonStyle}
+                disabled={!stakedValidators.length}
               >
                 Claim
               </Button>

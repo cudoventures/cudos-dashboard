@@ -28,6 +28,7 @@ export const useUserTransactions = () => {
     if (data.messagesByAddress.length > FILTER + 1) {
       formattedData = formattedData.slice(0, FILTER)
     }
+
     return formattedData.map((x) => {
       const { transaction } = x
 
@@ -54,7 +55,9 @@ export const useUserTransactions = () => {
     onSubscriptionData: (data: any) => {
       const stateChange = {
         data: formatTransactions(data.subscriptionData.data),
-        offsetCount: state.offsetCount + LIMIT
+        offsetCount: state.offsetCount + LIMIT,
+        hasActivity: !!data.subscriptionData.data.messagesByAddress.length,
+        loading: false
       }
       dispatch(updateUserTransactions(stateChange))
     }

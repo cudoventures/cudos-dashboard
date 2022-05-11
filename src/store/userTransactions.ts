@@ -3,11 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface UserTransactionState {
   offsetCount: number
   data: Transactions[]
+  hasActivity: boolean
+  loading: boolean
 }
 
 const initialState: UserTransactionState = {
   offsetCount: 0,
-  data: []
+  data: [],
+  hasActivity: true,
+  loading: true
 }
 
 export const columnNames = [
