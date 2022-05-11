@@ -65,7 +65,7 @@ const LatestActivity = () => {
             style={{ background: '#52A6F8' }}
             sx={styles.latestActivityAction}
           >
-            SUBMIT PROPOSAL
+            MULTI SEND
           </Typography>
         )
       case '/cosmos.gov.v1beta1.MsgVote':
