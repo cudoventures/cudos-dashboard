@@ -15,7 +15,9 @@ import { useUserTransactions } from './UserActivity/hooks'
 const LatestActivity = () => {
   useUserTransactions()
   const { address } = useSelector((state: RootState) => state.profile)
-  const { data } = useSelector((state: RootState) => state.userTransactions)
+  const { data, hasActivity, loading } = useSelector(
+    (state: RootState) => state.userTransactions
+  )
 
   const handleHashRedirect = (hash: string) => {
     window.open(`${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${hash}`)
@@ -52,6 +54,15 @@ const LatestActivity = () => {
         return (
           <Typography
             style={{ background: '#ff5722' }}
+            sx={styles.latestActivityAction}
+          >
+            SUBMIT PROPOSAL
+          </Typography>
+        )
+      case '/cosmos.bank.v1beta1.MsgMultiSend':
+        return (
+          <Typography
+            style={{ background: '#52A6F8' }}
             sx={styles.latestActivityAction}
           >
             SUBMIT PROPOSAL
@@ -132,6 +143,39 @@ const LatestActivity = () => {
     )
   }))
 
+  const hasLatestActivity = loading ? (
+    <Box
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)'
+      }}
+    >
+      <CircularProgress size={60} />
+    </Box>
+  ) : (
+    <Table items={formattedItems} columns={columnNames} />
+  )
+
+  const noActivity =
+    loading && !hasActivity ? (
+      <Box
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}
+      >
+        <CircularProgress size={60} />
+      </Box>
+    ) : (
+      <Typography style={styles.noActivityStyle}>
+        User has no activity to display
+      </Typography>
+    )
+
   return (
     <Card style={styles.latestActivityCard}>
       <Typography
@@ -141,21 +185,7 @@ const LatestActivity = () => {
       >
         LATEST ACTIVITY
       </Typography>
-      {!data.length ? (
-        <Box
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: '40%',
-            left: '48%'
-          }}
-        >
-          <CircularProgress size={60} />
-        </Box>
-      ) : (
-        <Table items={formattedItems} columns={columnNames} />
-      )}
+      {hasActivity ? hasLatestActivity : noActivity}
     </Card>
   )
 }

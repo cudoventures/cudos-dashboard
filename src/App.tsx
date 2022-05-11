@@ -41,7 +41,14 @@ const App = () => {
     try {
       const { address } = await ConnectLedger()
       if (address !== lastLoggedAddress) {
-        dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
+        dispatch(
+          updateUserTransactions({
+            offsetCount: 0,
+            data: [],
+            hasActivity: false,
+            loading: true
+          })
+        )
       }
       const balance = await getWalletBalance(address)
       const { totalRewards, validatorArray } = await fetchRewards(address)

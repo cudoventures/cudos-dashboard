@@ -145,5 +145,13 @@ export const styles = {
     letterSpacing: '2px',
     maxWidth: '255px',
     overflowWrap: 'anywhere'
+  },
+  noActivityStyle: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontSize: '20px',
+    fontWeight: '600'
   }
 } as const

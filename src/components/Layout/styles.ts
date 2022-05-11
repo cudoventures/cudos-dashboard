@@ -6,7 +6,7 @@ export const styles = {
     background: theme.dark.custom.backgrounds.primary,
     width: '88px',
     borderRadius: '1.3rem',
-    height: '90%',
+    height: '100%',
     padding: '20px',
     flexShrink: 0
   },
