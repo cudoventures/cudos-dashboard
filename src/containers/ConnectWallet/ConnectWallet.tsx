@@ -50,11 +50,11 @@ const ConnectWallet = () => {
       <Box>
         <Box style={styles.connectContainer}>
           <Box>
-            <h1>Welcome to CUDOS Wallet!</h1>
+            <h1>Welcome to CUDOS Dashboard!</h1>
           </Box>
           <Box style={styles.subHeaderContainer}>
             <Typography variant="subtitle1" color="text.secondary">
-              CUDOS Wallet allows you to manage your CUDOS easily. <br /> In
+              CUDOS Dashboard allows you to manage your CUDOS easily. <br /> In
               order to continue you need to connect your Keplr Wallet.
             </Typography>
           </Box>

@@ -17,7 +17,9 @@ const StyledSelect: React.FC<SelectProps> = ({ value, avatar }) => {
       }}
     >
       <MenuItem value="Hi, Slavi">Hi</MenuItem>
-      <MenuItem value="CUDOS Mainnet">CUDOS Mainnet</MenuItem>
+      <MenuItem value="CUDOS Mainnet">
+        {import.meta.env.VITE_APP_CHAIN_NAME}
+      </MenuItem>
     </Select>
   )
 }

@@ -122,7 +122,7 @@ const WalletInformation = () => {
         <Box>
           <span>
             <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>
-              CUDOS Mainnet
+              {import.meta.env.VITE_APP_CHAIN_NAME}
             </Typography>
           </span>
         </Box>

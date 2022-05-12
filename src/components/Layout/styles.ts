@@ -72,7 +72,6 @@ export const FooterContainer = styled(Box)(() => ({
 }))
 
 export const StyledNetwork = styled(Box)(({ theme }) => ({
-  maxWidth: '181px',
   maxHeight: '48px',
   borderRadius: '55px',
   backgroundColor: theme.custom.backgrounds.primary,
