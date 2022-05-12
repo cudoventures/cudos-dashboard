@@ -343,7 +343,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
               }
             })}
             onClick={handleSubmit}
-            disabled={Number(amount) > Number(balance)}
+            disabled={Number(amount) > Number(balance) || !amount}
           >
             Submit
           </Button>
