@@ -6,7 +6,13 @@ import {
   InfoRounded as InfoRoundedIcon
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, MsgDelegateEncodeObject, StargateClient } from 'cudosjs'
+import {
+  coin,
+  GasPrice,
+  MsgDelegateEncodeObject,
+  SigningStargateClient,
+  StargateClient
+} from 'cudosjs'
 
 import {
   DelegationStatus,
@@ -21,12 +27,18 @@ import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
+import { formatToken } from 'utils/format_token'
 import {
   ModalContainer,
   StyledTextField,
   SummaryContainer,
   CancelRoundedIcon
 } from './styles'
+
+const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
+const gasPrice = GasPrice.fromString(
+  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+)
 
 type DelegationProps = {
   modalProps: ModalProps
@@ -62,6 +74,20 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     let fee = ''
 
     if (Number(ev.target.value) > 0) {
+      window.keplr.defaultOptions = {
+        sign: {
+          preferNoSetFee: true
+        }
+      }
+      const offlineSigner = window.getOfflineSigner(
+        import.meta.env.VITE_APP_CHAIN_ID
+      )
+
+      const client = await SigningStargateClient.connectWithSigner(
+        import.meta.env.VITE_APP_RPC,
+        offlineSigner
+      )
+
       const msg = MsgDelegate.fromPartial({
         delegatorAddress: address,
         validatorAddress: validator?.address,
@@ -76,7 +102,16 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         value: msg
       }
 
-      fee = (await calculateFee(address, msgAny, 'something')).gas
+      const gasUsed = await client.simulate(address, [msgAny], 'memo')
+
+      const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+      const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
+
+      fee = formatToken(
+        calculatedFee.amount,
+        CosmosNetworkConfig.CURRENCY_DENOM
+      ).value
     }
 
     handleModal({
@@ -98,7 +133,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         walletAccount.bech32Address,
         validator?.address || '',
         amount || '',
-        'something'
+        ''
       )
 
       handleModal({
@@ -155,7 +190,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    CUDOS mainnet
+                    {import.meta.env.VITE_APP_CHAIN_NAME}
                   </Typography>
                 </Box>
               </Box>
@@ -308,6 +343,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
               }
             })}
             onClick={handleSubmit}
+            disabled={Number(amount) > Number(balance) || !amount}
           >
             Submit
           </Button>

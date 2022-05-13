@@ -25,10 +25,7 @@ export const userSlice = createSlice({
   name: 'userTransactions',
   initialState,
   reducers: {
-    updateUserTransactions: (
-      state,
-      action: PayloadAction<UserTransactionState>
-    ) => {
+    updateUserTransactions: (state, action) => {
       return { ...state, ...action.payload }
     }
   }

@@ -131,5 +131,6 @@ declare global {
     VITE_APP_CHAIN_NAME: string
     VITE_APP_API: string
     VITE_APP_EXPLORER_V2: string
+    VITE_APP_FEE_MULTIPLIER: number
   }
 }

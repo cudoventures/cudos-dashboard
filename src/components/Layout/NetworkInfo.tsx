@@ -15,7 +15,7 @@ const NetworkInfo = () => {
           alignItems: 'center'
         }}
       >
-        CUDOS Mainnet
+        {import.meta.env.VITE_APP_CHAIN_NAME}
         <img
           style={{ marginLeft: '10px' }}
           src={OnlineStatus}
