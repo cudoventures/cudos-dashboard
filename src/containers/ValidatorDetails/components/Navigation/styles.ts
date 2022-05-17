@@ -8,7 +8,7 @@ const NavigationContainer = styled(Box)(({ theme }) => ({
   position: 'sticky',
   top: 0,
   overflow: 'hidden',
-  zIndex: 10,
+  zIndex: 1,
   paddingBottom: '0.5rem'
 }))
 
