@@ -6,7 +6,7 @@ const labels = [
   'Staking',
   'Withdraws',
   'Governance',
-  'Slushing'
+  'Slashing'
 ]
 
 const ActivityTabs: React.FC = () => {
