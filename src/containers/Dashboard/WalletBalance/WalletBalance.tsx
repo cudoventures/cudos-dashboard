@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 import { claimRewards } from 'ledgers/transactions'
 import { getWalletBalance } from 'utils/projectUtils'
 import getCurrencyRate from 'api/getCurrency'
-import Card from 'components/Card'
+import Card from 'components/Card/Card'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import { fetchRewards } from 'api/getRewards'
 

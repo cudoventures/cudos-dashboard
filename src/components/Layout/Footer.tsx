@@ -5,7 +5,7 @@ import TwitterIcon from 'assets/vectors/twitter.svg'
 import TelegramIcon from 'assets/vectors/telegram.svg'
 import DiscordIcon from 'assets/vectors/discord.svg'
 
-import { styles } from './styles'
+import { FooterContainer, styles } from './styles'
 
 const linksLeft = [
   { text: 'FAQ', url: 'https://www.cudos.org/' },
