@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Typography, Box, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import BigNumber from 'bignumber.js'
 import { claimRewards } from 'ledgers/transactions'
-import { getWalletBalance } from '../../../utils/projectUtils'
-import getCurrencyRate from '../../../api/getCurrency'
-import Card from '../../../components/Card/Card'
-import CudosLogo from '../../../assets/vectors/cudos-logo.svg'
-import { fetchRewards } from '../../../api/getRewards'
+import { getWalletBalance } from 'utils/projectUtils'
+import getCurrencyRate from 'api/getCurrency'
+import Card from 'components/Card'
+import CudosLogo from 'assets/vectors/cudos-logo.svg'
+import { fetchRewards } from 'api/getRewards'
 
+import { updateUser, TransactionCurrency } from 'store/profile'
 import { styles } from '../styles'
-import { updateUser, TransactionCurrency } from '../../../store/profile'
 
 const WalletBalance = () => {
   const {

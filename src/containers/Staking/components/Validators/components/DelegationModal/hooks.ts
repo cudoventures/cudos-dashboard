@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 
 import { RootState } from 'store'
-import { ModalProps, updateValidators } from '../../../../../../store/validator'
+import { ModalProps, updateValidators } from 'store/validator'
 
 export default () => {
   const dispatch = useDispatch()

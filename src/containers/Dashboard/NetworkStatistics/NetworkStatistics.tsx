@@ -1,12 +1,11 @@
-import React from 'react'
 import { Box, Typography } from '@mui/material'
 import numeral from 'numeral'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../store'
+import { RootState } from 'store'
+import Card from 'components/Card'
 import { useOnlineVotingPower } from '../VotingPower/hooks'
 import { useDataBlocks } from './Blocks/hooks'
 import { useMarketRecoil } from './Market/hooks'
-import Card from '../../../components/Card/Card'
 
 import { styles } from '../styles'
 

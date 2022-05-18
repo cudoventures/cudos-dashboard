@@ -2,20 +2,12 @@ import * as R from 'ramda'
 import numeral from 'numeral'
 import Big from 'big.js'
 import { useSelector, useDispatch } from 'react-redux'
-
 import { RootState } from 'store'
-import {
-  ValidatorType,
-  updateValidators,
-  ModalProps
-} from '../../../../../../store/validator'
-import { getValidatorCondition } from '../../../../../../utils/get_validator_condition'
-import { formatToken } from '../../../../../../utils/format_token'
-import {
-  useValidatorsQuery,
-  ValidatorsQuery
-} from '../../../../../../graphql/types'
-import { StakingParams, SlashingParams } from '../../../../../../models'
+import { ValidatorType, updateValidators, ModalProps } from 'store/validator'
+import { getValidatorCondition } from 'utils/get_validator_condition'
+import { formatToken } from 'utils/format_token'
+import { useValidatorsQuery, ValidatorsQuery } from 'graphql/types'
+import { StakingParams, SlashingParams } from 'models'
 
 export default () => {
   const dispatch = useDispatch()

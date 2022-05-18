@@ -1,12 +1,11 @@
 import { Box, Grid, Typography } from '@mui/material'
+import FooterLogo from 'assets/vectors/logo-footer.svg'
+import RedditIcon from 'assets/vectors/reddit.svg'
+import TwitterIcon from 'assets/vectors/twitter.svg'
+import TelegramIcon from 'assets/vectors/telegram.svg'
+import DiscordIcon from 'assets/vectors/discord.svg'
 
-import { FooterContainer } from './styles'
-
-import FooterLogo from '../../assets/vectors/logo-footer.svg'
-import RedditIcon from '../../assets/vectors/reddit.svg'
-import TwitterIcon from '../../assets/vectors/twitter.svg'
-import TelegramIcon from '../../assets/vectors/telegram.svg'
-import DiscordIcon from '../../assets/vectors/discord.svg'
+import { styles } from './styles'
 
 const linksLeft = [
   { text: 'FAQ', url: 'https://www.cudos.org/' },

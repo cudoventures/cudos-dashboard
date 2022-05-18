@@ -2,12 +2,11 @@ import { ValidatorType } from 'store/validator'
 import numeral from 'numeral'
 import { Box, Typography, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-
-import { getValidatorConditionClass } from '../../../../../../utils/get_validator_condition'
+import { getValidatorConditionClass } from 'utils/get_validator_condition'
+import Condition from 'components/Condition'
+import AvatarName from 'components/AvatarName'
+import Table from 'components/Table'
 import columns from '../../../../utils'
-import Condition from '../../../../../../components/Condition'
-import AvatarName from '../../../../../../components/AvatarName'
-import Table from '../../../../../../components/Table'
 import useTable from './hooks'
 
 const ValidatorsTable: React.FC = () => {

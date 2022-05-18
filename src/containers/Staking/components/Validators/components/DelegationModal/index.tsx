@@ -1,8 +1,5 @@
-import {
-  DelegationStatus,
-  initialModalState
-} from '../../../../../../store/validator'
-import Dialog from '../../../../../../components/Dialog'
+import { DelegationStatus, initialModalState } from 'store/validator'
+import Dialog from 'components/Dialog'
 import Delegation from './Delegation'
 import Loading from './Loading'
 import Success from './Success'

@@ -1,14 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import numeral from 'numeral'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../../store'
-import { chainConfig } from '../../../configs'
-import { formatToken } from '../../../utils/format_token'
+import { RootState } from 'store'
+import { chainConfig } from 'configs'
+import { formatToken } from 'utils/format_token'
 import {
   useVotingPowerAggregateSubscription,
   useStakingPoolSubscription
-} from '../../../graphql/types'
-import { updateNetwork } from '../../../store/network'
+} from 'graphql/types'
+import { updateNetwork } from 'store/network'
 
 export const useOnlineVotingPower = () => {
   const dispatch = useDispatch()
