@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import ClockIcon from 'assets/vectors/clock-icon.svg'
 import { formatAddress } from 'utils/projectUtils'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import Table from 'components/Table'
 import { columnNames } from 'store/userTransactions'
 

@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Avatar, Tooltip } from '@mui/material'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import TestAvatar from 'assets/vectors/test-avatar-sm.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import { styles } from './styles'

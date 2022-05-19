@@ -8,7 +8,7 @@ import CopyIcon from 'assets/vectors/copy-icon.svg'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import Condition from 'components/Condition'
 import moment from 'moment'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 
 const ValidatorInfo = () => {
   return (

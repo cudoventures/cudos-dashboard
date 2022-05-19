@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { InfoRounded as InfoRoundedIcon } from '@mui/icons-material'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 
 const stats = [
   {
@@ -32,7 +32,7 @@ const stats = [
 
 const Statistics = () => {
   return (
-    <Card style={{}}>
+    <Card>
       <Typography
         letterSpacing={1}
         fontWeight={700}

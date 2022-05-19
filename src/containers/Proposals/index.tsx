@@ -1,5 +1,5 @@
 import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import SearchIcon from 'assets/vectors/search-icon.svg'
 
 import { InputContainer, styles } from './styles'
