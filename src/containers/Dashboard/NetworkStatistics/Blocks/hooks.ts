@@ -7,9 +7,9 @@ import {
   AverageBlockTimeQuery,
   useActiveValidatorCountQuery,
   ActiveValidatorCountQuery
-} from '../../../../graphql/types'
-import { RootState } from '../../../../store'
-import { updateNetwork } from '../../../../store/network'
+} from 'graphql/types'
+import { RootState } from 'store'
+import { updateNetwork } from 'store/network'
 
 export const useDataBlocks = () => {
   const dispatch = useDispatch()

@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   GetMessagesByAddressQuery,
   useGetMessagesByAddressListenerSubscription
-} from '../../../../graphql/types'
-import { RootState } from '../../../../store'
-import { updateUserTransactions } from '../../../../store/userTransactions'
+} from 'graphql/types'
+import { RootState } from 'store'
+import { updateUserTransactions } from 'store/userTransactions'
 
 const LIMIT = 50
 const FILTER = 20

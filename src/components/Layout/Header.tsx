@@ -1,11 +1,11 @@
-import { Box, Grid } from '@mui/material'
+import { Box } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { RootState } from '../../store'
-import { ThemeType, updateSettings } from '../../store/settings'
+import { RootState } from 'store'
+import { ThemeType, updateSettings } from 'store/settings'
+import LogoHeader from 'assets/vectors/logo-header.svg'
 import NetworkInfo from './NetworkInfo'
 
-import LogoHeader from '../../assets/vectors/logo-header.svg'
 import UserInfo from './UserInfo'
 
 const Header = () => {

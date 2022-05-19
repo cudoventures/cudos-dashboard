@@ -8,8 +8,8 @@ import { initialModalState, ModalProps } from 'store/validator'
 
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import getMiddleEllipsis from '../../../../../../utils/get_middle_ellipsis'
-import SuccessIcon from '../../../../../../assets/vectors/success.svg'
+import getMiddleEllipsis from 'utils/get_middle_ellipsis'
+import SuccessIcon from 'assets/vectors/success.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {

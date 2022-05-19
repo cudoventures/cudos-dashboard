@@ -1,7 +1,6 @@
-import React from 'react'
 import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
 import Card from 'components/Card/Card'
-import SearchIcon from '../../assets/vectors/search-icon.svg'
+import SearchIcon from 'assets/vectors/search-icon.svg'
 
 import { InputContainer, styles } from './styles'
 import Proposal from './Proposal'

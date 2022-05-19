@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { formatBigNum } from 'utils/projectUtils'
 import { useAccountDelegationRewardsQuery } from 'graphql/types'
-import { RootState } from '../../../store'
-import { updateUser } from '../../../store/profile'
+import { RootState } from 'store'
+import { updateUser } from 'store/profile'
 
 export const useDelegationRewards = () => {
   const dispatch = useDispatch()

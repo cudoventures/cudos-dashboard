@@ -3,7 +3,7 @@ import { useState } from 'react'
 import {
   useTransactionsListenerSubscription,
   TransactionsListenerSubscription
-} from '../../../graphql/types'
+} from 'graphql/types'
 import { TransactionsState } from './types'
 
 export const useTransactions = () => {

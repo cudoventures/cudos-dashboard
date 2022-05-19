@@ -1,6 +1,5 @@
-import React from 'react'
-import { Typography } from '@mui/material'
-import OnlineStatus from '../../assets/vectors/online-status.svg'
+import { Box, Typography } from '@mui/material'
+import OnlineStatus from 'assets/vectors/online-status.svg'
 
 import { StyledNetwork } from './styles'
 
