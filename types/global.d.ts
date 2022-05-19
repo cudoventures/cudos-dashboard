@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 import '@mui/material/styles'
+import { SxProps, Theme } from '@mui/material'
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -132,5 +133,9 @@ declare global {
     VITE_APP_API: string
     VITE_APP_EXPLORER_V2: string
     VITE_APP_FEE_MULTIPLIER: number
+  }
+
+  interface SxMap {
+    [className: string]: SxProps<Theme>
   }
 }
