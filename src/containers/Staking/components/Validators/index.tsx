@@ -1,14 +1,24 @@
 import { Box } from '@mui/material'
 
 import Tabs from './components/Tabs'
-import TableContainer from './components/Table/styles'
 import ValidatorsTable from './components/Table'
 import ValidatorsCount from './components/Count'
 import DelegationModal from './components/DelegationModal'
 
 const Validators = () => {
   return (
-    <TableContainer>
+    <Box
+      sx={({ custom }) => ({
+        background: custom.backgrounds.primary,
+        padding: '1.2rem',
+        borderRadius: '1.3rem',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        gap: 1
+      })}
+    >
       <Box display="flex" justifyContent="space-between">
         <ValidatorsCount />
         <Tabs />
@@ -19,7 +29,7 @@ const Validators = () => {
         <ValidatorsTable />
       </Box>
       <DelegationModal />
-    </TableContainer>
+    </Box>
   )
 }
 

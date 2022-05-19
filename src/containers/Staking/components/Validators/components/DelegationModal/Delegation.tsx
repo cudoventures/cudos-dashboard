@@ -308,13 +308,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
                   endAdornment: (
                     <Button
+                      variant="contained"
+                      color="primary"
                       size="small"
-                      sx={(theme) => ({
+                      sx={() => ({
                         padding: '4px 15px',
-                        fontWeight: 600,
-                        '&:hover': {
-                          background: theme.palette.primary.main
-                        }
+                        fontWeight: 600
                       })}
                       onClick={() =>
                         handleModal({
@@ -336,11 +335,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
             </Box>
           </Box>
           <Button
-            sx={({ palette }) => ({
-              width: '50%',
-              '&:hover': {
-                background: palette.primary.main
-              }
+            variant="contained"
+            color="primary"
+            sx={() => ({
+              width: '50%'
             })}
             onClick={handleSubmit}
             disabled={Number(amount) > Number(balance) || !amount}

@@ -19,7 +19,7 @@ import LinkIcon from 'assets/vectors/link-icon.svg'
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import ArrowIcon from 'assets/vectors/arrow-down.svg'
 
-import { StyledUser, styles } from './styles'
+import { styles } from './styles'
 
 const UserInfo = () => {
   const navigate = useNavigate()
@@ -58,22 +58,22 @@ const UserInfo = () => {
   }
 
   return (
-    <StyledUser onMouseLeave={() => setOpen(false)}>
-      <Box onMouseEnter={() => setOpen(true)} style={styles.userContainer}>
-        <Box style={styles.userInnerContainer}>
+    <Box sx={styles.user} onMouseLeave={() => setOpen(false)}>
+      <Box onMouseEnter={() => setOpen(true)} sx={styles.userContainer}>
+        <Box sx={styles.userInnerContainer}>
           <Box
             sx={{
               marginRight: '10px'
             }}
           >
             <Avatar
-              style={{ width: '24px', height: '24px' }}
+              sx={{ width: '24px', height: '24px' }}
               src={TestAvatar}
               alt="Avatar"
             />
           </Box>
           <Typography>Hi, cudos.eth</Typography>
-          <Box style={{ marginLeft: '35px' }}>
+          <Box sx={{ marginLeft: '35px' }}>
             <img
               style={{
                 cursor: 'pointer',
@@ -85,9 +85,9 @@ const UserInfo = () => {
           </Box>
         </Box>
       </Box>
-      <Collapse style={{ marginTop: '-28px', zIndex: '-1' }} in={open}>
-        <Box style={styles.dropdownMenuContainer}>
-          <Box style={{ marginTop: '40px' }}>
+      <Collapse sx={{ marginTop: '-28px', zIndex: '-1' }} in={open}>
+        <Box sx={styles.dropdownMenuContainer}>
+          <Box sx={{ marginTop: '40px' }}>
             <Box
               sx={{
                 display: 'flex',
@@ -95,12 +95,12 @@ const UserInfo = () => {
               }}
             >
               <Avatar
-                style={{ width: '36px', height: '36px' }}
+                sx={{ width: '36px', height: '36px' }}
                 src={UserMenuAvatar}
                 alt="Avatar"
               />
             </Box>
-            <Box style={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex' }}>
               <Box
                 sx={{
                   display: 'flex',
@@ -116,7 +116,7 @@ const UserInfo = () => {
                 </Typography>
               </Box>
             </Box>
-            <Box style={{ display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Tooltip
                 onClick={() => handleCopy(address)}
                 title={copied ? 'Copied' : 'Copy to clipboard'}
@@ -136,18 +136,24 @@ const UserInfo = () => {
               </Tooltip>
             </Box>
             <Box
-              style={{
+              sx={{
                 display: 'flex',
                 justifyContent: 'center',
                 marginTop: '30px'
               }}
             >
-              <Button onClick={() => handleDisconnect()}>Disconnect</Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleDisconnect()}
+              >
+                Disconnect
+              </Button>
             </Box>
           </Box>
         </Box>
       </Collapse>
-    </StyledUser>
+    </Box>
   )
 }
 

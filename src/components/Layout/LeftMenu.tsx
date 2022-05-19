@@ -7,7 +7,7 @@ import ProposalsIcon from 'assets/vectors/proposals.svg'
 import SettingsIcon from 'assets/vectors/settings.svg'
 import StakingIcon from 'assets/vectors/staking.svg'
 
-import { NavigationButton, styles } from './styles'
+import { styles } from './styles'
 
 const MenuItems = [
   { icon: DashboardIcon, link: '/dashboard' },
@@ -28,22 +28,23 @@ const Menu = () => {
   }, [pathname])
 
   return (
-    <StickyBox style={styles.menuContainer}>
+    <Box sx={styles.menuContainer}>
       <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
         {MenuItems.map((item, index) => (
           <Link to={item.link} key={item.link}>
-            <NavigationButton
+            <ToggleButton
+              sx={styles.navigationButton}
               value={index}
               key={item.link}
               selected={selected === index}
               onClick={() => setSelected(index)}
             >
               <img src={item.icon} alt="icon" />
-            </NavigationButton>
+            </ToggleButton>
           </Link>
         ))}
       </Box>
-    </StickyBox>
+    </Box>
   )
 }
 

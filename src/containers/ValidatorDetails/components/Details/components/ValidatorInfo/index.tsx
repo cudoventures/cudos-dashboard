@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, Button, Stack, Chip } from '@mui/material'
+import { Box, Typography, Button, Stack, Chip } from '@mui/material'
 import {
   OpenInNewRounded as OpenInNewRoundedIcon,
   ArrowUpwardRounded as ArrowUpwardRoundedIcon
@@ -14,10 +14,10 @@ const ValidatorInfo = () => {
   return (
     <Box display="flex" flexDirection="column" gap={2} flexGrow={1}>
       <Card
-        style={{
+        sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 6,
+          gap: 2,
           minHeight: '152px'
         }}
       >
@@ -36,15 +36,6 @@ const ValidatorInfo = () => {
             color="primary"
             size="small"
             endIcon={<OpenInNewRoundedIcon fontSize="small" />}
-            sx={({ palette }) => ({
-              background: 'none',
-              color: palette.primary.main,
-              fontWeight: 700,
-              '&:hover': {
-                background: 'none',
-                textDecoration: 'underline'
-              }
-            })}
             disableRipple
           >
             View in Explorer
@@ -136,7 +127,7 @@ const ValidatorInfo = () => {
         </Box>
       </Card>
       <Card
-        style={{
+        sx={{
           display: 'flex',
           height: '97px',
           justifyContent: 'space-between'

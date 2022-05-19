@@ -1,6 +1,4 @@
 import { styled, Input } from '@mui/material'
-import theme from 'theme/index'
-/* eslint-disable import/prefer-default-export */
 
 export const InputContainer = styled(Input)(() => ({
   minWidth: '25vw',
@@ -15,30 +13,30 @@ export const InputContainer = styled(Input)(() => ({
   }
 }))
 
-export const styles = {
+export const styles: SxMap = {
   headerStyle: {
     fontSize: '30px',
     fontWeight: '700'
   },
-  stickyHeader: {
+  stickyHeader: ({ custom }) => ({
     position: 'fixed',
-    background: theme.dark.custom.backgrounds.dark,
+    background: custom.backgrounds.dark,
     width: '100%',
     zIndex: '5'
-  },
+  }),
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
     fontSize: '14px',
     marginBottom: '5px'
   },
-  cardContainer: {
+  cardContainer: ({ custom }) => ({
     width: '100%',
     minHeight: '213px',
-    background: theme.dark.custom.backgrounds.light,
+    background: custom.backgrounds.light,
     marginBottom: '20px',
     boxShadow: 'none'
-  },
+  }),
   cardEnumeration: {
     marginTop: '4px',
     fontWeight: '600',
@@ -96,15 +94,15 @@ export const styles = {
     marginTop: '90px',
     overflow: 'scroll'
   },
-  tableHeader: {
+  tableHeader: ({ custom }) => ({
     display: 'flex',
-    background: '#20273E',
+    background: custom.backgrounds.primary,
     paddingTop: '1.2rem',
     paddingBottom: '1.2rem',
     position: 'sticky',
     top: '0',
     zIndex: '4'
-  },
+  }),
   chipStyle: {
     borderRadius: '10px',
     color: 'white',

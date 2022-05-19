@@ -44,26 +44,31 @@ const ConnectWallet = () => {
   }
 
   return (
-    <Box style={styles.backgroundStyle}>
+    <Box sx={styles.backgroundStyle}>
       <Header />
       <Box>
-        <Box style={styles.connectContainer}>
+        <Box sx={styles.connectContainer}>
           <Box>
             <h1>Welcome to CUDOS Dashboard!</h1>
           </Box>
-          <Box style={styles.subHeaderContainer}>
+          <Box sx={styles.subHeaderContainer}>
             <Typography variant="subtitle1" color="text.secondary">
               CUDOS Dashboard allows you to manage your CUDOS easily. <br /> In
               order to continue you need to connect your Keplr Wallet.
             </Typography>
           </Box>
           <Box>
-            <Button onClick={() => connect()} style={styles.connectButton}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => connect()}
+              sx={styles.connectButton}
+            >
               <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
               Connect Keplr wallet
             </Button>
           </Box>
-          <Box style={styles.pluginWarning} color="primary.main">
+          <Box sx={styles.pluginWarning} color="primary.main">
             <img style={styles.infoIcon} src={InfoIcon} alt="Info" />
             Make sure you have Keplr plugin downloaded.
           </Box>

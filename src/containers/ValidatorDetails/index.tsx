@@ -7,7 +7,7 @@ import Activity from './components/Activity'
 
 const ValidatorDetails = () => {
   return (
-    <Slide direction="left" in timeout={450}>
+    <Slide direction="up" in timeout={450}>
       <Box display="flex" flexDirection="column" gap={2}>
         <Navigation />
         <Details />

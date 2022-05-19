@@ -21,96 +21,66 @@ const NetworkStatistics = () => {
       : numeral((votingState.votingPower / votingState.totalVotingPower) * 100)
 
   return (
-    <Card style={styles.networkStatisticsCard}>
+    <Card sx={styles.networkStatisticsCard}>
       <Box>
         <Box sx={{ marginBottom: '30px' }}>
-          <Typography style={styles.subheaderStyle} color="text.secondary">
+          <Typography sx={styles.subheaderStyle} color="text.secondary">
             NETWORK STATISTICS
           </Typography>
         </Box>
-        <Box style={styles.networkCardStyle}>
-          <Typography
-            color="text.secondary"
-            style={styles.networkCardTitleStyle}
-          >
+        <Box sx={styles.networkCardStyle}>
+          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
             PRICE
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>
+          <Typography sx={styles.networkCardContentStyle}>
             {`$${price}`}
           </Typography>
-          <Typography
-            color="primary.main"
-            style={styles.networkCardFooterStyle}
-          >
+          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
             USD
           </Typography>
         </Box>
-        <Box style={styles.networkCardStyle}>
-          <Typography
-            color="text.secondary"
-            style={styles.networkCardTitleStyle}
-          >
+        <Box sx={styles.networkCardStyle}>
+          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
             TOTAL AMOUNT STAKED
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>
+          <Typography sx={styles.networkCardContentStyle}>
             {numeral(votingState.totalVotingPower).format('0,0')}
           </Typography>
-          <Typography
-            color="primary.main"
-            style={styles.networkCardFooterStyle}
-          >
+          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
             CUDOS
           </Typography>
         </Box>
-        <Box style={styles.networkCardStyle}>
-          <Typography
-            color="text.secondary"
-            style={styles.networkCardTitleStyle}
-          >
+        <Box sx={styles.networkCardStyle}>
+          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
             ACTIVE VALIDATORS
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>
+          <Typography sx={styles.networkCardContentStyle}>
             {blockState.validators.active}
           </Typography>
-          <Typography
-            color="primary.main"
-            style={styles.networkCardFooterStyle}
-          >
+          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
             All validators: {blockState.validators.total}
           </Typography>
         </Box>
-        <Box style={styles.networkCardStyle}>
-          <Typography
-            color="text.secondary"
-            style={styles.networkCardTitleStyle}
-          >
+        <Box sx={styles.networkCardStyle}>
+          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
             ONLINE VOTING POWER
           </Typography>
           <Typography
-            style={styles.networkCardContentStyle}
+            sx={styles.networkCardContentStyle}
           >{`${votingPowerPercent.format('0,0.00', (n) => ~~n)}%`}</Typography>
-          <Typography
-            color="primary.main"
-            style={styles.networkCardFooterStyle}
-          >
+          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
             {numeral(votingState.votingPower).format('0,0')} /{' '}
             {numeral(votingState.totalVotingPower).format('0,0')}
           </Typography>
         </Box>
-        <Box style={{ marginBottom: '0px' }} sx={styles.networkCardStyle}>
-          <Typography
-            color="text.secondary"
-            style={styles.networkCardTitleStyle}
-          >
+        <Box sx={styles.networkCardStyle}>
+          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
             LATEST BLOCK
           </Typography>
-          <Typography style={styles.networkCardContentStyle}>
+          <Typography sx={styles.networkCardContentStyle}>
             {numeral(blockState.blockHeight).format('0,0')}
           </Typography>
-          <Typography
-            color="primary.main"
-            style={styles.networkCardFooterStyle}
-          >
+          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
             BLOCK
           </Typography>
         </Box>

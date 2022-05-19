@@ -40,12 +40,11 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
         </Typography>
       </Box>
       <Button
-        sx={(theme) => ({
+        variant="contained"
+        color="primary"
+        sx={() => ({
           width: '50%',
-          fontWeight: 700,
-          '&:hover': {
-            background: theme.palette.primary.main
-          }
+          fontWeight: 700
         })}
         onClick={handleTryAgain}
       >

@@ -1,8 +1,8 @@
-import { Breadcrumbs, Button, Typography } from '@mui/material'
+import { Box, Breadcrumbs, Button, Typography } from '@mui/material'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useNavigate } from 'react-router-dom'
-import NavigationContainer from './styles'
+import { styles } from './styles'
 
 const breadcrumbs = [
   <Typography color="text.secondary" fontWeight={800} fontSize="small" key={1}>
@@ -17,7 +17,7 @@ const Navigation = () => {
   const navigate = useNavigate()
 
   return (
-    <NavigationContainer>
+    <Box sx={styles.navigationContainer}>
       <Button
         variant="contained"
         color="secondary"
@@ -34,7 +34,7 @@ const Navigation = () => {
       <Typography fontSize={30} letterSpacing={1} fontWeight={800}>
         Validator details
       </Typography>
-    </NavigationContainer>
+    </Box>
   )
 }
 

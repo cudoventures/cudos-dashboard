@@ -5,7 +5,7 @@ import TwitterIcon from 'assets/vectors/twitter.svg'
 import TelegramIcon from 'assets/vectors/telegram.svg'
 import DiscordIcon from 'assets/vectors/discord.svg'
 
-import { FooterContainer, styles } from './styles'
+import { styles } from './styles'
 
 const linksLeft = [
   { text: 'FAQ', url: 'https://www.cudos.org/' },
@@ -24,7 +24,7 @@ const linksRight = [
 
 const Footer = () => {
   return (
-    <FooterContainer gap={6}>
+    <Box sx={styles.footerContainer} gap={6}>
       <Grid item>
         <img src={FooterLogo} alt="logo" />
       </Grid>
@@ -68,7 +68,7 @@ const Footer = () => {
           </Grid>
         ))}
       </Box>
-    </FooterContainer>
+    </Box>
   )
 }
 

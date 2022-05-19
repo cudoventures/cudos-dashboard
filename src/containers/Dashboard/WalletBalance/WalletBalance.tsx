@@ -84,25 +84,23 @@ const WalletBalance = () => {
   }
 
   return (
-    <Card style={styles.walletBalanceCard}>
+    <Card sx={styles.walletBalanceCard}>
       <Box>
         <Box sx={{ marginBottom: '30px' }}>
-          <Typography style={styles.subheaderStyle} color="text.secondary">
+          <Typography sx={styles.subheaderStyle} color="text.secondary">
             WALLET BALANCE
           </Typography>
         </Box>
-        <Box style={styles.networkCardStyle}>
+        <Box sx={styles.networkCardStyle}>
           <Typography
             color="text.secondary"
-            sx={styles.networkCardTitleStyle}
-            style={{ marginBottom: '15px' }}
+            sx={{ ...styles.networkCardTitleStyle, marginBottom: '15px' }}
           >
             TOTAL BALANCE
           </Typography>
           <Box sx={{ display: 'flex' }}>
             <Typography
-              sx={{ display: 'flex' }}
-              style={styles.networkCardContentStyle}
+              sx={{ ...styles.networkCardContentStyle, display: 'flex' }}
             >
               <img
                 style={{ marginRight: '5px' }}
@@ -113,21 +111,16 @@ const WalletBalance = () => {
             </Typography>
             <Typography
               color="text.secondary"
-              sx={{ marginLeft: '5px' }}
-              style={styles.networkCardContentStyle}
+              sx={{ ...styles.networkCardContentStyle, marginLeft: '5px' }}
             >
               CUDOS
             </Typography>
-            <Typography
-              color="primary.main"
-              sx={{ marginLeft: '5px' }}
-              style={styles.amountDollarStyle}
-            >
+            <Typography color="primary.main" sx={styles.amountDollarStyle}>
               {`$${(rate * Number(balance)).toFixed(2)}`}
             </Typography>
           </Box>
         </Box>
-        <Box style={{ marginBottom: '0px' }} sx={styles.networkCardStyle}>
+        <Box sx={styles.networkCardStyle}>
           <Typography
             component="span"
             color="text.secondary"
@@ -135,12 +128,14 @@ const WalletBalance = () => {
           >
             AVAILABLE REWARDS
             <Box
-              style={{ display: 'flex', justifyContent: 'flex-end', flex: '1' }}
+              sx={{ display: 'flex', justifyContent: 'flex-end', flex: '1' }}
             >
               <Button
                 onClick={() => handleRewardClaim()}
-                style={styles.claimButtonStyle}
+                sx={styles.claimButtonStyle}
                 disabled={!stakedValidators.length}
+                variant="contained"
+                color="primary"
               >
                 Claim
               </Button>
@@ -148,8 +143,7 @@ const WalletBalance = () => {
           </Typography>
           <Box sx={{ display: 'flex' }}>
             <Typography
-              sx={{ display: 'flex' }}
-              style={styles.networkCardContentStyle}
+              sx={{ ...styles.networkCardContentStyle, display: 'flex' }}
             >
               <img
                 style={{ marginRight: '5px' }}
@@ -162,16 +156,11 @@ const WalletBalance = () => {
             </Typography>
             <Typography
               color="text.secondary"
-              sx={{ marginLeft: '5px' }}
-              style={styles.networkCardContentStyle}
+              sx={{ ...styles.networkCardContentStyle, marginLeft: '5px' }}
             >
               CUDOS
             </Typography>
-            <Typography
-              color="primary.main"
-              sx={{ marginLeft: '5px' }}
-              style={styles.amountDollarStyle}
-            >
+            <Typography color="primary.main" sx={styles.amountDollarStyle}>
               {!availableRewards || Number.isNaN(Number(availableRewards))
                 ? '$0.00'
                 : `$${(rate * Number(availableRewards)).toFixed(2)}`}

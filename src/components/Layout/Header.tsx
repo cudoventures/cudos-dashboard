@@ -22,23 +22,20 @@ const Header = () => {
   }
 
   return (
-    <Box>
-      <Box sx={{ padding: '2rem', display: 'flex', flex: '1' }}>
-        <img src={LogoHeader} alt="logo" />
-        {location.pathname === '/' ? null : (
-          <Box
-            sx={{
-              padding: '1rem',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              flex: '1'
-            }}
-          >
-            <NetworkInfo />
-            <UserInfo />
-          </Box>
-        )}
-      </Box>
+    <Box sx={{ padding: '2rem', display: 'flex' }}>
+      <img src={LogoHeader} alt="logo" />
+      {location.pathname === '/' ? null : (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            flex: '1'
+          }}
+        >
+          <NetworkInfo />
+          <UserInfo />
+        </Box>
+      )}
     </Box>
   )
 }

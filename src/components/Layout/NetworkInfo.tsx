@@ -1,11 +1,11 @@
 import { Box, Typography } from '@mui/material'
 import OnlineStatus from 'assets/vectors/online-status.svg'
 
-import { StyledNetwork } from './styles'
+import { styles } from './styles'
 
 const NetworkInfo = () => {
   return (
-    <StyledNetwork sx={{ marginRight: '20px' }}>
+    <Box sx={styles.networkContainer}>
       <Typography
         sx={{
           fontSize: '14px',
@@ -21,7 +21,7 @@ const NetworkInfo = () => {
           alt="Online Status"
         />
       </Typography>
-    </StyledNetwork>
+    </Box>
   )
 }
 
