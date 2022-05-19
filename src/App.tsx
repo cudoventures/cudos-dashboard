@@ -100,7 +100,6 @@ const App = () => {
                   <Route path="settings" element={<Settings />} />
                 </Route>
               </Routes>
-              {/* <Footer /> */}
             </Layout>
           )}
         </ThemeProvider>
