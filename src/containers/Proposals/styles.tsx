@@ -1,5 +1,5 @@
 import { styled, Input } from '@mui/material'
-import theme from '../../theme/index'
+import theme from 'theme/index'
 /* eslint-disable import/prefer-default-export */
 
 export const InputContainer = styled(Input)(() => ({

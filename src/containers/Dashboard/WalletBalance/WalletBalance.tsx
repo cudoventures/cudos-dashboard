@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Typography, Box, Button } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import BigNumber from 'bignumber.js'
-import { SigningStargateClient } from 'cudosjs'
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
-import { getWalletBalance } from '../../../utils/projectUtils'
-import getCurrencyRate from '../../../api/getCurrency'
-import Card from '../../../components/Card/Card'
-import CudosLogo from '../../../assets/vectors/cudos-logo.svg'
-import { fetchRewards } from '../../../api/getRewards'
+import { claimRewards } from 'ledgers/transactions'
+import { getWalletBalance } from 'utils/projectUtils'
+import getCurrencyRate from 'api/getCurrency'
+import Card from 'components/Card/Card'
+import CudosLogo from 'assets/vectors/cudos-logo.svg'
+import { fetchRewards } from 'api/getRewards'
 
+import { updateUser, TransactionCurrency } from 'store/profile'
 import { styles } from '../styles'
-import { updateUser, TransactionCurrency } from '../../../store/profile'
-import CosmosNetworkConfig from '../../../ledgers/CosmosNetworkConfig'
 
 const WalletBalance = () => {
   const {
@@ -76,45 +73,8 @@ const WalletBalance = () => {
       alert('No available rewards to claim.')
       return
     }
-    const msgFee = {
-      amount: [
-        {
-          denom: CosmosNetworkConfig.CURRENCY_DENOM,
-          amount: '0'
-        }
-      ],
-      gas: '300000'
-    }
 
-    const msgMemo = ''
-
-    const msgAny: any[] = []
-
-    stakedValidators.map((validator) =>
-      msgAny.push({
-        typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-        value: MsgWithdrawDelegatorReward.fromPartial({
-          delegatorAddress: address,
-          validatorAddress: validator
-        })
-      })
-    )
-
-    const offlineSigner = window.getOfflineSignerOnlyAmino(
-      import.meta.env.VITE_APP_CHAIN_ID
-    )
-
-    const client = await SigningStargateClient.connectWithSigner(
-      import.meta.env.VITE_APP_RPC,
-      offlineSigner
-    )
-
-    const result = await client.signAndBroadcast(
-      address,
-      msgAny,
-      msgFee,
-      msgMemo
-    )
+    const result = await claimRewards(stakedValidators, address)
 
     if (result.transactionHash && result.code === 0) {
       alert('Success')

@@ -1,17 +1,16 @@
-import React from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
-import { updateUserTransactions } from '../../store/userTransactions'
-import { fetchRewards } from '../../api/getRewards'
-import { updateUser } from '../../store/profile'
-import { ConnectLedger } from '../../ledgers/KeplrLedger'
-import { getWalletBalance } from '../../utils/projectUtils'
-import InfoIcon from '../../assets/vectors/info-icon.svg'
-import KeplrLogo from '../../assets/vectors/keplr-logo.svg'
-import Header from '../../components/Layout/Header'
+import { updateUserTransactions } from 'store/userTransactions'
+import { fetchRewards } from 'api/getRewards'
+import { updateUser } from 'store/profile'
+import { ConnectLedger } from 'ledgers/KeplrLedger'
+import { getWalletBalance } from 'utils/projectUtils'
+import InfoIcon from 'assets/vectors/info-icon.svg'
+import KeplrLogo from 'assets/vectors/keplr-logo.svg'
+import Header from 'components/Layout/Header'
 
 import { styles } from './styles'
 
@@ -50,11 +49,11 @@ const ConnectWallet = () => {
       <Box>
         <Box style={styles.connectContainer}>
           <Box>
-            <h1>Welcome to CUDOS Wallet!</h1>
+            <h1>Welcome to CUDOS Dashboard!</h1>
           </Box>
           <Box style={styles.subHeaderContainer}>
             <Typography variant="subtitle1" color="text.secondary">
-              CUDOS Wallet allows you to manage your CUDOS easily. <br /> In
+              CUDOS Dashboard allows you to manage your CUDOS easily. <br /> In
               order to continue you need to connect your Keplr Wallet.
             </Typography>
           </Box>

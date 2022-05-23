@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -10,15 +10,16 @@ import {
   Tooltip
 } from '@mui/material'
 import BigNumber from 'bignumber.js'
-import { RootState } from '../../store'
-import { updateUser } from '../../store/profile'
-import { copyToClipboard, formatAddress } from '../../utils/projectUtils'
+import { RootState } from 'store'
+import { updateUser } from 'store/profile'
+import { copyToClipboard, formatAddress } from 'utils/projectUtils'
+import TestAvatar from 'assets/vectors/test-avatar-sm.svg'
+import UserMenuAvatar from 'assets/vectors/test-avatar.svg'
+import LinkIcon from 'assets/vectors/link-icon.svg'
+import CopyIcon from 'assets/vectors/copy-icon.svg'
+import ArrowIcon from 'assets/vectors/arrow-down.svg'
+
 import { StyledUser, styles } from './styles'
-import TestAvatar from '../../assets/vectors/test-avatar-sm.svg'
-import UserMenuAvatar from '../../assets/vectors/test-avatar.svg'
-import LinkIcon from '../../assets/vectors/link-icon.svg'
-import CopyIcon from '../../assets/vectors/copy-icon.svg'
-import ArrowIcon from '../../assets/vectors/arrow-down.svg'
 
 const UserInfo = () => {
   const navigate = useNavigate()

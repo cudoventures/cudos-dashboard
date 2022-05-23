@@ -1,8 +1,7 @@
-import React from 'react'
 import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
 import Card from 'components/Card/Card'
 import { ProposalStatus } from 'store/proposals'
-import SearchIcon from '../../assets/vectors/search-icon.svg'
+import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from '../../assets/vectors/cross-blue.svg'
 import useModal from './components/ProposalModal/hooks'
 

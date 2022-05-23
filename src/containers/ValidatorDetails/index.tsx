@@ -1,10 +1,21 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Slide } from '@mui/material'
+import Details from './components/Details'
+import Navigation from './components/Navigation'
+import Statistics from './components/Statistics'
+import Delegators from './components/Delegators'
+import Activity from './components/Activity'
 
 const ValidatorDetails = () => {
   return (
-    <Box>
-      <Typography>Validator Details</Typography>
-    </Box>
+    <Slide direction="left" in timeout={450}>
+      <Box display="flex" flexDirection="column" gap={2}>
+        <Navigation />
+        <Details />
+        <Statistics />
+        <Delegators />
+        <Activity />
+      </Box>
+    </Slide>
   )
 }
 

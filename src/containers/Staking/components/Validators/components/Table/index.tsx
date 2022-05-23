@@ -1,16 +1,17 @@
-import { ValidatorType, ModalProps } from 'store/validator'
+import { ValidatorType } from 'store/validator'
 import numeral from 'numeral'
 import { Box, Typography, Button } from '@mui/material'
-
-import { getValidatorConditionClass } from '../../../../../../utils/get_validator_condition'
+import { useNavigate } from 'react-router-dom'
+import { getValidatorConditionClass } from 'utils/get_validator_condition'
+import Condition from 'components/Condition'
+import AvatarName from 'components/AvatarName'
+import Table from 'components/Table'
 import columns from '../../../../utils'
-import Condition from '../../../../../../components/Condition'
-import AvatarName from '../../../../../../components/AvatarName'
-import Table from '../../../../../../components/Table'
 import useTable from './hooks'
 
 const ValidatorsTable: React.FC = () => {
   const { state, handleSort, sortItems, handleModal } = useTable()
+  const navigate = useNavigate()
 
   const { sortKey, sortDirection } = state
   const items = sortItems(state.items)
@@ -27,11 +28,17 @@ const ValidatorsTable: React.FC = () => {
       idx: `${i + 1}`,
       delegators: numeral(x.delegators).format('0,0'),
       validator: (
-        <AvatarName
-          name={x.moniker}
-          imageUrl={x.avatarUrl}
-          address={x.validator}
-        />
+        <Box
+          onClick={() => {
+            navigate(`/staking/${x.validator}`)
+          }}
+        >
+          <AvatarName
+            name={x.moniker}
+            imageUrl={x.avatarUrl}
+            address={x.validator}
+          />
+        </Box>
       ),
       commission: `${numeral(x.commission).format('0.[00]')}%`,
       self: `${numeral(x.selfPercent).format('0.[00]')}%`,
