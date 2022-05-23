@@ -6,6 +6,7 @@ import profileReducer from './profile'
 import validatorReducer from './validator'
 import settingsReducer from './settings'
 import networkReducer from './network'
+import proposalsReducer from './proposals'
 import userTransactionsReducer from './userTransactions'
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   validator: validatorReducer,
   settings: settingsReducer,
   network: networkReducer,
-  userTransactions: userTransactionsReducer
+  userTransactions: userTransactionsReducer,
+  proposals: proposalsReducer
 })
 
 const persistConfig = {

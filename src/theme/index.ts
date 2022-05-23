@@ -10,6 +10,11 @@ const dark = createTheme({
       main: COLORS_DARK_THEME.PRIMARY_BLUE,
       dark: ''
     },
+    secondary: {
+      light: '',
+      main: COLORS_DARK_THEME.SECONDARY_DARK,
+      dark: ''
+    },
     background: {
       default: COLORS_DARK_THEME.DARK_BACKGROUND,
       paper: COLORS_DARK_THEME.DARK_BACKGROUND
@@ -31,7 +36,17 @@ const dark = createTheme({
           fontSize: '0.9rem',
           '&:before': {
             border: 'none'
+          },
+          '&:focus': {
+            background: 'transparent'
           }
+        }
+      }
+    },
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'none'
         }
       }
     },

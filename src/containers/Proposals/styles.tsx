@@ -64,7 +64,7 @@ export const styles = {
   statusBox: {
     marginTop: '5px',
     borderRadius: '10px',
-    background: '#52A6F8',
+    background: theme.dark.palette.primary.main,
     color: 'white',
     padding: '6px 17px 6px 17px',
     fontSize: '12px',
@@ -98,7 +98,7 @@ export const styles = {
   },
   tableHeader: {
     display: 'flex',
-    background: '#20273E',
+    background: theme.dark.custom.backgrounds.primary,
     paddingTop: '1.2rem',
     paddingBottom: '1.2rem',
     position: 'sticky',
@@ -118,7 +118,8 @@ export const styles = {
   crateProposalBtn: {
     height: '50px',
     width: '199px',
-    background: '#2A4064',
-    color: '#52A6F8'
+    background: theme.dark.palette.secondary.main,
+    color: theme.dark.palette.primary.main,
+    fontWeight: '600'
   }
 } as const
