@@ -35,6 +35,23 @@ export const getWalletBalance = async (address: string) => {
     .toString(10)
 }
 
+export const getStakedBalance = async (address: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const broadcaster = await StargateClient.connect(
+    import.meta.env.VITE_APP_RPC!
+  )
+
+  const updateWalletBalance = await broadcaster.getBalanceStaked(address)
+
+  if (updateWalletBalance === null) {
+    return new BigNumber(0)
+  }
+
+  return new BigNumber(updateWalletBalance.amount)
+    .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+    .toString(10)
+}
+
 export const formatBigNum = (number: BigNumber): string => {
   return new BigNumber(number)
     .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
