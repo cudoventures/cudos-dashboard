@@ -1,11 +1,17 @@
 import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
 import Card from 'components/Card'
+import { ProposalStatus } from 'store/proposals'
 import SearchIcon from 'assets/vectors/search-icon.svg'
+import CrossIcon from 'assets/vectors/cross-blue.svg'
+import useModal from './components/ProposalModal/hooks'
 
 import { InputContainer, styles } from './styles'
 import Proposal from './Proposal'
+import ProposalModal from './components/ProposalModal'
 
 const Proposals = () => {
+  const { handleModal } = useModal()
+
   return (
     <>
       <Box sx={styles.stickyHeader}>
@@ -44,7 +50,19 @@ const Proposals = () => {
             />
           </Box>
           <Box sx={styles.createProposalBtnContainer}>
-            <Button sx={styles.crateProposalBtn}>Create Proposal</Button>
+            <Button
+              onClick={() =>
+                handleModal({ open: true, status: ProposalStatus.CREATE })
+              }
+              sx={styles.crateProposalBtn}
+            >
+              <img
+                style={{ marginRight: '10px' }}
+                src={CrossIcon}
+                alt="Cross"
+              />
+              Create Proposal
+            </Button>
           </Box>
         </Box>
         <Box>
@@ -64,6 +82,7 @@ const Proposals = () => {
           <Proposal />
         </Box>
       </Card>
+      <ProposalModal />
     </>
   )
 }

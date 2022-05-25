@@ -10,6 +10,11 @@ const dark = createTheme({
       main: COLORS_DARK_THEME.PRIMARY_BLUE,
       dark: ''
     },
+    secondary: {
+      light: '',
+      main: COLORS_DARK_THEME.SECONDARY_DARK,
+      dark: ''
+    },
     background: {
       default: COLORS_DARK_THEME.DARK_BACKGROUND,
       paper: COLORS_DARK_THEME.DARK_BACKGROUND
@@ -31,22 +36,26 @@ const dark = createTheme({
           fontSize: '0.9rem',
           '&:before': {
             border: 'none'
+          },
+          '&:focus': {
+            background: 'transparent'
           }
         }
       }
     },
     MuiPopover: {
       styleOverrides: {
-        root: {
-          fontSize: '14px'
-        },
         paper: {
+          backgroundImage: 'none',
           background: 'white',
           boxShadow: '0px 0px 30px rgba(27, 32, 49, 0.7)',
           borderRadius: '15px',
           color: 'black',
           padding: '20px',
           border: '1px solid white'
+        },
+        root: {
+          fontSize: '14px'
         }
       }
     },

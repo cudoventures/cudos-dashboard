@@ -59,10 +59,10 @@ export const styles: SxMap = {
     width: '50%',
     fontWeight: '400'
   },
-  statusBox: {
+  statusBox: ({ palette }) => ({
     marginTop: '5px',
     borderRadius: '10px',
-    background: '#52A6F8',
+    background: palette.primary.main,
     color: 'white',
     padding: '6px 17px 6px 17px',
     fontSize: '12px',
@@ -70,7 +70,7 @@ export const styles: SxMap = {
     letterSpacing: '2px',
     maxWidth: '255px',
     overflowWrap: 'anywhere'
-  },
+  }),
   proposerAddress: {
     marginTop: '10px',
     display: 'flex',
@@ -113,10 +113,11 @@ export const styles: SxMap = {
     position: 'absolute',
     right: '0'
   },
-  crateProposalBtn: {
+  crateProposalBtn: ({ palette }) => ({
     height: '50px',
     width: '199px',
-    background: '#2A4064',
-    color: '#52A6F8'
-  }
+    background: palette.secondary.main,
+    color: palette.primary.main,
+    fontWeight: '600'
+  })
 } as const
