@@ -53,9 +53,10 @@ const dark = createTheme({
           color: 'black',
           padding: '20px',
           border: '1px solid white'
+        },
         root: {
           fontSize: '14px'
-        },
+        }
       }
     },
     MuiButton: {
