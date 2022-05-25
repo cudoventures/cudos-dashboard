@@ -1,11 +1,11 @@
-import { Box, Typography, Slide } from '@mui/material'
+import { Box, Typography, Fade } from '@mui/material'
 
 import Validators from './components/Validators'
 import { styles } from './styles'
 
 const Staking = () => {
   return (
-    <Slide direction="up" in timeout={450}>
+    <Fade in timeout={500}>
       <Box sx={styles.stakingContainer}>
         <Box
           position="sticky"
@@ -33,7 +33,7 @@ const Staking = () => {
           <Validators />
         </Box>
       </Box>
-    </Slide>
+    </Fade>
   )
 }
 
