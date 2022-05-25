@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Typography, Box, Button } from '@mui/material'
+import { Typography, Box, Button, Popover } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import BigNumber from 'bignumber.js'
 import { claimRewards } from 'ledgers/transactions'
-import { getWalletBalance } from 'utils/projectUtils'
+import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import getCurrencyRate from 'api/getCurrency'
 import Card from 'components/Card'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
+import InfoIcon from 'assets/vectors/info-alt.svg'
 import { fetchRewards } from 'api/getRewards'
 
 import { updateUser, TransactionCurrency } from 'store/profile'
@@ -19,12 +20,14 @@ const WalletBalance = () => {
     address,
     availableRewards,
     stakedValidators,
-    lastLoggedAddress
+    lastLoggedAddress,
+    stakedBalance
   } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
 
   const [rate, setRate] = useState<number>(0)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
   useEffect(() => {
     const getCurrencies = async () => {
@@ -45,13 +48,16 @@ const WalletBalance = () => {
           controller.signal
         )
         const walletBalance = await getWalletBalance(address)
+        const stakedAmountBalance = await getStakedBalance(address)
+
         dispatch(
           updateUser({
             address,
             balance: new BigNumber(walletBalance),
             availableRewards: new BigNumber(totalRewards),
             stakedValidators: validatorArray,
-            lastLoggedAddress
+            lastLoggedAddress,
+            stakedBalance: new BigNumber(stakedAmountBalance)
           })
         )
       } catch (error: any) {
@@ -66,7 +72,7 @@ const WalletBalance = () => {
       clearInterval(timer)
       controller?.abort()
     }
-  }, [address, dispatch])
+  }, [address, dispatch, lastLoggedAddress])
 
   const handleRewardClaim = async () => {
     if (Number.isNaN(new BigNumber(availableRewards))) {
@@ -83,6 +89,16 @@ const WalletBalance = () => {
     }
   }
 
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+
   return (
     <Card sx={styles.walletBalanceCard}>
       <Box>
@@ -92,12 +108,76 @@ const WalletBalance = () => {
           </Typography>
         </Box>
         <Box sx={styles.networkCardStyle}>
-          <Typography
-            color="text.secondary"
-            sx={{ ...styles.networkCardTitleStyle, marginBottom: '15px' }}
-          >
-            TOTAL BALANCE
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              color="text.secondary"
+              sx={styles.networkCardTitleStyle}
+              style={{ marginBottom: '15px' }}
+            >
+              TOTAL BALANCE
+            </Typography>
+            <Box sx={{ cursor: 'pointer' }}>
+              <Typography
+                aria-owns={open ? 'mouse-over-popover' : undefined}
+                aria-haspopup="true"
+                onMouseEnter={handlePopoverOpen}
+                onMouseLeave={handlePopoverClose}
+                color="primary.main"
+                sx={{
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  display: 'flex'
+                }}
+              >
+                Staked Tokens Info
+                <img
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    marginLeft: '6px',
+                    alignItems: 'center',
+                    display: 'flex'
+                  }}
+                  src={InfoIcon}
+                  alt="Info"
+                />
+              </Typography>
+              <Popover
+                id="mouse-over-popover"
+                sx={{
+                  pointerEvents: 'none'
+                }}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left'
+                }}
+                onClose={handlePopoverClose}
+                disableRestoreFocus
+              >
+                <Typography
+                  sx={{
+                    color: ' #7D87AA',
+                    marginBottom: '15px',
+                    fontWeight: '600'
+                  }}
+                >
+                  STAKED TOKENS
+                </Typography>
+                <Typography color="primary.main" sx={{ fontSize: '12px' }}>
+                  Staked
+                </Typography>
+                <Typography sx={{ fontSize: '20px', fontWeight: '600' }}>
+                  {new BigNumber(stakedBalance).toFormat(2)} CUDOS
+                </Typography>
+              </Popover>
+            </Box>
+          </Box>
           <Box sx={{ display: 'flex' }}>
             <Typography
               sx={{ ...styles.networkCardContentStyle, display: 'flex' }}

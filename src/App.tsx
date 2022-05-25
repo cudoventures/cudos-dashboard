@@ -11,7 +11,7 @@ import { ConnectLedger } from 'ledgers/KeplrLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
-import { getWalletBalance } from './utils/projectUtils'
+import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import RequireKeplr from './components/RequireKeplr/RequireKeplr'
@@ -50,6 +50,9 @@ const App = () => {
         )
       }
       const balance = await getWalletBalance(address)
+
+      const stakedAmountBalance = await getStakedBalance(address)
+
       const { totalRewards, validatorArray } = await fetchRewards(address)
 
       dispatch(
@@ -58,7 +61,8 @@ const App = () => {
           lastLoggedAddress: address,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
-          stakedValidators: validatorArray
+          stakedValidators: validatorArray,
+          stakedBalance: new BigNumber(stakedAmountBalance)
         })
       )
     } catch (e) {
