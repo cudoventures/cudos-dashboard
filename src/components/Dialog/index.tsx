@@ -2,10 +2,16 @@ import { Dialog as MuiDialog } from '@mui/material'
 
 type DialogProps = {
   open: boolean
+  height?: any
   handleClose: () => void
 }
 
-const Dialog: React.FC<DialogProps> = ({ open, handleClose, children }) => {
+const Dialog: React.FC<DialogProps> = ({
+  open,
+  handleClose,
+  children,
+  height
+}) => {
   const onClose = (ev: any, reason: string) => {
     if (reason !== 'backdropClick') {
       handleClose()
@@ -21,7 +27,8 @@ const Dialog: React.FC<DialogProps> = ({ open, handleClose, children }) => {
           background: 'transparent',
           boxShadow: 'none',
           position: 'fixed',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          minHeight: height
         }
       }}
     >
