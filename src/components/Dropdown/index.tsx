@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
-import ArrowIcon from '../../assets/vectors/arrow-down-blue.svg'
+import ArrowIcon from 'assets/vectors/arrow-down-blue.svg'
 
 const Dropdown = () => {
   const [age, setAge] = React.useState('10')

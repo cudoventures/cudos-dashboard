@@ -7,7 +7,7 @@ import { initialModalState, ModalProps } from 'store/proposals'
 
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import SuccessIcon from '../../../../assets/vectors/success.svg'
+import SuccessIcon from 'assets/vectors/success.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {

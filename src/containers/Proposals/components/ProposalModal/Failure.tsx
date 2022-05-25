@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from '@mui/material'
 import { initialModalState, ModalProps } from 'store/proposals'
 
-import FailureIcon from '../../../../assets/vectors/failure.svg'
+import FailureIcon from 'assets/vectors/failure.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type FailureProps = {
