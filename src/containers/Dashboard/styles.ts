@@ -1,14 +1,16 @@
+import theme from 'theme'
+
 export const styles: SxMap = {
   headerStyle: {
     fontSize: '30px',
     fontWeight: '700'
   },
-  stickyHeader: ({ custom }) => ({
+  stickyHeader: {
     position: 'fixed',
-    background: custom.backgrounds.dark,
+    background: theme.dark.custom.backgrounds.dark,
     width: '100%',
     zIndex: '1'
-  }),
+  },
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
@@ -46,13 +48,13 @@ export const styles: SxMap = {
     marginBottom: '10px',
     letterSpacing: '2px'
   },
-  networkBoxStyle: ({ custom }) => ({
+  networkBoxStyle: {
     display: 'flex',
     borderRadius: '5px',
     padding: '17px',
-    background: custom.backgrounds.light,
+    background: theme.dark.custom.backgrounds.light,
     alignItems: 'baseline'
-  }),
+  },
   networkCardContentStyle: {
     fontSize: '20px',
     fontWeight: '600',
@@ -74,11 +76,13 @@ export const styles: SxMap = {
   },
   walletInfoCard: {
     minHeight: '319px',
-    width: '438px'
+    width: '50%',
+    marginRight: '20px'
   },
   walletBalanceCard: {
     minHeight: '319px',
-    width: '438px'
+    width: '50%',
+    marginRight: '20px'
   },
   editButton: {
     position: 'absolute',
@@ -88,30 +92,30 @@ export const styles: SxMap = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '347px',
-    maxHeight: '500px',
-    maxWidth: '897px',
+    marginTop: '20px',
+    maxHeight: '250px',
     overflow: 'hidden',
     position: 'relative'
   },
   networkStatisticsCard: {
     minHeight: '100%',
-    width: '320px'
+    width: '100%'
   },
-  networkCardStyle: ({ custom }) => ({
+  networkCardStyle: {
     height: '101px',
     borderRadius: '12px',
-    backgroundColor: custom.backgrounds.light,
+    backgroundColor: theme.dark.custom.backgrounds.light,
     padding: '15px 20px 15px 20px',
     marginBottom: '20px'
-  }),
-  networkInfoContainer: ({ custom }) => ({
+  },
+  networkInfoContainer: {
     display: 'flex',
     justifyContent: 'space-between',
     borderRadius: '5px',
     padding: '17px',
-    background: custom.backgrounds.light,
+    background: theme.dark.custom.backgrounds.light,
     alignItems: 'baseline'
-  }),
+  },
   networkInfo: {
     fontSize: '14px',
     fontWeight: '600',
@@ -128,8 +132,7 @@ export const styles: SxMap = {
     display: 'flex',
     alignItems: 'center',
     fontSize: '16px',
-    fontWeight: '600',
-    marginLeft: '5px'
+    fontWeight: '600'
   },
   latestActivityAction: {
     borderRadius: '10px',
@@ -150,4 +153,4 @@ export const styles: SxMap = {
     fontSize: '20px',
     fontWeight: '600'
   }
-}
+} as const
