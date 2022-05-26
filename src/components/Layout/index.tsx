@@ -1,5 +1,4 @@
 import { Box } from '@mui/material'
-import Footer from './Footer'
 
 import Header from './Header'
 import LeftMenu from './LeftMenu'
@@ -21,7 +20,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <LeftMenu />
         <Box>{children}</Box>
       </Box>
-      <Footer />
     </Box>
   )
 }
