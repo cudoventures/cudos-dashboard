@@ -6,7 +6,7 @@ import { getValidatorConditionClass } from 'utils/get_validator_condition'
 import Condition from 'components/Condition'
 import AvatarName from 'components/AvatarName'
 import Table from 'components/Table'
-import columns from '../../../../utils'
+import columns from './utils'
 import useTable from './hooks'
 
 const ValidatorsTable: React.FC = () => {
@@ -60,13 +60,11 @@ const ValidatorsTable: React.FC = () => {
       ),
       action: (
         <Button
-          sx={(theme) => ({
+          variant="contained"
+          color="primary"
+          sx={() => ({
             height: '34px',
-            fontSize: '12px',
-            fontWeight: 600,
-            '&:hover': {
-              background: theme.palette.primary.main
-            }
+            fontSize: '12px'
           })}
           onClick={() =>
             handleModal({

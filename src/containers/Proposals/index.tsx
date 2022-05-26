@@ -1,5 +1,5 @@
 import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import { ProposalStatus } from 'store/proposals'
 import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
@@ -14,29 +14,28 @@ const Proposals = () => {
 
   return (
     <>
-      <Box style={styles.stickyHeader}>
-        <Typography style={styles.headerStyle}>Proposals</Typography>
+      <Box sx={styles.stickyHeader}>
+        <Typography sx={styles.headerStyle}>Proposals</Typography>
         <Typography
-          style={styles.subheaderStyle}
+          sx={styles.subheaderStyle}
           variant="subtitle1"
           color="text.secondary"
         >
           Here you can see the existing proposals’ statuses or create new one
         </Typography>
       </Box>
-      <Card style={styles.tableContainer}>
-        <Box style={styles.tableHeader}>
+      <Card sx={styles.tableContainer}>
+        <Box sx={styles.tableHeader}>
           <Typography
             color="text.secondary"
-            sx={{ marginTop: '5px' }}
-            style={styles.subheaderStyle}
+            sx={{ ...styles.subheaderStyle, marginTop: '5px' }}
           >
             PROPOSALS
           </Typography>
           <Chip label={23} color="primary" sx={styles.chipStyle} />
           <Box>
             <InputContainer
-              style={{ marginLeft: '50px' }}
+              sx={{ marginLeft: '50px' }}
               disableUnderline
               placeholder="Search for proposal, proposer, ID..."
               startAdornment={
@@ -50,12 +49,12 @@ const Proposals = () => {
               }
             />
           </Box>
-          <Box style={styles.createProposalBtnContainer}>
+          <Box sx={styles.createProposalBtnContainer}>
             <Button
               onClick={() =>
                 handleModal({ open: true, status: ProposalStatus.CREATE })
               }
-              style={styles.crateProposalBtn}
+              sx={styles.crateProposalBtn}
             >
               <img
                 style={{ marginRight: '10px' }}

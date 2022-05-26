@@ -1,11 +1,11 @@
 import { Avatar, Box, Typography } from '@mui/material'
 import TestAvatar from 'assets/vectors/test-avatar.svg'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 
 const ValidatorAvatar = () => {
   return (
     <Card
-      style={{
+      sx={{
         minWidth: '300px',
         display: 'flex',
         flexDirection: 'column',

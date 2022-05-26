@@ -14,7 +14,6 @@ import { fetchRewards } from 'api/getRewards'
 import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
-import Footer from './components/Layout/Footer'
 import RequireKeplr from './components/RequireKeplr/RequireKeplr'
 import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import Dashboard from './containers/Dashboard'
@@ -105,7 +104,6 @@ const App = () => {
                   <Route path="settings" element={<Settings />} />
                 </Route>
               </Routes>
-              <Footer />
             </Layout>
           )}
         </ThemeProvider>

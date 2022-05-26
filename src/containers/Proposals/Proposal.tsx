@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Avatar, Tooltip } from '@mui/material'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import TestAvatar from 'assets/vectors/test-avatar-sm.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import { styles } from './styles'
@@ -10,23 +10,23 @@ const Proposal = () => {
   }
 
   return (
-    <Card style={styles.cardContainer}>
+    <Card sx={styles.cardContainer}>
       <Box>
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box style={{ display: 'flex' }}>
-            <Typography color="text.secondary" style={styles.cardEnumeration}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={{ display: 'flex' }}>
+            <Typography color="text.secondary" sx={styles.cardEnumeration}>
               #1
             </Typography>
-            <Typography style={styles.cardTitle}>
+            <Typography sx={styles.cardTitle}>
               Add the ability to query a Desmos profile by chain link and
               application link
             </Typography>
           </Box>
           <Box>
-            <Button style={styles.cardActionButton}>Deposit</Button>
+            <Button sx={styles.cardActionButton}>Deposit</Button>
           </Box>
         </Box>
-        <Box color="text.secondary" style={styles.proposalContent}>
+        <Box color="text.secondary" sx={styles.proposalContent}>
           <Typography>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ut
             proin nulla auctor ut augue tempor. Eget venenatis netus nam in
@@ -34,27 +34,27 @@ const Proposal = () => {
             Feugiat nisi, elementum.
           </Typography>
         </Box>
-        <Box style={{ display: 'flex', width: '100%' }}>
+        <Box sx={{ display: 'flex', width: '100%' }}>
           <Box
-            style={{
+            sx={{
               display: 'flex',
               marginLeft: '40px',
               marginTop: '30px',
               width: '50%'
             }}
           >
-            <Box style={{ flex: '1' }}>
+            <Box sx={{ flex: '1' }}>
               <Typography
-                style={{
+                sx={{
                   fontSize: '14px'
                 }}
               >
                 Proposer
               </Typography>
               <Box>
-                <Typography color="primary.main" style={styles.proposerAddress}>
+                <Typography color="primary.main" sx={styles.proposerAddress}>
                   <Avatar
-                    style={styles.avatarStyle}
+                    sx={styles.avatarStyle}
                     src={TestAvatar}
                     alt="Avatar"
                   />
@@ -72,27 +72,27 @@ const Proposal = () => {
                 </Typography>
               </Box>
             </Box>
-            <Box style={{ flex: '1' }}>
+            <Box sx={{ flex: '1' }}>
               <Typography
-                style={{
+                sx={{
                   fontSize: '14px'
                 }}
               >
                 Submit Time
               </Typography>
-              <Typography color="text.secondary" style={styles.timeStyle}>
+              <Typography color="text.secondary" sx={styles.timeStyle}>
                 28 Oct 2021, 16:45 PM (UTC +2)
               </Typography>
             </Box>
             <Box>
               <Typography
-                style={{
+                sx={{
                   fontSize: '14px'
                 }}
               >
                 Status
               </Typography>
-              <Typography style={styles.statusBox}>Deposit</Typography>
+              <Typography sx={styles.statusBox}>Deposit</Typography>
             </Box>
           </Box>
         </Box>

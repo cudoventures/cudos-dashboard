@@ -61,7 +61,7 @@ const dark = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        containedPrimary: {
           borderRadius: '26px',
           background: COLORS_DARK_THEME.PRIMARY_BLUE,
           color: 'white',
@@ -75,6 +75,31 @@ const dark = createTheme({
           },
           '&:disabled': {
             background: COLORS_DARK_THEME.PRIMARY_BLUE_DISABLED
+          }
+        },
+        containedSecondary: {
+          borderRadius: '26px',
+          background: COLORS_DARK_THEME.SECONDARY_BLUE,
+          color: COLORS_DARK_THEME.PRIMARY_BLUE,
+          padding: '10px 20px 10px 20px',
+          textTransform: 'none',
+          '&:hover': {
+            background: COLORS_DARK_THEME.SECONDARY_BLUE_HOVER
+          },
+          '&:click': {
+            background: COLORS_DARK_THEME.SECONDARY_BLUE_CLICK
+          },
+          '&:disabled': {
+            background: COLORS_DARK_THEME.SECONDARY_BLUE_DISABLED
+          }
+        },
+        textPrimary: {
+          color: COLORS_DARK_THEME.PRIMARY_BLUE,
+          fontWeight: 700,
+          textTransform: 'none',
+          '&:hover': {
+            textDecoration: 'underline 2px',
+            background: 'none'
           }
         }
       }

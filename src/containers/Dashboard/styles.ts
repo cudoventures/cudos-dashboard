@@ -1,17 +1,14 @@
-import theme from '../../theme/index'
-
-/* eslint-disable import/prefer-default-export */
-export const styles = {
+export const styles: SxMap = {
   headerStyle: {
     fontSize: '30px',
     fontWeight: '700'
   },
-  stickyHeader: {
+  stickyHeader: ({ custom }) => ({
     position: 'fixed',
-    background: theme.dark.custom.backgrounds.dark,
+    background: custom.backgrounds.dark,
     width: '100%',
     zIndex: '1'
-  },
+  }),
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
@@ -49,13 +46,13 @@ export const styles = {
     marginBottom: '10px',
     letterSpacing: '2px'
   },
-  networkBoxStyle: {
+  networkBoxStyle: ({ custom }) => ({
     display: 'flex',
     borderRadius: '5px',
     padding: '17px',
-    background: theme.dark.custom.backgrounds.light,
+    background: custom.backgrounds.light,
     alignItems: 'baseline'
-  },
+  }),
   networkCardContentStyle: {
     fontSize: '20px',
     fontWeight: '600',
@@ -77,13 +74,11 @@ export const styles = {
   },
   walletInfoCard: {
     minHeight: '319px',
-    width: '50%',
-    marginRight: '20px'
+    width: '438px'
   },
   walletBalanceCard: {
     minHeight: '319px',
-    width: '50%',
-    marginRight: '20px'
+    width: '438px'
   },
   editButton: {
     position: 'absolute',
@@ -93,30 +88,30 @@ export const styles = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '347px',
-    marginTop: '20px',
-    maxHeight: '250px',
+    maxHeight: '500px',
+    maxWidth: '897px',
     overflow: 'hidden',
     position: 'relative'
   },
   networkStatisticsCard: {
-    minHeight: '100%',
-    width: '100%'
+    height: '100%',
+    width: '320px'
   },
-  networkCardStyle: {
+  networkCardStyle: ({ custom }) => ({
     height: '101px',
     borderRadius: '12px',
-    backgroundColor: theme.dark.custom.backgrounds.light,
+    backgroundColor: custom.backgrounds.light,
     padding: '15px 20px 15px 20px',
     marginBottom: '20px'
-  },
-  networkInfoContainer: {
+  }),
+  networkInfoContainer: ({ custom }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     borderRadius: '5px',
     padding: '17px',
-    background: theme.dark.custom.backgrounds.light,
+    background: custom.backgrounds.light,
     alignItems: 'baseline'
-  },
+  }),
   networkInfo: {
     fontSize: '14px',
     fontWeight: '600',
@@ -133,7 +128,8 @@ export const styles = {
     display: 'flex',
     alignItems: 'center',
     fontSize: '16px',
-    fontWeight: '600'
+    fontWeight: '600',
+    marginLeft: '5px'
   },
   latestActivityAction: {
     borderRadius: '10px',
@@ -154,4 +150,4 @@ export const styles = {
     fontSize: '20px',
     fontWeight: '600'
   }
-} as const
+}

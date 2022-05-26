@@ -1,4 +1,4 @@
-import { Box, Slide } from '@mui/material'
+import { Box, Fade } from '@mui/material'
 import Details from './components/Details'
 import Navigation from './components/Navigation'
 import Statistics from './components/Statistics'
@@ -7,7 +7,7 @@ import Activity from './components/Activity'
 
 const ValidatorDetails = () => {
   return (
-    <Slide direction="left" in timeout={450}>
+    <Fade in timeout={500}>
       <Box display="flex" flexDirection="column" gap={2}>
         <Navigation />
         <Details />
@@ -15,7 +15,7 @@ const ValidatorDetails = () => {
         <Delegators />
         <Activity />
       </Box>
-    </Slide>
+    </Fade>
   )
 }
 

@@ -1,6 +1,4 @@
 import { styled, Input } from '@mui/material'
-import theme from 'theme/index'
-/* eslint-disable import/prefer-default-export */
 
 export const InputContainer = styled(Input)(() => ({
   minWidth: '25vw',
@@ -15,30 +13,30 @@ export const InputContainer = styled(Input)(() => ({
   }
 }))
 
-export const styles = {
+export const styles: SxMap = {
   headerStyle: {
     fontSize: '30px',
     fontWeight: '700'
   },
-  stickyHeader: {
+  stickyHeader: ({ custom }) => ({
     position: 'fixed',
-    background: theme.dark.custom.backgrounds.dark,
+    background: custom.backgrounds.dark,
     width: '100%',
     zIndex: '5'
-  },
+  }),
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
     fontSize: '14px',
     marginBottom: '5px'
   },
-  cardContainer: {
+  cardContainer: ({ custom }) => ({
     width: '100%',
     minHeight: '213px',
-    background: theme.dark.custom.backgrounds.light,
+    background: custom.backgrounds.light,
     marginBottom: '20px',
     boxShadow: 'none'
-  },
+  }),
   cardEnumeration: {
     marginTop: '4px',
     fontWeight: '600',
@@ -61,10 +59,10 @@ export const styles = {
     width: '50%',
     fontWeight: '400'
   },
-  statusBox: {
+  statusBox: ({ palette }) => ({
     marginTop: '5px',
     borderRadius: '10px',
-    background: theme.dark.palette.primary.main,
+    background: palette.primary.main,
     color: 'white',
     padding: '6px 17px 6px 17px',
     fontSize: '12px',
@@ -72,7 +70,7 @@ export const styles = {
     letterSpacing: '2px',
     maxWidth: '255px',
     overflowWrap: 'anywhere'
-  },
+  }),
   proposerAddress: {
     marginTop: '10px',
     display: 'flex',
@@ -96,15 +94,15 @@ export const styles = {
     marginTop: '90px',
     overflow: 'scroll'
   },
-  tableHeader: {
+  tableHeader: ({ custom }) => ({
     display: 'flex',
-    background: theme.dark.custom.backgrounds.primary,
+    background: custom.backgrounds.primary,
     paddingTop: '1.2rem',
     paddingBottom: '1.2rem',
     position: 'sticky',
     top: '0',
     zIndex: '4'
-  },
+  }),
   chipStyle: {
     borderRadius: '10px',
     color: 'white',
@@ -115,11 +113,11 @@ export const styles = {
     position: 'absolute',
     right: '0'
   },
-  crateProposalBtn: {
+  crateProposalBtn: ({ palette }) => ({
     height: '50px',
     width: '199px',
-    background: theme.dark.palette.secondary.main,
-    color: theme.dark.palette.primary.main,
+    background: palette.secondary.main,
+    color: palette.primary.main,
     fontWeight: '600'
-  }
+  })
 } as const

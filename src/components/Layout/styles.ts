@@ -1,22 +1,19 @@
-import { styled, Box, ToggleButton } from '@mui/material'
-import theme from '../../theme'
-
-export const styles = {
-  menuContainer: {
-    background: theme.dark.custom.backgrounds.primary,
+export const styles: SxMap = {
+  menuContainer: ({ custom }) => ({
+    background: custom.backgrounds.primary,
     width: '88px',
     borderRadius: '1.3rem',
-    height: '95%',
     padding: '20px',
-    flexShrink: 0
-  },
-  userContainer: {
+    position: 'sticky',
+    top: 0
+  }),
+  userContainer: ({ custom }) => ({
     padding: '15px 20px 15px 20px',
     position: 'relative',
-    background: theme.dark.custom.backgrounds.primary,
+    background: custom.backgrounds.primary,
     borderRadius: '35px',
     height: '48px'
-  },
+  }),
   userInnerContainer: {
     fontSize: '14px',
     fontWeight: '500',
@@ -24,8 +21,8 @@ export const styles = {
     justifyContent: 'center',
     margin: '-2px'
   },
-  dropdownMenuContainer: {
-    background: theme.dark.custom.backgrounds.light,
+  dropdownMenuContainer: ({ custom }) => ({
+    background: custom.backgrounds.light,
     fontSize: '14px',
     height: '224px',
     minWidth: '224px',
@@ -34,55 +31,53 @@ export const styles = {
     borderRadius: '0px 0px 20px 20px',
     marginTop: '3px',
     justifyContent: 'center',
-    boxShadow: '2px 10px 20px rgba(2, 6, 20, 0.6)'
-  }
-} as const
-
-export const NavigationButton = styled(ToggleButton)(({ theme }) => ({
-  padding: '1rem',
-  height: '3rem',
-  width: '3rem',
-  borderRadius: '10px',
-  '&:hover': {
-    backgroundColor: theme.custom.backgrounds.light
-  },
-  border: 'none',
-  '&.Mui-selected': {
-    background: theme.custom.backgrounds.light,
-    color: theme.palette.primary.main,
-    fill: '#52A6F8',
-    '&:focus': {
-      backgroundColor: theme.custom.backgrounds.light
-    },
+    boxShadow: '2px 10px 20px rgba(2, 6, 20, 0.6)',
+    zIndex: 1
+  }),
+  navigationButton: ({ custom, palette }) => ({
+    padding: '1rem',
+    height: '3rem',
+    width: '3rem',
+    borderRadius: '10px',
     '&:hover': {
-      backgroundColor: theme.custom.backgrounds.light
+      backgroundColor: custom.backgrounds.light
+    },
+    border: 'none',
+    '&.Mui-selected': {
+      background: custom.backgrounds.light,
+      color: palette.primary.main,
+      fill: palette.primary.main,
+      '&:focus': {
+        backgroundColor: custom.backgrounds.light
+      },
+      '&:hover': {
+        backgroundColor: custom.backgrounds.light
+      }
     }
-  }
-}))
-
-export const FooterContainer = styled(Box)(() => ({
-  display: 'flex',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-  bottom: 0,
-  right: 0,
-  left: 0,
-  width: 'inherit',
-  padding: '2rem 0'
-}))
-
-export const StyledNetwork = styled(Box)(({ theme }) => ({
-  maxHeight: '48px',
-  borderRadius: '55px',
-  backgroundColor: theme.custom.backgrounds.primary,
-  padding: '15px 20px 15px 20px'
-}))
-
-export const StyledUser = styled(Box)(({ theme }) => ({
-  maxWidth: '224px',
-  maxHeight: '48px',
-  borderRadius: '55px',
-  background: theme.custom.backgrounds.primary,
-  zIndex: '10',
-  cursor: 'pointer'
-}))
+  }),
+  footerContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    width: 'inherit',
+    padding: '2rem'
+  },
+  networkContainer: ({ custom }) => ({
+    maxHeight: '48px',
+    borderRadius: '55px',
+    backgroundColor: custom.backgrounds.primary,
+    padding: '15px 20px 15px 20px',
+    marginRight: '20px'
+  }),
+  user: ({ custom }) => ({
+    maxWidth: '224px',
+    maxHeight: '48px',
+    borderRadius: '55px',
+    background: custom.backgrounds.primary,
+    zIndex: 5,
+    cursor: 'pointer'
+  })
+}

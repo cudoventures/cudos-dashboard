@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { RootState } from 'store'
 import { copyToClipboard, formatAddress } from 'utils/projectUtils'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import TestAvatar from 'assets/vectors/test-avatar.svg'
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import EditIcon from 'assets/vectors/edit-icon.svg'
@@ -38,13 +38,13 @@ const WalletInformation = () => {
   }
 
   return (
-    <Card style={styles.walletInfoCard}>
-      <Box style={styles.walletInfoContainer}>
-        <Typography style={styles.subheaderStyle} color="text.secondary">
+    <Card sx={styles.walletInfoCard}>
+      <Box sx={styles.walletInfoContainer}>
+        <Typography sx={styles.subheaderStyle} color="text.secondary">
           WALLET INFORMATION
         </Typography>
-        <Box onClick={() => handleEditButton()} style={styles.editButton}>
-          <Typography color="primary.main" style={styles.editButtonStyle}>
+        <Box onClick={() => handleEditButton()} sx={styles.editButton}>
+          <Typography color="primary.main" sx={styles.editButtonStyle}>
             <img
               style={{
                 marginRight: '10px'
@@ -57,10 +57,10 @@ const WalletInformation = () => {
         </Box>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar src={TestAvatar} alt="Avatar" style={styles.avatarStyle} />
+        <Avatar src={TestAvatar} alt="Avatar" sx={styles.avatarStyle} />
         <Box sx={{ marginLeft: '20px' }}>
           <Box sx={{ display: 'flex' }}>
-            <Typography style={styles.usernameStyle}>!cudos</Typography>
+            <Typography sx={styles.usernameStyle}>!cudos</Typography>
             <img
               style={{ marginLeft: '5px', marginBottom: '10px' }}
               src={TickIcon}
@@ -118,7 +118,7 @@ const WalletInformation = () => {
           Network
         </Typography>
       </Box>
-      <Box style={styles.networkInfoContainer}>
+      <Box sx={styles.networkInfoContainer}>
         <Box>
           <span>
             <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>
@@ -128,7 +128,7 @@ const WalletInformation = () => {
         </Box>
         <Box>
           <span>
-            <Typography style={styles.connectionStatus}>
+            <Typography sx={styles.connectionStatus}>
               <img
                 style={{ marginRight: '10px' }}
                 src={OnlineStatusIcon}

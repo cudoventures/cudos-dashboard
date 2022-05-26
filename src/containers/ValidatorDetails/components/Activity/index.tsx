@@ -1,11 +1,12 @@
 import { Box, Typography } from '@mui/material'
 import ActivityTable from './components/Table'
 import ActivityTabs from './components/Tabs'
-import ActivityContainer from './styles'
+
+import { styles } from './styles'
 
 const Activity = () => {
   return (
-    <ActivityContainer>
+    <Box sx={styles.activityContainer}>
       <Box display="flex" justifyContent="space-between">
         <Typography
           letterSpacing={1}
@@ -19,7 +20,7 @@ const Activity = () => {
         <ActivityTabs />
       </Box>
       <ActivityTable />
-    </ActivityContainer>
+    </Box>
   )
 }
 

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import ClockIcon from 'assets/vectors/clock-icon.svg'
 import { formatAddress } from 'utils/projectUtils'
-import Card from 'components/Card/Card'
+import Card from 'components/Card'
 import Table from 'components/Table'
 import { columnNames } from 'store/userTransactions'
 
@@ -128,7 +128,7 @@ const LatestActivity = () => {
       </Box>
     ),
     action: (
-      <Box style={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex' }}>
         {handleMsgAction(tr.messages[0]['@type'], tr.messages[0].from_address)}
       </Box>
     ),
@@ -144,7 +144,7 @@ const LatestActivity = () => {
 
   const hasLatestActivity = loading ? (
     <Box
-      style={{
+      sx={{
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -160,7 +160,7 @@ const LatestActivity = () => {
   const noActivity =
     loading && !hasActivity ? (
       <Box
-        style={{
+        sx={{
           position: 'absolute',
           top: '50%',
           left: '50%',
@@ -170,16 +170,15 @@ const LatestActivity = () => {
         <CircularProgress size={60} />
       </Box>
     ) : (
-      <Typography style={styles.noActivityStyle}>
+      <Typography sx={styles.noActivityStyle}>
         User has no activity to display
       </Typography>
     )
 
   return (
-    <Card style={styles.latestActivityCard}>
+    <Card sx={styles.latestActivityCard}>
       <Typography
-        sx={{ marginBottom: '20px' }}
-        style={styles.subheaderStyle}
+        sx={{ ...styles.subheaderStyle, marginBottom: '20px' }}
         color="text.secondary"
       >
         LATEST ACTIVITY

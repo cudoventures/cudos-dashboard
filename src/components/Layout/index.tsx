@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import Footer from './Footer'
 
 import Header from './Header'
 import LeftMenu from './LeftMenu'
@@ -14,12 +15,16 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }}
     >
       <Header />
-      <Box display="flex" gap={8} flexGrow={1} sx={{ overflow: 'auto' }}>
+      <Box
+        display="flex"
+        gap={8}
+        flexGrow={1}
+        sx={{ overflow: 'auto', marginRight: '2rem' }}
+      >
         <LeftMenu />
-        <Box sx={{ paddingRight: '2rem' }} flexGrow={1}>
-          {children}
-        </Box>
+        <Box sx={{ maxWidth: '1260px', margin: '0 auto' }}>{children}</Box>
       </Box>
+      <Footer />
     </Box>
   )
 }

@@ -1,11 +1,12 @@
 import { Box, Typography } from '@mui/material'
 import DelegatorsTable from './components/Table'
 import DelegatorsTabs from './components/Tabs'
-import DelegatorsContainer from './styles'
+
+import { styles } from './styles'
 
 const Delegators = () => {
   return (
-    <DelegatorsContainer>
+    <Box sx={styles.delegatorsContainer}>
       <Box display="flex" justifyContent="space-between">
         <Typography
           letterSpacing={1}
@@ -19,7 +20,7 @@ const Delegators = () => {
         <DelegatorsTabs />
       </Box>
       <DelegatorsTable />
-    </DelegatorsContainer>
+    </Box>
   )
 }
 
