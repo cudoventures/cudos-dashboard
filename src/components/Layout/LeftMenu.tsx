@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, ToggleButton } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
+import StickyBox from 'react-sticky-box'
 import DashboardIcon from 'assets/vectors/dashboard.svg'
 import ProposalsIcon from 'assets/vectors/proposals.svg'
 import SettingsIcon from 'assets/vectors/settings.svg'

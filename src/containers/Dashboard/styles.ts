@@ -94,7 +94,7 @@ export const styles: SxMap = {
     position: 'relative'
   },
   networkStatisticsCard: {
-    height: '100%',
+    minHeight: '100%',
     width: '320px'
   },
   networkCardStyle: ({ custom }) => ({

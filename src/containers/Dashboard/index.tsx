@@ -1,4 +1,4 @@
-import { Box, Typography, Fade } from '@mui/material'
+import { Box, Typography, Slide } from '@mui/material'
 import WalletInformation from './WalletInformation/WalletInformation'
 import WalletBalance from './WalletBalance/WalletBalance'
 import NetworkStatistics from './NetworkStatistics/NetworkStatistics'
@@ -8,15 +8,8 @@ import { styles } from './styles'
 
 const Dashboard = () => {
   return (
-    <Fade in timeout={500}>
-      <Box
-        sx={{
-          height: '100%',
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+    <Slide direction="up" in timeout={450}>
+      <Box>
         <Box
           position="sticky"
           top={0}
@@ -35,29 +28,13 @@ const Dashboard = () => {
             Here is your CUDOS Wallet information
           </Typography>
         </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2
-            }}
-          >
-            <Box sx={{ display: 'flex', gap: 2, overflow: 'hidden' }}>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2 }}>
               <WalletInformation />
               <WalletBalance />
             </Box>
-            <Box
-              sx={{
-                justifySelf: 'flex-end',
-                flexGrow: 0
-              }}
-            >
+            <Box>
               <LatestActivity />
             </Box>
           </Box>
@@ -66,7 +43,7 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Box>
-    </Fade>
+    </Slide>
   )
 }
 
