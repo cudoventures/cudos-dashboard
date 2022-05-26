@@ -77,7 +77,7 @@ export const styles: SxMap = {
     maxHeight: '48px',
     borderRadius: '55px',
     background: custom.backgrounds.primary,
-    zIndex: 5,
+    zIndex: 10,
     cursor: 'pointer'
   })
 }
