@@ -4,6 +4,7 @@ export const styles: SxMap = {
     width: '88px',
     borderRadius: '1.3rem',
     padding: '20px',
+    height: '95%',
     position: 'sticky',
     top: 0
   }),
