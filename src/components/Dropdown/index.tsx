@@ -1,12 +1,32 @@
 import React from 'react'
-import { FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material'
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  Box
+} from '@mui/material'
 import ArrowIcon from 'assets/vectors/arrow-down-blue.svg'
 
-const Dropdown = () => {
-  const [age, setAge] = React.useState('10')
+export type DropdownProps = Array<DropdownState>
+
+export type DropdownState = {
+  value: string
+  label: string
+}
+
+const Dropdown = ({
+  data,
+  selectedValue
+}: {
+  data: DropdownProps
+  selectedValue: (param: string) => void
+}) => {
+  const [type, setType] = React.useState('1')
 
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value)
+    setType(event.target.value)
+    selectedValue(event.target.value)
   }
 
   const dropdownArrow = () => {
@@ -22,7 +42,7 @@ const Dropdown = () => {
   }
 
   return (
-    <div>
+    <Box display="flex" flexDirection="column" gap={1}>
       <FormControl
         variant="standard"
         sx={{
@@ -35,7 +55,8 @@ const Dropdown = () => {
       >
         <Select
           IconComponent={() => dropdownArrow()}
-          value={age}
+          fullWidth
+          value={type}
           sx={{
             cursor: 'pointer'
           }}
@@ -45,17 +66,18 @@ const Dropdown = () => {
           inputProps={{
             'aria-label': 'Without label'
           }}
+          MenuProps={{
+            PaperProps: { style: { background: 'text.secondary' } }
+          }}
         >
-          <MenuItem value={10}>Text Proposal</MenuItem>
-          <MenuItem value={20}>Software update proposal</MenuItem>
-          <MenuItem value={30}>Cancel software update proposal</MenuItem>
-          <MenuItem value={40}>Parameter change proposal</MenuItem>
-          <MenuItem value={50}>Community pool spend proposal</MenuItem>
-          <MenuItem value={60}>Update client proposal</MenuItem>
-          <MenuItem value={70}>IBC upgrade proposal</MenuItem>
+          {data.map((type) => (
+            <MenuItem key={type.value} value={type.value}>
+              {type.label}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
-    </div>
+    </Box>
   )
 }
 
