@@ -67,8 +67,6 @@ export const useValidatorDetails = () => {
   })
 
   useEffect(() => {
-    // ryuash
-    // why did i do this again
     handleSetState(initialState)
   }, [])
 
