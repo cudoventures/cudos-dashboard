@@ -33,7 +33,8 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
   borderRadius: '20px',
   boxShadow: '2px 10px 20px rgba(2, 6, 20, 0.6)',
   zIndex: 1,
-  minWidth: '540px'
+  minWidth: '540px',
+  overflow: 'auto'
 }))
 
 export const CancelRoundedIcon = styled(CancelRounded)(({ theme }) => ({
