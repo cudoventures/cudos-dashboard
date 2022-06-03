@@ -1,8 +1,13 @@
 import { Box, Button, InputAdornment, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import { initialModalState, ModalProps, ProposalStatus } from 'store/proposals'
+import {
+  initialModalState,
+  ModalProps,
+  ProposalStatus,
+  ProposalTypes
+} from 'store/proposals'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 
 import Dropdown from 'components/Dropdown'
@@ -12,19 +17,24 @@ import {
   ModalContainer,
   StyledTextField
 } from './styles'
+import { typeSwitch } from './ProposalTypes/types'
 
 type ProposalProps = {
-  modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
 }
 
-const Proposals: React.FC<ProposalProps> = ({ modalProps, handleModal }) => {
+const Proposals: React.FC<ProposalProps> = ({ handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
+  const [proposal, setProposal] = useState<string>('1')
 
   const handleClose = () => {
     handleModal({
       ...initialModalState
     })
+  }
+
+  const handleProposalType = (proposalValue: string) => {
+    setProposal(proposalValue)
   }
 
   return (
@@ -58,7 +68,7 @@ const Proposals: React.FC<ProposalProps> = ({ modalProps, handleModal }) => {
                 Network
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                CUDOS mainnet
+                {import.meta.env.VITE_APP_CHAIN_NAME}
               </Typography>
             </Box>
           </Box>
@@ -115,53 +125,10 @@ const Proposals: React.FC<ProposalProps> = ({ modalProps, handleModal }) => {
           >
             Type
           </Typography>
-          <Dropdown />
+          <Dropdown selectedValue={handleProposalType} data={ProposalTypes} />
         </Box>
-        <Box>
-          <Typography
-            sx={{ marginBottom: '10px' }}
-            variant="body2"
-            fontWeight={700}
-          >
-            Description
-          </Typography>
-          <Box gap={1} display="flex">
-            <InputContainer
-              multiline
-              rows={3}
-              placeholder="e.g. This governance proposal is to..."
-              disableUnderline
-              fullWidth
-            />
-          </Box>
-        </Box>
-        <Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography
-              sx={{ marginBottom: '10px' }}
-              variant="body2"
-              fontWeight={700}
-            >
-              Note
-            </Typography>
-            <Typography
-              sx={{ marginBottom: '10px' }}
-              variant="body2"
-              fontWeight={600}
-              color="text.secondary"
-            >
-              Optional
-            </Typography>
-          </Box>
-          <Box gap={1} display="flex">
-            <InputContainer
-              multiline
-              rows={3}
-              placeholder="e.g. Add ability to..."
-              disableUnderline
-              fullWidth
-            />
-          </Box>
+        <Box display="flex" flexDirection="column" gap={1}>
+          {typeSwitch(proposal)}
         </Box>
       </Box>
       <Box>

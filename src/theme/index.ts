@@ -46,13 +46,7 @@ const dark = createTheme({
     MuiPopover: {
       styleOverrides: {
         paper: {
-          backgroundImage: 'none',
-          background: 'white',
-          boxShadow: '0px 0px 30px rgba(27, 32, 49, 0.7)',
-          borderRadius: '15px',
-          color: 'black',
-          padding: '20px',
-          border: '1px solid white'
+          backgroundImage: 'none'
         },
         root: {
           fontSize: '14px'
