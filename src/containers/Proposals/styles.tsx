@@ -38,14 +38,13 @@ export const styles: SxMap = {
     boxShadow: 'none'
   }),
   cardEnumeration: {
-    marginTop: '4px',
     fontWeight: '600',
-    fontSize: '14px'
+    fontSize: '16px'
   },
   cardTitle: {
     fontWeight: '600',
     fontSize: '18px',
-    marginLeft: '20px'
+    marginLeft: '18px'
   },
   cardActionButton: {
     width: '163px',
@@ -54,7 +53,7 @@ export const styles: SxMap = {
   },
   proposalContent: {
     display: 'flex',
-    marginLeft: '40px',
+    marginLeft: '50px',
     marginTop: '10px',
     width: '50%',
     fontWeight: '400'
@@ -113,11 +112,10 @@ export const styles: SxMap = {
     position: 'absolute',
     right: '0'
   },
-  crateProposalBtn: ({ palette }) => ({
+  crateProposalBtn: () => ({
     height: '50px',
     width: '199px',
-    background: palette.secondary.main,
-    color: palette.primary.main,
+    boxShadow: 'none',
     fontWeight: '600'
   })
 } as const

@@ -3,7 +3,7 @@ import {
   OpenInNewRounded as OpenInNewRoundedIcon
 } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/proposalsModal'
+import { initialModalState, ModalProps } from 'store/votingModal'
 
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'

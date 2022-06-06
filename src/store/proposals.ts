@@ -1,40 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export enum ProposalStatus {
-  CREATE = 'CREATE',
-  LOADING = 'LOADING',
-  SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE'
-}
-
-export const ProposalTypes = [
-  { value: '1', label: 'Text Proposal' },
-  { value: '2', label: 'Software update proposal' },
-  { value: '3', label: 'Cancel software update proposal' },
-  { value: '4', label: 'Parameter change proposal' },
-  { value: '5', label: 'Community pool spend proposal' },
-  { value: '6', label: 'Update client proposal' },
-  { value: '7', label: 'IBC upgrade proposal' }
-]
-
-export type ModalProps = {
-  open: boolean
-  status: ProposalStatus | null
-}
-
 export type ProposalsState = {
-  modal: ModalProps
+  loading: boolean
+  exists: boolean
+  hasNextPage: boolean
+  isNextPageLoading: boolean
+  rawDataTotal: number
+  items: ProposalType[]
 }
 
-export const initialModalState = {
-  open: false,
-  status: null
+export type ProposalType = {
+  id: number
+  title: string
+  description: string
+  status: string
+  proposalType: string
+  proposerAddress: string
+  submitTime: string
+  votingEndTime: string
+  votingStartTime: string
 }
 
 const initialState: ProposalsState = {
-  modal: {
-    ...initialModalState
-  }
+  loading: false,
+  exists: false,
+  hasNextPage: false,
+  isNextPageLoading: false,
+  rawDataTotal: 0,
+  items: []
 }
 
 export const proposalsSlice = createSlice({

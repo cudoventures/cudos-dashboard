@@ -1,5 +1,5 @@
 import { Box, Typography, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/proposalsModal'
+import { initialModalState, ModalProps } from 'store/votingModal'
 
 import FailureIcon from 'assets/vectors/failure.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'

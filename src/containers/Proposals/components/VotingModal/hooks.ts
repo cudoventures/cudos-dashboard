@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux'
 
 import { RootState } from 'store'
-import { ModalProps, updateProposalsModal } from 'store/proposalsModal'
+import { ModalProps, updateVotingModal } from 'store/votingModal'
 
 export default () => {
   const dispatch = useDispatch()
-  const modal = useSelector((state: RootState) => state.proposalsModal.modal)
+  const modal = useSelector((state: RootState) => state.votingModal.modal)
 
   const handleModal = (modalState: ModalProps) => {
-    dispatch(updateProposalsModal({ modal: { ...modalState } }))
+    dispatch(updateVotingModal({ modal: { ...modalState } }))
   }
 
   return {

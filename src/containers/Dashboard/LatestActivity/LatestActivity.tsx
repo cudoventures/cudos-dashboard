@@ -103,6 +103,15 @@ const LatestActivity = () => {
             UNDELEGATE
           </Typography>
         )
+      case '/cosmos.gov.v1beta1.MsgDeposit':
+        return (
+          <Typography
+            style={{ background: '#65B48F' }}
+            sx={styles.latestActivityAction}
+          >
+            DEPOSIT
+          </Typography>
+        )
       default:
         return (
           <Typography

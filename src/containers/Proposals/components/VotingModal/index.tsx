@@ -1,13 +1,13 @@
 import React from 'react'
 import Dialog from 'components/Dialog'
-import { initialModalState, ProposalStatus } from 'store/proposalsModal'
+import { VotingStatus, initialModalState } from 'store/votingModal'
 import useModal from './hooks'
 import Loading from './Loading'
 import Success from './Success'
 import Failure from './Failure'
-import Proposals from './Proposals'
+import Vote from './Vote'
 
-const ProposalModal = () => {
+const VotingModal = () => {
   const { modal, handleModal } = useModal()
   const { open, status } = modal
 
@@ -19,14 +19,14 @@ const ProposalModal = () => {
 
   const renderComponent = () => {
     switch (status) {
-      case ProposalStatus.LOADING:
+      case VotingStatus.LOADING:
         return <Loading />
-      case ProposalStatus.SUCCESS:
+      case VotingStatus.SUCCESS:
         return <Success modalProps={modal} handleModal={handleModal} />
-      case ProposalStatus.FAILURE:
+      case VotingStatus.FAILURE:
         return <Failure modalProps={modal} handleModal={handleModal} />
-      case ProposalStatus.CREATE:
-        return <Proposals modalProps={modal} handleModal={handleModal} />
+      case VotingStatus.VOTE:
+        return <Vote modalProps={modal} handleModal={handleModal} />
       default:
         return null
     }
@@ -43,4 +43,4 @@ const ProposalModal = () => {
   )
 }
 
-export default ProposalModal
+export default VotingModal

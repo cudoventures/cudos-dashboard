@@ -7,7 +7,7 @@ import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
 import { updateUser } from 'store/profile'
 import { ConnectLedger } from 'ledgers/KeplrLedger'
-import { getWalletBalance } from 'utils/projectUtils'
+import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import InfoIcon from 'assets/vectors/info-icon.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import Header from 'components/Layout/Header'
@@ -26,6 +26,7 @@ const ConnectWallet = () => {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
       const balance = await getWalletBalance(address)
+      const stakedAmountBalance = await getStakedBalance(address)
       const { totalRewards, validatorArray } = await fetchRewards(address)
 
       dispatch(
@@ -34,7 +35,8 @@ const ConnectWallet = () => {
           lastLoggedAddress: address,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
-          stakedValidators: validatorArray
+          stakedValidators: validatorArray,
+          stakedBalance: new BigNumber(stakedAmountBalance)
         })
       )
       navigate('dashboard')

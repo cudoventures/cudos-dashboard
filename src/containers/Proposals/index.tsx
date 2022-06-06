@@ -1,16 +1,20 @@
 import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
 import Card from 'components/Card'
-import { ProposalStatus } from 'store/proposals'
 import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import VotingModal from './components/VotingModal'
+import ProposalModal from './components/ProposalModal'
+import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
 
 import { InputContainer, styles } from './styles'
 import Proposal from './Proposal'
-import ProposalModal from './components/ProposalModal'
 
 const Proposals = () => {
   const { handleModal } = useModal()
+  const proposalState = useSelector((state: RootState) => state.proposals)
 
   return (
     <>
@@ -32,7 +36,11 @@ const Proposals = () => {
           >
             PROPOSALS
           </Typography>
-          <Chip label={23} color="primary" sx={styles.chipStyle} />
+          <Chip
+            label={proposalState.rawDataTotal}
+            color="primary"
+            sx={styles.chipStyle}
+          />
           <Box>
             <InputContainer
               sx={{ marginLeft: '50px' }}
@@ -51,6 +59,8 @@ const Proposals = () => {
           </Box>
           <Box sx={styles.createProposalBtnContainer}>
             <Button
+              variant="contained"
+              color="secondary"
               onClick={() =>
                 handleModal({ open: true, status: ProposalStatus.CREATE })
               }
@@ -67,22 +77,10 @@ const Proposals = () => {
         </Box>
         <Box>
           <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
-          <Proposal />
         </Box>
       </Card>
       <ProposalModal />
+      <VotingModal />
     </>
   )
 }

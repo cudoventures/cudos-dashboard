@@ -7,7 +7,7 @@ import {
   ModalProps,
   ProposalStatus,
   ProposalTypes
-} from 'store/proposals'
+} from 'store/proposalsModal'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 
 import Dropdown from 'components/Dropdown'
@@ -133,6 +133,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal }) => {
       </Box>
       <Box>
         <Button
+          variant="contained"
+          color="primary"
           onClick={() =>
             handleModal({ open: true, status: ProposalStatus.SUCCESS })
           }
