@@ -1,6 +1,6 @@
 import { Column } from 'components/Table/types'
 
-const columns: Column[] = [
+export const delegationsColumns: Column[] = [
   {
     key: 'idx',
     label: '#',
@@ -12,10 +12,54 @@ const columns: Column[] = [
     label: 'Delegator'
   },
   {
-    key: 'votingPower',
+    key: 'amount',
     label: 'Delegated',
-    sort: true
+    align: 'right'
   }
 ]
 
-export default columns
+export const redelegationsColumns: Column[] = [
+  {
+    key: 'idx',
+    label: '#',
+    width: 70,
+    colSpan: 2
+  },
+  {
+    key: 'delegator',
+    label: 'Delegator'
+  },
+  {
+    key: 'to',
+    label: 'To'
+  },
+  {
+    key: 'amount',
+    label: 'Amount'
+  },
+  {
+    key: 'completionTime',
+    label: 'Completion Time'
+  }
+]
+
+export const unbondingsColumns: Column[] = [
+  {
+    key: 'idx',
+    label: '#',
+    width: 70,
+    colSpan: 2
+  },
+  {
+    key: 'delegator',
+    label: 'Delegator'
+  },
+  {
+    key: 'amount',
+    label: 'Amount'
+  },
+  {
+    key: 'completionTime',
+    label: 'Completion Time'
+  }
+]
