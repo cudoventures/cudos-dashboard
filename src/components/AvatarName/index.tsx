@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Avatar from '../Avatar'
 import AvatarNameContainer from './styles'
 
@@ -11,7 +11,9 @@ type AvatarNameProps = {
 const AvatarName: React.FC<AvatarNameProps> = ({ address, name, imageUrl }) => {
   return (
     <AvatarNameContainer>
-      <Avatar address={address} imageUrl={imageUrl} />
+      <Box sx={{ width: '28px', height: 'auto' }}>
+        <Avatar address={address} imageUrl={imageUrl} />
+      </Box>
       <Typography variant="body2" fontWeight={600}>
         {name}
       </Typography>

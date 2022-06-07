@@ -9,8 +9,31 @@ import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import Condition from 'components/Condition'
 import moment from 'moment'
 import Card from 'components/Card'
+import numeral from 'numeral'
+import { getValidatorConditionClass } from 'utils/get_validator_condition'
+import { copyToClipboard } from 'utils/projectUtils'
+import { OverviewType, StatusType } from '../../types'
+import { getValidatorStatus, getCondition } from './utils'
 
-const ValidatorInfo = () => {
+type InfoProps = {
+  overview: OverviewType
+  status: StatusType
+}
+
+const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
+  const statusTheme = getValidatorStatus(
+    status.status,
+    status.jailed,
+    status.tombstoned
+  )
+  const condition = getCondition(status.condition, status.status)
+  const conditionColor =
+    status.status === 3 ? getValidatorConditionClass(status.condition) : 'grey'
+
+  const handleCopy = (value: string) => {
+    copyToClipboard(value)
+  }
+
   return (
     <Box display="flex" flexDirection="column" gap={2} flexGrow={1}>
       <Card
@@ -37,6 +60,16 @@ const ValidatorInfo = () => {
             size="small"
             endIcon={<OpenInNewRoundedIcon fontSize="small" />}
             disableRipple
+            onClick={() =>
+              window
+                .open(
+                  `${import.meta.env.VITE_APP_EXPLORER_V2}/account/${
+                    overview.operatorAddress
+                  }`,
+                  '_blank'
+                )
+                ?.focus()
+            }
           >
             View in Explorer
           </Button>
@@ -68,15 +101,14 @@ const ValidatorInfo = () => {
                 variant="body2"
                 color="text.secondary"
               >
-                {getMiddleEllipsis(
-                  'cudos1gjcpufjscc8ynxc9uthtvg36utp65ft7uvr7f2',
-                  {
-                    beginning: 20,
-                    ending: 4
-                  }
-                )}
+                {getMiddleEllipsis(overview.selfDelegateAddress, {
+                  beginning: 20,
+                  ending: 4
+                })}
               </Typography>
-              <img src={CopyIcon} alt="Copy" width="14px" />
+              <Box onClick={() => handleCopy(overview.selfDelegateAddress)}>
+                <img src={CopyIcon} alt="Copy" width="14px" />
+              </Box>
             </Stack>
           </Stack>
           <Stack gap={0.5}>
@@ -100,15 +132,14 @@ const ValidatorInfo = () => {
                 variant="body2"
                 color="text.secondary"
               >
-                {getMiddleEllipsis(
-                  'cudosvaloper1gjcpufjscc8ynxc9uthtvg36utp65ft7uvr7f2',
-                  {
-                    beginning: 20,
-                    ending: 4
-                  }
-                )}
+                {getMiddleEllipsis(overview.operatorAddress, {
+                  beginning: 20,
+                  ending: 4
+                })}
               </Typography>
-              <img src={CopyIcon} alt="Copy" width="14px" />
+              <Box onClick={() => handleCopy(overview.operatorAddress)}>
+                <img src={CopyIcon} alt="Copy" width="14px" />
+              </Box>
             </Stack>
           </Stack>
           <Button
@@ -148,7 +179,7 @@ const ValidatorInfo = () => {
             textTransform="uppercase"
             variant="body2"
           >
-            10.00%
+            {numeral(status.commission).format('0.[00]')}%
           </Typography>
         </Stack>
         <Stack gap={1}>
@@ -162,13 +193,16 @@ const ValidatorInfo = () => {
           </Typography>
           <Chip
             variant="filled"
-            label="ACTIVE"
-            sx={{
+            label={statusTheme.status.toUpperCase()}
+            sx={(theme) => ({
               borderRadius: '10px',
-              background: '#65B48F',
+              background:
+                theme.custom.statuses[
+                  statusTheme.status as keyof typeof theme.custom.statuses
+                ],
               fontWeight: 700,
               letterSpacing: '2px'
-            }}
+            })}
           />
         </Stack>
         <Stack gap={1}>
@@ -181,14 +215,13 @@ const ValidatorInfo = () => {
             Condition
           </Typography>
           <Stack direction="row" alignItems="center">
-            <Condition color="green" />
+            <Condition color={conditionColor} />
             <Typography
-              fontWeight={700}
               color="text.primary"
-              textTransform="uppercase"
-              variant="body2"
+              fontWeight={700}
+              textTransform="capitalize"
             >
-              10.00%
+              {condition}
             </Typography>
           </Stack>
         </Stack>
@@ -198,11 +231,15 @@ const ValidatorInfo = () => {
             color="text.secondary"
             textTransform="uppercase"
             variant="body2"
+            alignSelf="flex-end"
           >
             Last seen
           </Typography>
           <Typography fontWeight={700} color="text.primary" variant="body2">
-            {moment(new Date()).format('DD MMM, YYYY, LTS').toLocaleString()}
+            {status.lastSeen &&
+              moment(moment(status.lastSeen).parseZone().toLocaleString())
+                .format('DD MMM, YYYY, LTS')
+                .toLocaleString()}
           </Typography>
         </Stack>
       </Card>
