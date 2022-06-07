@@ -1,8 +1,15 @@
-import { Avatar, Box, Typography } from '@mui/material'
-import TestAvatar from 'assets/vectors/test-avatar.svg'
+import { Box, Typography } from '@mui/material'
 import Card from 'components/Card'
+import Avatar from 'components/Avatar'
+import { OverviewType } from '../../types'
 
-const ValidatorAvatar = () => {
+type AvatarProps = {
+  overview: OverviewType
+}
+
+const ValidatorAvatar: React.FC<AvatarProps> = ({ overview }) => {
+  const { moniker, avatarUrl, operatorAddress } = overview
+
   return (
     <Card
       sx={{
@@ -13,19 +20,13 @@ const ValidatorAvatar = () => {
         gap: 4
       }}
     >
-      <Avatar
-        src={TestAvatar}
-        alt="Avatar"
-        sx={{
-          width: '120px',
-          height: 'auto'
-        }}
-      />
+      <Box sx={{ width: '120px', height: '120px' }}>
+        <Avatar address={operatorAddress} imageUrl={avatarUrl} />
+      </Box>
       <Box display="flex" alignItems="center" flexDirection="column">
         <Typography fontWeight={700} lineHeight="30px" letterSpacing={1}>
-          cudos-validator
+          {moniker}
         </Typography>
-        <Typography color="text.secondary">100% UPTIME</Typography>
       </Box>
     </Card>
   )

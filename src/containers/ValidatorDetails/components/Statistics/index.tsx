@@ -1,36 +1,28 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { InfoRounded as InfoRoundedIcon } from '@mui/icons-material'
 import Card from 'components/Card'
-
-const stats = [
-  {
-    type: 'available',
-    cudos: '0.7456',
-    value: '$20.76'
-  },
-  {
-    type: 'delegated',
-    cudos: '19,746.7456',
-    value: '$10,234.76'
-  },
-  {
-    type: 'unbonding',
-    cudos: '0',
-    value: '$0'
-  },
-  {
-    type: 'rewards',
-    cudos: '234.7465',
-    value: '$202.76'
-  },
-  {
-    type: 'commissions',
-    cudos: '236.7465',
-    value: '$134.76'
-  }
-]
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
+import { formatNumber } from 'utils/format_token'
+import { useStatistics } from './hooks'
 
 const Statistics = () => {
+  const { state } = useStatistics()
+  const price = useSelector((state: RootState) => state.market.price)
+
+  const calculateValue = (cudos: string) => {
+    return `${Number(price) * Number(cudos)}`
+  }
+
+  const stats = Object.entries(state.balance)
+    .filter(([key, value]) => key !== 'total')
+    .map(([key, value]) => {
+      return {
+        type: key,
+        cudos: formatNumber(value.value, 2),
+        value: `$${formatNumber(calculateValue(value.value), 2)}`
+      }
+    })
   return (
     <Card>
       <Typography

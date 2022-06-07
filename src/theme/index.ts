@@ -1,6 +1,6 @@
 import { darkScrollbar } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
-import { COLORS_DARK_THEME, CONDITIONS } from './colors'
+import { COLORS_DARK_THEME, CONDITIONS, STATUSES } from './colors'
 
 const dark = createTheme({
   palette: {
@@ -207,6 +207,13 @@ const dark = createTheme({
       green: CONDITIONS.GREEN,
       yellow: CONDITIONS.YELLOW,
       red: CONDITIONS.RED
+    },
+    statuses: {
+      active: STATUSES.ACTIVE,
+      jailed: STATUSES.JAILED,
+      tombstoned: STATUSES.TOMBSTONED,
+      unbonding: STATUSES.UNBONDING,
+      unbonded: STATUSES.UNBONDED
     }
   }
 })
