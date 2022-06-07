@@ -26,11 +26,14 @@ export const getValidatorStatus = (
 
   if (status === 3) {
     results.status = 'active'
-  } else if (status === 2) {
+  }
+  if (status === 2) {
     results.status = 'unbonding'
-  } else if (status === 1) {
+  }
+  if (status === 1) {
     results.status = 'unbonded'
-  } else {
+  }
+  if (status < 1 || status > 3) {
     results.status = 'unknown'
   }
 
@@ -42,9 +45,11 @@ export const getCondition = (condition: number, status: number) => {
   if (status === 3) {
     if (condition > 90) {
       result = 'good'
-    } else if (condition > 70 && condition < 90) {
+    }
+    if (condition > 70 && condition < 90) {
       result = 'moderate'
-    } else {
+    }
+    if (condition <= 70) {
       result = 'bad'
     }
   }
