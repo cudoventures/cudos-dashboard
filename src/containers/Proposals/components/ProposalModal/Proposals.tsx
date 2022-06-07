@@ -20,10 +20,11 @@ import {
 import { typeSwitch } from './ProposalTypes/types'
 
 type ProposalProps = {
+  modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
 }
 
-const Proposals: React.FC<ProposalProps> = ({ handleModal }) => {
+const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
   const [proposal, setProposal] = useState<string>('1')
 

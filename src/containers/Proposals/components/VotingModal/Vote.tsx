@@ -9,6 +9,8 @@ import {
 } from 'store/votingModal'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
+import { voteProposal } from 'ledgers/transactions'
+import BigNumber from 'bignumber.js'
 import { CancelRoundedIcon, ModalContainer, StyledTextField } from './styles'
 
 type VotingProps = {
@@ -22,6 +24,44 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
   const { id, title } = useSelector(
     (state: RootState) => state.votingModal.modal
   )
+
+  const { address } = useSelector((state: RootState) => state.profile)
+
+  const handleSubmitVote = async (
+    voterAddress: string,
+    proposalId: any,
+    votingOption: number
+  ) => {
+    try {
+      handleModal({
+        open: true,
+        status: VotingStatus.LOADING,
+        fee: new BigNumber(0)
+      })
+
+      const { gasFee, result } = await voteProposal(
+        voterAddress,
+        proposalId,
+        votingOption
+      )
+
+      handleModal({
+        open: true,
+        status: VotingStatus.SUCCESS,
+        title,
+        id,
+        type: votingOption,
+        fee: new BigNumber(gasFee),
+        hash: result.transactionHash
+      })
+    } catch (error) {
+      handleModal({
+        open: true,
+        status: VotingStatus.FAILURE,
+        fee: new BigNumber(0)
+      })
+    }
+  }
 
   const handleProposalType = (voteValue: string) => {
     setVote(voteValue)
@@ -62,7 +102,6 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
             variant="standard"
             margin="dense"
             fullWidth
-            // disabled
             value={`#${id} ${title}`}
             InputProps={{
               disableUnderline: true,
@@ -92,9 +131,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() =>
-              handleModal({ open: true, status: VotingStatus.SUCCESS })
-            }
+            onClick={() => handleSubmitVote(address, id, Number(vote))}
             sx={({ palette }) => ({
               width: '225px',
               height: '50px',

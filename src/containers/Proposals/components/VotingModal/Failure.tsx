@@ -17,7 +17,7 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
   }
 
   const handleTryAgain = () => {
-    handleModal({ ...modalProps, status: null })
+    handleModal({ ...initialModalState })
   }
 
   return (
@@ -32,20 +32,19 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
         gap={1}
       >
         <Typography variant="h4" fontWeight={900} letterSpacing={2}>
-          Creating Proposal Failed!
+          Voting for Proposal Failed!
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          Seems like something went wrong with creating the proposal. Try again
-          or check your wallet balance.
+          Seems like something went wrong with voting for the proposal. Try
+          again or check your wallet balance.
         </Typography>
       </Box>
       <Button
+        variant="contained"
+        color="primary"
         sx={(theme) => ({
           width: '50%',
-          fontWeight: 700,
-          '&:hover': {
-            background: theme.palette.primary.main
-          }
+          fontWeight: 700
         })}
         onClick={handleTryAgain}
       >

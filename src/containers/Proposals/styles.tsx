@@ -44,7 +44,7 @@ export const styles: SxMap = {
   cardTitle: {
     fontWeight: '600',
     fontSize: '18px',
-    marginLeft: '18px'
+    marginLeft: '50px'
   },
   cardActionButton: {
     width: '163px',

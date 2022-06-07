@@ -7,6 +7,7 @@ import { RootState } from 'store'
 import { formatAddress } from 'utils/projectUtils'
 import moment from 'moment'
 import { VotingStatus } from 'store/votingModal'
+import BigNumber from 'bignumber.js'
 import useModal from './components/VotingModal/hooks'
 import { styles } from './styles'
 import { useProposals } from './hooks'
@@ -94,12 +95,14 @@ const Proposal = () => {
     <>
       {proposalState.items.map((proposal) => (
         <Card key={proposal.id} sx={styles.cardContainer}>
-          <Box>
+          <Box sx={{ position: 'relative' }}>
+            <Box sx={{ position: 'absolute' }}>
+              <Typography color="text.secondary" sx={styles.cardEnumeration}>
+                {`#${proposal.id}`}
+              </Typography>
+            </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex' }}>
-                <Typography color="text.secondary" sx={styles.cardEnumeration}>
-                  {`#${proposal.id}`}
-                </Typography>
                 <Typography sx={styles.cardTitle}>{proposal.title}</Typography>
               </Box>
               {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
@@ -112,7 +115,8 @@ const Proposal = () => {
                         open: true,
                         status: VotingStatus.VOTE,
                         id: proposal.id,
-                        title: proposal.title
+                        title: proposal.title,
+                        fee: new BigNumber(0)
                       })
                     }
                     sx={styles.cardActionButton}
