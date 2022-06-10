@@ -238,7 +238,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
           <Typography fontWeight={700} color="text.primary" variant="body2">
             {status.lastSeen &&
               moment(moment(status.lastSeen).parseZone().toLocaleString())
-                .format('DD MMM, YYYY, LTS')
+                .format('DD MMM YYYY LTS')
                 .toLocaleString()}
           </Typography>
         </Stack>

@@ -5,7 +5,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  TablePagination
 } from '@mui/material'
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'
 import { Column } from './types'
@@ -16,6 +17,7 @@ type TableProps = {
   sortKey?: string
   handleSort?: (key: string) => void
   sortDirection?: 'desc' | 'asc'
+  pagination?: any
 }
 
 const Table: React.FC<TableProps> = ({
@@ -23,7 +25,8 @@ const Table: React.FC<TableProps> = ({
   columns,
   sortKey,
   handleSort,
-  sortDirection
+  sortDirection,
+  pagination
 }) => {
   return (
     <>
@@ -120,6 +123,17 @@ const Table: React.FC<TableProps> = ({
           </TableBody>
         </MuiTable>
       </Box>
+      {pagination && (
+        <TablePagination
+          sx={{ overflow: 'hidden' }}
+          component="div"
+          count={pagination?.total}
+          rowsPerPage={5}
+          rowsPerPageOptions={[]}
+          page={pagination?.page}
+          onPageChange={pagination?.handleChangePage}
+        />
+      )}
     </>
   )
 }
