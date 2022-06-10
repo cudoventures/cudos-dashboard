@@ -10,6 +10,7 @@ import proposalsModalReducer from './proposalsModal'
 import proposalsReducer from './proposals'
 import userTransactionsReducer from './userTransactions'
 import votingModalReducer from './votingModal'
+import depositModalReducer from './depositModal'
 
 const rootReducer = combineReducers({
   profile: profileReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   userTransactions: userTransactionsReducer,
   proposalsModal: proposalsModalReducer,
   votingModal: votingModalReducer,
+  depositModal: depositModalReducer,
   proposals: proposalsReducer
 })
 

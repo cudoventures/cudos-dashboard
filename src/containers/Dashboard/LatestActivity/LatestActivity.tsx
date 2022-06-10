@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import ClockIcon from 'assets/vectors/clock-icon.svg'
-import { formatAddress } from 'utils/projectUtils'
+import { formatAddress, formatDateTime } from 'utils/projectUtils'
 import Card from 'components/Card'
 import Table from 'components/Table'
 import { columnNames } from 'store/userTransactions'
@@ -145,7 +145,7 @@ const LatestActivity = () => {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <img style={{ marginRight: '10px' }} src={ClockIcon} alt="Clock Icon" />
         <Typography sx={{ fontSize: '12px' }}>
-          {moment(tr.timestamp).format('lll')}
+          {formatDateTime(tr.timestamp)}
         </Typography>
       </Box>
     )

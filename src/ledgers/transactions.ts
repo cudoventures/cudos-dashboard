@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
-import { MsgVote } from 'cosmjs-types/cosmos/gov/v1beta1/tx'
+import { MsgVote, MsgDeposit } from 'cosmjs-types/cosmos/gov/v1beta1/tx'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 
 import {
@@ -10,7 +10,8 @@ import {
   coins,
   coin,
   MsgDelegateEncodeObject,
-  MsgVoteEncodeObject
+  MsgVoteEncodeObject,
+  MsgDepositEncodeObject
 } from 'cudosjs'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 
@@ -226,6 +227,64 @@ export const voteProposal = async (
 
   const result = await client.signAndBroadcast(
     voterAddress,
+    [msgAny],
+    fee,
+    memo
+  )
+
+  return {
+    result,
+    gasFee: fee.amount[0].amount
+  }
+}
+
+export const depositProposal = async (
+  depositorAddress: string,
+  proposalId: number | undefined,
+  amount: string
+) => {
+  window.keplr.defaultOptions = {
+    sign: {
+      preferNoSetFee: true
+    }
+  }
+  const offlineSigner = window.getOfflineSigner(
+    import.meta.env.VITE_APP_CHAIN_ID
+  )
+
+  const client = await SigningStargateClient.connectWithSigner(
+    import.meta.env.VITE_APP_RPC,
+    offlineSigner
+  )
+
+  const msg = MsgDeposit.fromPartial({
+    proposalId,
+    depositor: depositorAddress,
+    amount: [
+      {
+        denom: CosmosNetworkConfig.CURRENCY_DENOM,
+        amount: new BigNumber(amount || 0)
+          .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+          .toString(10)
+      }
+    ]
+  })
+
+  const msgAny: MsgDepositEncodeObject = {
+    typeUrl: '/cosmos.gov.v1beta1.MsgDeposit',
+    value: msg
+  }
+
+  const memo = 'Sent via CUDOS Dashboard'
+
+  const gasUsed = await client.simulate(depositorAddress, [msgAny], memo)
+
+  const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+  const fee = calculateFee(gasLimit, gasPrice)
+
+  const result = await client.signAndBroadcast(
+    depositorAddress,
     [msgAny],
     fee,
     memo
