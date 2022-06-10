@@ -7,7 +7,7 @@ import {
   ModalProps,
   ProposalStatus,
   ProposalTypes
-} from 'store/proposals'
+} from 'store/proposalsModal'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 
 import Dropdown from 'components/Dropdown'
@@ -20,10 +20,11 @@ import {
 import { typeSwitch } from './ProposalTypes/types'
 
 type ProposalProps = {
+  modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
 }
 
-const Proposals: React.FC<ProposalProps> = ({ handleModal }) => {
+const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
   const [proposal, setProposal] = useState<string>('1')
 
@@ -133,6 +134,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal }) => {
       </Box>
       <Box>
         <Button
+          variant="contained"
+          color="primary"
           onClick={() =>
             handleModal({ open: true, status: ProposalStatus.SUCCESS })
           }

@@ -1,0 +1,32 @@
+subscription ProposalsListener ($limit: Int = 7, $offset: Int = 0) {
+  proposals: proposal (limit: $limit, offset: $offset, order_by: {id: desc}) {
+    title
+    proposalId: id
+    status
+    description
+    submit_time
+    voting_start_time
+    voting_end_time
+    proposer_address
+    proposal_type
+  }
+}
+
+query Proposals ($limit: Int = 7, $offset: Int = 0) {
+  proposals: proposal (limit: $limit, offset: $offset, order_by: {id: desc}) {
+    title
+    proposalId: id
+    status
+    description
+    submit_time
+    voting_start_time
+    voting_end_time
+    proposer_address
+    proposal_type
+  }
+  total: proposal_aggregate {
+    aggregate {
+      count
+    }
+  }
+}

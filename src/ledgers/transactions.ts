@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
+import { MsgVote } from 'cosmjs-types/cosmos/gov/v1beta1/tx'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 
 import {
@@ -8,7 +9,8 @@ import {
   SigningStargateClient,
   coins,
   coin,
-  MsgDelegateEncodeObject
+  MsgDelegateEncodeObject,
+  MsgVoteEncodeObject
 } from 'cudosjs'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 
@@ -19,6 +21,7 @@ const TYPE_URLS = {
   msgSend: '/cosmos.bank.v1beta1.MsgSend',
   msgWithdraw: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
   msgSubmitProposal: '/cosmos.gov.v1beta1.MsgSubmitProposal',
+  msgVote: '/cosmos.gov.v1beta1.MsgVote',
   ClientStateType: '/ibc.lightclients.tendermint.v1.ClientState',
   proposalTypeCancelSoftwareUpgradeProposal:
     '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
@@ -181,4 +184,55 @@ export const claimRewards = async (
   const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
   return result
+}
+
+export const voteProposal = async (
+  voterAddress: string,
+  proposalId: number | undefined,
+  votingOption: number
+) => {
+  window.keplr.defaultOptions = {
+    sign: {
+      preferNoSetFee: true
+    }
+  }
+  const offlineSigner = window.getOfflineSigner(
+    import.meta.env.VITE_APP_CHAIN_ID
+  )
+
+  const client = await SigningStargateClient.connectWithSigner(
+    import.meta.env.VITE_APP_RPC,
+    offlineSigner
+  )
+
+  const msg = MsgVote.fromPartial({
+    proposalId,
+    voter: voterAddress,
+    option: votingOption
+  })
+
+  const msgAny: MsgVoteEncodeObject = {
+    typeUrl: '/cosmos.gov.v1beta1.MsgVote',
+    value: msg
+  }
+
+  const memo = 'Sent via CUDOS Dashboard'
+
+  const gasUsed = await client.simulate(voterAddress, [msgAny], memo)
+
+  const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+  const fee = calculateFee(gasLimit, gasPrice)
+
+  const result = await client.signAndBroadcast(
+    voterAddress,
+    [msgAny],
+    fee,
+    memo
+  )
+
+  return {
+    result,
+    gasFee: fee.amount[0].amount
+  }
 }

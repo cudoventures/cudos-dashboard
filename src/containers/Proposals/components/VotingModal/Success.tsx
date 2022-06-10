@@ -3,11 +3,12 @@ import {
   OpenInNewRounded as OpenInNewRoundedIcon
 } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/proposalsModal'
+import { initialModalState, ModalProps } from 'store/votingModal'
 
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import SuccessIcon from 'assets/vectors/success.svg'
+import { formatBigNum } from 'utils/projectUtils'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {
@@ -17,11 +18,29 @@ type SuccessProps = {
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
+  const { type, title, id, fee, hash } = useSelector(
+    (state: RootState) => state.votingModal.modal
+  )
 
   const handleClose = () => {
     handleModal({
       ...initialModalState
     })
+  }
+
+  const switchVoteOption = (voteOption: number | null | undefined) => {
+    switch (voteOption) {
+      case 1:
+        return 'Yes'
+      case 2:
+        return 'Abstain'
+      case 3:
+        return 'No'
+      case 4:
+        return 'No with Veto'
+      default:
+        return ''
+    }
   }
 
   return (
@@ -33,37 +52,33 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
           Success!
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          The proposal was successfully created!
+          You have voted successfully for this proposal!
         </Typography>
       </Box>
       <Box display="flex" flexDirection="column" gap={2}>
         <Box>
-          <Typography variant="body2">Your wallet address</Typography>
+          <Typography color="text.secondary" variant="body2">
+            Your wallet address
+          </Typography>
           <Typography variant="body2" color="primary.main">
             {address}
           </Typography>
         </Box>
         <Box>
-          <Typography variant="body2">Proposal Type</Typography>
           <Typography color="text.secondary" variant="body2">
-            Text Proposal
+            Proposal ID
           </Typography>
+          <Typography variant="body2">{`#${id} ${title}`}</Typography>
         </Box>
         <Box>
-          <Typography variant="body2">Tittle</Typography>
           <Typography color="text.secondary" variant="body2">
-            Voting guides update
+            Vote with
           </Typography>
-        </Box>
-        <Box>
-          <Typography variant="body2">Description</Typography>
-          <Typography color="text.secondary" variant="body2">
-            Lorem ipsum dolor sit amet, consectetiy...
-          </Typography>
+          <Typography variant="body2">{switchVoteOption(type)}</Typography>
         </Box>
         <Divider />
         <Box display="flex" alignItems="center" gap={1} padding="0.5rem 0">
-          <Typography variant="body2">Gas used</Typography>
+          <Typography variant="body2">Fee</Typography>
           <InfoRoundedIcon
             fontSize="small"
             sx={({ palette }) => ({ color: palette.primary.main })}
@@ -75,7 +90,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
             letterSpacing={1}
             sx={{ marginLeft: 'auto' }}
           >
-            0.00012 CUDOS
+            {formatBigNum(fee)}
           </Typography>
         </Box>
         <Divider />
@@ -94,7 +109,9 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               onClick={() =>
                 window
                   .open(
-                    `${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/`,
+                    `${
+                      import.meta.env.VITE_APP_EXPLORER_V2
+                    }/transactions/${hash}`,
                     '_blank'
                   )
                   ?.focus()
