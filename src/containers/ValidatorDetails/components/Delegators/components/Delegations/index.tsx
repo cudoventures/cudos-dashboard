@@ -2,7 +2,13 @@ import React from 'react'
 import * as R from 'ramda'
 import { usePagination } from 'hooks'
 import Table from 'components/Table'
-import { Typography, Stack, Box, CircularProgress } from '@mui/material'
+import {
+  Typography,
+  Stack,
+  Box,
+  CircularProgress,
+  Tooltip
+} from '@mui/material'
 import { formatNumber } from 'utils/format_token'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import NoData from '../NoData'
@@ -32,24 +38,27 @@ const Delegations: React.FC<DelegationsProps> = (props) => {
   const items = pageItems.map((item: DelegationType, idx: number) => ({
     idx: idx + 1,
     delegator: (
-      <Typography
-        color="primary.main"
-        fontWeight={700}
-        variant="body2"
-        sx={{ cursor: 'pointer' }}
-        onClick={() =>
-          window
-            .open(
-              `${import.meta.env.VITE_APP_EXPLORER_V2}/accounts/${
-                item.address
-              }`,
-              '_blank'
-            )
-            ?.focus()
-        }
-      >
-        {item.address}
-      </Typography>
+      <Tooltip title="View in explorer" placement="right">
+        <Typography
+          color="primary.main"
+          component="span"
+          fontWeight={700}
+          variant="body2"
+          sx={{ cursor: 'pointer' }}
+          onClick={() =>
+            window
+              .open(
+                `${import.meta.env.VITE_APP_EXPLORER_V2}/accounts/${
+                  item.address
+                }`,
+                '_blank'
+              )
+              ?.focus()
+          }
+        >
+          {item.address}
+        </Typography>
+      </Tooltip>
     ),
     amount: (
       <Stack
@@ -77,10 +86,10 @@ const Delegations: React.FC<DelegationsProps> = (props) => {
         <CircularProgress color="primary" variant="indeterminate" />
       </Box>
     )
-  } else if (!items.length) {
-    component = <NoData />
   } else {
-    component = (
+    component = !items.length ? (
+      <NoData />
+    ) : (
       <Table
         items={items}
         columns={delegationsColumns}
