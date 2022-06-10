@@ -27,3 +27,11 @@ export const CONDITIONS = {
   YELLOW: '#FF961B',
   RED: '#FC6A8A'
 }
+
+export const STATUSES = {
+  ACTIVE: '#65B48F',
+  JAILED: '#2460FA',
+  TOMBSTONED: '2460FA',
+  UNBONDING: '#E79720',
+  UNBONDED: '#E8E8E8'
+}

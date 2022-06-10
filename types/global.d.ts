@@ -16,6 +16,13 @@ declare module '@mui/material/styles' {
         yellow: string
         red: string
       }
+      statuses: {
+        active: string
+        jailed: string
+        tombstoned: string
+        unbonding: string
+        unbonded: string
+      }
     }
   }
   // allow configuration using `createTheme`
@@ -31,6 +38,13 @@ declare module '@mui/material/styles' {
         green?: string
         yellow?: string
         red?: string
+      }
+      statuses?: {
+        active?: string
+        jailed?: string
+        tombstoned?: string
+        unbonding?: string
+        unbonded?: string
       }
     }
   }
