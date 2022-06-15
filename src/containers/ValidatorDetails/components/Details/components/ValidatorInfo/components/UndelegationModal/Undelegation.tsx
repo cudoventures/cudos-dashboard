@@ -40,12 +40,15 @@ const gasPrice = GasPrice.fromString(
   `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
-type DelegationProps = {
+type UndelegationProps = {
   modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
 }
 
-const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
+const Undelegation: React.FC<UndelegationProps> = ({
+  modalProps,
+  handleModal
+}) => {
   const [delegated, setDelegated] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
@@ -415,4 +418,4 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   )
 }
 
-export default Delegation
+export default Undelegation

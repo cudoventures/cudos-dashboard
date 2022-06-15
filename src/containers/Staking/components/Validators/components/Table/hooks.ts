@@ -8,6 +8,7 @@ import { getValidatorCondition } from 'utils/get_validator_condition'
 import { formatToken } from 'utils/format_token'
 import { useValidatorsQuery, ValidatorsQuery } from 'graphql/types'
 import { StakingParams, SlashingParams } from 'models'
+import { updateValidatorDetails } from 'store/validatorDetails'
 
 export default () => {
   const dispatch = useDispatch()
@@ -18,6 +19,10 @@ export default () => {
   )
   const items = useSelector((state: RootState) => state.validator.items)
   const tab = useSelector((state: RootState) => state.validator.tab)
+
+  const modals = useSelector(
+    (state: RootState) => state.validatorDetails.modals
+  )
 
   const handleSetState = (stateChange: any) => {
     dispatch(updateValidators({ ...stateChange }))
@@ -191,7 +196,11 @@ export default () => {
   })
 
   const handleModal = (modalState: ModalProps) => {
-    dispatch(updateValidators({ modal: { ...modalState } }))
+    dispatch(
+      updateValidatorDetails({
+        modals: { ...modals, delegation: { ...modalState } }
+      })
+    )
   }
 
   return {

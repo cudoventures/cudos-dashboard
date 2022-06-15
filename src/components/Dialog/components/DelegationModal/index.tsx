@@ -1,9 +1,9 @@
 import { DelegationStatus, initialModalState } from 'store/validator'
 import Dialog from 'components/Dialog'
-import Loading from 'components/Dialog/components/Loading'
-import Failure from 'components/Dialog/components/Failure'
-import Delegation from 'components/Dialog/components/DelegationModal/Delegation'
-import Success from 'components/Dialog/components/DelegationModal/Success'
+import Delegation from './Delegation'
+import Success from './Success'
+import Loading from '../Loading'
+import Failure from '../Failure'
 import useModal from './hooks'
 
 const DelegationModal: React.FC = () => {

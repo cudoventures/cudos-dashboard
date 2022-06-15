@@ -35,12 +35,15 @@ const gasPrice = GasPrice.fromString(
   `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
-type DelegationProps = {
+type RedelegationProps = {
   modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
 }
 
-const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
+const Redelegation: React.FC<RedelegationProps> = ({
+  modalProps,
+  handleModal
+}) => {
   const [delegated, setDelegated] = useState<string>('')
   const [redelegationAddress, setRedelegationAddress] = useState<string>('')
   const { validator, amount, fee } = modalProps
@@ -104,7 +107,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         validatorSrcAddress: validator?.address,
         validatorDstAddress: redelegationAddress,
         amount: coin(
-          new BigNumber(amount || 0)
+          new BigNumber(ev.target.value || 0)
             .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
             .toString(10),
           CosmosNetworkConfig.CURRENCY_DENOM
@@ -238,39 +241,6 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                 size="small"
               />
             </Box>
-            {/* <Box>
-              <Typography variant="body2" fontWeight={700}>
-                Validator
-              </Typography>
-              <StyledTextField
-                variant="standard"
-                margin="dense"
-                fullWidth
-                disabled
-                value={validator?.address}
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    fontSize: '12px'
-                  },
-                  inputProps: {
-                    style: {
-                      padding: 0
-                    }
-                  },
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AvatarName
-                        name={validator?.name}
-                        imageUrl={validator?.imageUrl}
-                        address={validator?.address}
-                      />
-                    </InputAdornment>
-                  )
-                }}
-                size="small"
-              />
-            </Box> */}
             <Typography variant="body2" fontWeight={700}>
               Redelegate to
             </Typography>
@@ -436,4 +406,4 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   )
 }
 
-export default Delegation
+export default Redelegation

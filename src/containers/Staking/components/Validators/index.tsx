@@ -1,9 +1,9 @@
 import { Box } from '@mui/material'
 
+import DelegationModal from 'components/Dialog/components/DelegationModal'
 import Tabs from './components/Tabs'
 import ValidatorsTable from './components/Table'
 import ValidatorsCount from './components/Count'
-import DelegationModal from './components/DelegationModal'
 
 const Validators = () => {
   return (

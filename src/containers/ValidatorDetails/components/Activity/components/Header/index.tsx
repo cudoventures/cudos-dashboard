@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded'
 import { defaultMessages } from 'ledgers/utils'
+import { CancelRounded as CancelRoundedIcon } from '@mui/icons-material'
 
 type ActivityHeaderProps = {
   filterByType: (type: string) => Promise<void>
@@ -21,7 +22,7 @@ const SelectInput = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     borderRadius: '26px',
     position: 'relative',
-    backgroundColor: theme.palette.primary.main,
+    background: theme.palette.primary.main,
     border: 'none',
     minWidth: '100px',
     padding: '0.5rem 1rem',
@@ -35,15 +36,11 @@ const SelectInput = styled(InputBase)(({ theme }) => ({
         'linear-gradient(0deg, rgba(246, 249, 254, 0.4), rgba(246, 249, 254, 0.4)), #52A6F8'
     },
     '&:focus': {
-      backgroundColor: theme.palette.primary.main
+      background: theme.palette.primary.main
     },
     '&:active': {
-      backgroundColor: theme.palette.primary.main
+      background: theme.palette.primary.main
     }
-  },
-  '& .MuiInputLabel-root': {
-    color: 'red',
-    border: '1px solid red'
   }
 }))
 
@@ -76,6 +73,17 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
         Activity
       </Typography>
       <Stack direction="row" alignItems="center" gap={1} sx={{ minWidth: 120 }}>
+        {filter && (
+          <CancelRoundedIcon
+            sx={({ palette }) => ({
+              width: 20,
+              height: 'auto',
+              cursor: 'pointer',
+              color: palette.text.secondary
+            })}
+            onClick={() => filterByType('')}
+          />
+        )}
         <Typography variant="body2" color="text.secondary">
           Filter
         </Typography>
@@ -89,7 +97,6 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
             SelectDisplayProps={{
               defaultValue: ''
             }}
-            input={<SelectInput />}
             size="small"
             sx={{
               width: '250px'
@@ -100,6 +107,7 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
                 width: '250px'
               }
             }}
+            input={<SelectInput />}
           >
             {options.map((o) => (
               <MenuItem value={o.value} key={o.value}>

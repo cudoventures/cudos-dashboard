@@ -11,7 +11,7 @@ import Table from 'components/Table'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import { defaultMessages } from 'ledgers/utils'
 import numeral from 'numeral'
-import { columns, getTxBadge } from './utils'
+import { columns } from './utils'
 
 type ActivityTableProps = {
   loadNextPage: () => Promise<void>
@@ -39,7 +39,7 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
   const formattedItems = data.map((tx) => {
     const txType: string = tx.messages.items[0]['@type']
     const filter: string = tx.messages.items[0]['@type'].split('/').pop()
-    const txBadge = defaultMessages[txType]
+    const txBadge = defaultMessages[txType as keyof typeof defaultMessages]
 
     return {
       block: (
