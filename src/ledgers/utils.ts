@@ -2,7 +2,14 @@ const colors = {
   staking: '#3d5afe',
   bank: '#52A6F8',
   governance: '#E89518',
-  distribution: '#9646F9'
+  distribution: '#9646F9',
+  crisis: '',
+  ibc: '',
+  ibcTransfer: '',
+  slashing: '',
+  authz: '',
+  feegrant: '',
+  vesting: ''
 }
 
 // =====================================
