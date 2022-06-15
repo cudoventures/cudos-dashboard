@@ -1,21 +1,24 @@
 import { Box, Typography, Button, Avatar, Tooltip } from '@mui/material'
+import { ArrowUpwardRounded as ArrowUpwardRoundedIcon } from '@mui/icons-material'
 import Card from 'components/Card'
 import TestAvatar from 'assets/vectors/test-avatar-sm.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import { formatAddress } from 'utils/projectUtils'
-import moment from 'moment'
+import { formatAddress, formatDateTime } from 'utils/projectUtils'
 import { VotingStatus } from 'store/votingModal'
 import BigNumber from 'bignumber.js'
-import useModal from './components/VotingModal/hooks'
+import { DepositStatus } from 'store/depositModal'
+import useVotingModal from './components/VotingModal/hooks'
+import useDepositModal from './components/DepositModal/hooks'
 import { styles } from './styles'
 import { useProposals } from './hooks'
 
 const Proposal = () => {
   useProposals()
   const proposalState = useSelector((state: RootState) => state.proposals)
-  const { handleModal } = useModal()
+  const { handleModal: handleVotingModal } = useVotingModal()
+  const { handleModal: handleDepositModal } = useDepositModal()
 
   const handleExplorer = (address: string) => {
     window.open(
@@ -111,7 +114,7 @@ const Proposal = () => {
                     variant="contained"
                     color="primary"
                     onClick={() =>
-                      handleModal({
+                      handleVotingModal({
                         open: true,
                         status: VotingStatus.VOTE,
                         id: proposal.id,
@@ -122,6 +125,33 @@ const Proposal = () => {
                     sx={styles.cardActionButton}
                   >
                     Vote Now
+                  </Button>
+                </Box>
+              ) : null}
+              {proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? (
+                <Box>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={
+                      <ArrowUpwardRoundedIcon
+                        fontSize="small"
+                        sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
+                      />
+                    }
+                    onClick={() =>
+                      handleDepositModal({
+                        open: true,
+                        status: DepositStatus.DEPOSIT,
+                        id: proposal.id,
+                        title: proposal.title,
+                        amount: '',
+                        fee: new BigNumber(0)
+                      })
+                    }
+                    sx={styles.cardActionButton}
+                  >
+                    Deposit
                   </Button>
                 </Box>
               ) : null}
@@ -179,21 +209,23 @@ const Proposal = () => {
                     Submit Time
                   </Typography>
                   <Typography color="text.secondary" sx={styles.timeStyle}>
-                    {moment(proposal.submitTime).format('lll')}
+                    {formatDateTime(proposal.submitTime)}
                   </Typography>
                 </Box>
-                <Box sx={{ flex: '0 1 20%' }}>
-                  <Typography
-                    sx={{
-                      fontSize: '14px'
-                    }}
-                  >
-                    Voting End Time
-                  </Typography>
-                  <Typography color="text.secondary" sx={styles.timeStyle}>
-                    {moment(proposal.votingEndTime).format('lll')}
-                  </Typography>
-                </Box>
+                {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
+                  <Box sx={{ flex: '0 1 20%' }}>
+                    <Typography
+                      sx={{
+                        fontSize: '14px'
+                      }}
+                    >
+                      Voting End Time
+                    </Typography>
+                    <Typography color="text.secondary" sx={styles.timeStyle}>
+                      {formatDateTime(proposal.votingEndTime)}
+                    </Typography>
+                  </Box>
+                ) : null}
                 <Box>
                   <Typography
                     sx={{

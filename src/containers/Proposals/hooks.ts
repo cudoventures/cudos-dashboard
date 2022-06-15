@@ -42,10 +42,7 @@ export const useProposals = () => {
       offset: 0
     },
     onSubscriptionData: (data) => {
-      const newItems = R.uniq([
-        ...state.items,
-        ...formatProposals(data.subscriptionData)
-      ])
+      const newItems = R.uniq([...formatProposals(data.subscriptionData)])
       newItems.sort((a, b) => b.id - a.id)
 
       handleSetState({
