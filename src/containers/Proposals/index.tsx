@@ -6,6 +6,7 @@ import { RootState } from 'store'
 import { useSelector } from 'react-redux'
 import VotingModal from './components/VotingModal'
 import ProposalModal from './components/ProposalModal'
+import DepositModal from './components/DepositModal'
 import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
 
@@ -81,6 +82,7 @@ const Proposals = () => {
       </Card>
       <ProposalModal />
       <VotingModal />
+      <DepositModal />
     </>
   )
 }

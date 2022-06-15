@@ -2,6 +2,7 @@
 import copy from 'copy-to-clipboard'
 import { StargateClient } from 'cudosjs'
 import BigNumber from 'bignumber.js'
+import moment from 'moment'
 import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
 
 export const copyToClipboard = (value: string): void => {
@@ -56,4 +57,10 @@ export const formatBigNum = (number: BigNumber): string => {
   return new BigNumber(number)
     .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
     .toString(10)
+}
+
+export const formatDateTime = (dateTimeString: string): string => {
+  const localTimeString = moment.utc(dateTimeString).toDate().toLocaleString()
+  const formattedTime = moment(localTimeString).format('DD MMM, YYYY, LTS')
+  return formattedTime
 }
