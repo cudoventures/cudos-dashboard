@@ -17,7 +17,8 @@ const ValidatorAvatar: React.FC<AvatarProps> = ({ overview }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 4
+        gap: 4,
+        textAlign: 'center'
       }}
     >
       <Box sx={{ width: '120px', height: '120px' }}>

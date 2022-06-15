@@ -1,7 +1,17 @@
-import { Box, Typography, Button, Stack, Chip } from '@mui/material'
+import { useState } from 'react'
+import {
+  Box,
+  Typography,
+  Button,
+  Stack,
+  Chip,
+  Collapse,
+  Tooltip
+} from '@mui/material'
 import {
   OpenInNewRounded as OpenInNewRoundedIcon,
-  ArrowUpwardRounded as ArrowUpwardRoundedIcon
+  ArrowUpwardRounded as ArrowUpwardRoundedIcon,
+  KeyboardArrowDownRounded as KeyboardArrowDownRoundedIcon
 } from '@mui/icons-material'
 
 import CopyIcon from 'assets/vectors/copy-icon.svg'
@@ -12,8 +22,17 @@ import Card from 'components/Card'
 import numeral from 'numeral'
 import { getValidatorConditionClass } from 'utils/get_validator_condition'
 import { copyToClipboard } from 'utils/projectUtils'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'store'
+import { updateNotifications } from 'store/notifications'
 import { OverviewType, StatusType } from '../../types'
 import { getValidatorStatus, getCondition } from './utils'
+import DelegationModal from './components/DelegationModal'
+import useDelegationModal from './components/DelegationModal/hooks'
+import RedelegationModal from './components/RedelegationModal'
+import useRedelegationModal from './components/RedelegationModal/hooks'
+import UndelegationModal from './components/UndelegationModal'
+import useUndelegationModal from './components/UndelegationModal/hooks'
 
 type InfoProps = {
   overview: OverviewType
@@ -21,6 +40,13 @@ type InfoProps = {
 }
 
 const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
+  const [openActionsDropdown, setOpenActionsDropdown] = useState<boolean>(false)
+  const info = useSelector((state: RootState) => state.notifications.info)
+  const dispatch = useDispatch()
+  const { handleModal: handleDelegationModal } = useDelegationModal()
+  const { handleModal: handleRedelegationModal } = useRedelegationModal()
+  const { handleModal: handleUndelegationModal } = useUndelegationModal()
+
   const statusTheme = getValidatorStatus(
     status.status,
     status.jailed,
@@ -32,6 +58,12 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
 
   const handleCopy = (value: string) => {
     copyToClipboard(value)
+
+    dispatch(updateNotifications({ info: 'Copied' }))
+
+    setTimeout(() => {
+      dispatch(updateNotifications({ info: '' }))
+    }, 5000)
   }
 
   return (
@@ -63,7 +95,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/account/${
+                  `${import.meta.env.VITE_APP_EXPLORER_V2}/validators/${
                     overview.operatorAddress
                   }`,
                   '_blank'
@@ -106,9 +138,11 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
                   ending: 4
                 })}
               </Typography>
-              <Box onClick={() => handleCopy(overview.selfDelegateAddress)}>
-                <img src={CopyIcon} alt="Copy" width="14px" />
-              </Box>
+              <Tooltip title={info || 'Copy'} placement="bottom">
+                <Box onClick={() => handleCopy(overview.selfDelegateAddress)}>
+                  <img src={CopyIcon} alt="Copy" width="14px" />
+                </Box>
+              </Tooltip>
             </Stack>
           </Stack>
           <Stack gap={0.5}>
@@ -137,24 +171,160 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
                   ending: 4
                 })}
               </Typography>
-              <Box onClick={() => handleCopy(overview.operatorAddress)}>
-                <img src={CopyIcon} alt="Copy" width="14px" />
-              </Box>
+              <Tooltip title={info || 'Copy'} placement="bottom">
+                <Box onClick={() => handleCopy(overview.operatorAddress)}>
+                  <img src={CopyIcon} alt="Copy" width="14px" />
+                </Box>
+              </Tooltip>
             </Stack>
           </Stack>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={
-              <ArrowUpwardRoundedIcon
-                fontSize="small"
-                sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
-              />
-            }
-            sx={{ marginLeft: 'auto', fontWeight: 700, letterSpacing: 1 }}
+          <Box
+            sx={{
+              position: 'relative',
+              marginLeft: 'auto',
+              width: '200px'
+            }}
+            onMouseLeave={() => setOpenActionsDropdown(false)}
           >
-            Delegate
-          </Button>
+            <Button
+              variant="contained"
+              color={openActionsDropdown ? 'secondary' : 'primary'}
+              fullWidth
+              endIcon={
+                <KeyboardArrowDownRoundedIcon
+                  fontSize="small"
+                  sx={{
+                    transition: 'all 0.5s',
+                    transform: openActionsDropdown
+                      ? `rotate3d(1, 0, 0, 0.5turn)`
+                      : null
+                  }}
+                />
+              }
+              sx={{
+                fontWeight: 700,
+                letterSpacing: 1,
+                justifyContent: 'space-between',
+                zIndex: 3
+              }}
+              onMouseEnter={() => setOpenActionsDropdown(!openActionsDropdown)}
+            >
+              Actions
+            </Button>
+            <Collapse
+              sx={({ custom }) => ({
+                position: 'absolute',
+                top: '23px',
+                width: '100%',
+                background: custom.backgrounds.light,
+                fontSize: '14px',
+                borderRadius: '0px 0px 20px 20px',
+                boxShadow: '2px 10px 20px rgba(2, 6, 20, 0.6)',
+                zIndex: 2
+              })}
+              in={openActionsDropdown}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 1,
+                  marginTop: '1rem',
+                  padding: '1rem'
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{ fontWeight: 700 }}
+                  startIcon={
+                    <ArrowUpwardRoundedIcon
+                      fontSize="small"
+                      sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
+                    />
+                  }
+                  onClick={() =>
+                    handleDelegationModal({
+                      open: true,
+                      validator: {
+                        name: overview.moniker,
+                        imageUrl: overview.avatarUrl,
+                        address: overview.operatorAddress
+                      },
+                      status: null,
+                      amount: null,
+                      fee: '',
+                      gasUsed: 0,
+                      txHash: ''
+                    })
+                  }
+                >
+                  Delegate
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{ fontWeight: 700 }}
+                  startIcon={
+                    <ArrowUpwardRoundedIcon
+                      fontSize="small"
+                      sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
+                    />
+                  }
+                  onClick={() =>
+                    handleRedelegationModal({
+                      open: true,
+                      validator: {
+                        name: overview.moniker,
+                        imageUrl: overview.avatarUrl,
+                        address: overview.operatorAddress
+                      },
+                      status: null,
+                      amount: null,
+                      fee: '',
+                      gasUsed: 0,
+                      txHash: ''
+                    })
+                  }
+                >
+                  Redelegate
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{ fontWeight: 700 }}
+                  startIcon={
+                    <ArrowUpwardRoundedIcon
+                      fontSize="small"
+                      sx={{ transform: 'rotate3d(0, 0, 1, 0.625turn)' }}
+                    />
+                  }
+                  onClick={() =>
+                    handleUndelegationModal({
+                      open: true,
+                      validator: {
+                        name: overview.moniker,
+                        imageUrl: overview.avatarUrl,
+                        address: overview.operatorAddress
+                      },
+                      status: null,
+                      amount: null,
+                      fee: '',
+                      gasUsed: 0,
+                      txHash: ''
+                    })
+                  }
+                >
+                  Undelegate
+                </Button>
+              </Box>
+            </Collapse>
+          </Box>
         </Box>
       </Card>
       <Card
@@ -243,6 +413,9 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
           </Typography>
         </Stack>
       </Card>
+      <DelegationModal />
+      <UndelegationModal />
+      <RedelegationModal />
     </Box>
   )
 }

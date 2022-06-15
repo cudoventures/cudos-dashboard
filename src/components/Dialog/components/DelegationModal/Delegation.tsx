@@ -33,7 +33,7 @@ import {
   StyledTextField,
   SummaryContainer,
   CancelRoundedIcon
-} from './styles'
+} from '../styles'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(

@@ -10,7 +10,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       flexDirection="column"
       sx={{
         paddingLeft: '2rem',
-        height: '100vh'
+        height: '100vh',
+        maxWidth: '1356px',
+        margin: 'auto'
       }}
     >
       <Header />
