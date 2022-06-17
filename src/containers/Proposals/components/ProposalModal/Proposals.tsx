@@ -1,5 +1,5 @@
 import { Box, Button, InputAdornment, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import {
@@ -11,6 +11,9 @@ import {
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 
 import Dropdown from 'components/Dropdown'
+import { createProposal } from 'ledgers/transactions'
+import _ from 'lodash'
+import BigNumber from 'bignumber.js'
 import {
   CancelRoundedIcon,
   InputContainer,
@@ -26,7 +29,24 @@ type ProposalProps = {
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
+  const { proposalData } = useSelector(
+    (state: RootState) => state.proposalsModal.modal
+  )
   const [proposal, setProposal] = useState<string>('1')
+  const [title, setTitle] = useState<string>('')
+
+  const delayInput = _.debounce(
+    (value) =>
+      handleModal({
+        ...modalProps,
+        proposalData: {
+          ...proposalData,
+          title: value,
+          type: Number(proposal)
+        }
+      }),
+    1000
+  )
 
   const handleClose = () => {
     handleModal({
@@ -37,6 +57,45 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const handleProposalType = (proposalValue: string) => {
     setProposal(proposalValue)
   }
+
+  const handleProposalSubmit = async (proposerAddress: string) => {
+    try {
+      handleModal({
+        ...modalProps,
+        open: true,
+        status: ProposalStatus.LOADING,
+        proposalData: {
+          ...proposalData,
+          type: Number(proposal)
+        }
+      })
+      const { result, gasFee } = await createProposal(
+        proposalData,
+        proposerAddress
+      )
+      handleModal({
+        ...modalProps,
+        open: true,
+        status: ProposalStatus.SUCCESS,
+        fee: new BigNumber(gasFee),
+        hash: result.transactionHash
+      })
+    } catch (error) {
+      console.log('ERROR', error)
+
+      handleModal({
+        ...modalProps,
+        open: true,
+        status: ProposalStatus.FAILURE
+      })
+    }
+  }
+
+  useEffect(() => {
+    delayInput(title)
+
+    return () => delayInput.cancel()
+  }, [title, proposal])
 
   return (
     <ModalContainer>
@@ -115,6 +174,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
               placeholder="e.g. Voting guides update"
               disableUnderline
               fullWidth
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </Box>
         </Box>
@@ -136,9 +197,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() =>
-            handleModal({ open: true, status: ProposalStatus.SUCCESS })
-          }
+          onClick={() => handleProposalSubmit(address)}
           sx={({ palette }) => ({
             width: '225px',
             height: '50px',

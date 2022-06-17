@@ -28,7 +28,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['proposals', 'votingModal']
+  blacklist: ['proposals', 'votingModal', 'proposalModal']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

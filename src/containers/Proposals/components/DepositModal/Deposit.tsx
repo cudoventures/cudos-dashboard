@@ -167,7 +167,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
                   variant="contained"
                   color="primary"
                   size="small"
-                  disabled={balance.eq(new BigNumber('0'))}
+                  disabled={balance === new BigNumber('0')}
                   sx={() => ({
                     padding: '4px 15px',
                     fontWeight: 600

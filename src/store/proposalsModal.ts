@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 
 export enum ProposalStatus {
   CREATE = 'CREATE',
@@ -20,6 +21,30 @@ export const ProposalTypes = [
 export type ModalProps = {
   open: boolean
   status: ProposalStatus | null
+  fee: BigNumber
+  hash?: string
+  proposalData: {
+    type?: number
+    title?: string
+    description?: string
+    note?: string
+    depositAmount?: number
+    planName?: string
+    planHeight?: string
+    planInfo?: string
+    changeSubspace?: string
+    changeKey?: string
+    changeValue?: string
+    poolSpendRecipient?: string
+    poolSpendAmount?: string
+    subjectClientId?: string
+    substituteClientId?: string
+    ibcUpgradeFile?: any
+    ibcUpgradeFileName?: string
+    upgradeName?: string
+    upgradeHeight?: string
+    upgradeInfo?: string
+  }
 }
 
 export type ProposalsState = {
@@ -28,7 +53,10 @@ export type ProposalsState = {
 
 export const initialModalState = {
   open: false,
-  status: null
+  status: null,
+  fee: new BigNumber(0),
+  hash: '',
+  proposalData: {}
 }
 
 const initialState: ProposalsState = {

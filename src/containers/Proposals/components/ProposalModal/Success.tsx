@@ -8,6 +8,7 @@ import { initialModalState, ModalProps } from 'store/proposalsModal'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import SuccessIcon from 'assets/vectors/success.svg'
+import { formatBigNum } from 'utils/projectUtils'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {
@@ -18,10 +19,35 @@ type SuccessProps = {
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
 
+  const { fee, hash, proposalData } = useSelector(
+    (state: RootState) => state.proposalsModal.modal
+  )
+
   const handleClose = () => {
     handleModal({
       ...initialModalState
     })
+  }
+
+  const switchProposalType = (proposalOption: number | null | undefined) => {
+    switch (proposalOption) {
+      case 1:
+        return 'Text Proposal'
+      case 2:
+        return 'Software update proposal'
+      case 3:
+        return 'Cancel software update proposal'
+      case 4:
+        return 'Parameter change proposal'
+      case 5:
+        return 'Community pool spend proposal'
+      case 6:
+        return 'Update client proposal'
+      case 7:
+        return 'IBC upgrade proposal'
+      default:
+        return ''
+    }
   }
 
   return (
@@ -46,19 +72,19 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
         <Box>
           <Typography variant="body2">Proposal Type</Typography>
           <Typography color="text.secondary" variant="body2">
-            Text Proposal
+            {switchProposalType(proposalData.type)}
           </Typography>
         </Box>
         <Box>
           <Typography variant="body2">Tittle</Typography>
           <Typography color="text.secondary" variant="body2">
-            Voting guides update
+            {proposalData.title}
           </Typography>
         </Box>
         <Box>
           <Typography variant="body2">Description</Typography>
           <Typography color="text.secondary" variant="body2">
-            Lorem ipsum dolor sit amet, consectetiy...
+            {proposalData.description}
           </Typography>
         </Box>
         <Divider />
@@ -75,7 +101,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
             letterSpacing={1}
             sx={{ marginLeft: 'auto' }}
           >
-            0.00012 CUDOS
+            {formatBigNum(fee)}
           </Typography>
         </Box>
         <Divider />
@@ -94,7 +120,9 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               onClick={() =>
                 window
                   .open(
-                    `${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/`,
+                    `${
+                      import.meta.env.VITE_APP_EXPLORER_V2
+                    }/transactions/${hash}`,
                     '_blank'
                   )
                   ?.focus()
