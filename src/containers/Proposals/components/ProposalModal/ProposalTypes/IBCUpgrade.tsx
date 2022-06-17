@@ -151,11 +151,6 @@ const IBCUpgrade = () => {
           </Button>
         </Box>
       </Box>
-      {proposalData.ibcUpgradeFile ? (
-        <Box>
-          <Typography>{proposalData.ibcUpgradeFile.lastModified}</Typography>
-        </Box>
-      ) : null}
       <Box>
         <Typography
           sx={{ marginBottom: '10px' }}
