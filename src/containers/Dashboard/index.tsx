@@ -8,8 +8,20 @@ import { styles } from './styles'
 
 const Dashboard = () => {
   return (
-    <>
-      <Box sx={styles.stickyHeader}>
+    <Box display="flex" flexDirection="column" gap={2}>
+      <Box
+        sx={({ custom }) => ({
+          background: custom.backgrounds.dark,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+          position: 'sticky',
+          top: 0,
+          overflow: 'hidden',
+          zIndex: 4,
+          paddingBottom: '0.5rem'
+        })}
+      >
         <Typography sx={styles.headerStyle}>Dashboard</Typography>
         <Typography
           sx={styles.subheaderStyle}
@@ -19,21 +31,21 @@ const Dashboard = () => {
           Here is your CUDOS Wallet information
         </Typography>
       </Box>
-      <Box sx={{ display: 'flex', marginTop: '90px' }}>
-        <Box sx={{ width: '75%' }}>
-          <Box sx={{ display: 'flex' }}>
+      <Box display="flex" gap={2}>
+        <Box flex={5}>
+          <Box display="flex" gap={2}>
             <WalletInformation />
             <WalletBalance />
           </Box>
-          <Box sx={{ maxWidth: '100%', marginRight: '20px' }}>
+          <Box>
             <LatestActivity />
           </Box>
         </Box>
-        <Box sx={{ width: '30%' }}>
+        <Box flex={2}>
           <NetworkStatistics />
         </Box>
       </Box>
-    </>
+    </Box>
   )
 }
 

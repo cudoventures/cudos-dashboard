@@ -76,13 +76,11 @@ export const styles: SxMap = {
   },
   walletInfoCard: {
     minHeight: '319px',
-    width: '50%',
-    marginRight: '20px'
+    width: '50%'
   },
   walletBalanceCard: {
     minHeight: '319px',
-    width: '50%',
-    marginRight: '20px'
+    width: '50%'
   },
   editButton: {
     position: 'absolute',
@@ -91,10 +89,11 @@ export const styles: SxMap = {
   latestActivityCard: {
     display: 'flex',
     flexDirection: 'column',
-    minHeight: '347px',
+    flexGrow: 1,
+    minHeight: '530px',
     marginTop: '20px',
-    maxHeight: '250px',
-    overflow: 'hidden',
+    maxHeight: '530px',
+    overflow: 'auto',
     position: 'relative'
   },
   networkStatisticsCard: {
