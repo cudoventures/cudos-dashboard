@@ -18,6 +18,7 @@ type TableProps = {
   handleSort?: (key: string) => void
   sortDirection?: 'desc' | 'asc'
   pagination?: any
+  handleScroll?: (ev: React.UIEvent<HTMLDivElement>) => void
 }
 
 const Table: React.FC<TableProps> = ({
@@ -26,7 +27,8 @@ const Table: React.FC<TableProps> = ({
   sortKey,
   handleSort,
   sortDirection,
-  pagination
+  pagination,
+  handleScroll = () => {}
 }) => {
   return (
     <>
@@ -96,7 +98,10 @@ const Table: React.FC<TableProps> = ({
           </TableRow>
         </TableHead>
       </MuiTable>
-      <Box sx={{ height: '100%', overflow: 'auto', width: '100%' }}>
+      <Box
+        sx={{ height: '100%', overflow: 'auto', width: '100%' }}
+        onScroll={handleScroll}
+      >
         <MuiTable sx={{ tableLayout: 'fixed' }}>
           <TableBody>
             {items.map((item: any) => (

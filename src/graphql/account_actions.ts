@@ -100,3 +100,19 @@ export const AccountUndelegationsDocument = /* GraphQL */ `
     }
   }
 `
+
+export const AccountValidatorDelegationsDocument = /* GraphQL */ `
+  query AccountValidatorDelegations(
+    $address: String!
+    $validator_address: String!
+  ) {
+    delegation(
+      where: {
+        delegator_address: { _eq: $address }
+        validator_address: { _eq: $validator_address }
+      }
+    ) {
+      amount
+    }
+  }
+`

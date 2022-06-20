@@ -51,7 +51,6 @@ const Statistics = () => {
               >
                 {stat.type}
               </Typography>
-              <InfoRoundedIcon fontSize="inherit" color="primary" />
             </Stack>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>{stat.cudos}</Typography>

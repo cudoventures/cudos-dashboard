@@ -1,20 +1,14 @@
 import { Column } from 'components/Table/types'
 
-const columns: Column[] = [
+export const columns: Column[] = [
   {
-    key: 'idx',
-    label: '#',
-    width: 70,
-    colSpan: 2
+    key: 'block',
+    label: 'Block Height',
+    width: 150
   },
   {
     key: 'txHash',
     label: 'Transaction Hash'
-  },
-  {
-    key: 'activity',
-    label: 'Activity',
-    sort: true
   },
   {
     key: 'action',
@@ -22,8 +16,7 @@ const columns: Column[] = [
   },
   {
     key: 'date',
-    label: 'Date'
+    label: 'Date',
+    width: 250
   }
 ]
-
-export default columns

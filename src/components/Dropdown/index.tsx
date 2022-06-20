@@ -12,7 +12,7 @@ export type DropdownProps = Array<DropdownState>
 
 export type DropdownState = {
   value: string
-  label: string
+  label: any
 }
 
 const Dropdown = ({
