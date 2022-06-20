@@ -59,11 +59,11 @@ const Undelegation: React.FC<UndelegationProps> = ({
       const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
       const walletBalance = await client.getDelegation(
         address,
-        validator?.address
+        validator?.address || ''
       )
 
       setDelegated(
-        new BigNumber(walletBalance.amount)
+        new BigNumber(walletBalance?.amount || 0)
           .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
           .toString(10)
       )
