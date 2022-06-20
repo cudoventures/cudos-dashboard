@@ -2,8 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
-  ArrowCircleRightRounded as ArrowCircleRightRoundedIcon,
-  InfoRounded as InfoRoundedIcon
+  ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgBeginRedelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import { coin, GasPrice, SigningStargateClient, StargateClient } from 'cudosjs'
@@ -393,9 +392,6 @@ const Redelegation: React.FC<RedelegationProps> = ({
                 <Typography color="text.secondary" variant="body2">
                   Estimated Transaction fee
                 </Typography>
-                {/* <InfoRoundedIcon
-                  sx={{ fontSize: '16px', color: 'primary.main' }}
-                /> */}
               </Stack>
               <Typography variant="body2">{fee} CUDOS</Typography>
             </Box>

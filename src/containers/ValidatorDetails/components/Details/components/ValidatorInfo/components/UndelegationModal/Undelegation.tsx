@@ -2,8 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
-  ArrowCircleRightRounded as ArrowCircleRightRoundedIcon,
-  InfoRounded as InfoRoundedIcon
+  ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import {

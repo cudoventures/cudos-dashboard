@@ -1,5 +1,4 @@
 import { Box, Stack, Typography } from '@mui/material'
-import { InfoRounded as InfoRoundedIcon } from '@mui/icons-material'
 import Card from 'components/Card'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
