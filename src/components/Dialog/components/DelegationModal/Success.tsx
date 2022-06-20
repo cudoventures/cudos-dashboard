@@ -1,11 +1,11 @@
 import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon,
-  InfoRounded as InfoRoundedIcon,
   OpenInNewRounded as OpenInNewRoundedIcon
 } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
 import { initialModalState, ModalProps } from 'store/validator'
 
+import numeral from 'numeral'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
@@ -18,7 +18,7 @@ type SuccessProps = {
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { validator, amount, gasUsed, txHash } = modalProps
+  const { validator, amount, gasUsed, txHash, fee } = modalProps
 
   const { address } = useSelector(({ profile }: RootState) => profile)
 
@@ -41,8 +41,8 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
             Transaction was successfully executed!
           </Typography>
         </Box>
-        <Box display="flex" flexDirection="column" gap={2}>
-          <Box
+        <Box display="flex" flexDirection="column" gap={2} width="80%">
+          {/* <Box
             display="flex"
             gap={2}
             alignItems="center"
@@ -77,19 +77,15 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               </Typography>
             </Box>
           </Box>
-          <Box>
+          <Box width="250px">
             <Typography color="text.secondary" variant="body2">
               Amount
             </Typography>
             <Typography variant="body2">{amount} CUDOS</Typography>
           </Box>
-          <Divider />
-          <Box display="flex" alignItems="center" gap={1} padding="0.5rem 0">
-            <Typography variant="body2">Gas used</Typography>
-            <InfoRoundedIcon
-              fontSize="small"
-              sx={({ palette }) => ({ color: palette.primary.main })}
-            />
+          <Divider /> */}
+          <Box display="flex" alignItems="center" padding="0.5rem 0">
+            <Typography variant="body2">Fee</Typography>
             <Typography
               variant="body2"
               color="primary.main"
@@ -97,7 +93,20 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               letterSpacing={1}
               sx={{ marginLeft: 'auto' }}
             >
-              {gasUsed} CUDOS
+              {fee} CUDOS
+            </Typography>
+          </Box>
+          <Divider />
+          <Box display="flex" alignItems="center" padding="0.5rem 0">
+            <Typography variant="body2">Gas used</Typography>
+            <Typography
+              variant="body2"
+              color="primary.main"
+              fontWeight={700}
+              letterSpacing={1}
+              sx={{ marginLeft: 'auto' }}
+            >
+              {numeral(gasUsed).format('0,0')}
             </Typography>
           </Box>
           <Divider />

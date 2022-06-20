@@ -369,7 +369,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                 From
               </Typography>
               <Typography variant="body2">
-                {getMiddleEllipsis(address, {
+                {getMiddleEllipsis(validator?.address, {
                   beginning: 12,
                   ending: 4
                 })}
@@ -386,7 +386,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                 To
               </Typography>
               <Typography variant="body2">
-                {getMiddleEllipsis(validator?.address, {
+                {getMiddleEllipsis(address, {
                   beginning: 12,
                   ending: 4
                 })}
@@ -403,13 +403,10 @@ const Undelegation: React.FC<UndelegationProps> = ({
             <Box>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography color="text.secondary" variant="body2">
-                  Estimated Gas fee
+                  Estimated Transaction fee
                 </Typography>
-                <InfoRoundedIcon
-                  sx={{ fontSize: '16px', color: 'primary.main' }}
-                />
               </Stack>
-              <Typography variant="body2">{fee}</Typography>
+              <Typography variant="body2">{fee} CUDOS</Typography>
             </Box>
           </Box>
         </SummaryContainer>
