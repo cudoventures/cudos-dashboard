@@ -9,9 +9,9 @@ import {
   styled,
   Typography
 } from '@mui/material'
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded'
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
 import { defaultMessages } from 'ledgers/utils'
-import { CancelRounded as CancelRoundedIcon } from '@mui/icons-material'
+import Filter from 'assets/vectors/filter.svg?component'
 
 type ActivityHeaderProps = {
   filterByType: (type: string) => Promise<void>
@@ -19,28 +19,18 @@ type ActivityHeaderProps = {
 }
 
 const SelectInput = styled(InputBase)(({ theme }) => ({
+  background: theme.custom.backgrounds.light,
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 15px',
   '& .MuiInputBase-input': {
-    borderRadius: '26px',
+    borderRadius: '5px',
     position: 'relative',
-    background: theme.palette.primary.main,
+    background: theme.custom.backgrounds.light,
     border: 'none',
     minWidth: '100px',
     padding: '0.5rem 1rem',
-    textTransform: 'none',
-    '&:hover': {
-      background:
-        'linear-gradient(0deg, rgba(246, 249, 254, 0.2), rgba(246, 249, 254, 0.2)), #52A6F8'
-    },
-    '&:click': {
-      background:
-        'linear-gradient(0deg, rgba(246, 249, 254, 0.4), rgba(246, 249, 254, 0.4)), #52A6F8'
-    },
-    '&:focus': {
-      background: theme.palette.primary.main
-    },
-    '&:active': {
-      background: theme.palette.primary.main
-    }
+    textTransform: 'none'
   }
 }))
 
@@ -49,7 +39,7 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
   filter = ''
 }) => {
   const options = [
-    { value: '', label: '(choose filter)' },
+    { value: '', label: 'Show All' },
     ...Object.entries(defaultMessages).map(([key, value]: [string, any]) => ({
       value: key.split('/').pop(),
       label: value.displayName
@@ -72,25 +62,25 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
       >
         Activity
       </Typography>
-      <Stack direction="row" alignItems="center" gap={1} sx={{ minWidth: 120 }}>
+      <Stack direction="row" alignItems="center" gap={2} sx={{ minWidth: 120 }}>
         {filter && (
-          <CancelRoundedIcon
-            sx={({ palette }) => ({
-              width: 20,
-              height: 'auto',
-              cursor: 'pointer',
-              color: palette.text.secondary
-            })}
+          <Typography
+            variant="body2"
             onClick={() => filterByType('')}
-          />
+            sx={({ palette }) => ({
+              cursor: 'pointer',
+              '&:hover': {
+                color: palette.primary.main
+              }
+            })}
+          >
+            Clear
+          </Typography>
         )}
-        <Typography variant="body2" color="text.secondary">
-          Filter
-        </Typography>
         <FormControl>
           <Select
             fullWidth
-            IconComponent={ArrowDropDownRoundedIcon}
+            IconComponent={KeyboardArrowDownRoundedIcon}
             value={filter}
             onChange={handleSelect}
             displayEmpty
@@ -99,7 +89,10 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
             }}
             size="small"
             sx={{
-              width: '250px'
+              width: '250px',
+              borderRadius: '5px',
+              display: 'flex',
+              alignItems: 'center'
             }}
             MenuProps={{
               sx: {
@@ -107,7 +100,21 @@ const ActivityHeader: React.FC<ActivityHeaderProps> = ({
                 width: '250px'
               }
             }}
-            input={<SelectInput />}
+            input={
+              <SelectInput
+                startAdornment={
+                  <Stack direction="row" alignItems="center" gap="15px">
+                    <Filter />
+                    <Box
+                      sx={({ palette }) => ({
+                        height: '18px',
+                        border: `1px solid ${palette.text.secondary}`
+                      })}
+                    />
+                  </Stack>
+                }
+              />
+            }
           >
             {options.map((o) => (
               <MenuItem value={o.value} key={o.value}>
