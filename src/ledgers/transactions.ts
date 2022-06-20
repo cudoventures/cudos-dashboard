@@ -12,7 +12,11 @@ import {
   MsgDeposit,
   MsgSubmitProposal
 } from 'cosmjs-types/cosmos/gov/v1beta1/tx'
-import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
+import {
+  MsgDelegate,
+  MsgUndelegate,
+  MsgBeginRedelegate
+} from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 
 import {
   DeliverTxResponse,
@@ -23,34 +27,13 @@ import {
   MsgDelegateEncodeObject,
   MsgVoteEncodeObject,
   MsgDepositEncodeObject,
-  MsgSubmitProposalEncodeObject
+  MsgSubmitProposalEncodeObject,
+  MsgUndelegateEncodeObject
 } from 'cudosjs'
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
 import { ClientUpdateProposal, UpgradeProposal } from './ibc-go/codec/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
-
-const TYPE_URLS = {
-  msgDelegate: '/cosmos.staking.v1beta1.MsgDelegate',
-  msgUndelegate: '/cosmos.staking.v1beta1.MsgUndelegate',
-  msgRedelegate: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
-  msgSend: '/cosmos.bank.v1beta1.MsgSend',
-  msgWithdraw: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-  msgSubmitProposal: '/cosmos.gov.v1beta1.MsgSubmitProposal',
-  msgVote: '/cosmos.gov.v1beta1.MsgVote',
-  ClientStateType: '/ibc.lightclients.tendermint.v1.ClientState',
-  proposalTypeCancelSoftwareUpgradeProposal:
-    '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal',
-  proposalTypeSoftwareUpgradeProposal:
-    '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal',
-  proposalTypeTextProposal: '/cosmos.gov.v1beta1.TextProposal',
-  proposalTypeParameterChangeProposal:
-    '/cosmos.params.v1beta1.ParameterChangeProposal',
-  proposalTypeCommunityPoolSpendProposal:
-    '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal',
-  proposalTypeClientUpdateProposal: '/ibc.core.client.v1.ClientUpdateProposal',
-  proposalTypeIbcUpgradeProposal: '/ibc.core.client.v1.UpgradeProposal'
-}
 
 const PROPOSAL_TYPES = {
   PROPOSAL_TYPE_TEXT: 1,
@@ -157,11 +140,77 @@ export const undelegate = async (
     denom: CosmosNetworkConfig.CURRENCY_DENOM
   }
 
+  const msg = MsgUndelegate.fromPartial({
+    delegatorAddress,
+    validatorAddress,
+    amount: coin(Number(amount), CosmosNetworkConfig.CURRENCY_DENOM)
+  })
+
+  const msgAny: MsgUndelegateEncodeObject = {
+    typeUrl: '/cosmos.staking.v1beta1.MsgUndelegate',
+    value: msg
+  }
+
+  const gasUsed = await client.simulate(delegatorAddress, [msgAny], memo)
+
+  const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+  const fee = calculateFee(gasLimit, gasPrice)
+
   const result = await client.undelegateTokens(
     delegatorAddress,
     validatorAddress,
     undelegationAmount,
-    'auto',
+    fee,
+    memo
+  )
+
+  return result
+}
+
+export const redelegate = async (
+  delegatorAddress: string,
+  validatorSrcAddress: string,
+  validatorDstAddress: string,
+  amount: string,
+  memo: string
+): Promise<DeliverTxResponse> => {
+  const offlineSigner = window.getOfflineSigner(
+    import.meta.env.VITE_APP_CHAIN_ID
+  )
+
+  const client = await SigningStargateClient.connectWithSigner(
+    import.meta.env.VITE_APP_RPC,
+    offlineSigner
+  )
+
+  const msg = MsgBeginRedelegate.fromPartial({
+    delegatorAddress,
+    validatorSrcAddress,
+    validatorDstAddress,
+    amount: coin(
+      new BigNumber(amount || 0)
+        .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+        .toString(10),
+      CosmosNetworkConfig.CURRENCY_DENOM
+    )
+  })
+
+  const msgAny = {
+    typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+    value: msg
+  }
+
+  const gasUsed = await client.simulate(delegatorAddress, [msgAny], memo)
+
+  const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+  const fee = calculateFee(gasLimit, gasPrice)
+
+  const result = await client.signAndBroadcast(
+    delegatorAddress,
+    [msgAny],
+    fee,
     memo
   )
 

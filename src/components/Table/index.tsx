@@ -5,7 +5,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  TablePagination
 } from '@mui/material'
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded'
 import { Column } from './types'
@@ -16,6 +17,8 @@ type TableProps = {
   sortKey?: string
   handleSort?: (key: string) => void
   sortDirection?: 'desc' | 'asc'
+  pagination?: any
+  handleScroll?: (ev: React.UIEvent<HTMLDivElement>) => void
 }
 
 const Table: React.FC<TableProps> = ({
@@ -23,7 +26,9 @@ const Table: React.FC<TableProps> = ({
   columns,
   sortKey,
   handleSort,
-  sortDirection
+  sortDirection,
+  pagination,
+  handleScroll = () => {}
 }) => {
   return (
     <>
@@ -93,7 +98,10 @@ const Table: React.FC<TableProps> = ({
           </TableRow>
         </TableHead>
       </MuiTable>
-      <Box sx={{ height: '100%', overflow: 'auto', width: '100%' }}>
+      <Box
+        sx={{ height: '100%', overflow: 'auto', width: '100%' }}
+        onScroll={handleScroll}
+      >
         <MuiTable sx={{ tableLayout: 'fixed' }}>
           <TableBody>
             {items.map((item: any) => (
@@ -120,6 +128,17 @@ const Table: React.FC<TableProps> = ({
           </TableBody>
         </MuiTable>
       </Box>
+      {pagination && (
+        <TablePagination
+          sx={{ overflow: 'hidden' }}
+          component="div"
+          count={pagination?.total}
+          rowsPerPage={5}
+          rowsPerPageOptions={[]}
+          page={pagination?.page}
+          onPageChange={pagination?.handleChangePage}
+        />
+      )}
     </>
   )
 }

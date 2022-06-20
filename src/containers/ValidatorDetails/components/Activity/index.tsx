@@ -1,25 +1,23 @@
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import ActivityTable from './components/Table'
-import ActivityTabs from './components/Tabs'
+import Header from './components/Header'
+import { useActivity } from './hooks'
 
 import { styles } from './styles'
 
 const Activity = () => {
+  const { state, loadNextPage, filterByType } = useActivity()
+
   return (
     <Box sx={styles.activityContainer}>
-      <Box display="flex" justifyContent="space-between">
-        <Typography
-          letterSpacing={1}
-          fontWeight={700}
-          color="text.secondary"
-          textTransform="uppercase"
-          fontSize="14px"
-        >
-          Activity
-        </Typography>
-        <ActivityTabs />
-      </Box>
-      <ActivityTable />
+      <Header filter={state.filter} filterByType={filterByType} />
+      <ActivityTable
+        loadNextPage={loadNextPage}
+        filterByType={filterByType}
+        data={state.data}
+        hasNextPage={state.hasNextPage}
+        isNextPageLoading={state.isNextPageLoading}
+      />
     </Box>
   )
 }

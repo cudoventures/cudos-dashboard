@@ -7,7 +7,7 @@ export const styles: SxMap = {
     position: 'sticky',
     top: 0,
     overflow: 'hidden',
-    zIndex: 1,
+    zIndex: 4,
     paddingBottom: '0.5rem'
   })
 }
