@@ -1,9 +1,9 @@
 import { Box, Grid, Typography } from '@mui/material'
 import FooterLogo from 'assets/vectors/logo-footer.svg'
-import RedditIcon from 'assets/vectors/reddit.svg'
-import TwitterIcon from 'assets/vectors/twitter.svg'
-import TelegramIcon from 'assets/vectors/telegram.svg'
-import DiscordIcon from 'assets/vectors/discord.svg'
+import RedditIcon from 'assets/vectors/reddit.svg?component'
+import TwitterIcon from 'assets/vectors/twitter.svg?component'
+import TelegramIcon from 'assets/vectors/telegram.svg?component'
+import DiscordIcon from 'assets/vectors/discord.svg?component'
 
 import { styles } from './styles'
 
@@ -16,10 +16,10 @@ const linksLeft = [
 ]
 
 const linksRight = [
-  { icon: RedditIcon, url: 'https://www.cudos.org/' },
-  { icon: TwitterIcon, url: 'https://www.cudos.org/' },
-  { icon: TelegramIcon, url: 'https://www.cudos.org/' },
-  { icon: DiscordIcon, url: 'https://www.cudos.org/' }
+  // { icon: <RedditIcon />, url: 'https://www.cudos.org/' },
+  { icon: <TwitterIcon />, url: 'https://twitter.com/CUDOS_' },
+  { icon: <TelegramIcon />, url: 'https://t.me/cudostelegram' },
+  { icon: <DiscordIcon />, url: 'https://discord.com/invite/t397SKqf4u' }
 ]
 
 const Footer = () => {
@@ -38,15 +38,16 @@ const Footer = () => {
               '&:not(:last-child)': {
                 borderRight: `1px solid ${palette.text.secondary}`
               },
-              cursor: 'pointer'
+              cursor: 'pointer',
+              color: palette.text.secondary,
+              '&:hover': {
+                color: palette.primary.main,
+                textShadow: `0 0 3px ${palette.primary.main}`
+              }
             })}
             onClick={() => window.open(link.url, '_blank')?.focus()}
           >
-            <Typography
-              color="text.secondary"
-              fontSize="0.8rem"
-              fontWeight={500}
-            >
+            <Typography fontSize="0.8rem" fontWeight={500}>
               {link.text}
             </Typography>
           </Grid>
@@ -60,11 +61,17 @@ const Footer = () => {
       >
         {linksRight.map((link) => (
           <Grid
-            key={link.icon}
+            key={link.url}
             onClick={() => window.open(link.url, '_blank')?.focus()}
-            sx={{ cursor: 'pointer' }}
+            sx={({ palette }) => ({
+              cursor: 'pointer',
+              color: palette.text.secondary,
+              '&:hover': {
+                color: palette.primary.main
+              }
+            })}
           >
-            <img src={link.icon} alt={link.icon} />
+            {link.icon}
           </Grid>
         ))}
       </Box>

@@ -125,7 +125,17 @@ const dark = createTheme({
           '*::-webkit-scrollbar-thumb': {
             background: COLORS_DARK_THEME.SECONDARY_TEXT,
             borderRadius: '2px'
-          }
+          },
+          width: '100%',
+          height: '100%'
+        },
+        body: {
+          width: '100%',
+          height: '100%'
+        },
+        '#root': {
+          width: '100%',
+          height: '100%'
         }
       }
     },
