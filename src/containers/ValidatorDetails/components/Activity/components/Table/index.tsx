@@ -36,12 +36,13 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
     }
   }
 
-  const formattedItems = data.map((tx) => {
+  const formattedItems = data.map((tx, idx) => {
     const txType: string = tx.messages.items[0]['@type']
     const filter: string = tx.messages.items[0]['@type'].split('/').pop()
     const txBadge = defaultMessages[txType as keyof typeof defaultMessages]
 
     return {
+      idx,
       block: (
         <Tooltip title="View in explorer" placement="right">
           <Typography

@@ -4,7 +4,6 @@ export const styles: SxMap = {
     width: '88px',
     borderRadius: '1.3rem',
     padding: '20px',
-    height: '95%',
     position: 'sticky',
     top: 0
   }),
@@ -40,6 +39,7 @@ export const styles: SxMap = {
     height: '3rem',
     width: '3rem',
     borderRadius: '10px',
+    color: palette.text.secondary,
     '&:hover': {
       backgroundColor: custom.backgrounds.light
     },
@@ -57,12 +57,10 @@ export const styles: SxMap = {
     }
   }),
   footerContainer: {
+    position: 'relative',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    bottom: 0,
-    right: 0,
-    left: 0,
     width: 'inherit',
     padding: '2rem'
   },

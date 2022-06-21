@@ -51,7 +51,8 @@ const UserInfo = () => {
         lastLoggedAddress,
         balance: new BigNumber(0),
         availableRewards: new BigNumber(0),
-        stakedValidators: []
+        stakedValidators: [],
+        stakedBalance: new BigNumber(0)
       })
     )
     navigate('/')

@@ -2,8 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
-  ArrowCircleRightRounded as ArrowCircleRightRoundedIcon,
-  InfoRounded as InfoRoundedIcon
+  ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgBeginRedelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import { coin, GasPrice, SigningStargateClient, StargateClient } from 'cudosjs'
@@ -70,11 +69,11 @@ const Redelegation: React.FC<RedelegationProps> = ({
       const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
       const walletBalance = await client.getDelegation(
         address,
-        validator?.address
+        validator?.address || ''
       )
 
       setDelegated(
-        new BigNumber(walletBalance.amount)
+        new BigNumber(walletBalance?.amount || 0)
           .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
           .toString(10)
       )
@@ -357,7 +356,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
                 From
               </Typography>
               <Typography variant="body2">
-                {getMiddleEllipsis(address, {
+                {getMiddleEllipsis(redelegationAddress, {
                   beginning: 12,
                   ending: 4
                 })}
@@ -391,13 +390,10 @@ const Redelegation: React.FC<RedelegationProps> = ({
             <Box>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography color="text.secondary" variant="body2">
-                  Estimated Gas fee
+                  Estimated Transaction fee
                 </Typography>
-                <InfoRoundedIcon
-                  sx={{ fontSize: '16px', color: 'primary.main' }}
-                />
               </Stack>
-              <Typography variant="body2">{fee}</Typography>
+              <Typography variant="body2">{fee} CUDOS</Typography>
             </Box>
           </Box>
         </SummaryContainer>

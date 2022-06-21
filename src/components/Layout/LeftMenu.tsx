@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Box, ToggleButton } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
-import StickyBox from 'react-sticky-box'
-import DashboardIcon from 'assets/vectors/dashboard.svg'
-import ProposalsIcon from 'assets/vectors/proposals.svg'
-import SettingsIcon from 'assets/vectors/settings.svg'
-import StakingIcon from 'assets/vectors/staking.svg'
+import DashboardIcon from 'assets/vectors/dashboard.svg?component'
+import ProposalsIcon from 'assets/vectors/proposals.svg?component'
+import SettingsIcon from 'assets/vectors/settings.svg?component'
+import StakingIcon from 'assets/vectors/staking.svg?component'
 
 import { styles } from './styles'
 
 const MenuItems = [
-  { icon: DashboardIcon, link: '/dashboard' },
-  { icon: StakingIcon, link: '/staking' },
-  { icon: ProposalsIcon, link: '/proposals' },
-  { icon: SettingsIcon, link: '/settings' }
+  { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
+  { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
+  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' },
+  { icon: <SettingsIcon />, link: '/settings', text: 'Settings' }
 ]
 
 const Menu = () => {
@@ -39,7 +38,7 @@ const Menu = () => {
               selected={selected === index}
               onClick={() => setSelected(index)}
             >
-              <img src={item.icon} alt="icon" />
+              {item.icon}
             </ToggleButton>
           </Link>
         ))}

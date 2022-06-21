@@ -144,7 +144,7 @@ const WalletBalance = () => {
               </Typography>
               <Popover
                 PaperProps={{
-                  style: styles.stakedTokensInfo
+                  sx: styles.stakedTokensInfo
                 }}
                 id="mouse-over-popover"
                 sx={{
