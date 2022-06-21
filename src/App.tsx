@@ -7,7 +7,6 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 
 import { RecoilRoot } from 'recoil'
-import Footer from 'components/Layout/Footer'
 import { ConnectLedger } from 'ledgers/KeplrLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
@@ -69,12 +68,18 @@ const App = () => {
     } catch (e) {
       throw new Error('Failed to connect!')
     }
-  }, [dispatch, lastLoggedAddress])
+  }, [])
 
   useEffect(() => {
     window.addEventListener('keplr_keystorechange', async () => {
       await connectAccount()
     })
+
+    return () => {
+      window.removeEventListener('keplr_keystorechange', async () => {
+        await connectAccount()
+      })
+    }
   }, [connectAccount])
 
   return (
@@ -82,9 +87,11 @@ const App = () => {
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme[themeColor]}>
           <CssBaseline />
-          <Routes>
-            <Route path="/" element={<ConnectWallet />} />
-          </Routes>
+          {location.pathname !== '/' ? null : (
+            <Routes>
+              <Route path="/" element={<ConnectWallet />} />
+            </Routes>
+          )}
           {location.pathname === '/' ? null : (
             <Layout>
               <Routes>
@@ -105,7 +112,6 @@ const App = () => {
                   <Route path="settings" element={<Settings />} />
                 </Route>
               </Routes>
-              <Footer />
             </Layout>
           )}
         </ThemeProvider>

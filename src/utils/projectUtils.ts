@@ -60,7 +60,9 @@ export const formatBigNum = (number: BigNumber): string => {
 }
 
 export const formatDateTime = (dateTimeString: string): string => {
-  const localTimeString = moment.utc(dateTimeString).toDate().toLocaleString()
-  const formattedTime = moment(localTimeString).format('DD MMM, YYYY, LTS')
+  const localTimeString = moment(dateTimeString).parseZone().toLocaleString()
+  const formattedTime = moment(localTimeString)
+    .format('DD MMM YYYY LTS')
+    .toLocaleString()
   return formattedTime
 }

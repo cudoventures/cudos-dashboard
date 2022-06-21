@@ -94,7 +94,7 @@ export const useStatistics = () => {
         chainConfig.primaryTokenUnit
       )
 
-      const rewards = data.delegationRewards.reduce((a, b) => {
+      const rewards = data.delegationRewards.reduce((a: any, b: any) => {
         const coins = R.pathOr([], ['coins'], b)
         const dsmCoins = getDenom(coins, chainConfig.primaryTokenUnit)
 
