@@ -17,7 +17,9 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
   }
 
   const handleTryAgain = () => {
-    handleModal({ ...modalProps, status: null })
+    handleModal({
+      ...initialModalState
+    })
   }
 
   return (
@@ -42,11 +44,10 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
       <Button
         sx={(theme) => ({
           width: '50%',
-          fontWeight: 700,
-          '&:hover': {
-            background: theme.palette.primary.main
-          }
+          fontWeight: 700
         })}
+        variant="contained"
+        color="primary"
         onClick={handleTryAgain}
       >
         Try again
