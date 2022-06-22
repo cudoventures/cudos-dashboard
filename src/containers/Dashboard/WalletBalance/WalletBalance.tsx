@@ -21,7 +21,8 @@ const WalletBalance = () => {
     availableRewards,
     stakedValidators,
     lastLoggedAddress,
-    stakedBalance
+    stakedBalance,
+    keplrName
   } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
@@ -53,6 +54,7 @@ const WalletBalance = () => {
         dispatch(
           updateUser({
             address,
+            keplrName,
             balance: new BigNumber(walletBalance),
             availableRewards: new BigNumber(totalRewards),
             stakedValidators: validatorArray,
