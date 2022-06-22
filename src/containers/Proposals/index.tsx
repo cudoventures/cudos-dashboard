@@ -4,6 +4,7 @@ import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
 import VotingModal from './components/VotingModal'
 import ProposalModal from './components/ProposalModal'
 import DepositModal from './components/DepositModal'
@@ -63,7 +64,12 @@ const Proposals = () => {
               variant="contained"
               color="secondary"
               onClick={() =>
-                handleModal({ open: true, status: ProposalStatus.CREATE })
+                handleModal({
+                  open: true,
+                  status: ProposalStatus.CREATE,
+                  fee: new BigNumber(0),
+                  proposalData: {}
+                })
               }
               sx={styles.crateProposalBtn}
             >
