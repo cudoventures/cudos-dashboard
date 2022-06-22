@@ -62,7 +62,12 @@ const UserInfo = () => {
     <Box sx={styles.user} onMouseLeave={() => setOpen(false)}>
       <Box onMouseEnter={() => setOpen(true)} sx={styles.userContainer}>
         <Box sx={styles.userInnerContainer}>
-          <Typography variant="body2">Hi, {keplrName}</Typography>
+          <Typography variant="body2">
+            Hi,
+            <Typography component="span" variant="body2" fontWeight={700}>
+              {` ${keplrName}`}
+            </Typography>
+          </Typography>
           <Box sx={{}}>
             <img
               style={{
