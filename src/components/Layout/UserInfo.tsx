@@ -68,7 +68,7 @@ const UserInfo = () => {
               {` ${keplrName}`}
             </Typography>
           </Typography>
-          <Box sx={{}}>
+          <Box>
             <img
               style={{
                 cursor: 'pointer',
