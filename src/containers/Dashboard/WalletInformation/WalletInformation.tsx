@@ -16,7 +16,9 @@ import { styles } from '../styles'
 
 const WalletInformation = () => {
   const navigate = useNavigate()
-  const { address } = useSelector((state: RootState) => state.profile)
+  const { address, keplrName } = useSelector(
+    (state: RootState) => state.profile
+  )
 
   const [copied, setCopied] = useState<boolean>(false)
 
@@ -60,7 +62,7 @@ const WalletInformation = () => {
         <Avatar src={TestAvatar} alt="Avatar" sx={styles.avatarStyle} />
         <Box sx={{ marginLeft: '20px' }}>
           <Box sx={{ display: 'flex' }}>
-            <Typography sx={styles.usernameStyle}>!cudos</Typography>
+            <Typography sx={styles.usernameStyle}>{keplrName}</Typography>
             <img
               style={{ marginLeft: '5px', marginBottom: '10px' }}
               src={TickIcon}

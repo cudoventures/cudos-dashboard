@@ -13,7 +13,6 @@ import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import { updateUser } from 'store/profile'
 import { copyToClipboard, formatAddress } from 'utils/projectUtils'
-import TestAvatar from 'assets/vectors/test-avatar-sm.svg'
 import UserMenuAvatar from 'assets/vectors/test-avatar.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import CopyIcon from 'assets/vectors/copy-icon.svg'
@@ -24,7 +23,7 @@ import { styles } from './styles'
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { address, lastLoggedAddress } = useSelector(
+  const { address, lastLoggedAddress, keplrName } = useSelector(
     (state: RootState) => state.profile
   )
 
@@ -48,6 +47,7 @@ const UserInfo = () => {
     dispatch(
       updateUser({
         address: '',
+        keplrName: '',
         lastLoggedAddress,
         balance: new BigNumber(0),
         availableRewards: new BigNumber(0),
@@ -62,19 +62,13 @@ const UserInfo = () => {
     <Box sx={styles.user} onMouseLeave={() => setOpen(false)}>
       <Box onMouseEnter={() => setOpen(true)} sx={styles.userContainer}>
         <Box sx={styles.userInnerContainer}>
-          <Box
-            sx={{
-              marginRight: '10px'
-            }}
-          >
-            <Avatar
-              sx={{ width: '24px', height: '24px' }}
-              src={TestAvatar}
-              alt="Avatar"
-            />
-          </Box>
-          <Typography>Hi, cudos.eth</Typography>
-          <Box sx={{ marginLeft: '35px' }}>
+          <Typography variant="body2">
+            Hi,
+            <Typography component="span" variant="body2" fontWeight={700}>
+              {` ${keplrName}`}
+            </Typography>
+          </Typography>
+          <Box>
             <img
               style={{
                 cursor: 'pointer',

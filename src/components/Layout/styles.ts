@@ -18,8 +18,9 @@ export const styles: SxMap = {
     fontSize: '14px',
     fontWeight: '500',
     display: 'flex',
-    justifyContent: 'center',
-    margin: '-2px'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    whiteSpace: 'nowrap'
   },
   dropdownMenuContainer: ({ custom }) => ({
     background: custom.backgrounds.light,

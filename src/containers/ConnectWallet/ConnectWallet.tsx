@@ -21,7 +21,7 @@ const ConnectWallet = () => {
 
   const connect = async () => {
     try {
-      const { address } = await ConnectLedger()
+      const { address, keplrName } = await ConnectLedger()
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
@@ -32,6 +32,7 @@ const ConnectWallet = () => {
       dispatch(
         updateUser({
           address,
+          keplrName,
           lastLoggedAddress: address,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),

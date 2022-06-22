@@ -38,7 +38,7 @@ const App = () => {
 
   const connectAccount = useCallback(async () => {
     try {
-      const { address } = await ConnectLedger()
+      const { address, keplrName } = await ConnectLedger()
       if (address !== lastLoggedAddress) {
         dispatch(
           updateUserTransactions({
@@ -59,6 +59,7 @@ const App = () => {
         updateUser({
           address,
           lastLoggedAddress: address,
+          keplrName,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
@@ -80,7 +81,7 @@ const App = () => {
         await connectAccount()
       })
     }
-  }, [connectAccount])
+  }, [])
 
   return (
     <RecoilRoot>
