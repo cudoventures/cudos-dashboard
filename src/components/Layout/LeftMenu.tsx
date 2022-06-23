@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, ToggleButton } from '@mui/material'
+import { Box, ToggleButton, Tooltip } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
 import DashboardIcon from 'assets/vectors/dashboard.svg?component'
 import ProposalsIcon from 'assets/vectors/proposals.svg?component'
@@ -29,15 +29,32 @@ const Menu = () => {
       <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
         {MenuItems.map((item, index) => (
           <Link to={item.link} key={item.link}>
-            <ToggleButton
-              sx={styles.navigationButton}
-              value={index}
-              key={item.link}
-              selected={selected === index}
-              onClick={() => setSelected(index)}
+            <Tooltip
+              title={item.text}
+              placement="right"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    background: 'white',
+                    color: 'black',
+                    padding: '13px 20px',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    borderRadius: '15px'
+                  }
+                }
+              }}
             >
-              {item.icon}
-            </ToggleButton>
+              <ToggleButton
+                sx={styles.navigationButton}
+                value={index}
+                key={item.link}
+                selected={selected === index}
+                onClick={() => setSelected(index)}
+              >
+                {item.icon}
+              </ToggleButton>
+            </Tooltip>
           </Link>
         ))}
       </Box>
