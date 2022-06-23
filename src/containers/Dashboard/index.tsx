@@ -1,5 +1,4 @@
 import { Box, Fade, Typography } from '@mui/material'
-import { useRef } from 'react'
 import WalletInformation from './WalletInformation'
 import NetworkStatistics from './NetworkStatistics/NetworkStatistics'
 import LatestActivity from './LatestActivity/LatestActivity'
@@ -7,12 +6,10 @@ import LatestActivity from './LatestActivity/LatestActivity'
 import { styles } from './styles'
 
 const Dashboard = () => {
-  const ref = useRef<HTMLElement | null>(null)
-
   return (
     <Fade in timeout={500}>
       <Box sx={styles.dashboardContainer}>
-        <Box ref={ref} sx={styles.dashboardHeaderContainer}>
+        <Box sx={styles.dashboardHeaderContainer}>
           <Typography sx={styles.headerStyle}>Dashboard</Typography>
           <Typography
             sx={styles.subheaderStyle}
