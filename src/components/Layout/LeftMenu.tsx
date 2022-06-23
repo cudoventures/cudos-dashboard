@@ -3,7 +3,6 @@ import { Box, ToggleButton } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
 import DashboardIcon from 'assets/vectors/dashboard.svg?component'
 import ProposalsIcon from 'assets/vectors/proposals.svg?component'
-import SettingsIcon from 'assets/vectors/settings.svg?component'
 import StakingIcon from 'assets/vectors/staking.svg?component'
 
 import { styles } from './styles'
@@ -11,8 +10,7 @@ import { styles } from './styles'
 const MenuItems = [
   { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
   { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
-  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' },
-  { icon: <SettingsIcon />, link: '/settings', text: 'Settings' }
+  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' }
 ]
 
 const Menu = () => {
