@@ -1,155 +1,112 @@
-import { Box, CircularProgress, Typography } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  Stack,
+  Tooltip,
+  Typography
+} from '@mui/material'
 import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import ClockIcon from 'assets/vectors/clock-icon.svg'
-import { formatAddress, formatDateTime } from 'utils/projectUtils'
+import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
+import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import Card from 'components/Card'
 import Table from 'components/Table'
 import { columnNames } from 'store/userTransactions'
 
+import { defaultMessages } from 'ledgers/utils'
+import numeral from 'numeral'
 import { styles } from '../styles'
 import { useUserTransactions } from './UserActivity/hooks'
 
 const LatestActivity = () => {
   useUserTransactions()
-  const { address } = useSelector((state: RootState) => state.profile)
   const { data, hasActivity, loading } = useSelector(
     (state: RootState) => state.userTransactions
   )
 
-  const handleHashRedirect = (hash: string) => {
-    window.open(`${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${hash}`)
-  }
+  const formattedItems = data.map((tx: any, idx) => {
+    const txType: string = tx.messages[0]['@type']
+    const txBadge = defaultMessages[txType as keyof typeof defaultMessages]
 
-  const handleMsgAction = (msg: string, addr: string) => {
-    switch (msg) {
-      case '/cosmos.staking.v1beta1.MsgDelegate':
-        return (
+    return {
+      idx,
+      block: (
+        <Tooltip title="View in explorer" placement="right">
           <Typography
-            style={{ background: '#3d5afe' }}
-            sx={styles.latestActivityAction}
+            variant="body2"
+            component="span"
+            color="primary.main"
+            fontWeight={700}
+            sx={{ cursor: 'pointer' }}
+            onClick={() =>
+              window
+                .open(
+                  `${import.meta.env.VITE_APP_EXPLORER_V2}/blocks/${tx.height}`,
+                  '_blank'
+                )
+                ?.focus()
+            }
           >
-            DELEGATE
+            {numeral(tx.height).format('0,0')}
           </Typography>
-        )
-      case '/cosmos.bank.v1beta1.MsgSend':
-        return addr === address ? (
+        </Tooltip>
+      ),
+      txHash: (
+        <Tooltip title="View in explorer" placement="right">
           <Typography
-            style={{ background: '#52A6F8' }}
-            sx={styles.latestActivityAction}
+            variant="body2"
+            component="span"
+            color="primary.main"
+            fontWeight={700}
+            sx={{ cursor: 'pointer' }}
+            onClick={() =>
+              window
+                .open(
+                  `${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${
+                    tx.hash
+                  }`,
+                  '_blank'
+                )
+                ?.focus()
+            }
           >
-            SEND
+            {getMiddleEllipsis(tx.hash, {
+              beginning: 10,
+              ending: 12
+            })}
           </Typography>
-        ) : (
-          <Typography
-            style={{ background: '#65B48F' }}
-            sx={styles.latestActivityAction}
-          >
-            RECEIVE
-          </Typography>
-        )
-      case '/cosmos.gov.v1beta1.MsgSubmitProposal':
-        return (
-          <Typography
-            style={{ background: '#ff5722' }}
-            sx={styles.latestActivityAction}
-          >
-            SUBMIT PROPOSAL
-          </Typography>
-        )
-      case '/cosmos.bank.v1beta1.MsgMultiSend':
-        return (
-          <Typography
-            style={{ background: '#52A6F8' }}
-            sx={styles.latestActivityAction}
-          >
-            MULTI SEND
-          </Typography>
-        )
-      case '/cosmos.gov.v1beta1.MsgVote':
-        return (
-          <Typography
-            style={{ background: '#E89518' }}
-            sx={styles.latestActivityAction}
-          >
-            VOTE
-          </Typography>
-        )
-      case '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward':
-        return (
-          <Typography
-            style={{ background: '#9646F9' }}
-            sx={styles.latestActivityAction}
-          >
-            WITHDRAW REWARD
-          </Typography>
-        )
-      case '/cosmos.staking.v1beta1.MsgBeginRedelegate':
-        return (
-          <Typography
-            style={{ background: '#E89518' }}
-            sx={styles.latestActivityAction}
-          >
-            REDELEGATE
-          </Typography>
-        )
-      case '/cosmos.staking.v1beta1.MsgUndelegate':
-        return (
-          <Typography
-            style={{ background: '#ff1744' }}
-            sx={styles.latestActivityAction}
-          >
-            UNDELEGATE
-          </Typography>
-        )
-      case '/cosmos.gov.v1beta1.MsgDeposit':
-        return (
-          <Typography
-            style={{ background: '#65B48F' }}
-            sx={styles.latestActivityAction}
-          >
-            DEPOSIT
-          </Typography>
-        )
-      default:
-        return (
-          <Typography
-            style={{ background: '#52A6F8' }}
-            sx={styles.latestActivityAction}
-          >
-            {msg}
-          </Typography>
-        )
-    }
-  }
-
-  const formattedItems = data.map((tr: any, index: number) => ({
-    index: index + 1,
-    txHash: (
-      <Box onClick={() => handleHashRedirect(tr.hash)}>
+        </Tooltip>
+      ),
+      action: (
         <Typography
-          sx={{ fontSize: '14px', cursor: 'pointer' }}
-          color="primary.main"
+          component="span"
+          sx={{
+            background: txBadge.color,
+            textTransform: 'uppercase',
+            borderRadius: '10px',
+            color: 'white',
+            padding: '6px 17px',
+            fontSize: '11px',
+            fontWeight: '600',
+            letterSpacing: '1px'
+          }}
         >
-          {formatAddress(tr.hash, 12)}
+          {txBadge.displayName}
         </Typography>
-      </Box>
-    ),
-    action: (
-      <Box sx={{ display: 'flex' }}>
-        {handleMsgAction(tr.messages[0]['@type'], tr.messages[0].from_address)}
-      </Box>
-    ),
-    date: (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <img style={{ marginRight: '10px' }} src={ClockIcon} alt="Clock Icon" />
-        <Typography sx={{ fontSize: '12px' }}>
-          {formatDateTime(tr.timestamp)}
-        </Typography>
-      </Box>
-    )
-  }))
+      ),
+      date: (
+        <Stack direction="row" gap={1} alignItems="center">
+          <AccessTimeRoundedIcon color="primary" />
+          <Typography fontSize={12} color="text.secondary">
+            {moment(moment(tx.timestamp).parseZone().toLocaleString())
+              .format('DD MMM YYYY LTS')
+              .toLocaleString()}
+          </Typography>
+        </Stack>
+      )
+    }
+  })
 
   const hasLatestActivity = loading ? (
     <Box

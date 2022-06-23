@@ -14,8 +14,7 @@ export const styles: SxMap = {
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
-    fontSize: '14px',
-    marginBottom: '5px'
+    fontSize: '14px'
   },
   networkCardTitleStyle: {
     fontWeight: '600',
@@ -24,43 +23,12 @@ export const styles: SxMap = {
     display: 'flex',
     alignItems: 'center'
   },
-  editButtonStyle: {
-    fontSize: '14px',
-    fontWeight: '600',
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer'
-  },
-  claimButtonStyle: {
-    width: '80px',
-    height: '34px',
-    fontSize: '12px',
-    fontWeight: '600'
-  },
   avatarStyle: {
     width: '120px',
     height: '120px',
     marginTop: '20px'
   },
-  usernameStyle: {
-    fontSize: '20px',
-    fontWeight: '700',
-    marginBottom: '10px',
-    letterSpacing: '2px'
-  },
-  networkBoxStyle: {
-    display: 'flex',
-    borderRadius: '5px',
-    padding: '17px',
-    background: theme.dark.custom.backgrounds.light,
-    alignItems: 'baseline'
-  },
   networkCardContentStyle: {
-    fontSize: '20px',
-    fontWeight: '600',
-    letterSpacing: '2px'
-  },
-  balanceCardContentStyle: {
     fontSize: '20px',
     fontWeight: '600',
     letterSpacing: '2px'
@@ -69,36 +37,18 @@ export const styles: SxMap = {
     fontSize: '12px',
     fontWeight: '500'
   },
-  walletInfoContainer: {
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center'
-  },
-  walletInfoCard: {
-    minHeight: '319px',
-    width: '50%'
-  },
-  walletBalanceCard: {
-    minHeight: '319px',
-    width: '50%'
-  },
-  editButton: {
-    position: 'absolute',
-    right: '20px'
-  },
   latestActivityCard: {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    minHeight: '530px',
-    marginTop: '20px',
-    maxHeight: '530px',
+    height: '100%',
     overflow: 'auto',
     position: 'relative'
   },
   networkStatisticsCard: {
-    minHeight: '100%',
-    width: '100%'
+    flex: 3,
+    minHeight: '700px',
+    height: '100%'
   },
   networkCardStyle: {
     height: '101px',
@@ -115,35 +65,6 @@ export const styles: SxMap = {
     background: theme.dark.custom.backgrounds.light,
     alignItems: 'baseline'
   },
-  networkInfo: {
-    fontSize: '14px',
-    fontWeight: '600',
-    marginLeft: '20px'
-  },
-  connectionStatus: {
-    fontSize: '14px',
-    fontWeight: '600',
-    marginLeft: '90px',
-    display: 'flex',
-    alignItems: 'center'
-  },
-  amountDollarStyle: {
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: '16px',
-    fontWeight: '600'
-  },
-  latestActivityAction: {
-    borderRadius: '10px',
-    background: '#52A6F8',
-    color: 'white',
-    padding: '6px 17px 6px 17px',
-    fontSize: '12px',
-    fontWeight: '600',
-    letterSpacing: '2px',
-    maxWidth: '255px',
-    overflowWrap: 'anywhere'
-  },
   noActivityStyle: {
     position: 'absolute',
     top: '50%',
@@ -152,12 +73,77 @@ export const styles: SxMap = {
     fontSize: '20px',
     fontWeight: '600'
   },
-  stakedTokensInfo: {
-    background: 'white',
-    boxShadow: '0px 0px 30px rgba(27, 32, 49, 0.7)',
-    borderRadius: '15px',
-    color: 'black',
-    padding: '20px',
-    border: '1px solid white'
+  walletInfo: {
+    flex: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 1,
+    boxShadow: ' 2px 2px 30px 10px rgba(82, 166, 248, 0.05)',
+    borderRadius: '30px',
+    padding: '20px'
+  },
+  addressContainer: ({ palette }) => ({
+    borderRadius: '35px',
+    border: `1px solid ${palette.primary.main}`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2,
+    padding: '1rem 2rem',
+    overflow: 'hidden'
+  }),
+  tokensContainer: {
+    display: 'grid',
+    gridTemplateColumns: '46px 1fr',
+    gridTemplateRows: '46px 25px',
+    gridColumnGap: '9px',
+    gridRowGap: '0px'
+  },
+  stakingContainer: {
+    flex: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    borderRadius: '30px'
+  },
+  stakedTokens: ({ palette }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 1,
+    borderLeft: `2px solid ${palette.primary.main}`,
+    padding: '5px 1rem'
+  }),
+  availableRewards: ({ palette }) => ({
+    display: 'flex',
+    borderLeft: `2px solid ${palette.primary.main}`,
+    alignItems: 'center',
+    gap: 4
+  }),
+  dashboardContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+    height: '100%'
+  },
+  dashboardHeaderContainer: ({ custom }) => ({
+    background: custom.backgrounds.dark,
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'sticky',
+    top: 0,
+    zIndex: 4
+  }),
+  dashboardContentContainer: {
+    display: 'flex',
+    gap: 2,
+    minHeight: '700px',
+    height: '100%'
+  },
+  dashboardLeftContent: {
+    flex: 9,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+    height: '100%'
   }
 } as const
