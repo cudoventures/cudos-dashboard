@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <Fade in timeout={500}>
       <Box sx={styles.dashboardContainer}>
-        <Box ref={ref} sx={styles.dashboardHeaderConteiner}>
+        <Box ref={ref} sx={styles.dashboardHeaderContainer}>
           <Typography sx={styles.headerStyle}>Dashboard</Typography>
           <Typography
             sx={styles.subheaderStyle}
