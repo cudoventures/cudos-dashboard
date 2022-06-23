@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
 import Card from 'components/Card'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'store'
+import { useDispatch } from 'react-redux'
 import getCurrencyRate from 'api/getCurrency'
 import { TransactionCurrency, updateUser } from 'store/profile'
 import { copyToClipboard, formatAddress } from 'utils/projectUtils'
@@ -14,17 +13,19 @@ import { formatNumber } from 'utils/format_token'
 import BigNumber from 'bignumber.js'
 import { claimRewards } from 'ledgers/transactions'
 import { styles } from '../styles'
+import { useDelegationRewards } from './hooks'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
   const [copied, setCopied] = useState<boolean>(false)
+  const { state } = useDelegationRewards()
   const {
     balance,
     availableRewards,
     stakedBalance,
     address,
     stakedValidators
-  } = useSelector((state: RootState) => state.profile)
+  } = state
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -154,10 +155,14 @@ const WalletInformation: React.FC = () => {
             <Stack direction="row" alignItems="center" gap="6px">
               <CudosLogo style={{ width: '20px', height: 'auto' }} />
               <Typography variant="h5" fontWeight={700}>
-                {formatNumber(availableRewards.toString(), 2)}
+                {formatNumber(state.availableRewards.toString(), 2)}
               </Typography>
               <Typography variant="h6" color="primary.main" fontWeight={700}>
-                ${formatNumber((rate * Number(availableRewards)).toString(), 2)}
+                $
+                {formatNumber(
+                  (rate * Number(state.availableRewards)).toString(),
+                  2
+                )}
               </Typography>
             </Stack>
           </Box>

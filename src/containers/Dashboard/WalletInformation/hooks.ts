@@ -26,7 +26,7 @@ export const useDelegationRewards = () => {
       rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))
     )
 
-    return totalRewards
+    return new BigNumber(totalRewards)
   }
 
   useAccountDelegationRewardsQuery({
@@ -34,7 +34,7 @@ export const useDelegationRewards = () => {
       address: state.address
     },
     onCompleted: (data) => {
-      handleSetState(formatDelegationRewards(data))
+      handleSetState({ availableRewards: formatDelegationRewards(data) })
     }
   })
 
