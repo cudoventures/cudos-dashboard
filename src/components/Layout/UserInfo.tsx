@@ -83,18 +83,6 @@ const UserInfo = () => {
       <Collapse sx={{ marginTop: '-28px', zIndex: '-1' }} in={open}>
         <Box sx={styles.dropdownMenuContainer}>
           <Box sx={{ marginTop: '40px' }}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center'
-              }}
-            >
-              <Avatar
-                sx={{ width: '36px', height: '36px' }}
-                src={UserMenuAvatar}
-                alt="Avatar"
-              />
-            </Box>
             <Box sx={{ display: 'flex' }}>
               <Box
                 sx={{

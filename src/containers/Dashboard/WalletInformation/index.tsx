@@ -4,7 +4,12 @@ import Card from 'components/Card'
 import { useDispatch } from 'react-redux'
 import getCurrencyRate from 'api/getCurrency'
 import { TransactionCurrency, updateUser } from 'store/profile'
-import { copyToClipboard, formatAddress } from 'utils/projectUtils'
+import {
+  copyToClipboard,
+  formatAddress,
+  getStakedBalance,
+  getWalletBalance
+} from 'utils/projectUtils'
 
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
@@ -12,6 +17,7 @@ import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import { formatNumber } from 'utils/format_token'
 import BigNumber from 'bignumber.js'
 import { claimRewards } from 'ledgers/transactions'
+import { fetchRewards } from 'api/getRewards'
 import { styles } from '../styles'
 import { useDelegationRewards } from './hooks'
 
@@ -24,7 +30,8 @@ const WalletInformation: React.FC = () => {
     availableRewards,
     stakedBalance,
     address,
-    stakedValidators
+    stakedValidators,
+    lastLoggedAddress
   } = state
   const dispatch = useDispatch()
 
@@ -62,6 +69,41 @@ const WalletInformation: React.FC = () => {
       alert('Transaction Failed')
     }
   }
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const fetchData = async () => {
+      try {
+        const { totalRewards, validatorArray } = await fetchRewards(
+          address,
+          controller.signal
+        )
+        const walletBalance = await getWalletBalance(address)
+        const stakedAmountBalance = await getStakedBalance(address)
+
+        dispatch(
+          updateUser({
+            address,
+            balance: new BigNumber(walletBalance),
+            availableRewards: new BigNumber(totalRewards),
+            stakedValidators: validatorArray,
+            lastLoggedAddress,
+            stakedBalance: new BigNumber(stakedAmountBalance)
+          })
+        )
+      } catch (error: any) {
+        alert(error.message)
+      }
+    }
+    const timer = setInterval(async () => {
+      await fetchData()
+    }, 15000)
+
+    return () => {
+      clearInterval(timer)
+      controller?.abort()
+    }
+  }, [address, dispatch, lastLoggedAddress])
 
   return (
     <Card
