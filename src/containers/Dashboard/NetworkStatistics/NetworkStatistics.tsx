@@ -22,68 +22,66 @@ const NetworkStatistics = () => {
 
   return (
     <Card sx={styles.networkStatisticsCard}>
-      <Box>
-        <Box sx={{ marginBottom: '30px' }}>
-          <Typography sx={styles.subheaderStyle} color="text.secondary">
-            NETWORK STATISTICS
-          </Typography>
-        </Box>
-        <Box sx={styles.networkCardStyle}>
-          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-            PRICE
-          </Typography>
-          <Typography sx={styles.networkCardContentStyle}>
-            {`$${price}`}
-          </Typography>
-          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-            USD
-          </Typography>
-        </Box>
-        <Box sx={styles.networkCardStyle}>
-          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-            TOTAL AMOUNT STAKED
-          </Typography>
-          <Typography sx={styles.networkCardContentStyle}>
-            {numeral(votingState.totalVotingPower).format('0,0')}
-          </Typography>
-          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-            CUDOS
-          </Typography>
-        </Box>
-        <Box sx={styles.networkCardStyle}>
-          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-            ACTIVE VALIDATORS
-          </Typography>
-          <Typography sx={styles.networkCardContentStyle}>
-            {blockState.validators.active}
-          </Typography>
-          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-            All validators: {blockState.validators.total}
-          </Typography>
-        </Box>
-        <Box sx={styles.networkCardStyle}>
-          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-            ONLINE VOTING POWER
-          </Typography>
-          <Typography
-            sx={styles.networkCardContentStyle}
-          >{`${votingPowerPercent.format('0,0.00', (n) => ~~n)}%`}</Typography>
-          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-            {numeral(votingState.votingPower).format('0,0')} /{' '}
-            {numeral(votingState.totalVotingPower).format('0,0')}
-          </Typography>
-        </Box>
-        <Box sx={styles.networkCardStyle}>
-          <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-            LATEST BLOCK
-          </Typography>
-          <Typography sx={styles.networkCardContentStyle}>
-            {numeral(blockState.blockHeight).format('0,0')}
-          </Typography>
-          <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-            BLOCK
-          </Typography>
-        </Box>
+      <Box sx={{ marginBottom: '30px' }}>
+        <Typography sx={styles.subheaderStyle} color="text.secondary">
+          NETWORK STATISTICS
+        </Typography>
+      </Box>
+      <Box sx={styles.networkCardStyle}>
+        <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
+          PRICE
+        </Typography>
+        <Typography sx={styles.networkCardContentStyle}>
+          {`$${price}`}
+        </Typography>
+        <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
+          USD
+        </Typography>
+      </Box>
+      <Box sx={styles.networkCardStyle}>
+        <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
+          TOTAL AMOUNT STAKED
+        </Typography>
+        <Typography sx={styles.networkCardContentStyle}>
+          {numeral(votingState.totalVotingPower).format('0,0')}
+        </Typography>
+        <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
+          CUDOS
+        </Typography>
+      </Box>
+      <Box sx={styles.networkCardStyle}>
+        <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
+          ACTIVE VALIDATORS
+        </Typography>
+        <Typography sx={styles.networkCardContentStyle}>
+          {blockState.validators.active}
+        </Typography>
+        <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
+          All validators: {blockState.validators.total}
+        </Typography>
+      </Box>
+      <Box sx={styles.networkCardStyle}>
+        <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
+          ONLINE VOTING POWER
+        </Typography>
+        <Typography
+          sx={styles.networkCardContentStyle}
+        >{`${votingPowerPercent.format('0,0.00', (n) => ~~n)}%`}</Typography>
+        <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
+          {numeral(votingState.votingPower).format('0,0')} /{' '}
+          {numeral(votingState.totalVotingPower).format('0,0')}
+        </Typography>
+      </Box>
+      <Box sx={styles.networkCardStyle}>
+        <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
+          LATEST BLOCK
+        </Typography>
+        <Typography sx={styles.networkCardContentStyle}>
+          {numeral(blockState.blockHeight).format('0,0')}
+        </Typography>
+        <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
+          BLOCK
+        </Typography>
       </Box>
     </Card>
   )

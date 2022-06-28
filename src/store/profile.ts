@@ -29,7 +29,7 @@ export const walletSlice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
-    updateUser: (state, action: PayloadAction<WalletState>) => {
+    updateUser: (state, action) => {
       return { ...state, ...action.payload }
     }
   }

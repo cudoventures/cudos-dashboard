@@ -25,7 +25,7 @@ export const styles: SxMap = {
   dropdownMenuContainer: ({ custom }) => ({
     background: custom.backgrounds.light,
     fontSize: '14px',
-    height: '224px',
+    height: '190px',
     minWidth: '224px',
     fontWeight: '500',
     display: 'flex',
@@ -58,7 +58,7 @@ export const styles: SxMap = {
     }
   }),
   footerContainer: {
-    position: 'relative',
+    // position: 'relative',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',

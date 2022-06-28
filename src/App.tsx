@@ -21,7 +21,6 @@ import Proposals from './containers/Proposals'
 import ProposalDetails from './containers/Proposals/ProposalDetails'
 import Staking from './containers/Staking'
 import ValidatorDetails from './containers/ValidatorDetails'
-import Settings from './containers/Settings'
 import theme from './theme'
 import { RootState } from './store'
 
@@ -110,7 +109,6 @@ const App = () => {
                       element={<ProposalDetails />}
                     />
                   </Route>
-                  <Route path="settings" element={<Settings />} />
                 </Route>
               </Routes>
             </Layout>
