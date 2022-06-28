@@ -10,7 +10,6 @@ const Staking = () => {
         <Box
           position="sticky"
           top={0}
-          overflow="hidden"
           sx={({ custom }) => ({
             background: custom.backgrounds.dark,
             zIndex: 1,
