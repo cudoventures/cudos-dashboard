@@ -103,11 +103,9 @@ const App = () => {
                     <Route index element={<Staking />} />
                     <Route path=":validatorId" element={<ValidatorDetails />} />
                   </Route>
-                  <Route path="proposals" element={<Proposals />}>
-                    <Route
-                      path="proposals/:proposalId"
-                      element={<ProposalDetails />}
-                    />
+                  <Route path="proposals">
+                    <Route index element={<Proposals />} />
+                    <Route path=":proposalId" element={<ProposalDetails />} />
                   </Route>
                 </Route>
               </Routes>

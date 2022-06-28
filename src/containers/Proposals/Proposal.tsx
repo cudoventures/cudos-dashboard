@@ -1,24 +1,29 @@
-import { Box, Typography, Button, Avatar, Tooltip } from '@mui/material'
+import { Box, Typography, Button, Tooltip } from '@mui/material'
 import { ArrowUpwardRounded as ArrowUpwardRoundedIcon } from '@mui/icons-material'
 import Card from 'components/Card'
-import TestAvatar from 'assets/vectors/test-avatar-sm.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { formatAddress, formatDateTime } from 'utils/projectUtils'
 import { VotingStatus } from 'store/votingModal'
 import BigNumber from 'bignumber.js'
 import { DepositStatus } from 'store/depositModal'
+import { useNavigate } from 'react-router-dom'
+import { ProposalType } from 'store/proposals'
+import { updateProposalDetails } from 'store/proposalDetails'
 import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { styles } from './styles'
 import { useProposals } from './hooks'
+import { proposalStatus } from './proposalStatus'
 
 const Proposal = () => {
   useProposals()
   const proposalState = useSelector((state: RootState) => state.proposals)
   const { handleModal: handleVotingModal } = useVotingModal()
   const { handleModal: handleDepositModal } = useDepositModal()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleExplorer = (address: string) => {
     window.open(
@@ -27,71 +32,9 @@ const Proposal = () => {
     )
   }
 
-  const switchStatus = (status: string) => {
-    switch (status) {
-      case 'PROPOSAL_STATUS_UNSPECIFIED':
-        return (
-          <Typography sx={{ backgroundColor: '#ff5722' }}>
-            Unspecified
-          </Typography>
-        )
-
-      case 'PROPOSAL_STATUS_DEPOSIT_PERIOD':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#52A6F8' }}>
-            DEPOSIT
-          </Typography>
-        )
-
-      case 'PROPOSAL_STATUS_VOTING_PERIOD':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#9646F9' }}>
-            VOTING
-          </Typography>
-        )
-
-      case 'PROPOSAL_STATUS_PASSED':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#65B48F' }}>
-            PASSED
-          </Typography>
-        )
-
-      case 'PROPOSAL_STATUS_REJECTED':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#ff5722' }}>
-            REJECTED
-          </Typography>
-        )
-
-      case 'PROPOSAL_STATUS_FAILED':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#ff5722' }}>
-            FAILED
-          </Typography>
-        )
-
-      case 'PROPOSAL_STATUS_INVALID':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: 'black' }}>
-            REMOVED
-          </Typography>
-        )
-
-      case 'UNRECOGNIZED':
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#ff5722' }}>
-            UNRECOGNIZED
-          </Typography>
-        )
-
-      default:
-        return (
-          <Typography sx={styles.statusBox} style={{ background: '#ff5722' }}>
-            UNRECOGNIZED
-          </Typography>
-        )
-    }
+  const handleProposalDetails = (proposalObj: ProposalType) => {
+    dispatch(updateProposalDetails(proposalObj))
+    navigate(`/proposals/${proposalObj.id}`)
   }
 
   return (
@@ -104,35 +47,71 @@ const Proposal = () => {
                 {`#${proposal.id}`}
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Box sx={{ display: 'flex' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                cursor: 'pointer'
+              }}
+            >
+              <Box
+                onClick={() => handleProposalDetails(proposal)}
+                sx={{ display: 'flex' }}
+              >
                 <Typography sx={styles.cardTitle}>{proposal.title}</Typography>
               </Box>
               {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
-                <Box>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() =>
-                      handleVotingModal({
-                        open: true,
-                        status: VotingStatus.VOTE,
-                        id: proposal.id,
-                        title: proposal.title,
-                        fee: new BigNumber(0)
-                      })
-                    }
-                    sx={styles.cardActionButton}
-                  >
-                    Vote Now
-                  </Button>
+                <Box sx={{ position: 'relative' }}>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        handleVotingModal({
+                          open: true,
+                          status: VotingStatus.VOTE,
+                          id: proposal.id,
+                          title: proposal.title,
+                          fee: new BigNumber(0)
+                        })
+                      }
+                      sx={styles.cardActionButton}
+                    >
+                      Vote Now
+                    </Button>
+                  </Box>
+                  <Box sx={{ position: 'absolute', marginTop: '10px' }}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      startIcon={
+                        <ArrowUpwardRoundedIcon
+                          fontSize="small"
+                          sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
+                        />
+                      }
+                      onClick={() =>
+                        handleDepositModal({
+                          open: true,
+                          status: DepositStatus.DEPOSIT,
+                          id: proposal.id,
+                          title: proposal.title,
+                          amount: '',
+                          fee: new BigNumber(0)
+                        })
+                      }
+                      sx={styles.cardActionButton}
+                    >
+                      Deposit
+                    </Button>
+                  </Box>
                 </Box>
               ) : null}
               {proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? (
                 <Box>
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     startIcon={
                       <ArrowUpwardRoundedIcon
                         fontSize="small"
@@ -181,11 +160,6 @@ const Proposal = () => {
                       color="primary.main"
                       sx={styles.proposerAddress}
                     >
-                      <Avatar
-                        sx={styles.avatarStyle}
-                        src={TestAvatar}
-                        alt="Avatar"
-                      />
                       {formatAddress(proposal.proposerAddress, 18)}
                       <Tooltip
                         onClick={() => handleExplorer(proposal.proposerAddress)}
@@ -234,7 +208,7 @@ const Proposal = () => {
                   >
                     Status
                   </Typography>
-                  <Box>{switchStatus(proposal.status)}</Box>
+                  <Box>{proposalStatus(proposal.status)}</Box>
                 </Box>
               </Box>
             </Box>
