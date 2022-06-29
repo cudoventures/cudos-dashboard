@@ -6,5 +6,10 @@ import svgr from '@honkhonk/vite-plugin-svgr'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [alias(), react(), tsconfigPaths(), svgr()]
+  plugins: [
+    alias(),
+    react(),
+    tsconfigPaths(),
+    svgr({ keepEmittedAssets: true })
+  ]
 })
