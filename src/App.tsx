@@ -11,6 +11,7 @@ import { ConnectLedger } from 'ledgers/KeplrLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
+import NotificationPopup from 'components/NotificationPopup'
 import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
@@ -109,6 +110,9 @@ const App = () => {
                   </Route>
                 </Route>
               </Routes>
+              <NotificationPopup type="error" />
+              <NotificationPopup type="warning" />
+              <NotificationPopup type="info" />
             </Layout>
           )}
         </ThemeProvider>
