@@ -38,7 +38,7 @@ const Header = () => {
             display="flex"
             alignItems="center"
             gap={1}
-            sx={{ color: 'white', padding: '0.5rem 1rem', cursor: 'pointer' }}
+            sx={{ padding: '0.5rem 1rem', cursor: 'pointer' }}
             onClick={() =>
               window.open(import.meta.env.VITE_BRIDGE_URL, '_blank')?.focus()
             }
