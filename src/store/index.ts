@@ -8,6 +8,7 @@ import settingsReducer from './settings'
 import networkReducer from './network'
 import proposalsModalReducer from './proposalsModal'
 import proposalsReducer from './proposals'
+import proposalDetailsReducer from './proposalDetails'
 import userTransactionsReducer from './userTransactions'
 import votingModalReducer from './votingModal'
 import depositModalReducer from './depositModal'
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   votingModal: votingModalReducer,
   depositModal: depositModalReducer,
   proposals: proposalsReducer,
+  proposalDetails: proposalDetailsReducer,
   validatorDetails: validatorDetailsReducer,
   notifications: notificationsReducer
 })
@@ -32,7 +34,13 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['proposals', 'votingModal', 'proposalModal', 'validator', 'validatorDetails']
+  blacklist: [
+    'proposals',
+    'votingModal',
+    'proposalModal',
+    'validator',
+    'validatorDetails'
+  ]
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
