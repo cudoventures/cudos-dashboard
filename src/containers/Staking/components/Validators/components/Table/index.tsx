@@ -6,11 +6,13 @@ import { getValidatorConditionClass } from 'utils/get_validator_condition'
 import Condition from 'components/Condition'
 import AvatarName from 'components/AvatarName'
 import Table from 'components/Table'
+import { useNotifications } from 'components/NotificationPopup/hooks'
 import columns from './utils'
 import useTable from './hooks'
 
 const ValidatorsTable: React.FC = () => {
   const { state, handleSort, sortItems, handleModal } = useTable()
+  const { setWarning } = useNotifications()
   const navigate = useNavigate()
 
   const { sortKey, sortDirection } = state
@@ -24,6 +26,7 @@ const ValidatorsTable: React.FC = () => {
         ? `${numeral(x.votingPowerPercent).format('0.[00]')}%`
         : '0%'
     const votingPower = numeral(x.votingPower).format('0,0')
+    const isJailed = x.jailed
     return {
       idx: `${i + 1}`,
       delegators: numeral(x.delegators).format('0,0'),
@@ -66,7 +69,11 @@ const ValidatorsTable: React.FC = () => {
             height: '34px',
             fontSize: '12px'
           })}
-          onClick={() =>
+          onClick={() => {
+            if (isJailed) {
+              setWarning(`The validator you've chosen is inactive`)
+            }
+
             handleModal({
               open: true,
               validator: {
@@ -80,7 +87,7 @@ const ValidatorsTable: React.FC = () => {
               gasUsed: 0,
               txHash: ''
             })
-          }
+          }}
         >
           Delegate
         </Button>

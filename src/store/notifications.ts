@@ -6,7 +6,7 @@ export interface NotificationsState {
   info: string
 }
 
-const initialState: NotificationsState = {
+export const initialNotificationsState: NotificationsState = {
   error: '',
   warning: '',
   info: ''
@@ -14,7 +14,7 @@ const initialState: NotificationsState = {
 
 export const notificationsSlice = createSlice({
   name: 'notifications',
-  initialState,
+  initialState: initialNotificationsState,
   reducers: {
     updateNotifications: (state, action) => {
       return { ...state, ...action.payload }
