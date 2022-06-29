@@ -74,7 +74,7 @@ export const delegate = async (
       preferNoSetFee: true
     }
   }
-  const offlineSigner = window.getOfflineSigner(
+  const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 
@@ -124,7 +124,7 @@ export const undelegate = async (
   amount: string,
   memo: string
 ): Promise<DeliverTxResponse> => {
-  const offlineSigner = window.getOfflineSigner(
+  const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 
@@ -175,7 +175,7 @@ export const redelegate = async (
   amount: string,
   memo: string
 ): Promise<DeliverTxResponse> => {
-  const offlineSigner = window.getOfflineSigner(
+  const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 
@@ -271,7 +271,7 @@ export const voteProposal = async (
       preferNoSetFee: true
     }
   }
-  const offlineSigner = window.getOfflineSigner(
+  const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 
@@ -322,7 +322,7 @@ export const depositProposal = async (
       preferNoSetFee: true
     }
   }
-  const offlineSigner = window.getOfflineSigner(
+  const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 
@@ -475,7 +475,7 @@ export const createProposal = async (
       preferNoSetFee: true
     }
   }
-  const offlineSigner = window.getOfflineSigner(
+  const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 
