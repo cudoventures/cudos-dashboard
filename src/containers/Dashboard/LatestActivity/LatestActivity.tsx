@@ -14,7 +14,7 @@ import Card from 'components/Card'
 import Table from 'components/Table'
 import { columnNames } from 'store/userTransactions'
 
-import { defaultMessages } from 'ledgers/utils'
+import { defaultMessages, unknownMessage } from 'ledgers/utils'
 import numeral from 'numeral'
 import { styles } from '../styles'
 import { useUserTransactions } from './UserActivity/hooks'
@@ -27,7 +27,8 @@ const LatestActivity = () => {
 
   const formattedItems = data.map((tx: any, idx) => {
     const txType: string = tx.messages[0]['@type']
-    const txBadge = defaultMessages[txType as keyof typeof defaultMessages]
+    const txBadge =
+      defaultMessages[txType as keyof typeof defaultMessages] || unknownMessage
 
     return {
       idx,

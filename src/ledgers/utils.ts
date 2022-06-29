@@ -298,3 +298,9 @@ export const defaultMessages = {
     displayName: 'Create Periodic Vesting Account'
   }
 }
+
+export const unknownMessage = {
+  typeUrl: 'unknown',
+  color: 'gray',
+  displayName: 'Unknown'
+}
