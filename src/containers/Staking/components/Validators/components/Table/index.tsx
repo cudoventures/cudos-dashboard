@@ -71,7 +71,9 @@ const ValidatorsTable: React.FC = () => {
           })}
           onClick={() => {
             if (isJailed) {
-              setWarning(`The validator you've chosen is inactive`)
+              setWarning(
+                `Are you sure you want to delegate to an inactive validator? You will not earn rewards while they remain inactive`
+              )
             }
 
             handleModal({
