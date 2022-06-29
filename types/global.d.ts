@@ -147,6 +147,7 @@ declare global {
     VITE_APP_API: string
     VITE_APP_EXPLORER_V2: string
     VITE_APP_FEE_MULTIPLIER: number
+    VITE_BRIDGE_URL: string
   }
 
   interface SxMap {
