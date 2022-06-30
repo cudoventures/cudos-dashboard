@@ -231,7 +231,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                 margin="dense"
                 fullWidth
                 disabled
-                value={validator?.address}
+                value={getMiddleEllipsis(validator?.address, {
+                  beginning: 12,
+                  ending: 4
+                })}
                 InputProps={{
                   disableUnderline: true,
                   sx: {
