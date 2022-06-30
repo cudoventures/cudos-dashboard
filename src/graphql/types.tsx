@@ -334,6 +334,266 @@ export enum Account_Select_Column {
   Address = 'address'
 }
 
+/** columns and relationships of "adjusted_supply" */
+export type Adjusted_Supply = {
+  __typename?: 'adjusted_supply';
+  height: Scalars['bigint'];
+  value: Scalars['numeric'];
+};
+
+/** aggregated selection of "adjusted_supply" */
+export type Adjusted_Supply_Aggregate = {
+  __typename?: 'adjusted_supply_aggregate';
+  aggregate?: Maybe<Adjusted_Supply_Aggregate_Fields>;
+  nodes: Array<Adjusted_Supply>;
+};
+
+/** aggregate fields of "adjusted_supply" */
+export type Adjusted_Supply_Aggregate_Fields = {
+  __typename?: 'adjusted_supply_aggregate_fields';
+  avg?: Maybe<Adjusted_Supply_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Adjusted_Supply_Max_Fields>;
+  min?: Maybe<Adjusted_Supply_Min_Fields>;
+  stddev?: Maybe<Adjusted_Supply_Stddev_Fields>;
+  stddev_pop?: Maybe<Adjusted_Supply_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Adjusted_Supply_Stddev_Samp_Fields>;
+  sum?: Maybe<Adjusted_Supply_Sum_Fields>;
+  var_pop?: Maybe<Adjusted_Supply_Var_Pop_Fields>;
+  var_samp?: Maybe<Adjusted_Supply_Var_Samp_Fields>;
+  variance?: Maybe<Adjusted_Supply_Variance_Fields>;
+};
+
+
+/** aggregate fields of "adjusted_supply" */
+export type Adjusted_Supply_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Adjusted_Supply_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Adjusted_Supply_Avg_Fields = {
+  __typename?: 'adjusted_supply_avg_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "adjusted_supply". All fields are combined with a logical 'AND'. */
+export type Adjusted_Supply_Bool_Exp = {
+  _and?: InputMaybe<Array<Adjusted_Supply_Bool_Exp>>;
+  _not?: InputMaybe<Adjusted_Supply_Bool_Exp>;
+  _or?: InputMaybe<Array<Adjusted_Supply_Bool_Exp>>;
+  height?: InputMaybe<Bigint_Comparison_Exp>;
+  value?: InputMaybe<Numeric_Comparison_Exp>;
+};
+
+/** aggregate max on columns */
+export type Adjusted_Supply_Max_Fields = {
+  __typename?: 'adjusted_supply_max_fields';
+  height?: Maybe<Scalars['bigint']>;
+  value?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate min on columns */
+export type Adjusted_Supply_Min_Fields = {
+  __typename?: 'adjusted_supply_min_fields';
+  height?: Maybe<Scalars['bigint']>;
+  value?: Maybe<Scalars['numeric']>;
+};
+
+/** Ordering options when selecting data from "adjusted_supply". */
+export type Adjusted_Supply_Order_By = {
+  height?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "adjusted_supply" */
+export enum Adjusted_Supply_Select_Column {
+  /** column name */
+  Height = 'height',
+  /** column name */
+  Value = 'value'
+}
+
+/** aggregate stddev on columns */
+export type Adjusted_Supply_Stddev_Fields = {
+  __typename?: 'adjusted_supply_stddev_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Adjusted_Supply_Stddev_Pop_Fields = {
+  __typename?: 'adjusted_supply_stddev_pop_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Adjusted_Supply_Stddev_Samp_Fields = {
+  __typename?: 'adjusted_supply_stddev_samp_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Adjusted_Supply_Sum_Fields = {
+  __typename?: 'adjusted_supply_sum_fields';
+  height?: Maybe<Scalars['bigint']>;
+  value?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate var_pop on columns */
+export type Adjusted_Supply_Var_Pop_Fields = {
+  __typename?: 'adjusted_supply_var_pop_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Adjusted_Supply_Var_Samp_Fields = {
+  __typename?: 'adjusted_supply_var_samp_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Adjusted_Supply_Variance_Fields = {
+  __typename?: 'adjusted_supply_variance_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "apr" */
+export type Apr = {
+  __typename?: 'apr';
+  height: Scalars['bigint'];
+  value: Scalars['numeric'];
+};
+
+/** aggregated selection of "apr" */
+export type Apr_Aggregate = {
+  __typename?: 'apr_aggregate';
+  aggregate?: Maybe<Apr_Aggregate_Fields>;
+  nodes: Array<Apr>;
+};
+
+/** aggregate fields of "apr" */
+export type Apr_Aggregate_Fields = {
+  __typename?: 'apr_aggregate_fields';
+  avg?: Maybe<Apr_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Apr_Max_Fields>;
+  min?: Maybe<Apr_Min_Fields>;
+  stddev?: Maybe<Apr_Stddev_Fields>;
+  stddev_pop?: Maybe<Apr_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Apr_Stddev_Samp_Fields>;
+  sum?: Maybe<Apr_Sum_Fields>;
+  var_pop?: Maybe<Apr_Var_Pop_Fields>;
+  var_samp?: Maybe<Apr_Var_Samp_Fields>;
+  variance?: Maybe<Apr_Variance_Fields>;
+};
+
+
+/** aggregate fields of "apr" */
+export type Apr_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Apr_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Apr_Avg_Fields = {
+  __typename?: 'apr_avg_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "apr". All fields are combined with a logical 'AND'. */
+export type Apr_Bool_Exp = {
+  _and?: InputMaybe<Array<Apr_Bool_Exp>>;
+  _not?: InputMaybe<Apr_Bool_Exp>;
+  _or?: InputMaybe<Array<Apr_Bool_Exp>>;
+  height?: InputMaybe<Bigint_Comparison_Exp>;
+  value?: InputMaybe<Numeric_Comparison_Exp>;
+};
+
+/** aggregate max on columns */
+export type Apr_Max_Fields = {
+  __typename?: 'apr_max_fields';
+  height?: Maybe<Scalars['bigint']>;
+  value?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate min on columns */
+export type Apr_Min_Fields = {
+  __typename?: 'apr_min_fields';
+  height?: Maybe<Scalars['bigint']>;
+  value?: Maybe<Scalars['numeric']>;
+};
+
+/** Ordering options when selecting data from "apr". */
+export type Apr_Order_By = {
+  height?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** select columns of table "apr" */
+export enum Apr_Select_Column {
+  /** column name */
+  Height = 'height',
+  /** column name */
+  Value = 'value'
+}
+
+/** aggregate stddev on columns */
+export type Apr_Stddev_Fields = {
+  __typename?: 'apr_stddev_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Apr_Stddev_Pop_Fields = {
+  __typename?: 'apr_stddev_pop_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Apr_Stddev_Samp_Fields = {
+  __typename?: 'apr_stddev_samp_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Apr_Sum_Fields = {
+  __typename?: 'apr_sum_fields';
+  height?: Maybe<Scalars['bigint']>;
+  value?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate var_pop on columns */
+export type Apr_Var_Pop_Fields = {
+  __typename?: 'apr_var_pop_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Apr_Var_Samp_Fields = {
+  __typename?: 'apr_var_samp_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Apr_Variance_Fields = {
+  __typename?: 'apr_variance_fields';
+  height?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "average_block_time_from_genesis" */
 export type Average_Block_Time_From_Genesis = {
   __typename?: 'average_block_time_from_genesis';
@@ -3576,7 +3836,7 @@ export type Gov_Params_Variance_Fields = {
 export type Gravity_Messages_By_Address_Args = {
   limit?: InputMaybe<Scalars['bigint']>;
   offset?: InputMaybe<Scalars['bigint']>;
-  receiver?: InputMaybe<Scalars['String']>;
+  receiver_addr?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "inflation" */
@@ -6190,6 +6450,14 @@ export type Query_Root = {
   action_validator_delegations?: Maybe<ActionDelegationResponse>;
   action_validator_redelegations_from?: Maybe<ActionRedelegationResponse>;
   action_validator_unbonding_delegations?: Maybe<ActionUnbondingDelegationResponse>;
+  /** fetch data from the table: "adjusted_supply" */
+  adjusted_supply: Array<Adjusted_Supply>;
+  /** fetch aggregated fields from the table: "adjusted_supply" */
+  adjusted_supply_aggregate: Adjusted_Supply_Aggregate;
+  /** fetch data from the table: "apr" */
+  apr: Array<Apr>;
+  /** fetch aggregated fields from the table: "apr" */
+  apr_aggregate: Apr_Aggregate;
   /** fetch data from the table: "average_block_time_from_genesis" */
   average_block_time_from_genesis: Array<Average_Block_Time_From_Genesis>;
   /** fetch aggregated fields from the table: "average_block_time_from_genesis" */
@@ -6256,8 +6524,6 @@ export type Query_Root = {
   delegation: Array<Delegation>;
   /** fetch aggregated fields from the table: "delegation" */
   delegation_aggregate: Delegation_Aggregate;
-  /** fetch data from the table: "delegation" using primary key columns */
-  delegation_by_pk?: Maybe<Delegation>;
   /** fetch data from the table: "distribution_params" */
   distribution_params: Array<Distribution_Params>;
   /** fetch aggregated fields from the table: "distribution_params" */
@@ -6566,6 +6832,42 @@ export type Query_RootAction_Validator_Unbonding_DelegationsArgs = {
 };
 
 
+export type Query_RootAdjusted_SupplyArgs = {
+  distinct_on?: InputMaybe<Array<Adjusted_Supply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Adjusted_Supply_Order_By>>;
+  where?: InputMaybe<Adjusted_Supply_Bool_Exp>;
+};
+
+
+export type Query_RootAdjusted_Supply_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Adjusted_Supply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Adjusted_Supply_Order_By>>;
+  where?: InputMaybe<Adjusted_Supply_Bool_Exp>;
+};
+
+
+export type Query_RootAprArgs = {
+  distinct_on?: InputMaybe<Array<Apr_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Apr_Order_By>>;
+  where?: InputMaybe<Apr_Bool_Exp>;
+};
+
+
+export type Query_RootApr_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Apr_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Apr_Order_By>>;
+  where?: InputMaybe<Apr_Bool_Exp>;
+};
+
+
 export type Query_RootAverage_Block_Time_From_GenesisArgs = {
   distinct_on?: InputMaybe<Array<Average_Block_Time_From_Genesis_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6838,12 +7140,6 @@ export type Query_RootDelegation_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Delegation_Order_By>>;
   where?: InputMaybe<Delegation_Bool_Exp>;
-};
-
-
-export type Query_RootDelegation_By_PkArgs = {
-  delegator_address: Scalars['String'];
-  validator_address: Scalars['String'];
 };
 
 
@@ -8072,6 +8368,14 @@ export type Subscription_Root = {
   account_aggregate: Account_Aggregate;
   /** fetch data from the table: "account" using primary key columns */
   account_by_pk?: Maybe<Account>;
+  /** fetch data from the table: "adjusted_supply" */
+  adjusted_supply: Array<Adjusted_Supply>;
+  /** fetch aggregated fields from the table: "adjusted_supply" */
+  adjusted_supply_aggregate: Adjusted_Supply_Aggregate;
+  /** fetch data from the table: "apr" */
+  apr: Array<Apr>;
+  /** fetch aggregated fields from the table: "apr" */
+  apr_aggregate: Apr_Aggregate;
   /** fetch data from the table: "average_block_time_from_genesis" */
   average_block_time_from_genesis: Array<Average_Block_Time_From_Genesis>;
   /** fetch aggregated fields from the table: "average_block_time_from_genesis" */
@@ -8138,8 +8442,6 @@ export type Subscription_Root = {
   delegation: Array<Delegation>;
   /** fetch aggregated fields from the table: "delegation" */
   delegation_aggregate: Delegation_Aggregate;
-  /** fetch data from the table: "delegation" using primary key columns */
-  delegation_by_pk?: Maybe<Delegation>;
   /** fetch data from the table: "distribution_params" */
   distribution_params: Array<Distribution_Params>;
   /** fetch aggregated fields from the table: "distribution_params" */
@@ -8359,6 +8661,42 @@ export type Subscription_RootAccount_AggregateArgs = {
 
 export type Subscription_RootAccount_By_PkArgs = {
   address: Scalars['String'];
+};
+
+
+export type Subscription_RootAdjusted_SupplyArgs = {
+  distinct_on?: InputMaybe<Array<Adjusted_Supply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Adjusted_Supply_Order_By>>;
+  where?: InputMaybe<Adjusted_Supply_Bool_Exp>;
+};
+
+
+export type Subscription_RootAdjusted_Supply_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Adjusted_Supply_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Adjusted_Supply_Order_By>>;
+  where?: InputMaybe<Adjusted_Supply_Bool_Exp>;
+};
+
+
+export type Subscription_RootAprArgs = {
+  distinct_on?: InputMaybe<Array<Apr_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Apr_Order_By>>;
+  where?: InputMaybe<Apr_Bool_Exp>;
+};
+
+
+export type Subscription_RootApr_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Apr_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Apr_Order_By>>;
+  where?: InputMaybe<Apr_Bool_Exp>;
 };
 
 
@@ -8634,12 +8972,6 @@ export type Subscription_RootDelegation_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Delegation_Order_By>>;
   where?: InputMaybe<Delegation_Bool_Exp>;
-};
-
-
-export type Subscription_RootDelegation_By_PkArgs = {
-  delegator_address: Scalars['String'];
-  validator_address: Scalars['String'];
 };
 
 
@@ -12904,6 +13236,34 @@ export type OnlineVotingPowerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type OnlineVotingPowerQuery = { activeTotal: { __typename?: 'validator_status_aggregate', aggregate?: { __typename?: 'validator_status_aggregate_fields', count: number } | null }, validatorVotingPowerAggregate: { __typename?: 'validator_voting_power_aggregate', aggregate?: { __typename?: 'validator_voting_power_aggregate_fields', sum?: { __typename?: 'validator_voting_power_sum_fields', votingPower?: any | null } | null } | null }, stakingPool: Array<{ __typename?: 'staking_pool', bonded: any }>, stakingParams: Array<{ __typename?: 'staking_params', params: any }> };
 
+export type ProposalDetailsQueryVariables = Exact<{
+  proposalId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ProposalDetailsQuery = { proposal: Array<{ __typename?: 'proposal', title: string, description: string, status?: string | null, content: any, proposer: string, proposalId: number, submitTime: any, depositEndTime?: any | null, votingStartTime?: any | null, votingEndTime?: any | null }> };
+
+export type ProposalDetailsTallyQueryVariables = Exact<{
+  proposalId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ProposalDetailsTallyQuery = { proposalTallyResult: Array<{ __typename?: 'proposal_tally_result', yes: string, no: string, abstain: string, noWithVeto: string }>, stakingPool: Array<{ __typename?: 'proposal_staking_pool_snapshot', bondedTokens: any }> };
+
+export type ProposalDetailsDepositsQueryVariables = Exact<{
+  proposalId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ProposalDetailsDepositsQuery = { proposalDeposit: Array<{ __typename?: 'proposal_deposit', amount?: any | null, depositorAddress?: string | null, block?: { __typename?: 'block', timestamp: any } | null }> };
+
+export type ProposalDetailsVotesQueryVariables = Exact<{
+  proposalId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ProposalDetailsVotesQuery = { proposalVote: Array<{ __typename?: 'proposal_vote', option: string, voterAddress: string }>, validatorStatuses: Array<{ __typename?: 'proposal_validator_status_snapshot', validator: { __typename?: 'validator', validatorInfo?: { __typename?: 'validator_info', selfDelegateAddress?: string | null } | null } }> };
+
 export type ProposalsListenerSubscriptionVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -13434,6 +13794,185 @@ export function useOnlineVotingPowerLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type OnlineVotingPowerQueryHookResult = ReturnType<typeof useOnlineVotingPowerQuery>;
 export type OnlineVotingPowerLazyQueryHookResult = ReturnType<typeof useOnlineVotingPowerLazyQuery>;
 export type OnlineVotingPowerQueryResult = Apollo.QueryResult<OnlineVotingPowerQuery, OnlineVotingPowerQueryVariables>;
+export const ProposalDetailsDocument = gql`
+    query ProposalDetails($proposalId: Int) {
+  proposal(where: {id: {_eq: $proposalId}}) {
+    proposer: proposer_address
+    title
+    description
+    status
+    content
+    proposalId: id
+    submitTime: submit_time
+    depositEndTime: deposit_end_time
+    votingStartTime: voting_start_time
+    votingEndTime: voting_end_time
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsQuery__
+ *
+ * To run a query within a React component, call `useProposalDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsQuery({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsQuery(baseOptions?: Apollo.QueryHookOptions<ProposalDetailsQuery, ProposalDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProposalDetailsQuery, ProposalDetailsQueryVariables>(ProposalDetailsDocument, options);
+      }
+export function useProposalDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProposalDetailsQuery, ProposalDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProposalDetailsQuery, ProposalDetailsQueryVariables>(ProposalDetailsDocument, options);
+        }
+export type ProposalDetailsQueryHookResult = ReturnType<typeof useProposalDetailsQuery>;
+export type ProposalDetailsLazyQueryHookResult = ReturnType<typeof useProposalDetailsLazyQuery>;
+export type ProposalDetailsQueryResult = Apollo.QueryResult<ProposalDetailsQuery, ProposalDetailsQueryVariables>;
+export const ProposalDetailsTallyDocument = gql`
+    query ProposalDetailsTally($proposalId: Int) {
+  proposalTallyResult: proposal_tally_result(
+    where: {proposal_id: {_eq: $proposalId}}
+  ) {
+    yes
+    no
+    noWithVeto: no_with_veto
+    abstain
+  }
+  stakingPool: proposal_staking_pool_snapshot(
+    where: {proposal_id: {_eq: $proposalId}}
+  ) {
+    bondedTokens: bonded_tokens
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsTallyQuery__
+ *
+ * To run a query within a React component, call `useProposalDetailsTallyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsTallyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsTallyQuery({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsTallyQuery(baseOptions?: Apollo.QueryHookOptions<ProposalDetailsTallyQuery, ProposalDetailsTallyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProposalDetailsTallyQuery, ProposalDetailsTallyQueryVariables>(ProposalDetailsTallyDocument, options);
+      }
+export function useProposalDetailsTallyLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProposalDetailsTallyQuery, ProposalDetailsTallyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProposalDetailsTallyQuery, ProposalDetailsTallyQueryVariables>(ProposalDetailsTallyDocument, options);
+        }
+export type ProposalDetailsTallyQueryHookResult = ReturnType<typeof useProposalDetailsTallyQuery>;
+export type ProposalDetailsTallyLazyQueryHookResult = ReturnType<typeof useProposalDetailsTallyLazyQuery>;
+export type ProposalDetailsTallyQueryResult = Apollo.QueryResult<ProposalDetailsTallyQuery, ProposalDetailsTallyQueryVariables>;
+export const ProposalDetailsDepositsDocument = gql`
+    query ProposalDetailsDeposits($proposalId: Int) {
+  proposalDeposit: proposal_deposit(
+    where: {proposal_id: {_eq: $proposalId}}
+    order_by: {height: desc}
+  ) {
+    amount
+    depositorAddress: depositor_address
+    block {
+      timestamp
+    }
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsDepositsQuery__
+ *
+ * To run a query within a React component, call `useProposalDetailsDepositsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsDepositsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsDepositsQuery({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsDepositsQuery(baseOptions?: Apollo.QueryHookOptions<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>(ProposalDetailsDepositsDocument, options);
+      }
+export function useProposalDetailsDepositsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>(ProposalDetailsDepositsDocument, options);
+        }
+export type ProposalDetailsDepositsQueryHookResult = ReturnType<typeof useProposalDetailsDepositsQuery>;
+export type ProposalDetailsDepositsLazyQueryHookResult = ReturnType<typeof useProposalDetailsDepositsLazyQuery>;
+export type ProposalDetailsDepositsQueryResult = Apollo.QueryResult<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>;
+export const ProposalDetailsVotesDocument = gql`
+    query ProposalDetailsVotes($proposalId: Int) {
+  proposalVote: proposal_vote(
+    where: {proposal_id: {_eq: $proposalId}}
+    order_by: {height: desc}
+  ) {
+    option
+    voterAddress: voter_address
+  }
+  validatorStatuses: proposal_validator_status_snapshot(
+    where: {proposal_id: {_eq: $proposalId}, status: {_eq: 3}}
+  ) {
+    validator {
+      validatorInfo: validator_info {
+        selfDelegateAddress: self_delegate_address
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsVotesQuery__
+ *
+ * To run a query within a React component, call `useProposalDetailsVotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsVotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsVotesQuery({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsVotesQuery(baseOptions?: Apollo.QueryHookOptions<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>(ProposalDetailsVotesDocument, options);
+      }
+export function useProposalDetailsVotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>(ProposalDetailsVotesDocument, options);
+        }
+export type ProposalDetailsVotesQueryHookResult = ReturnType<typeof useProposalDetailsVotesQuery>;
+export type ProposalDetailsVotesLazyQueryHookResult = ReturnType<typeof useProposalDetailsVotesLazyQuery>;
+export type ProposalDetailsVotesQueryResult = Apollo.QueryResult<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>;
 export const ProposalsListenerDocument = gql`
     subscription ProposalsListener($limit: Int = 7, $offset: Int = 0) {
   proposals: proposal(limit: $limit, offset: $offset, order_by: {id: desc}) {
