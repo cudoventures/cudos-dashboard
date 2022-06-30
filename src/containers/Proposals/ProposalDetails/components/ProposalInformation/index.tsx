@@ -8,7 +8,6 @@ import { RootState } from 'store'
 import { DepositStatus } from 'store/depositModal'
 import { formatAddress, formatDateTime } from 'utils/projectUtils'
 import { VotingStatus } from 'store/votingModal'
-import { useProposals } from 'containers/Proposals/hooks'
 import { proposalStatus } from 'containers/Proposals/proposalStatus'
 import { proposalType } from 'containers/Proposals/proposalType'
 import useVotingModal from '../../../components/VotingModal/hooks'
@@ -17,8 +16,7 @@ import useDepositModal from '../../../components/DepositModal/hooks'
 import { styles } from '../../../styles'
 
 const ProposalInformation = () => {
-  useProposals()
-  const proposalState = useSelector((state: RootState) => state.proposalDetails)
+  const { overview } = useSelector((state: RootState) => state.proposalDetails)
   const { handleModal: handleVotingModal } = useVotingModal()
   const { handleModal: handleDepositModal } = useDepositModal()
 
@@ -34,20 +32,19 @@ const ProposalInformation = () => {
       <Box sx={{ position: 'relative' }}>
         <Box sx={{ position: 'absolute' }}>
           <Typography color="text.secondary" sx={styles.cardEnumeration}>
-            {`#${proposalState.id}`}
+            {`#${overview.id}`}
           </Typography>
         </Box>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'space-between',
-            cursor: 'pointer'
+            justifyContent: 'space-between'
           }}
         >
           <Box sx={{ display: 'flex' }}>
-            <Typography sx={styles.cardTitle}>{proposalState.title}</Typography>
+            <Typography sx={styles.cardTitle}>{overview.title}</Typography>
           </Box>
-          {proposalState.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
+          {overview.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
             <Box sx={{ position: 'relevant' }}>
               <Box>
                 <Button
@@ -57,8 +54,8 @@ const ProposalInformation = () => {
                     handleVotingModal({
                       open: true,
                       status: VotingStatus.VOTE,
-                      id: proposalState.id,
-                      title: proposalState.title,
+                      id: overview.id,
+                      title: overview.title,
                       fee: new BigNumber(0)
                     })
                   }
@@ -81,8 +78,8 @@ const ProposalInformation = () => {
                     handleDepositModal({
                       open: true,
                       status: DepositStatus.DEPOSIT,
-                      id: proposalState.id,
-                      title: proposalState.title,
+                      id: overview.id,
+                      title: overview.title,
                       amount: '',
                       fee: new BigNumber(0)
                     })
@@ -94,7 +91,7 @@ const ProposalInformation = () => {
               </Box>
             </Box>
           ) : null}
-          {proposalState.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? (
+          {overview.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? (
             <Box>
               <Button
                 variant="contained"
@@ -109,8 +106,8 @@ const ProposalInformation = () => {
                   handleDepositModal({
                     open: true,
                     status: DepositStatus.DEPOSIT,
-                    id: proposalState.id,
-                    title: proposalState.title,
+                    id: overview.id,
+                    title: overview.title,
                     amount: '',
                     fee: new BigNumber(0)
                   })
@@ -123,7 +120,7 @@ const ProposalInformation = () => {
           ) : null}
         </Box>
         <Box color="text.secondary" sx={styles.proposalContent}>
-          <Typography>Description</Typography>
+          <Typography>{overview.description}</Typography>
         </Box>
         <Box sx={{ display: 'flex', width: '100%' }}>
           <Box
@@ -144,7 +141,9 @@ const ProposalInformation = () => {
               </Typography>
               <Box>
                 <Typography color="text.secondary" sx={styles.proposerAddress}>
-                  {proposalType(proposalState.proposalType)}
+                  {overview.content['@type'].length
+                    ? proposalType(overview.content['@type'])
+                    : null}
                 </Typography>
               </Box>
             </Box>
@@ -159,11 +158,9 @@ const ProposalInformation = () => {
               </Typography>
               <Box>
                 <Typography color="primary.main" sx={styles.proposerAddress}>
-                  {formatAddress(proposalState.proposerAddress, 18)}
+                  {formatAddress(overview.proposer, 18)}
                   <Tooltip
-                    onClick={() =>
-                      handleExplorer(proposalState.proposerAddress)
-                    }
+                    onClick={() => handleExplorer(overview.proposer)}
                     title="Go to Explorer"
                   >
                     <img
@@ -184,7 +181,7 @@ const ProposalInformation = () => {
               >
                 Status
               </Typography>
-              <Box>{proposalStatus(proposalState.status)}</Box>
+              <Box>{proposalStatus(overview.status)}</Box>
             </Box>
           </Box>
         </Box>
@@ -205,7 +202,7 @@ const ProposalInformation = () => {
               width: '100%'
             }}
           >
-            <Box sx={{ flex: '0 0 65%' }}>
+            <Box sx={{ flex: '0 0 15%' }}>
               <Typography
                 sx={{
                   fontSize: '14px'
@@ -214,10 +211,22 @@ const ProposalInformation = () => {
                 Submit Time
               </Typography>
               <Typography color="text.secondary" sx={styles.timeStyle}>
-                {formatDateTime(proposalState.submitTime)}
+                {formatDateTime(overview.submitTime)}
               </Typography>
             </Box>
-            {proposalState.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
+            <Box sx={{ flex: '0 0 55%' }}>
+              <Typography
+                sx={{
+                  fontSize: '14px'
+                }}
+              >
+                Deposit End Time
+              </Typography>
+              <Typography color="text.secondary" sx={styles.timeStyle}>
+                {formatDateTime(overview.depositEndTime)}
+              </Typography>
+            </Box>
+            {overview.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
               <>
                 <Box sx={{ flex: '0 1 20%' }}>
                   <Typography
@@ -228,7 +237,7 @@ const ProposalInformation = () => {
                     Voting Start Time
                   </Typography>
                   <Typography color="text.secondary" sx={styles.timeStyle}>
-                    {formatDateTime(proposalState.votingStartTime)}
+                    {formatDateTime(overview.votingStartTime)}
                   </Typography>
                 </Box>
                 <Box sx={{ flex: '0 1 20%' }}>
@@ -240,7 +249,7 @@ const ProposalInformation = () => {
                     Voting End Time
                   </Typography>
                   <Typography color="text.secondary" sx={styles.timeStyle}>
-                    {formatDateTime(proposalState.votingEndTime)}
+                    {formatDateTime(overview.votingEndTime)}
                   </Typography>
                 </Box>
               </>

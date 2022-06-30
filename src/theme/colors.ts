@@ -35,3 +35,14 @@ export const STATUSES = {
   UNBONDING: '#E79720',
   UNBONDED: '#E8E8E8'
 }
+
+export const CHART_COLORS = {
+  GREEN_GRADIENT: 'linear-gradient(to right,#69DBA6, #65B48F)',
+  ORANGE_GRADIENT: 'linear-gradient(to right,#F5B95E, #E89518)',
+  RED_GRADIENT: 'linear-gradient(to right,#EA6161, #EA6161)',
+  PURPLE_GRADIENT: 'linear-gradient(to right,#9646F9, #9646F9)',
+  GREEN: '#65B48F',
+  ORANGE: '#E89518',
+  RED: '#EA6161',
+  PURPLE: '#9646F9'
+}

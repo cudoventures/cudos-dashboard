@@ -2,26 +2,89 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export type ProposalDetailsState = {
   id: number
-  title: string
-  description: string
-  status: string
-  proposalType: string
-  proposerAddress: string
-  submitTime: string
-  votingEndTime: string
-  votingStartTime: string
+  votes: VotesType
+  bonded: TokenUnit
+  overview: VoteDetails
 }
 
-const initialState: ProposalDetailsState = {
+export type VotesType = {
+  yes: TokenUnit
+  no: TokenUnit
+  abstain: TokenUnit
+  veto: TokenUnit
+}
+export type VotesGraphState = {
+  votes: VotesType
+  bonded: TokenUnit
+}
+
+export type VoteDetails = {
+  proposer: string
+  content: {
+    ['@type']: string
+    title: string
+    description: string
+  }
+  title: string
+  id: number
+  description: string
+  status: string
+  submitTime: string
+  depositEndTime: string
+  votingStartTime: string
+  votingEndTime: string
+}
+
+export const initialState: ProposalDetailsState = {
   id: 0,
-  title: '',
-  description: '',
-  status: '',
-  proposalType: '',
-  proposerAddress: '',
-  submitTime: '',
-  votingEndTime: '',
-  votingStartTime: ''
+  overview: {
+    proposer: '',
+    content: {
+      '@type': '',
+      title: '',
+      description: ''
+    },
+    title: '',
+    id: 0,
+    description: '',
+    status: '',
+    submitTime: '',
+    depositEndTime: '',
+    votingStartTime: '',
+    votingEndTime: ''
+  },
+  votes: {
+    yes: {
+      displayDenom: '',
+      baseDenom: '',
+      exponent: 0,
+      value: ''
+    },
+    no: {
+      displayDenom: '',
+      baseDenom: '',
+      exponent: 0,
+      value: ''
+    },
+    abstain: {
+      displayDenom: '',
+      baseDenom: '',
+      exponent: 0,
+      value: ''
+    },
+    veto: {
+      displayDenom: '',
+      baseDenom: '',
+      exponent: 0,
+      value: ''
+    }
+  },
+  bonded: {
+    value: '',
+    displayDenom: '',
+    baseDenom: '',
+    exponent: 0
+  }
 }
 
 export const proposalDetailsSlice = createSlice({

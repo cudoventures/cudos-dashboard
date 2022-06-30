@@ -1,4 +1,11 @@
-import { Box, InputAdornment, Typography, Chip, Button } from '@mui/material'
+import {
+  Box,
+  InputAdornment,
+  Typography,
+  Chip,
+  Button,
+  CircularProgress
+} from '@mui/material'
 import Card from 'components/Card'
 import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
@@ -10,11 +17,13 @@ import ProposalModal from './components/ProposalModal'
 import DepositModal from './components/DepositModal'
 import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
+import { useProposals } from './hooks'
 
 import { InputContainer, styles } from './styles'
 import Proposal from './Proposal'
 
 const Proposals = () => {
+  useProposals()
   const { handleModal } = useModal()
   const proposalState = useSelector((state: RootState) => state.proposals)
 
@@ -83,7 +92,13 @@ const Proposals = () => {
           </Box>
         </Box>
         <Box>
-          <Proposal />
+          {!proposalState.items.length ? (
+            <Box sx={styles.circularProgress}>
+              <CircularProgress size={60} />
+            </Box>
+          ) : (
+            <Proposal />
+          )}
         </Box>
       </Card>
       <ProposalModal />

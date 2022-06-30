@@ -6,7 +6,7 @@ generates:
   ./src/graphql/types.tsx:
     documents:
       - './src/**/*.graphql'
-    schema: http://34.71.229.165:8080/v1/graphql
+    schema: https://explorer-gql.testnet.cudos.org/v1/graphql
     plugins:
       - 'typescript'
       - 'typescript-operations'

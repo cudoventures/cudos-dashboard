@@ -125,14 +125,7 @@ const LatestActivity = () => {
 
   const noActivity =
     loading && !hasActivity ? (
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      >
+      <Box sx={styles.circularProgress}>
         <CircularProgress size={60} />
       </Box>
     ) : (

@@ -38,7 +38,7 @@ export const useProposals = () => {
 
   const proposalQuery = useProposalsListenerSubscription({
     variables: {
-      limit: 50,
+      limit: 150,
       offset: 0
     },
     onSubscriptionData: (data) => {

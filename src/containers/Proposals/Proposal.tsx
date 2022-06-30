@@ -14,11 +14,9 @@ import { updateProposalDetails } from 'store/proposalDetails'
 import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { styles } from './styles'
-import { useProposals } from './hooks'
 import { proposalStatus } from './proposalStatus'
 
 const Proposal = () => {
-  useProposals()
   const proposalState = useSelector((state: RootState) => state.proposals)
   const { handleModal: handleVotingModal } = useVotingModal()
   const { handleModal: handleDepositModal } = useDepositModal()
@@ -33,7 +31,7 @@ const Proposal = () => {
   }
 
   const handleProposalDetails = (proposalObj: ProposalType) => {
-    dispatch(updateProposalDetails(proposalObj))
+    dispatch(updateProposalDetails({ id: proposalObj.id }))
     navigate(`/proposals/${proposalObj.id}`)
   }
 

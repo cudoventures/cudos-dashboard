@@ -1,18 +1,18 @@
 export const proposalType = (type: string) => {
   switch (type) {
-    case 'Text':
+    case '/cosmos.gov.v1beta1.TextProposal':
       return 'Text'
-    case 'CommunityPoolSpend':
+    case '/cosmos.distribution.v1beta1.CommunityPoolSpendProposal':
       return 'Community Pool Spend'
-    case 'IBCUpgrade':
+    case '/ibc.core.client.v1.UpgradeProposal':
       return 'IBC Upgrade'
-    case 'ClientUpdate':
+    case '/ibc.core.client.v1.ClientUpdateProposal':
       return 'Client Update'
-    case 'SoftwareUpgrade':
+    case '/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal':
       return 'Software Upgrade'
-    case 'CancelSoftwareUpgrade':
+    case '/cosmos.upgrade.v1beta1.CancelSoftwareUpgradeProposal':
       return 'Cancel Software Upgrade'
-    case 'ParameterChange':
+    case '/cosmos.params.v1beta1.ParameterChangeProposal':
       return 'Parameter Change'
     default:
       return {}
