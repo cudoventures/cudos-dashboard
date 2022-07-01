@@ -48,13 +48,12 @@ const Proposal = () => {
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                cursor: 'pointer'
+                justifyContent: 'space-between'
               }}
             >
               <Box
                 onClick={() => handleProposalDetails(proposal)}
-                sx={{ display: 'flex' }}
+                sx={{ display: 'flex', cursor: 'pointer' }}
               >
                 <Typography sx={styles.cardTitle}>{proposal.title}</Typography>
               </Box>
