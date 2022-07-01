@@ -9,7 +9,7 @@ import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import moment from 'moment'
 import Table from 'components/Table'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
-import { defaultMessages } from 'ledgers/utils'
+import { defaultMessages, unknownMessage } from 'ledgers/utils'
 import numeral from 'numeral'
 import { columns } from './utils'
 
@@ -39,7 +39,8 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
   const formattedItems = data.map((tx, idx) => {
     const txType: string = tx.messages.items[0]['@type']
     const filter: string = tx.messages.items[0]['@type'].split('/').pop()
-    const txBadge = defaultMessages[txType as keyof typeof defaultMessages]
+    const txBadge =
+      defaultMessages[txType as keyof typeof defaultMessages] || unknownMessage
 
     return {
       idx,

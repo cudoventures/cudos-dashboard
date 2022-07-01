@@ -13808,6 +13808,7 @@ export function useOnlineVotingPowerLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type OnlineVotingPowerQueryHookResult = ReturnType<typeof useOnlineVotingPowerQuery>;
 export type OnlineVotingPowerLazyQueryHookResult = ReturnType<typeof useOnlineVotingPowerLazyQuery>;
 export type OnlineVotingPowerQueryResult = Apollo.QueryResult<OnlineVotingPowerQuery, OnlineVotingPowerQueryVariables>;
+
 export const ProposalDetailsSubDocument = gql`
     subscription ProposalDetailsSub($proposalId: Int) {
   proposal(where: {id: {_eq: $proposalId}}) {
@@ -13847,6 +13848,7 @@ export function useProposalDetailsSubSubscription(baseOptions?: Apollo.Subscript
       }
 export type ProposalDetailsSubSubscriptionHookResult = ReturnType<typeof useProposalDetailsSubSubscription>;
 export type ProposalDetailsSubSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsSubSubscription>;
+
 export const ProposalDetailsDocument = gql`
     query ProposalDetails($proposalId: Int) {
   proposal(where: {id: {_eq: $proposalId}}) {
@@ -13891,6 +13893,7 @@ export function useProposalDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ProposalDetailsQueryHookResult = ReturnType<typeof useProposalDetailsQuery>;
 export type ProposalDetailsLazyQueryHookResult = ReturnType<typeof useProposalDetailsLazyQuery>;
 export type ProposalDetailsQueryResult = Apollo.QueryResult<ProposalDetailsQuery, ProposalDetailsQueryVariables>;
+
 export const ProposalDetailsTallySubscriptionDocument = gql`
     subscription ProposalDetailsTallySubscription($proposalId: Int) {
   proposalTallyResult: proposal_tally_result(
@@ -13926,6 +13929,7 @@ export function useProposalDetailsTallySubscriptionSubscription(baseOptions?: Ap
       }
 export type ProposalDetailsTallySubscriptionSubscriptionHookResult = ReturnType<typeof useProposalDetailsTallySubscriptionSubscription>;
 export type ProposalDetailsTallySubscriptionSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsTallySubscriptionSubscription>;
+
 export const ProposalDetailsTallyDocument = gql`
     query ProposalDetailsTally($proposalId: Int) {
   proposalTallyResult: proposal_tally_result(
