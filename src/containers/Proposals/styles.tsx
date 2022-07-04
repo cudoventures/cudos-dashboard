@@ -58,6 +58,12 @@ export const styles: SxMap = {
     width: '50%',
     fontWeight: '400'
   },
+  votingSectionContent: {
+    display: 'flex',
+    marginLeft: '50px',
+    width: '50%',
+    fontWeight: '400'
+  },
   statusBox: ({ palette }) => ({
     marginTop: '5px',
     borderRadius: '10px',
@@ -117,5 +123,16 @@ export const styles: SxMap = {
     width: '199px',
     boxShadow: 'none',
     fontWeight: '600'
-  })
+  }),
+  votingOptions: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '12px'
+  },
+  circularProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  }
 } as const

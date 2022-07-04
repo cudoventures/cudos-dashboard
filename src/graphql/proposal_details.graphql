@@ -1,3 +1,18 @@
+subscription ProposalDetailsSub($proposalId: Int) {
+  proposal(where: {id: {_eq: $proposalId}}) {
+    proposer: proposer_address
+    title
+    description
+    status
+    content
+    proposalId: id
+    submitTime: submit_time
+    depositEndTime: deposit_end_time
+    votingStartTime: voting_start_time
+    votingEndTime: voting_end_time
+  }
+}
+
 query ProposalDetails($proposalId: Int) {
   proposal(where: {id: {_eq: $proposalId}}) {
     proposer: proposer_address
@@ -10,6 +25,15 @@ query ProposalDetails($proposalId: Int) {
     depositEndTime: deposit_end_time
     votingStartTime: voting_start_time
     votingEndTime: voting_end_time
+  }
+}
+
+subscription ProposalDetailsTallySubscription($proposalId: Int) {
+	proposalTallyResult: proposal_tally_result(where: {proposal_id: {_eq: $proposalId}}) {
+    yes
+    no
+    noWithVeto: no_with_veto
+    abstain
   }
 }
 

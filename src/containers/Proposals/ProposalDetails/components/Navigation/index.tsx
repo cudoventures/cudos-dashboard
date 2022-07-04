@@ -2,6 +2,8 @@ import { Box, Breadcrumbs, Button, Typography } from '@mui/material'
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useNavigate } from 'react-router-dom'
+import { initialState, updateProposalDetails } from 'store/proposalDetails'
+import { useDispatch } from 'react-redux'
 import { styles } from './styles'
 
 const breadcrumbs = [
@@ -15,6 +17,12 @@ const breadcrumbs = [
 
 const Navigation = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleBackButton = () => {
+    dispatch(updateProposalDetails(initialState))
+    navigate('/proposals')
+  }
 
   return (
     <Box sx={styles.navigationContainer}>
@@ -23,7 +31,7 @@ const Navigation = () => {
         color="secondary"
         size="small"
         sx={{ width: '92px', height: '34px', fontWeight: 700 }}
-        onClick={() => navigate('/proposals')}
+        onClick={() => handleBackButton()}
         startIcon={<ArrowBackRoundedIcon fontSize="small" />}
       >
         Back

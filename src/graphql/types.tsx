@@ -13236,12 +13236,26 @@ export type OnlineVotingPowerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type OnlineVotingPowerQuery = { activeTotal: { __typename?: 'validator_status_aggregate', aggregate?: { __typename?: 'validator_status_aggregate_fields', count: number } | null }, validatorVotingPowerAggregate: { __typename?: 'validator_voting_power_aggregate', aggregate?: { __typename?: 'validator_voting_power_aggregate_fields', sum?: { __typename?: 'validator_voting_power_sum_fields', votingPower?: any | null } | null } | null }, stakingPool: Array<{ __typename?: 'staking_pool', bonded: any }>, stakingParams: Array<{ __typename?: 'staking_params', params: any }> };
 
+export type ProposalDetailsSubSubscriptionVariables = Exact<{
+  proposalId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ProposalDetailsSubSubscription = { proposal: Array<{ __typename?: 'proposal', title: string, description: string, status?: string | null, content: any, proposer: string, proposalId: number, submitTime: any, depositEndTime?: any | null, votingStartTime?: any | null, votingEndTime?: any | null }> };
+
 export type ProposalDetailsQueryVariables = Exact<{
   proposalId?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type ProposalDetailsQuery = { proposal: Array<{ __typename?: 'proposal', title: string, description: string, status?: string | null, content: any, proposer: string, proposalId: number, submitTime: any, depositEndTime?: any | null, votingStartTime?: any | null, votingEndTime?: any | null }> };
+
+export type ProposalDetailsTallySubscriptionSubscriptionVariables = Exact<{
+  proposalId?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type ProposalDetailsTallySubscriptionSubscription = { proposalTallyResult: Array<{ __typename?: 'proposal_tally_result', yes: string, no: string, abstain: string, noWithVeto: string }> };
 
 export type ProposalDetailsTallyQueryVariables = Exact<{
   proposalId?: InputMaybe<Scalars['Int']>;
@@ -13794,6 +13808,47 @@ export function useOnlineVotingPowerLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type OnlineVotingPowerQueryHookResult = ReturnType<typeof useOnlineVotingPowerQuery>;
 export type OnlineVotingPowerLazyQueryHookResult = ReturnType<typeof useOnlineVotingPowerLazyQuery>;
 export type OnlineVotingPowerQueryResult = Apollo.QueryResult<OnlineVotingPowerQuery, OnlineVotingPowerQueryVariables>;
+
+export const ProposalDetailsSubDocument = gql`
+    subscription ProposalDetailsSub($proposalId: Int) {
+  proposal(where: {id: {_eq: $proposalId}}) {
+    proposer: proposer_address
+    title
+    description
+    status
+    content
+    proposalId: id
+    submitTime: submit_time
+    depositEndTime: deposit_end_time
+    votingStartTime: voting_start_time
+    votingEndTime: voting_end_time
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsSubSubscription__
+ *
+ * To run a query within a React component, call `useProposalDetailsSubSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsSubSubscription({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsSubSubscription(baseOptions?: Apollo.SubscriptionHookOptions<ProposalDetailsSubSubscription, ProposalDetailsSubSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ProposalDetailsSubSubscription, ProposalDetailsSubSubscriptionVariables>(ProposalDetailsSubDocument, options);
+      }
+export type ProposalDetailsSubSubscriptionHookResult = ReturnType<typeof useProposalDetailsSubSubscription>;
+export type ProposalDetailsSubSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsSubSubscription>;
+
 export const ProposalDetailsDocument = gql`
     query ProposalDetails($proposalId: Int) {
   proposal(where: {id: {_eq: $proposalId}}) {
@@ -13838,6 +13893,43 @@ export function useProposalDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ProposalDetailsQueryHookResult = ReturnType<typeof useProposalDetailsQuery>;
 export type ProposalDetailsLazyQueryHookResult = ReturnType<typeof useProposalDetailsLazyQuery>;
 export type ProposalDetailsQueryResult = Apollo.QueryResult<ProposalDetailsQuery, ProposalDetailsQueryVariables>;
+
+export const ProposalDetailsTallySubscriptionDocument = gql`
+    subscription ProposalDetailsTallySubscription($proposalId: Int) {
+  proposalTallyResult: proposal_tally_result(
+    where: {proposal_id: {_eq: $proposalId}}
+  ) {
+    yes
+    no
+    noWithVeto: no_with_veto
+    abstain
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsTallySubscriptionSubscription__
+ *
+ * To run a query within a React component, call `useProposalDetailsTallySubscriptionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsTallySubscriptionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsTallySubscriptionSubscription({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsTallySubscriptionSubscription(baseOptions?: Apollo.SubscriptionHookOptions<ProposalDetailsTallySubscriptionSubscription, ProposalDetailsTallySubscriptionSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ProposalDetailsTallySubscriptionSubscription, ProposalDetailsTallySubscriptionSubscriptionVariables>(ProposalDetailsTallySubscriptionDocument, options);
+      }
+export type ProposalDetailsTallySubscriptionSubscriptionHookResult = ReturnType<typeof useProposalDetailsTallySubscriptionSubscription>;
+export type ProposalDetailsTallySubscriptionSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsTallySubscriptionSubscription>;
+
 export const ProposalDetailsTallyDocument = gql`
     query ProposalDetailsTally($proposalId: Int) {
   proposalTallyResult: proposal_tally_result(
