@@ -7,6 +7,7 @@ import VotingModal from '../components/VotingModal'
 import DepositModal from '../components/DepositModal'
 import ProposalInformation from './components/ProposalInformation'
 import ProposalVoting from './components/ProposalVoting'
+import VotingStatistics from './components/VotingStatistics'
 import { useVotesGraph } from './components/ProposalVoting/hooks'
 import { useProposalDetails } from './hooks'
 
@@ -19,7 +20,7 @@ const ProposalDetails = () => {
   return (
     <>
       <Fade in timeout={500}>
-        <Box>
+        <Box display="flex" flexDirection="column" gap={2}>
           <Navigation />
           {!overview.content['@type'] ? (
             <Box
@@ -36,6 +37,7 @@ const ProposalDetails = () => {
             <>
               <ProposalInformation />
               <ProposalVoting />
+              <VotingStatistics />
             </>
           )}
         </Box>

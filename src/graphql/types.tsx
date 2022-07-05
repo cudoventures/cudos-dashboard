@@ -13264,19 +13264,19 @@ export type ProposalDetailsTallyQueryVariables = Exact<{
 
 export type ProposalDetailsTallyQuery = { proposalTallyResult: Array<{ __typename?: 'proposal_tally_result', yes: string, no: string, abstain: string, noWithVeto: string }>, stakingPool: Array<{ __typename?: 'proposal_staking_pool_snapshot', bondedTokens: any }> };
 
-export type ProposalDetailsDepositsQueryVariables = Exact<{
+export type ProposalDetailsDepositsSubscriptionVariables = Exact<{
   proposalId?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type ProposalDetailsDepositsQuery = { proposalDeposit: Array<{ __typename?: 'proposal_deposit', amount?: any | null, depositorAddress?: string | null, block?: { __typename?: 'block', timestamp: any } | null }> };
+export type ProposalDetailsDepositsSubscription = { proposalDeposit: Array<{ __typename?: 'proposal_deposit', amount?: any | null, depositorAddress?: string | null, block?: { __typename?: 'block', timestamp: any } | null, depositor?: { __typename?: 'account', validator_infos: Array<{ __typename?: 'validator_info', operator_address: string, validator: { __typename?: 'validator', validator_descriptions: Array<{ __typename?: 'validator_description', avatar_url?: string | null, moniker?: string | null }> } }> } | null }> };
 
-export type ProposalDetailsVotesQueryVariables = Exact<{
+export type ProposalDetailsVotesSubscriptionVariables = Exact<{
   proposalId?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type ProposalDetailsVotesQuery = { proposalVote: Array<{ __typename?: 'proposal_vote', option: string, voterAddress: string }>, validatorStatuses: Array<{ __typename?: 'proposal_validator_status_snapshot', validator: { __typename?: 'validator', validatorInfo?: { __typename?: 'validator_info', selfDelegateAddress?: string | null } | null } }> };
+export type ProposalDetailsVotesSubscription = { proposalVote: Array<{ __typename?: 'proposal_vote', option: string, voterAddress: string, account: { __typename?: 'account', validator_infos: Array<{ __typename?: 'validator_info', operator_address: string, validator: { __typename?: 'validator', validator_descriptions: Array<{ __typename?: 'validator_description', avatar_url?: string | null, moniker?: string | null }> } }> } }> };
 
 export type ProposalsListenerSubscriptionVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -13808,7 +13808,6 @@ export function useOnlineVotingPowerLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type OnlineVotingPowerQueryHookResult = ReturnType<typeof useOnlineVotingPowerQuery>;
 export type OnlineVotingPowerLazyQueryHookResult = ReturnType<typeof useOnlineVotingPowerLazyQuery>;
 export type OnlineVotingPowerQueryResult = Apollo.QueryResult<OnlineVotingPowerQuery, OnlineVotingPowerQueryVariables>;
-
 export const ProposalDetailsSubDocument = gql`
     subscription ProposalDetailsSub($proposalId: Int) {
   proposal(where: {id: {_eq: $proposalId}}) {
@@ -13848,7 +13847,6 @@ export function useProposalDetailsSubSubscription(baseOptions?: Apollo.Subscript
       }
 export type ProposalDetailsSubSubscriptionHookResult = ReturnType<typeof useProposalDetailsSubSubscription>;
 export type ProposalDetailsSubSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsSubSubscription>;
-
 export const ProposalDetailsDocument = gql`
     query ProposalDetails($proposalId: Int) {
   proposal(where: {id: {_eq: $proposalId}}) {
@@ -13893,7 +13891,6 @@ export function useProposalDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ProposalDetailsQueryHookResult = ReturnType<typeof useProposalDetailsQuery>;
 export type ProposalDetailsLazyQueryHookResult = ReturnType<typeof useProposalDetailsLazyQuery>;
 export type ProposalDetailsQueryResult = Apollo.QueryResult<ProposalDetailsQuery, ProposalDetailsQueryVariables>;
-
 export const ProposalDetailsTallySubscriptionDocument = gql`
     subscription ProposalDetailsTallySubscription($proposalId: Int) {
   proposalTallyResult: proposal_tally_result(
@@ -13929,7 +13926,6 @@ export function useProposalDetailsTallySubscriptionSubscription(baseOptions?: Ap
       }
 export type ProposalDetailsTallySubscriptionSubscriptionHookResult = ReturnType<typeof useProposalDetailsTallySubscriptionSubscription>;
 export type ProposalDetailsTallySubscriptionSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsTallySubscriptionSubscription>;
-
 export const ProposalDetailsTallyDocument = gql`
     query ProposalDetailsTally($proposalId: Int) {
   proposalTallyResult: proposal_tally_result(
@@ -13976,7 +13972,7 @@ export type ProposalDetailsTallyQueryHookResult = ReturnType<typeof useProposalD
 export type ProposalDetailsTallyLazyQueryHookResult = ReturnType<typeof useProposalDetailsTallyLazyQuery>;
 export type ProposalDetailsTallyQueryResult = Apollo.QueryResult<ProposalDetailsTallyQuery, ProposalDetailsTallyQueryVariables>;
 export const ProposalDetailsDepositsDocument = gql`
-    query ProposalDetailsDeposits($proposalId: Int) {
+    subscription ProposalDetailsDeposits($proposalId: Int) {
   proposalDeposit: proposal_deposit(
     where: {proposal_id: {_eq: $proposalId}}
     order_by: {height: desc}
@@ -13986,52 +13982,15 @@ export const ProposalDetailsDepositsDocument = gql`
     block {
       timestamp
     }
-  }
-}
-    `;
-
-/**
- * __useProposalDetailsDepositsQuery__
- *
- * To run a query within a React component, call `useProposalDetailsDepositsQuery` and pass it any options that fit your needs.
- * When your component renders, `useProposalDetailsDepositsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProposalDetailsDepositsQuery({
- *   variables: {
- *      proposalId: // value for 'proposalId'
- *   },
- * });
- */
-export function useProposalDetailsDepositsQuery(baseOptions?: Apollo.QueryHookOptions<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>(ProposalDetailsDepositsDocument, options);
-      }
-export function useProposalDetailsDepositsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>(ProposalDetailsDepositsDocument, options);
+    depositor {
+      validator_infos {
+        validator {
+          validator_descriptions {
+            avatar_url
+            moniker
+          }
         }
-export type ProposalDetailsDepositsQueryHookResult = ReturnType<typeof useProposalDetailsDepositsQuery>;
-export type ProposalDetailsDepositsLazyQueryHookResult = ReturnType<typeof useProposalDetailsDepositsLazyQuery>;
-export type ProposalDetailsDepositsQueryResult = Apollo.QueryResult<ProposalDetailsDepositsQuery, ProposalDetailsDepositsQueryVariables>;
-export const ProposalDetailsVotesDocument = gql`
-    query ProposalDetailsVotes($proposalId: Int) {
-  proposalVote: proposal_vote(
-    where: {proposal_id: {_eq: $proposalId}}
-    order_by: {height: desc}
-  ) {
-    option
-    voterAddress: voter_address
-  }
-  validatorStatuses: proposal_validator_status_snapshot(
-    where: {proposal_id: {_eq: $proposalId}, status: {_eq: 3}}
-  ) {
-    validator {
-      validatorInfo: validator_info {
-        selfDelegateAddress: self_delegate_address
+        operator_address
       }
     }
   }
@@ -14039,32 +13998,72 @@ export const ProposalDetailsVotesDocument = gql`
     `;
 
 /**
- * __useProposalDetailsVotesQuery__
+ * __useProposalDetailsDepositsSubscription__
  *
- * To run a query within a React component, call `useProposalDetailsVotesQuery` and pass it any options that fit your needs.
- * When your component renders, `useProposalDetailsVotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useProposalDetailsDepositsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsDepositsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useProposalDetailsVotesQuery({
+ * const { data, loading, error } = useProposalDetailsDepositsSubscription({
  *   variables: {
  *      proposalId: // value for 'proposalId'
  *   },
  * });
  */
-export function useProposalDetailsVotesQuery(baseOptions?: Apollo.QueryHookOptions<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>) {
+export function useProposalDetailsDepositsSubscription(baseOptions?: Apollo.SubscriptionHookOptions<ProposalDetailsDepositsSubscription, ProposalDetailsDepositsSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>(ProposalDetailsVotesDocument, options);
+        return Apollo.useSubscription<ProposalDetailsDepositsSubscription, ProposalDetailsDepositsSubscriptionVariables>(ProposalDetailsDepositsDocument, options);
       }
-export function useProposalDetailsVotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>(ProposalDetailsVotesDocument, options);
+export type ProposalDetailsDepositsSubscriptionHookResult = ReturnType<typeof useProposalDetailsDepositsSubscription>;
+export type ProposalDetailsDepositsSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsDepositsSubscription>;
+export const ProposalDetailsVotesDocument = gql`
+    subscription ProposalDetailsVotes($proposalId: Int) {
+  proposalVote: proposal_vote(
+    where: {proposal_id: {_eq: $proposalId}}
+    order_by: {height: desc}
+  ) {
+    voterAddress: voter_address
+    option
+    account {
+      validator_infos {
+        validator {
+          validator_descriptions {
+            avatar_url
+            moniker
+          }
         }
-export type ProposalDetailsVotesQueryHookResult = ReturnType<typeof useProposalDetailsVotesQuery>;
-export type ProposalDetailsVotesLazyQueryHookResult = ReturnType<typeof useProposalDetailsVotesLazyQuery>;
-export type ProposalDetailsVotesQueryResult = Apollo.QueryResult<ProposalDetailsVotesQuery, ProposalDetailsVotesQueryVariables>;
+        operator_address
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useProposalDetailsVotesSubscription__
+ *
+ * To run a query within a React component, call `useProposalDetailsVotesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useProposalDetailsVotesSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProposalDetailsVotesSubscription({
+ *   variables: {
+ *      proposalId: // value for 'proposalId'
+ *   },
+ * });
+ */
+export function useProposalDetailsVotesSubscription(baseOptions?: Apollo.SubscriptionHookOptions<ProposalDetailsVotesSubscription, ProposalDetailsVotesSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<ProposalDetailsVotesSubscription, ProposalDetailsVotesSubscriptionVariables>(ProposalDetailsVotesDocument, options);
+      }
+export type ProposalDetailsVotesSubscriptionHookResult = ReturnType<typeof useProposalDetailsVotesSubscription>;
+export type ProposalDetailsVotesSubscriptionResult = Apollo.SubscriptionResult<ProposalDetailsVotesSubscription>;
 export const ProposalsListenerDocument = gql`
     subscription ProposalsListener($limit: Int = 7, $offset: Int = 0) {
   proposals: proposal(limit: $limit, offset: $offset, order_by: {id: desc}) {
