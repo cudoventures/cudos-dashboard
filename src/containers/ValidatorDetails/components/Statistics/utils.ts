@@ -7,7 +7,8 @@ import {
   AccountBalancesDocument,
   AccountDelegationBalanceDocument,
   AccountUnbondingBalanceDocument,
-  AccountDelegationRewardsDocument
+  AccountDelegationRewardsDocument,
+  ValidatorVotingPowersDocument
 } from 'graphql/account_actions'
 
 export const fetchCommission = async (address: string) => {
@@ -119,5 +120,22 @@ export const fetchRewards = async (address: string) => {
     return R.pathOr(defaultReturnValue, ['data'], data)
   } catch (error) {
     return defaultReturnValue
+  }
+}
+
+export const fetchVotingPower = async (address: string) => {
+  const defaultVotingPower = {
+    votingPower: []
+  }
+  try {
+    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+      variables: {
+        address
+      },
+      query: ValidatorVotingPowersDocument
+    })
+    return R.pathOr(defaultVotingPower, ['data'], data)
+  } catch (error) {
+    return defaultVotingPower
   }
 }

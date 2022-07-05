@@ -116,3 +116,24 @@ export const AccountValidatorDelegationsDocument = /* GraphQL */ `
     }
   }
 `
+
+export const ValidatorVotingPowersDocument = /* GraphQL */ `
+  query ValidatorVotingPower($address: String) {
+    stakingPool: staking_pool(order_by: { height: desc }, limit: 1, offset: 0) {
+      height
+      bonded: bonded_tokens
+    }
+    validator(
+      where: { validator_info: { operator_address: { _eq: $address } } }
+    ) {
+      validatorVotingPowers: validator_voting_powers(
+        offset: 0
+        limit: 1
+        order_by: { height: desc }
+      ) {
+        height
+        votingPower: voting_power
+      }
+    }
+  }
+`
