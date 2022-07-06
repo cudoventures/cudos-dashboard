@@ -1,13 +1,5 @@
-import {
-  Box,
-  InputAdornment,
-  Typography,
-  Chip,
-  Button,
-  CircularProgress
-} from '@mui/material'
+import { Box, Typography, Chip, Button, CircularProgress } from '@mui/material'
 import Card from 'components/Card'
-import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
@@ -18,13 +10,15 @@ import DepositModal from './components/DepositModal'
 import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
 import { useProposals } from './hooks'
-
-import { InputContainer, styles } from './styles'
 import Proposal from './Proposal'
+import SearchProposals from './components/SearchProposals/SearchProposals'
+
+import { styles } from './styles'
 
 const Proposals = () => {
   useProposals()
   const { handleModal } = useModal()
+
   const proposalState = useSelector((state: RootState) => state.proposals)
 
   return (
@@ -53,20 +47,7 @@ const Proposals = () => {
             sx={styles.chipStyle}
           />
           <Box>
-            <InputContainer
-              sx={{ marginLeft: '50px' }}
-              disableUnderline
-              placeholder="Search for proposal, proposer, ID..."
-              startAdornment={
-                <InputAdornment position="start">
-                  <img
-                    style={{ marginRight: '20px' }}
-                    src={SearchIcon}
-                    alt="Search"
-                  />
-                </InputAdornment>
-              }
-            />
+            <SearchProposals />
           </Box>
           <Box sx={styles.createProposalBtnContainer}>
             <Button

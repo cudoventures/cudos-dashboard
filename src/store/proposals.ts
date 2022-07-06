@@ -6,6 +6,7 @@ export type ProposalsState = {
   hasNextPage: boolean
   isNextPageLoading: boolean
   rawDataTotal: number
+  searchField: string
   items: ProposalType[]
 }
 
@@ -21,12 +22,13 @@ export type ProposalType = {
   votingStartTime: string
 }
 
-const initialState: ProposalsState = {
+export const initialState: ProposalsState = {
   loading: false,
   exists: false,
   hasNextPage: false,
   isNextPageLoading: false,
   rawDataTotal: 0,
+  searchField: '',
   items: []
 }
 
