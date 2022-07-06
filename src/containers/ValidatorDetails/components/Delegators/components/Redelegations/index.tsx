@@ -14,9 +14,9 @@ import { formatNumber } from 'utils/format_token'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import moment from 'moment'
+import NoData from 'components/NoData'
 import { RedelegationsType, RedelegationType } from '../../types'
 import { redelegationsColumns } from '../../utils'
-import NoData from '../NoData'
 
 type RedelegationsProps = {
   redelegations: RedelegationsType

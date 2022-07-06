@@ -70,7 +70,7 @@ const ProposalVoting = () => {
       : '0'
 
   return (
-    <Card sx={{ marginTop: '20px' }}>
+    <Card>
       <Box sx={{ position: 'relative' }}>
         <Box sx={{ position: 'absolute' }}>
           <Typography

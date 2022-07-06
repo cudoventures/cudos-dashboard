@@ -1,23 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Typography,
-  Avatar,
-  Box,
-  Collapse,
-  Button,
-  Tooltip
-} from '@mui/material'
+import { Typography, Box, Collapse, Button, Tooltip } from '@mui/material'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import { updateUser } from 'store/profile'
 import { copyToClipboard, formatAddress } from 'utils/projectUtils'
-import UserMenuAvatar from 'assets/vectors/test-avatar.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import ArrowIcon from 'assets/vectors/arrow-down.svg'
 
+import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import { styles } from './styles'
 
 const UserInfo = () => {
@@ -65,7 +58,7 @@ const UserInfo = () => {
           <Typography variant="body2">
             Hi,
             <Typography component="span" variant="body2" fontWeight={700}>
-              {` ${keplrName}`}
+              {` ${getMiddleEllipsis(keplrName, { beginning: 8, ending: 4 })}`}
             </Typography>
           </Typography>
           <Box>

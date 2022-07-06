@@ -49,25 +49,46 @@ query ProposalDetailsTally($proposalId: Int) {
   }
 }
 
-query ProposalDetailsDeposits($proposalId: Int) {
-  proposalDeposit: proposal_deposit(where: {proposal_id: {_eq: $proposalId}}, order_by: {height: desc}) {
+subscription ProposalDetailsDeposits($proposalId: Int) {
+  proposalDeposit: proposal_deposit(
+    where: { proposal_id: { _eq: $proposalId } }
+    order_by: { height: desc }
+  ) {
     amount
     depositorAddress: depositor_address
     block {
       timestamp
     }
+    depositor {
+      validator_infos {
+        validator {
+          validator_descriptions {
+            avatar_url
+            moniker
+          }
+        }
+        operator_address
+      }
+    }
   }
 }
 
-query ProposalDetailsVotes($proposalId: Int) {
-  proposalVote: proposal_vote(where: {proposal_id: {_eq: $proposalId}}, order_by: {height: desc}) {
-    option
+subscription ProposalDetailsVotes($proposalId: Int) {
+  proposalVote: proposal_vote(
+    where: { proposal_id: { _eq: $proposalId } }
+    order_by: { height: desc }
+  ) {
     voterAddress: voter_address
-  }
-  validatorStatuses: proposal_validator_status_snapshot(where: {proposal_id: {_eq: $proposalId}, status: {_eq: 3}}) {
+    option
+    account {
+      validator_infos {
     validator {
-      validatorInfo: validator_info {
-        selfDelegateAddress: self_delegate_address
+          validator_descriptions {
+            avatar_url
+            moniker
+          }
+        }
+        operator_address
       }
     }
   }

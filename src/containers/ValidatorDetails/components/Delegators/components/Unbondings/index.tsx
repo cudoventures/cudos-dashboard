@@ -13,9 +13,9 @@ import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import { formatNumber } from 'utils/format_token'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import moment from 'moment'
+import NoData from 'components/NoData'
 import { UnbondingsType, UnbondingType } from '../../types'
 import { unbondingsColumns } from '../../utils'
-import NoData from '../NoData'
 
 type UnbondingsProps = {
   unbondings: UnbondingsType

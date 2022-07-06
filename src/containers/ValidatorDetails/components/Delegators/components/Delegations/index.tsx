@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { formatNumber } from 'utils/format_token'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
-import NoData from '../NoData'
+import NoData from 'components/NoData'
 import { DelegationsType, DelegationType } from '../../types'
 import { delegationsColumns } from '../../utils'
 
