@@ -1,7 +1,6 @@
 import { styled, Input } from '@mui/material'
 
 export const InputContainer = styled(Input)(() => ({
-  minWidth: '25vw',
   background: '#28314E',
   padding: '10px 20px 10px 20px',
   borderRadius: '5px',
@@ -132,6 +131,12 @@ export const styles: SxMap = {
   circularProgress: {
     position: 'absolute',
     top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  },
+  noSearchResults: {
+    position: 'absolute',
+    top: '25vh',
     left: '50%',
     transform: 'translate(-50%, -50%)'
   }

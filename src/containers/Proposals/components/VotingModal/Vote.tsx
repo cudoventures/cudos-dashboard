@@ -79,7 +79,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
         Vote for Proposal
       </Typography>
       <CancelRoundedIcon onClick={handleClose} />
-      <Box display="flex" flexDirection="column" gap={1}>
+      <Box minWidth="400px" display="flex" flexDirection="column" gap={1}>
         <Box>
           <Box
             display="flex"
