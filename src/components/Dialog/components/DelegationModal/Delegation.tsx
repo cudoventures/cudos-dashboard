@@ -1,5 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
+import {
+  Typography,
+  Box,
+  InputAdornment,
+  Button,
+  Stack,
+  Tooltip
+} from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
@@ -26,7 +33,7 @@ import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { formatToken } from 'utils/format_token'
+import { formatNumber, formatToken } from 'utils/format_token'
 import {
   ModalContainer,
   StyledTextField,
@@ -68,47 +75,55 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     loadBalance()
   }, [address])
 
+  const getEstimatedFee = async (amount: string) => {
+    window.keplr.defaultOptions = {
+      sign: {
+        preferNoSetFee: true
+      }
+    }
+    const offlineSigner = window.getOfflineSigner(
+      import.meta.env.VITE_APP_CHAIN_ID
+    )
+
+    const client = await SigningStargateClient.connectWithSigner(
+      import.meta.env.VITE_APP_RPC,
+      offlineSigner
+    )
+
+    const msg = MsgDelegate.fromPartial({
+      delegatorAddress: address,
+      validatorAddress: validator?.address,
+      amount: coin(
+        new BigNumber(amount || 0)
+          .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+          .toString(10),
+        CosmosNetworkConfig.CURRENCY_DENOM
+      )
+    })
+
+    const msgAny: MsgDelegateEncodeObject = {
+      typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+      value: msg
+    }
+
+    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+
+    const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+    const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
+
+    return calculatedFee
+  }
+
   const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
     handleModal({ ...modalProps, amount: ev.target.value })
     let fee = ''
 
     if (Number(ev.target.value) > 0) {
-      window.keplr.defaultOptions = {
-        sign: {
-          preferNoSetFee: true
-        }
-      }
-      const offlineSigner = window.getOfflineSigner(
-        import.meta.env.VITE_APP_CHAIN_ID
-      )
-
-      const client = await SigningStargateClient.connectWithSigner(
-        import.meta.env.VITE_APP_RPC,
-        offlineSigner
-      )
-
-      const msg = MsgDelegate.fromPartial({
-        delegatorAddress: address,
-        validatorAddress: validator?.address,
-        amount: coin(
-          Number(ev.target.value),
-          CosmosNetworkConfig.CURRENCY_DENOM
-        )
-      })
-
-      const msgAny: MsgDelegateEncodeObject = {
-        typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
-        value: msg
-      }
-
-      const gasUsed = await client.simulate(address, [msgAny], 'memo')
-
-      const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-      const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
+      const estimatedFee = await getEstimatedFee(ev.target.value)
 
       fee = formatToken(
-        calculatedFee.amount,
+        estimatedFee.amount,
         CosmosNetworkConfig.CURRENCY_DENOM
       ).value
     }
@@ -117,6 +132,25 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       ...modalProps,
       fee,
       amount: ev.target.value
+    })
+  }
+
+  const handleMaxAmoount = async () => {
+    let fee = ''
+
+    if (Number(balance) > 0) {
+      const estimatedFee = await getEstimatedFee(balance)
+
+      fee = formatToken(
+        estimatedFee.amount,
+        CosmosNetworkConfig.CURRENCY_DENOM
+      ).value
+    }
+
+    handleModal({
+      ...modalProps,
+      fee,
+      amount: `${Number(balance) - Math.ceil(Number(fee) * 4)}` // multiplying by 4 because of Keplr
     })
   }
 
@@ -286,7 +320,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {Number(balance.toString()).toFixed(2)} CUDOS
+                    {formatNumber(balance.toString(), 2)} CUDOS
                   </Typography>
                 </Box>
               </Box>
@@ -309,23 +343,20 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   },
                   startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
                   endAdornment: (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      sx={() => ({
-                        padding: '4px 15px',
-                        fontWeight: 600
-                      })}
-                      onClick={() =>
-                        handleModal({
-                          ...modalProps,
-                          amount: Math.floor(Number(balance)).toString()
-                        })
-                      }
-                    >
-                      MAX
-                    </Button>
+                    <Tooltip title="Total balance minus the highest estimated fee">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        sx={() => ({
+                          padding: '4px 15px',
+                          fontWeight: 600
+                        })}
+                        onClick={handleMaxAmoount}
+                      >
+                        MAX
+                      </Button>
+                    </Tooltip>
                   )
                 }}
                 sx={(theme) => ({
@@ -343,7 +374,9 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
               width: '50%'
             })}
             onClick={handleSubmit}
-            disabled={Number(amount) > Number(balance) || !amount}
+            disabled={
+              Number(amount) > Number(balance) || !amount || Number(amount) <= 0
+            }
           >
             Submit
           </Button>
