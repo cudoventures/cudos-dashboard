@@ -8,6 +8,7 @@ export type ProposalsState = {
   rawDataTotal: number
   searchField: string
   items: ProposalType[]
+  searchItems: ProposalType[]
 }
 
 export type ProposalType = {
@@ -29,7 +30,8 @@ export const initialState: ProposalsState = {
   isNextPageLoading: false,
   rawDataTotal: 0,
   searchField: '',
-  items: []
+  items: [],
+  searchItems: []
 }
 
 export const proposalsSlice = createSlice({

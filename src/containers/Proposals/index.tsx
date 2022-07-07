@@ -16,10 +16,22 @@ import SearchProposals from './components/SearchProposals/SearchProposals'
 import { styles } from './styles'
 
 const Proposals = () => {
-  useProposals()
+  const { loadNextPage } = useProposals()
+
   const { handleModal } = useModal()
 
   const proposalState = useSelector((state: RootState) => state.proposals)
+
+  const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.currentTarget
+    if (
+      Math.ceil(scrollTop + clientHeight) + 50 >= scrollHeight &&
+      proposalState.hasNextPage &&
+      !proposalState.searchField
+    ) {
+      await loadNextPage()
+    }
+  }
 
   return (
     <>
@@ -33,7 +45,7 @@ const Proposals = () => {
           Here you can see the existing proposals’ statuses or create new one
         </Typography>
       </Box>
-      <Card sx={styles.tableContainer}>
+      <Card onScroll={handleScroll} sx={styles.tableContainer}>
         <Box sx={styles.tableHeader}>
           <Typography
             color="text.secondary"

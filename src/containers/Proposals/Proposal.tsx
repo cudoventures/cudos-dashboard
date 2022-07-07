@@ -1,4 +1,10 @@
-import { Box, Typography, Button, Tooltip } from '@mui/material'
+import {
+  Box,
+  Typography,
+  Button,
+  Tooltip,
+  CircularProgress
+} from '@mui/material'
 import { ArrowUpwardRounded as ArrowUpwardRoundedIcon } from '@mui/icons-material'
 import Card from 'components/Card'
 import LinkIcon from 'assets/vectors/link-icon.svg'
@@ -15,6 +21,7 @@ import { useEffect, useState } from 'react'
 import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { proposalStatus } from './proposalStatus'
+import { useProposalsSearch, useProposalsSubscription } from './hooks'
 
 import { styles } from './styles'
 
@@ -25,6 +32,8 @@ const Proposal = () => {
   const { handleModal: handleDepositModal } = useDepositModal()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  useProposalsSubscription()
+  useProposalsSearch()
 
   const handleExplorer = (address: string) => {
     window.open(
@@ -51,8 +60,8 @@ const Proposal = () => {
   useEffect(() => {
     if (proposalState.searchField) {
       setSearchResults({
-        items: proposalState.items.filter(
-          (proposal) =>
+        items: proposalState.searchItems.filter(
+          (proposal: any) =>
             proposal.title
               .toLowerCase()
               .includes(proposalState.searchField.toLowerCase()) ||
@@ -77,7 +86,7 @@ const Proposal = () => {
   }, [proposalState.searchField, proposalState])
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'relative', height: '100%' }}>
       {searchResults.items.length
         ? searchResults.items.map((proposal: any) => (
             <Card key={proposal.id} sx={styles.cardContainer}>
@@ -131,7 +140,9 @@ const Proposal = () => {
                           startIcon={
                             <ArrowUpwardRoundedIcon
                               fontSize="small"
-                              sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
+                              sx={{
+                                transform: 'rotate3d(0, 0, 1, 0.125turn)'
+                              }}
                             />
                           }
                           onClick={() =>
@@ -159,7 +170,9 @@ const Proposal = () => {
                         startIcon={
                           <ArrowUpwardRoundedIcon
                             fontSize="small"
-                            sx={{ transform: 'rotate3d(0, 0, 1, 0.125turn)' }}
+                            sx={{
+                              transform: 'rotate3d(0, 0, 1, 0.125turn)'
+                            }}
                           />
                         }
                         onClick={() =>
@@ -212,7 +225,10 @@ const Proposal = () => {
                             title="Go to Explorer"
                           >
                             <img
-                              style={{ marginLeft: '10px', cursor: 'pointer' }}
+                              style={{
+                                marginLeft: '10px',
+                                cursor: 'pointer'
+                              }}
                               src={LinkIcon}
                               alt="Link"
                             />
@@ -265,6 +281,18 @@ const Proposal = () => {
             </Card>
           ))
         : handleNoSearchResults()}
+      {proposalState.isNextPageLoading && !proposalState.searchField ? (
+        <Box
+          sx={{
+            marginTop: '50px',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}
+        >
+          <CircularProgress size={100} />
+        </Box>
+      ) : null}
     </Box>
   )
 }
