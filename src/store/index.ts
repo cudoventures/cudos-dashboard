@@ -38,6 +38,7 @@ const persistConfig = {
     'proposals',
     'votingModal',
     'proposalModal',
+    'proposalDetails',
     'validator',
     'validatorDetails'
   ]

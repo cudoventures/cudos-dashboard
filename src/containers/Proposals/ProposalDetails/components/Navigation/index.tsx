@@ -4,6 +4,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useNavigate } from 'react-router-dom'
 import { initialState, updateProposalDetails } from 'store/proposalDetails'
 import { useDispatch } from 'react-redux'
+import { updateProposals } from 'store/proposals'
 import { styles } from './styles'
 
 const breadcrumbs = [
@@ -21,6 +22,7 @@ const Navigation = () => {
 
   const handleBackButton = () => {
     dispatch(updateProposalDetails(initialState))
+    dispatch(updateProposals({ searchField: '' }))
     navigate('/proposals')
   }
 

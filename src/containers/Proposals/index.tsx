@@ -1,13 +1,5 @@
-import {
-  Box,
-  InputAdornment,
-  Typography,
-  Chip,
-  Button,
-  CircularProgress
-} from '@mui/material'
+import { Box, Typography, Chip, Button, CircularProgress } from '@mui/material'
 import Card from 'components/Card'
-import SearchIcon from 'assets/vectors/search-icon.svg'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
@@ -17,15 +9,40 @@ import ProposalModal from './components/ProposalModal'
 import DepositModal from './components/DepositModal'
 import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
-import { useProposals } from './hooks'
-
-import { InputContainer, styles } from './styles'
+import {
+  useProposals,
+  useProposalsSearch,
+  useProposalsSubscription
+} from './hooks'
 import Proposal from './Proposal'
+import SearchProposals from './components/SearchProposals/SearchProposals'
+
+import { styles } from './styles'
 
 const Proposals = () => {
-  useProposals()
+  const { loadNextPage } = useProposals()
+  useProposalsSearch()
+  useProposalsSubscription()
+
   const { handleModal } = useModal()
+
   const proposalState = useSelector((state: RootState) => state.proposals)
+
+  const displayTotal =
+    proposalState.searchField !== ''
+      ? proposalState.searchResultsTotal
+      : proposalState.rawDataTotal
+
+  const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.currentTarget
+    if (
+      Math.ceil(scrollTop + clientHeight) + 50 >= scrollHeight &&
+      proposalState.hasNextPage &&
+      !proposalState.searchField
+    ) {
+      await loadNextPage()
+    }
+  }
 
   return (
     <>
@@ -39,7 +56,7 @@ const Proposals = () => {
           Here you can see the existing proposals’ statuses or create new one
         </Typography>
       </Box>
-      <Card sx={styles.tableContainer}>
+      <Card onScroll={handleScroll} sx={styles.tableContainer}>
         <Box sx={styles.tableHeader}>
           <Typography
             color="text.secondary"
@@ -47,26 +64,9 @@ const Proposals = () => {
           >
             PROPOSALS
           </Typography>
-          <Chip
-            label={proposalState.rawDataTotal}
-            color="primary"
-            sx={styles.chipStyle}
-          />
+          <Chip label={displayTotal} color="primary" sx={styles.chipStyle} />
           <Box>
-            <InputContainer
-              sx={{ marginLeft: '50px' }}
-              disableUnderline
-              placeholder="Search for proposal, proposer, ID..."
-              startAdornment={
-                <InputAdornment position="start">
-                  <img
-                    style={{ marginRight: '20px' }}
-                    src={SearchIcon}
-                    alt="Search"
-                  />
-                </InputAdornment>
-              }
-            />
+            <SearchProposals />
           </Box>
           <Box sx={styles.createProposalBtnContainer}>
             <Button

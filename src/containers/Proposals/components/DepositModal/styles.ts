@@ -5,12 +5,10 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
   background: theme.custom.backgrounds.dark,
   borderRadius: '5px',
   fontSize: '12px',
-  padding: '11px 16px',
-  minWidth: '25vw'
+  padding: '11px 16px'
 }))
 
 export const InputContainer = styled(Input)(() => ({
-  minWidth: '25vw',
   background: '#28314E',
   padding: '10px 20px 10px 20px',
   borderRadius: '5px',
@@ -34,7 +32,6 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
   borderRadius: '20px',
   boxShadow: '2px 10px 20px rgba(2, 6, 20, 0.6)',
   zIndex: 1,
-  minWidth: '30vw',
   overflow: 'auto'
 }))
 

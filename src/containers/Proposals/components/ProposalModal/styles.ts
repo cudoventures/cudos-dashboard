@@ -9,7 +9,6 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
 }))
 
 export const InputContainer = styled(Input)(() => ({
-  minWidth: '25vw',
   background: '#28314E',
   padding: '10px 20px 10px 20px',
   borderRadius: '5px',
