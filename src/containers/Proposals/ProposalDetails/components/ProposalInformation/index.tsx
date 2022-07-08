@@ -141,8 +141,8 @@ const ProposalInformation = () => {
               </Typography>
               <Box>
                 <Typography color="text.secondary" sx={styles.proposerAddress}>
-                  {overview.content['@type'].length
-                    ? proposalType(overview.content['@type'])
+                  {!overview?.content['@type'].length
+                    ? proposalType(overview?.content['@type'])
                     : null}
                 </Typography>
               </Box>
