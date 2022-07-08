@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import * as R from 'ramda'
 import { useParams } from 'react-router-dom'
 import {
   useGetMessagesByAddressQuery,
-  GetMessagesByAddressQuery
+  GetMessagesByAddressQuery,
+  GetMessagesByAddressListenerDocument
 } from 'graphql/types'
 import { TransactionState } from './types'
 
@@ -123,6 +124,42 @@ export const useActivity = () => {
         handleSetState(stateChange)
       })
   }
+
+  useEffect(() => {
+    const subscription = transactionQuery.subscribeToMore({
+      document: GetMessagesByAddressListenerDocument,
+      variables: {
+        limit: LIMIT + 1,
+        offset: 0,
+        address: `{${validatorId}}`
+      },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+
+        const newFeedItem = subscriptionData.data.messagesByAddress
+        const itemsLength = newFeedItem.length
+        const newItems = R.uniq([
+          ...state.data,
+          ...formatTransactions(subscriptionData.data)
+        ])
+
+        const stateChange = {
+          data: newItems,
+          hasNextPage: itemsLength === 51,
+          isNextPageLoading: false,
+          offsetCount: state.offsetCount + LIMIT
+        }
+
+        handleSetState(stateChange)
+
+        return {
+          messagesByAddress: [...newFeedItem]
+        }
+      }
+    })
+
+    return () => subscription()
+  }, [])
 
   return {
     state,

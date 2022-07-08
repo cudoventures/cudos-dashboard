@@ -96,6 +96,7 @@ export const useDelegators = () => {
       validatorAddress: validatorId!,
       limit: LIMIT
     },
+    pollInterval: 10000,
     onCompleted: (data) => {
       const formattedData = formatDelegations(data)
       handleSetState({
@@ -156,6 +157,7 @@ export const useDelegators = () => {
       validatorAddress: validatorId!,
       limit: LIMIT
     },
+    pollInterval: 10000,
     onCompleted: (data) => {
       const formattedData = formatRedelegations(data)
       handleSetState({
@@ -216,6 +218,7 @@ export const useDelegators = () => {
       validatorAddress: validatorId!,
       limit: LIMIT
     },
+    pollInterval: 10000,
     onCompleted: (data) => {
       const formattedData = formatUnbondings(data)
       handleSetState({
