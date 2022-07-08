@@ -8,6 +8,7 @@ import DepositModal from '../components/DepositModal'
 import ProposalInformation from './components/ProposalInformation'
 import ProposalVoting from './components/ProposalVoting'
 import VotingStatistics from './components/VotingStatistics'
+import Deposits from './components/Deposits'
 import { useVotesGraph } from './components/ProposalVoting/hooks'
 import { useProposalDetails } from './hooks'
 
@@ -38,6 +39,7 @@ const ProposalDetails = () => {
               <ProposalInformation />
               <ProposalVoting />
               <VotingStatistics />
+              <Deposits />
             </>
           )}
         </Box>
