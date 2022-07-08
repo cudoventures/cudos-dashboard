@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material'
 import Card from 'components/Card'
+import numeral from 'numeral'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { formatNumber } from 'utils/format_token'
@@ -12,6 +13,10 @@ const Statistics = () => {
   const calculateValue = (cudos: string) => {
     return `${Number(price) * Number(cudos)}`
   }
+
+  const votingPowerPercent = numeral(
+    (state.votingPower.self / Number(state.votingPower.overall.value)) * 100
+  )
 
   const stats = Object.entries(state.balance)
     .filter(([key, value]) => key !== 'total')
@@ -36,21 +41,18 @@ const Statistics = () => {
       <Box
         display="flex"
         justifyContent="space-between"
-        gap={10}
         sx={{ padding: '2rem' }}
       >
         {stats.map((stat) => (
           <Box display="flex" flexDirection="column" gap={0.5} key={stat.type}>
-            <Stack direction="row" gap={0.5} alignItems="center">
-              <Typography
-                variant="caption"
-                fontWeight={700}
-                color="text.secondary"
-                textTransform="uppercase"
-              >
-                {stat.type}
-              </Typography>
-            </Stack>
+            <Typography
+              variant="caption"
+              fontWeight={700}
+              color="text.secondary"
+              textTransform="uppercase"
+            >
+              {stat.type}
+            </Typography>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>{stat.cudos}</Typography>
               <Typography fontWeight={700} color="text.secondary">
@@ -62,6 +64,19 @@ const Statistics = () => {
             </Typography>
           </Box>
         ))}
+        <Box display="flex" flexDirection="column" gap={0.5}>
+          <Typography
+            variant="caption"
+            fontWeight={700}
+            color="text.secondary"
+            textTransform="uppercase"
+          >
+            Voting Power
+          </Typography>
+          <Typography fontWeight={700}>
+            {votingPowerPercent.format('0,0.00')}%
+          </Typography>
+        </Box>
       </Box>
     </Card>
   )

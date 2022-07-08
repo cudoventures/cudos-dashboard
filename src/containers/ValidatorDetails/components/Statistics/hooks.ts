@@ -6,13 +6,15 @@ import { formatToken } from 'utils/format_token'
 import { chainConfig } from 'configs'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
+import { useParams } from 'react-router-dom'
 import { AccountDetailState } from './types'
 import {
   fetchAvailableBalances,
   fetchCommission,
   fetchDelegationBalance,
   fetchRewards,
-  fetchUnbondingBalance
+  fetchUnbondingBalance,
+  fetchVotingPower
 } from './utils'
 
 const defaultTokenUnit: TokenUnit = {
@@ -32,10 +34,21 @@ const initialState: AccountDetailState = {
     reward: defaultTokenUnit,
     commission: defaultTokenUnit,
     total: defaultTokenUnit
+  },
+  votingPower: {
+    self: 0,
+    overall: {
+      baseDenom: '',
+      displayDenom: '',
+      exponent: 0,
+      value: ''
+    },
+    height: 0
   }
 }
 
 export const useStatistics = () => {
+  const { validatorId } = useParams()
   const [state, setState] = useState<AccountDetailState>(initialState)
   const selfDelegateAddress = useSelector(
     (state: RootState) => state.validatorDetails.selfDelegateAddress
@@ -140,6 +153,29 @@ export const useStatistics = () => {
     return stateChange
   }
 
+  const formatVotingPower = (data: any) => {
+    const selfVotingPower = R.pathOr(
+      0,
+      ['validatorVotingPowers', 0, 'votingPower'],
+      data.validator[0]
+    )
+
+    const votingPower = {
+      self: selfVotingPower,
+      overall: formatToken(
+        R.pathOr(0, ['stakingPool', 0, 'bonded'], data),
+        chainConfig.votingPowerTokenUnit
+      ),
+      height: R.pathOr(
+        0,
+        ['validatorVotingPowers', 0, 'height'],
+        data.validator[0]
+      )
+    }
+
+    return { votingPower }
+  }
+
   // ==========================
   // Fetch Data
   // ==========================
@@ -150,9 +186,10 @@ export const useStatistics = () => {
       fetchAvailableBalances(selfDelegateAddress),
       fetchDelegationBalance(selfDelegateAddress),
       fetchUnbondingBalance(selfDelegateAddress),
-      fetchRewards(selfDelegateAddress)
+      fetchRewards(selfDelegateAddress),
+      fetchVotingPower(validatorId!)
     ]
-    const [commission, available, delegation, unbonding, rewards] =
+    const [commission, available, delegation, unbonding, rewards, votingPower] =
       await Promise.allSettled(promises)
 
     const formattedRawData: any = {}
@@ -181,7 +218,12 @@ export const useStatistics = () => {
       ['value', 'delegationRewards'],
       rewards
     )
-    handleSetState(formatAllBalance(formattedRawData))
+    const votingPowerData = R.pathOr([], ['value'], votingPower)
+
+    handleSetState({
+      ...formatAllBalance(formattedRawData),
+      ...formatVotingPower(votingPowerData)
+    })
   }
 
   useEffect(() => {
