@@ -93,7 +93,12 @@ export const delegate = async (
   const msg = MsgDelegate.fromPartial({
     delegatorAddress,
     validatorAddress,
-    amount: coin(Number(amount), CosmosNetworkConfig.CURRENCY_DENOM)
+    amount: coin(
+      new BigNumber(amount || 0)
+        .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+        .toString(10),
+      CosmosNetworkConfig.CURRENCY_DENOM
+    )
   })
 
   const msgAny: MsgDelegateEncodeObject = {
