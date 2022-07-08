@@ -43,7 +43,7 @@ export const useProposals = () => {
 
   const proposalQuery = useProposalsQuery({
     variables: {
-      limit: 25,
+      limit: 10,
       offset: 0
     },
     onCompleted: (data) => {
@@ -51,7 +51,7 @@ export const useProposals = () => {
       newItems.sort((a, b) => b.id - a.id)
       handleSetState({
         items: newItems,
-        hasNextPage: newItems.length < data!.total!.aggregate!.count,
+        hasNextPage: true,
         isNextPageLoading: false,
         rawDataTotal: data!.total!.aggregate!.count
       })
@@ -77,7 +77,7 @@ export const useProposals = () => {
         handleSetState({
           items: newItems,
           isNextPageLoading: false,
-          hasNextPage: newItems.length < data!.total!.aggregate!.count,
+          hasNextPage: state.items.length < state.rawDataTotal,
           rawDataTotal: data!.total!.aggregate!.count
         })
       })
@@ -131,7 +131,7 @@ export const useProposalsSubscription = () => {
 
   useProposalsListenerSubscription({
     variables: {
-      limit: 25,
+      limit: 10,
       offset: 0
     },
     onSubscriptionData: (data) => {

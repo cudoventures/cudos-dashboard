@@ -15,13 +15,12 @@ import { VotingStatus } from 'store/votingModal'
 import BigNumber from 'bignumber.js'
 import { DepositStatus } from 'store/depositModal'
 import { useNavigate } from 'react-router-dom'
-import { ProposalType } from 'store/proposals'
+import { ProposalType, updateProposals } from 'store/proposals'
 import { updateProposalDetails } from 'store/proposalDetails'
 import { useEffect, useState } from 'react'
 import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { proposalStatus } from './proposalStatus'
-import { useProposalsSearch, useProposalsSubscription } from './hooks'
 
 import { styles } from './styles'
 
@@ -32,8 +31,6 @@ const Proposal = () => {
   const { handleModal: handleDepositModal } = useDepositModal()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  useProposalsSubscription()
-  useProposalsSearch()
 
   const handleExplorer = (address: string) => {
     window.open(
@@ -84,6 +81,14 @@ const Proposal = () => {
       setSearchResults(proposalState)
     }
   }, [proposalState.searchField, proposalState])
+
+  useEffect(() => {
+    if (proposalState.searchField !== '' && searchResults.items.length > 0) {
+      dispatch(
+        updateProposals({ searchResultsTotal: searchResults.items.length })
+      )
+    }
+  }, [searchResults.items.length, proposalState.searchField])
 
   return (
     <Box sx={{ position: 'relative', height: '100%' }}>

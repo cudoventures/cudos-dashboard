@@ -9,6 +9,7 @@ export type ProposalsState = {
   searchField: string
   items: ProposalType[]
   searchItems: ProposalType[]
+  searchResultsTotal: number
 }
 
 export type ProposalType = {
@@ -31,7 +32,8 @@ export const initialState: ProposalsState = {
   rawDataTotal: 0,
   searchField: '',
   items: [],
-  searchItems: []
+  searchItems: [],
+  searchResultsTotal: 0
 }
 
 export const proposalsSlice = createSlice({

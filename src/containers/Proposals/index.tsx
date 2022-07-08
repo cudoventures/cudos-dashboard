@@ -9,7 +9,11 @@ import ProposalModal from './components/ProposalModal'
 import DepositModal from './components/DepositModal'
 import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
-import { useProposals } from './hooks'
+import {
+  useProposals,
+  useProposalsSearch,
+  useProposalsSubscription
+} from './hooks'
 import Proposal from './Proposal'
 import SearchProposals from './components/SearchProposals/SearchProposals'
 
@@ -17,10 +21,17 @@ import { styles } from './styles'
 
 const Proposals = () => {
   const { loadNextPage } = useProposals()
+  useProposalsSearch()
+  useProposalsSubscription()
 
   const { handleModal } = useModal()
 
   const proposalState = useSelector((state: RootState) => state.proposals)
+
+  const displayTotal =
+    proposalState.searchField !== ''
+      ? proposalState.searchResultsTotal
+      : proposalState.rawDataTotal
 
   const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollHeight, scrollTop, clientHeight } = e.currentTarget
@@ -53,11 +64,7 @@ const Proposals = () => {
           >
             PROPOSALS
           </Typography>
-          <Chip
-            label={proposalState.rawDataTotal}
-            color="primary"
-            sx={styles.chipStyle}
-          />
+          <Chip label={displayTotal} color="primary" sx={styles.chipStyle} />
           <Box>
             <SearchProposals />
           </Box>
