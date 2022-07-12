@@ -95,7 +95,8 @@ export const styles: SxMap = {
   tableContainer: {
     width: '100%',
     flex: 1,
-    overflow: 'scroll'
+    overflow: 'scroll',
+    padding: '0 20px'
   },
   tableHeader: ({ custom }) => ({
     display: 'flex',
