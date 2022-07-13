@@ -25,13 +25,13 @@ export type ModalProps = {
   hash?: string
   proposalData: {
     type?: number
-    title?: string
-    description?: string
+    title: string
+    description: string
     note?: string
-    depositAmount?: number
-    planName?: string
-    planHeight?: string
-    planInfo?: string
+    depositAmount: number
+    plan: string
+    height: string
+    info: string
     changeSubspace?: string
     changeKey?: string
     changeValue?: string
@@ -56,7 +56,25 @@ export const initialModalState = {
   status: null,
   fee: new BigNumber(0),
   hash: '',
-  proposalData: {}
+  proposalData: {
+    title: '',
+    description: '',
+    depositAmount: 0,
+    plan: '',
+    height: '',
+    info: '',
+    changeSubspace: '',
+    changeKey: '',
+    changeValue: '',
+    poolSpendRecipient: '',
+    poolSpendAmount: '',
+    subjectClientId: '',
+    substituteClientId: '',
+    ibcUpgradeFile: '',
+    upgradeName: '',
+    upgradeHeight: '',
+    upgradeInfo: ''
+  }
 }
 
 const initialState: ProposalsState = {

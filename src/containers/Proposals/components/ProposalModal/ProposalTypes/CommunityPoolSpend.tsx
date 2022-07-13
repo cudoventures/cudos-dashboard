@@ -80,6 +80,7 @@ const CommunityPoolSpend = () => {
         <Box gap={1} display="flex">
           <InputContainer
             placeholder="Spend amount / whole amount"
+            type="number"
             name="poolSpendAmount"
             onChange={(e) => setEvent(e)}
             disableUnderline

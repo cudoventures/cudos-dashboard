@@ -80,6 +80,7 @@ const SoftwareUpdate = () => {
         <Box gap={1} display="flex">
           <InputContainer
             placeholder="Plan height"
+            type="number"
             name="height"
             onChange={(e) => setEvent(e)}
             disableUnderline

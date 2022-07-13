@@ -27,6 +27,9 @@ const Proposals = () => {
   const { handleModal } = useModal()
 
   const proposalState = useSelector((state: RootState) => state.proposals)
+  const { proposalData } = useSelector(
+    (state: RootState) => state.proposalsModal.modal
+  )
 
   const displayTotal =
     proposalState.searchField !== ''
@@ -77,7 +80,7 @@ const Proposals = () => {
                   open: true,
                   status: ProposalStatus.CREATE,
                   fee: new BigNumber(0),
-                  proposalData: {}
+                  proposalData: { ...proposalData }
                 })
               }
               sx={styles.crateProposalBtn}
