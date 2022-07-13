@@ -50,7 +50,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
           type: Number(proposal)
         }
       }),
-    500
+    250
   )
 
   const handleClose = () => {

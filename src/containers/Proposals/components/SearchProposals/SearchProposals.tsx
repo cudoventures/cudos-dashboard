@@ -15,7 +15,7 @@ const SearchProposals = () => {
     dispatch(updateProposals({ searchField: value }))
   }
 
-  const delayInput = _.debounce((value) => handleSearch(value), 1000)
+  const delayInput = _.debounce((value) => handleSearch(value), 500)
 
   useEffect(() => {
     delayInput(searchTerm)
