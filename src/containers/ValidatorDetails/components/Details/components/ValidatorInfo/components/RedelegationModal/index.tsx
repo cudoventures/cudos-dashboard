@@ -1,4 +1,4 @@
-import { DelegationStatus, initialModalState } from 'store/validator'
+import { ModalStatus, initialModalState } from 'store/validator'
 import Dialog from 'components/Dialog'
 import Loading from 'components/Dialog/components/Loading'
 import Failure from 'components/Dialog/components/Failure'
@@ -18,11 +18,11 @@ const DelegationModal: React.FC = () => {
 
   const renderComponent = () => {
     switch (status) {
-      case DelegationStatus.LOADING:
+      case ModalStatus.LOADING:
         return <Loading />
-      case DelegationStatus.SUCCESS:
+      case ModalStatus.SUCCESS:
         return <Success modalProps={modal} handleModal={handleModal} />
-      case DelegationStatus.FAILURE:
+      case ModalStatus.FAILURE:
         return <Failure modalProps={modal} handleModal={handleModal} />
       default:
         return <Redelegation modalProps={modal} handleModal={handleModal} />

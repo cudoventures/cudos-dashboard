@@ -16,15 +16,16 @@ import LinkIcon from 'assets/vectors/link-icon.svg'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import { formatNumber } from 'utils/format_token'
 import BigNumber from 'bignumber.js'
-import { claimRewards } from 'ledgers/transactions'
 import { fetchRewards } from 'api/getRewards'
+import { useNotifications } from 'components/NotificationPopup/hooks'
 import { styles } from '../styles'
+import ClaimRewardsModal from './components/ClaimRewardsModal'
 import { useDelegationRewards } from './hooks'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
   const [copied, setCopied] = useState<boolean>(false)
-  const { state } = useDelegationRewards()
+  const { state, modalState, handleModal } = useDelegationRewards()
   const {
     balance,
     availableRewards,
@@ -52,22 +53,6 @@ const WalletInformation: React.FC = () => {
     setTimeout(() => {
       setCopied(false)
     }, 3000)
-  }
-
-  const handleRewardClaim = async () => {
-    if (Number.isNaN(new BigNumber(availableRewards))) {
-      alert('No available rewards to claim.')
-      return
-    }
-
-    const result = await claimRewards(stakedValidators, address)
-
-    if (result.transactionHash && result.code === 0) {
-      alert('Success')
-      dispatch(updateUser({ availableRewards: new BigNumber(0) }))
-    } else {
-      alert('Transaction Failed')
-    }
   }
 
   useEffect(() => {
@@ -210,7 +195,9 @@ const WalletInformation: React.FC = () => {
           </Box>
           <Box>
             <Button
-              onClick={handleRewardClaim}
+              onClick={() =>
+                handleModal({ open: true, amount: availableRewards })
+              }
               sx={{ fontWeight: 700 }}
               disabled={!stakedValidators.length}
               variant="contained"
@@ -221,6 +208,11 @@ const WalletInformation: React.FC = () => {
           </Box>
         </Box>
       </Box>
+      <ClaimRewardsModal
+        modal={modalState}
+        handleModal={handleModal}
+        validators={stakedValidators}
+      />
     </Card>
   )
 }
