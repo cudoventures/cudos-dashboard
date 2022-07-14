@@ -1,5 +1,6 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
+import _ from 'lodash'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
@@ -49,6 +50,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
   handleModal
 }) => {
   const [delegated, setDelegated] = useState<string>('')
+  const [undelegationAmount, setUndelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
   const { address } = useSelector(({ profile }: RootState) => profile)
@@ -71,11 +73,11 @@ const Undelegation: React.FC<UndelegationProps> = ({
     loadBalance()
   }, [address])
 
-  const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
-    handleModal({ ...modalProps, amount: ev.target.value })
+  const handleAmount = async (amount: string) => {
+    handleModal({ ...modalProps, amount })
     let fee = ''
 
-    if (Number(ev.target.value) > 0) {
+    if (Number(amount) > 0) {
       window.keplr.defaultOptions = {
         sign: {
           preferNoSetFee: true
@@ -93,10 +95,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
       const msg = MsgUndelegate.fromPartial({
         delegatorAddress: address,
         validatorAddress: validator?.address,
-        amount: coin(
-          Number(ev.target.value),
-          CosmosNetworkConfig.CURRENCY_DENOM
-        )
+        amount: coin(Number(amount), CosmosNetworkConfig.CURRENCY_DENOM)
       })
 
       const msgAny: MsgUndelegateEncodeObject = {
@@ -119,9 +118,17 @@ const Undelegation: React.FC<UndelegationProps> = ({
     handleModal({
       ...modalProps,
       fee,
-      amount: ev.target.value
+      amount
     })
   }
+
+  const handleAmountChange = (
+    ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setUndelegationAmount(ev.target.value)
+  }
+
+  const delayInput = _.debounce((value) => handleAmount(value), 500)
 
   const handleSubmit = async (): Promise<void> => {
     handleModal({ ...modalProps, status: DelegationStatus.LOADING })
@@ -154,6 +161,12 @@ const Undelegation: React.FC<UndelegationProps> = ({
       ...initialModalState
     })
   }
+
+  useEffect(() => {
+    delayInput(undelegationAmount)
+
+    return () => delayInput.cancel()
+  }, [undelegationAmount])
 
   return (
     validator && (
@@ -299,7 +312,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                 type="number"
                 fullWidth
                 placeholder="0 CUDOS"
-                value={amount || ''}
+                value={undelegationAmount || ''}
                 InputProps={{
                   disableUnderline: true,
                   sx: {
@@ -335,7 +348,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                   background: theme.custom.backgrounds.light
                 })}
                 size="small"
-                onChange={handleAmount}
+                onChange={(e) => handleAmountChange(e)}
               />
             </Box>
           </Box>

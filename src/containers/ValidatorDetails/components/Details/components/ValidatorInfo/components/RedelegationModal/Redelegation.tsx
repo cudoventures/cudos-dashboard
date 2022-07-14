@@ -28,6 +28,7 @@ import {
   SummaryContainer,
   CancelRoundedIcon
 } from 'components/Dialog/components/styles'
+import _ from 'lodash'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
@@ -45,6 +46,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
 }) => {
   const [delegated, setDelegated] = useState<string>('')
   const [redelegationAddress, setRedelegationAddress] = useState<string>('')
+  const [redelegationAmount, setRedelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
   const { address } = useSelector(({ profile }: RootState) => profile)
@@ -82,11 +84,11 @@ const Redelegation: React.FC<RedelegationProps> = ({
     loadBalance()
   }, [address])
 
-  const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
-    handleModal({ ...modalProps, amount: ev.target.value })
+  const handleAmount = async (amount: string) => {
+    handleModal({ ...modalProps, amount })
     let fee = ''
 
-    if (Number(ev.target.value) > 0) {
+    if (Number(amount) > 0) {
       window.keplr.defaultOptions = {
         sign: {
           preferNoSetFee: true
@@ -106,7 +108,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         validatorSrcAddress: validator?.address,
         validatorDstAddress: redelegationAddress,
         amount: coin(
-          new BigNumber(ev.target.value || 0)
+          new BigNumber(amount || 0)
             .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
             .toString(10),
           CosmosNetworkConfig.CURRENCY_DENOM
@@ -133,9 +135,17 @@ const Redelegation: React.FC<RedelegationProps> = ({
     handleModal({
       ...modalProps,
       fee,
-      amount: ev.target.value
+      amount
     })
   }
+
+  const handleAmountChange = (
+    ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRedelegationAmount(ev.target.value)
+  }
+
+  const delayInput = _.debounce((value) => handleAmount(value), 500)
 
   const handleSubmit = async (): Promise<void> => {
     handleModal({ ...modalProps, status: DelegationStatus.LOADING })
@@ -169,6 +179,12 @@ const Redelegation: React.FC<RedelegationProps> = ({
       ...initialModalState
     })
   }
+
+  useEffect(() => {
+    delayInput(redelegationAmount)
+
+    return () => delayInput.cancel()
+  }, [redelegationAmount])
 
   return (
     validator && (
@@ -284,7 +300,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
                 type="number"
                 fullWidth
                 placeholder="0 CUDOS"
-                value={amount || ''}
+                value={redelegationAmount || ''}
                 InputProps={{
                   disableUnderline: true,
                   sx: {
@@ -320,7 +336,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
                   background: theme.custom.backgrounds.light
                 })}
                 size="small"
-                onChange={handleAmount}
+                onChange={(e) => handleAmountChange(e)}
               />
             </Box>
           </Box>
