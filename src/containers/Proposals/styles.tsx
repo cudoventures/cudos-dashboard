@@ -18,7 +18,8 @@ export const styles: SxMap = {
     fontWeight: '700'
   },
   stickyHeader: ({ custom }) => ({
-    position: 'fixed',
+    position: 'sticky',
+    top: 0,
     background: custom.backgrounds.dark,
     width: '100%',
     zIndex: '5'
@@ -93,10 +94,9 @@ export const styles: SxMap = {
   },
   tableContainer: {
     width: '100%',
-    height: '100%',
-    padding: '0rem 1.2rem 1.2rem 1.2rem',
-    marginTop: '90px',
-    overflow: 'scroll'
+    flex: 1,
+    overflow: 'scroll',
+    padding: '0 20px'
   },
   tableHeader: ({ custom }) => ({
     display: 'flex',
@@ -114,8 +114,7 @@ export const styles: SxMap = {
     marginLeft: '10px'
   },
   createProposalBtnContainer: {
-    position: 'absolute',
-    right: '0'
+    marginLeft: 'auto'
   },
   crateProposalBtn: () => ({
     height: '50px',
