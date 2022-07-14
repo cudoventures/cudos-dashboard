@@ -35,6 +35,7 @@ const WalletInformation: React.FC = () => {
     lastLoggedAddress
   } = state
   const dispatch = useDispatch()
+  const { setError } = useNotifications()
 
   useEffect(() => {
     const getCurrencies = async () => {
@@ -77,7 +78,7 @@ const WalletInformation: React.FC = () => {
           })
         )
       } catch (error: any) {
-        alert(error.message)
+        setError(error.message)
       }
     }
     const timer = setInterval(async () => {
