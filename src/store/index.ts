@@ -37,7 +37,8 @@ const persistConfig = {
   blacklist: [
     'proposals',
     'votingModal',
-    'proposalModal',
+    'proposalsModal',
+    'depositModal',
     'proposalDetails',
     'validator',
     'validatorDetails'

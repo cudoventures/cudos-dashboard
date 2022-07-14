@@ -480,7 +480,7 @@ export const createProposal = async (
       preferNoSetFee: true
     }
   }
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
+  const offlineSigner = window.getOfflineSigner(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 

@@ -27,7 +27,7 @@ const CommunityPoolSpend = () => {
     }
   }
 
-  const delayInput = _.debounce((value) => handleChange(value), 500)
+  const delayInput = _.debounce((value) => handleChange(value), 250)
 
   useEffect(() => {
     delayInput(event)
@@ -80,6 +80,7 @@ const CommunityPoolSpend = () => {
         <Box gap={1} display="flex">
           <InputContainer
             placeholder="Spend amount / whole amount"
+            type="number"
             name="poolSpendAmount"
             onChange={(e) => setEvent(e)}
             disableUnderline

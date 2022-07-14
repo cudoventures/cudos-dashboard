@@ -46,7 +46,7 @@ const IBCUpgrade = () => {
     }
   }
 
-  const delayInput = _.debounce((value) => handleChange(value), 500)
+  const delayInput = _.debounce((value) => handleChange(value), 250)
 
   useEffect(() => {
     delayInput(event)
