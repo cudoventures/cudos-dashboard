@@ -33,10 +33,12 @@ export const useDelegationRewards = () => {
   }
 
   const formatDelegationRewards = (data: any) => {
-    data.delegationRewards.map((value: any) => {
-      rewardArray.push(value.coins[0].amount)
-      return value
-    })
+    data.delegationRewards
+      .filter((value: any) => value.coins.length)
+      .map((value: any) => {
+        rewardArray.push(value.coins[0].amount)
+        return value
+      })
 
     const totalRewards = formatBigNum(
       rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))
