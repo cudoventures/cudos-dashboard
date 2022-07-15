@@ -7,11 +7,7 @@ import {
 import { MsgBeginRedelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import { coin, GasPrice, SigningStargateClient, StargateClient } from 'cudosjs'
 
-import {
-  DelegationStatus,
-  initialModalState,
-  ModalProps
-} from 'store/validator'
+import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { calculateFee, redelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -20,7 +16,7 @@ import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { formatToken } from 'utils/format_token'
+import { formatNumber, formatToken } from 'utils/format_token'
 import Dropdown from 'components/Dropdown'
 import {
   ModalContainer,
@@ -137,8 +133,68 @@ const Redelegation: React.FC<RedelegationProps> = ({
     })
   }
 
+  const getEstimatedFee = async (amount: string) => {
+    window.keplr.defaultOptions = {
+      sign: {
+        preferNoSetFee: true
+      }
+    }
+    const offlineSigner = window.getOfflineSigner(
+      import.meta.env.VITE_APP_CHAIN_ID
+    )
+
+    const client = await SigningStargateClient.connectWithSigner(
+      import.meta.env.VITE_APP_RPC,
+      offlineSigner
+    )
+
+    const msg = MsgBeginRedelegate.fromPartial({
+      delegatorAddress: address,
+      validatorSrcAddress: validator?.address,
+      validatorDstAddress: redelegationAddress,
+      amount: coin(
+        new BigNumber(amount || 0)
+          .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+          .toString(10),
+        CosmosNetworkConfig.CURRENCY_DENOM
+      )
+    })
+
+    const msgAny = {
+      typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+      value: msg
+    }
+
+    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+
+    const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+    const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
+
+    return calculatedFee
+  }
+
+  const handleMaxAmoount = async () => {
+    let fee = ''
+
+    if (Number(delegated) > 0) {
+      const estimatedFee = await getEstimatedFee(delegated)
+
+      fee = formatToken(
+        estimatedFee.amount,
+        CosmosNetworkConfig.CURRENCY_DENOM
+      ).value
+    }
+
+    handleModal({
+      ...modalProps,
+      fee,
+      amount: delegated
+    })
+  }
+
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: DelegationStatus.LOADING })
+    handleModal({ ...modalProps, status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
@@ -155,12 +211,12 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
       handleModal({
         ...modalProps,
-        status: DelegationStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         gasUsed: redelegationResult.gasUsed,
         txHash: redelegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: DelegationStatus.FAILURE })
+      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
     }
   }
 
@@ -274,7 +330,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {Number(delegated.toString()).toFixed(2)} CUDOS
+                    {formatNumber(delegated, 2)} CUDOS
                   </Typography>
                 </Box>
               </Box>
@@ -301,16 +357,12 @@ const Redelegation: React.FC<RedelegationProps> = ({
                       variant="contained"
                       color="primary"
                       size="small"
+                      disabled={!redelegationAddress}
                       sx={() => ({
                         padding: '4px 15px',
                         fontWeight: 600
                       })}
-                      onClick={() =>
-                        handleModal({
-                          ...modalProps,
-                          amount: Math.floor(Number(delegated)).toString()
-                        })
-                      }
+                      onClick={handleMaxAmoount}
                     >
                       MAX
                     </Button>
@@ -331,12 +383,16 @@ const Redelegation: React.FC<RedelegationProps> = ({
               width: '50%'
             })}
             onClick={handleSubmit}
-            disabled={Number(amount) > Number(delegated) || !amount}
+            disabled={
+              Number(amount) > Number(delegated) ||
+              !amount ||
+              !redelegationAddress
+            }
           >
             Submit
           </Button>
         </ModalContainer>
-        <SummaryContainer show={!!amount}>
+        <SummaryContainer show={!!amount && !!redelegationAddress}>
           <Typography
             variant="subtitle1"
             fontWeight={700}

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export enum DelegationStatus {
+export enum ModalStatus {
   LOADING = 'LOADING',
   SUCCESS = 'SUCCESS',
   FAILURE = 'FAILURE'
@@ -13,7 +13,7 @@ export type ModalProps = {
     imageUrl: string
     address: string
   } | null
-  status: DelegationStatus | null
+  status: ModalStatus | null
   amount: string | null
   fee: any
   gasUsed: number

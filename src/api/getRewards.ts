@@ -20,11 +20,14 @@ export const fetchRewards = async (address: string, signal?: AbortSignal) => {
       }
     )
 
-    Object.values(data.data.delegationRewards).map((value: any) => {
-      rewardArray.push(value.coins[0].amount)
-      validatorArray.push(value.validatorAddress)
-      return value
-    })
+    Object.values(data.data.delegationRewards)
+      .filter((value: any) => value.coins.length)
+      .forEach((value: any) => {
+        if (value.coins.length) {
+          rewardArray.push(value.coins[0].amount)
+          validatorArray.push(value.validatorAddress)
+        }
+      })
 
     const totalRewards = formatBigNum(
       rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))

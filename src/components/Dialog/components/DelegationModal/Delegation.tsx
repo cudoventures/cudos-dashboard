@@ -20,11 +20,7 @@ import {
   StargateClient
 } from 'cudosjs'
 
-import {
-  DelegationStatus,
-  initialModalState,
-  ModalProps
-} from 'store/validator'
+import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { calculateFee, delegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -155,7 +151,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   }
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: DelegationStatus.LOADING })
+    handleModal({ ...modalProps, status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
@@ -171,12 +167,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
       handleModal({
         ...modalProps,
-        status: DelegationStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         gasUsed: delegationResult.gasUsed,
         txHash: delegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: DelegationStatus.FAILURE })
+      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
     }
   }
 
