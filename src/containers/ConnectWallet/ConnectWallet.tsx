@@ -11,6 +11,7 @@ import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import InfoIcon from 'assets/vectors/info-icon.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import Header from 'components/Layout/Header'
+import { useNotifications } from 'components/NotificationPopup/hooks'
 
 import { styles } from './styles'
 
@@ -18,6 +19,7 @@ const ConnectWallet = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
+  const { setError } = useNotifications()
 
   const connect = async () => {
     try {
@@ -42,7 +44,7 @@ const ConnectWallet = () => {
       )
       navigate('dashboard')
     } catch (error) {
-      alert(error.message)
+      setError(error.message)
     }
   }
 

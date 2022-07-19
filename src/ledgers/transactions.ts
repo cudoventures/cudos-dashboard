@@ -148,7 +148,12 @@ export const undelegate = async (
   const msg = MsgUndelegate.fromPartial({
     delegatorAddress,
     validatorAddress,
-    amount: coin(Number(amount), CosmosNetworkConfig.CURRENCY_DENOM)
+    amount: coin(
+      new BigNumber(amount || 0)
+        .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+        .toString(10),
+      CosmosNetworkConfig.CURRENCY_DENOM
+    )
   })
 
   const msgAny: MsgUndelegateEncodeObject = {
@@ -263,7 +268,7 @@ export const claimRewards = async (
 
   const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
-  return result
+  return { result, fee: fee.amount[0].amount }
 }
 
 export const voteProposal = async (
@@ -480,7 +485,7 @@ export const createProposal = async (
       preferNoSetFee: true
     }
   }
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
+  const offlineSigner = window.getOfflineSigner(
     import.meta.env.VITE_APP_CHAIN_ID
   )
 

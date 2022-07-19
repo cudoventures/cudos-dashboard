@@ -27,7 +27,7 @@ const SoftwareUpdate = () => {
     }
   }
 
-  const delayInput = _.debounce((value) => handleChange(value), 500)
+  const delayInput = _.debounce((value) => handleChange(value), 250)
 
   useEffect(() => {
     delayInput(event)
@@ -80,6 +80,7 @@ const SoftwareUpdate = () => {
         <Box gap={1} display="flex">
           <InputContainer
             placeholder="Plan height"
+            type="number"
             name="height"
             onChange={(e) => setEvent(e)}
             disableUnderline

@@ -14,11 +14,7 @@ import {
   StargateClient
 } from 'cudosjs'
 
-import {
-  DelegationStatus,
-  initialModalState,
-  ModalProps
-} from 'store/validator'
+import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { calculateFee, undelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -27,7 +23,7 @@ import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { formatToken } from 'utils/format_token'
+import { formatNumber, formatToken } from 'utils/format_token'
 import {
   ModalContainer,
   StyledTextField,
@@ -130,8 +126,69 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
   const delayInput = _.debounce((value) => handleAmount(value), 500)
 
+  const getEstimatedFee = async (amount: string) => {
+    window.keplr.defaultOptions = {
+      sign: {
+        preferNoSetFee: true
+      }
+    }
+    const offlineSigner = window.getOfflineSigner(
+      import.meta.env.VITE_APP_CHAIN_ID
+    )
+
+    const client = await SigningStargateClient.connectWithSigner(
+      import.meta.env.VITE_APP_RPC,
+      offlineSigner
+    )
+
+    const msg = MsgUndelegate.fromPartial({
+      delegatorAddress: address,
+      validatorAddress: validator?.address,
+      amount: coin(
+        new BigNumber(amount || 0)
+          .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+          .toString(10),
+        CosmosNetworkConfig.CURRENCY_DENOM
+      )
+    })
+
+    const msgAny: MsgUndelegateEncodeObject = {
+      typeUrl: '/cosmos.staking.v1beta1.MsgUndelegate',
+      value: msg
+    }
+
+    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+
+    const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+    const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
+
+    return calculatedFee
+  }
+
+  const handleMaxAmoount = async () => {
+    let fee = ''
+
+    if (Number(delegated) > 0) {
+      const estimatedFee = await getEstimatedFee(delegated)
+
+      fee = formatToken(
+        estimatedFee.amount,
+        CosmosNetworkConfig.CURRENCY_DENOM
+      ).value
+    }
+
+    handleModal({
+      ...modalProps,
+      fee,
+      amount: delegated
+    })
+
+    setUndelegationAmount(delegated)
+  }
+
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: DelegationStatus.LOADING })
+    handleModal({ ...modalProps, status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
@@ -147,12 +204,12 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
       handleModal({
         ...modalProps,
-        status: DelegationStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         gasUsed: delegationResult.gasUsed,
         txHash: delegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: DelegationStatus.FAILURE })
+      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
     }
   }
 
@@ -302,7 +359,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {Number(delegated.toString()).toFixed(2)} CUDOS
+                    {formatNumber(delegated, 2)} CUDOS
                   </Typography>
                 </Box>
               </Box>
@@ -333,12 +390,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                         padding: '4px 15px',
                         fontWeight: 600
                       })}
-                      onClick={() =>
-                        handleModal({
-                          ...modalProps,
-                          amount: Math.floor(Number(delegated)).toString()
-                        })
-                      }
+                      onClick={handleMaxAmoount}
                     >
                       MAX
                     </Button>

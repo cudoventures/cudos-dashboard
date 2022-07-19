@@ -1,4 +1,11 @@
-import { Box, Typography, Chip, Button, CircularProgress } from '@mui/material'
+import {
+  Box,
+  Typography,
+  Chip,
+  Button,
+  CircularProgress,
+  Fade
+} from '@mui/material'
 import Card from 'components/Card'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
 import { RootState } from 'store'
@@ -27,6 +34,9 @@ const Proposals = () => {
   const { handleModal } = useModal()
 
   const proposalState = useSelector((state: RootState) => state.proposals)
+  const { proposalData } = useSelector(
+    (state: RootState) => state.proposalsModal.modal
+  )
 
   const displayTotal =
     proposalState.searchField !== ''
@@ -45,66 +55,68 @@ const Proposals = () => {
   }
 
   return (
-    <>
-      <Box sx={styles.stickyHeader}>
-        <Typography sx={styles.headerStyle}>Proposals</Typography>
-        <Typography
-          sx={styles.subheaderStyle}
-          variant="subtitle1"
-          color="text.secondary"
-        >
-          Here you can see the existing proposals’ statuses or create new one
-        </Typography>
-      </Box>
-      <Card onScroll={handleScroll} sx={styles.tableContainer}>
-        <Box sx={styles.tableHeader}>
+    <Fade in timeout={500}>
+      <Box display="flex" flexDirection="column" gap={2} height="100%">
+        <Box sx={styles.stickyHeader}>
+          <Typography sx={styles.headerStyle}>Proposals</Typography>
           <Typography
+            sx={styles.subheaderStyle}
+            variant="subtitle1"
             color="text.secondary"
-            sx={{ ...styles.subheaderStyle, marginTop: '5px' }}
           >
-            PROPOSALS
+            Here you can see the existing proposals’ statuses or create new one
           </Typography>
-          <Chip label={displayTotal} color="primary" sx={styles.chipStyle} />
-          <Box>
-            <SearchProposals />
-          </Box>
-          <Box sx={styles.createProposalBtnContainer}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() =>
-                handleModal({
-                  open: true,
-                  status: ProposalStatus.CREATE,
-                  fee: new BigNumber(0),
-                  proposalData: {}
-                })
-              }
-              sx={styles.crateProposalBtn}
+        </Box>
+        <Card onScroll={handleScroll} sx={styles.tableContainer}>
+          <Box sx={styles.tableHeader}>
+            <Typography
+              color="text.secondary"
+              sx={{ ...styles.subheaderStyle, marginTop: '5px' }}
             >
-              <img
-                style={{ marginRight: '10px' }}
-                src={CrossIcon}
-                alt="Cross"
-              />
-              Create Proposal
-            </Button>
-          </Box>
-        </Box>
-        <Box>
-          {!proposalState.items.length ? (
-            <Box sx={styles.circularProgress}>
-              <CircularProgress size={60} />
+              PROPOSALS
+            </Typography>
+            <Chip label={displayTotal} color="primary" sx={styles.chipStyle} />
+            <Box>
+              <SearchProposals />
             </Box>
-          ) : (
-            <Proposal />
-          )}
-        </Box>
-      </Card>
-      <ProposalModal />
-      <VotingModal />
-      <DepositModal />
-    </>
+            <Box sx={styles.createProposalBtnContainer}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() =>
+                  handleModal({
+                    open: true,
+                    status: ProposalStatus.CREATE,
+                    fee: new BigNumber(0),
+                    proposalData: { ...proposalData }
+                  })
+                }
+                sx={styles.crateProposalBtn}
+              >
+                <img
+                  style={{ marginRight: '10px' }}
+                  src={CrossIcon}
+                  alt="Cross"
+                />
+                Create Proposal
+              </Button>
+            </Box>
+          </Box>
+          <Box>
+            {!proposalState.items.length ? (
+              <Box sx={styles.circularProgress}>
+                <CircularProgress size={60} />
+              </Box>
+            ) : (
+              <Proposal />
+            )}
+          </Box>
+        </Card>
+        <ProposalModal />
+        <VotingModal />
+        <DepositModal />
+      </Box>
+    </Fade>
   )
 }
 

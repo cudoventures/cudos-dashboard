@@ -3,20 +3,19 @@ const colors = {
   bank: '#52A6F8',
   governance: '#E89518',
   distribution: '#9646F9',
-  crisis: '',
-  ibc: '',
-  ibcTransfer: '',
-  slashing: '',
-  authz: '',
-  feegrant: '',
-  vesting: ''
+  crisis: '#e6194B',
+  ibc: '#4b0082',
+  ibcTransfer: '#6a52b3',
+  slashing: '#00a152',
+  authz: '#2f4f4f',
+  feegrant: '#57975b',
+  vesting: '#a76b6b',
+  cosmwasm: '#212c6f',
+  gravity: '#469990',
+  cudosNft: '#ff1493',
+  cudosAdmin: '#535da8'
 }
 
-// =====================================
-// DO NOT UPDATE IF THIS IS A FORK.
-// ONLY COSMOS SDK DEFAULT MESSAGES HERE.
-// Please use `customTypeToModel` below for custom message types
-// =====================================
 export const defaultMessages = {
   // ========================
   // staking
@@ -296,6 +295,133 @@ export const defaultMessages = {
     typeUrl: 'cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount',
     color: colors.vesting,
     displayName: 'Create Periodic Vesting Account'
+  },
+  // ========================
+  // cosmwasm
+  // ========================
+  '/cosmwasm.wasm.v1.MsgClearAdmin': {
+    typeUrl: 'cosmwasm.wasm.v1.MsgClearAdmin',
+    color: colors.cosmwasm,
+    displayName: 'Clear Admin'
+  },
+  '/cosmwasm.wasm.v1.MsgExecuteContract': {
+    typeUrl: 'cosmwasm.wasm.v1.MsgExecuteContract',
+    color: colors.cosmwasm,
+    displayName: 'Execute Contract'
+  },
+  '/cosmwasm.wasm.v1.MsgInstantiateContract': {
+    typeUrl: 'cosmwasm.wasm.v1.MsgInstantiateContract',
+    color: colors.cosmwasm,
+    displayName: 'Instantiate Contract'
+  },
+  '/cosmwasm.wasm.v1.MsgMigrateContract': {
+    typeUrl: 'cosmwasm.wasm.v1.MsgMigrateContract',
+    color: colors.cosmwasm,
+    displayName: 'Migrate Contract'
+  },
+  '/cosmwasm.wasm.v1.MsgStoreCode': {
+    typeUrl: 'cosmwasm.wasm.v1.MsgStoreCode',
+    color: colors.cosmwasm,
+    displayName: 'Store Code'
+  },
+  '/cosmwasm.wasm.v1.MsgUpdateAdmin': {
+    typeUrl: 'cosmwasm.wasm.v1.MsgUpdateAdmin',
+    color: colors.cosmwasm,
+    displayName: 'Update Admin'
+  },
+  // ========================
+  // cudos nft
+  // ========================
+  '/cudosnode.cudosnode.nft.MsgApproveAllNft': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgApproveAllNft',
+    color: colors.cudosNft,
+    displayName: 'Approve All NFT'
+  },
+  '/cudosnode.cudosnode.nft.MsgApproveNft': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgApproveNft',
+    color: colors.cudosNft,
+    displayName: 'Approve NFT'
+  },
+  '/cudosnode.cudosnode.nft.MsgBurnNFT': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgBurnNFT',
+    color: colors.cudosNft,
+    displayName: 'Burn NFT'
+  },
+  '/cudosnode.cudosnode.nft.MsgEditNFT': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgEditNFT',
+    color: colors.cudosNft,
+    displayName: 'Edit NFT'
+  },
+  '/cudosnode.cudosnode.nft.MsgIssueDenom': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgIssueDenom',
+    color: colors.cudosNft,
+    displayName: 'Issue Denom'
+  },
+  '/cudosnode.cudosnode.nft.MsgMintNFT': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgMintNFT',
+    color: colors.cudosNft,
+    displayName: 'Mint NFT'
+  },
+  '/cudosnode.cudosnode.nft.MsgRevokeNft': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgRevokeNft',
+    color: colors.cudosNft,
+    displayName: 'Revoke NFT'
+  },
+  '/cudosnode.cudosnode.nft.MsgTransferNft': {
+    typeUrl: 'cudosnode.cudosnode.nft.MsgTransferNft',
+    color: colors.cudosNft,
+    displayName: 'Transfer NFT'
+  },
+  // ========================
+  // cudos admin
+  // ========================
+  '/cudosnode.cudosnode.pocbasecosmos.MsgAdminSpendCommunityPool': {
+    typeUrl: 'cudosnode.cudosnode.pocbasecosmos.MsgAdminSpendCommunityPool',
+    color: colors.cudosAdmin,
+    displayName: 'Spend Community Pool'
+  },
+  // ========================
+  // gravity
+  // ========================
+  '/gravity.v1.MsgBatchSendToEthClaim': {
+    typeUrl: 'gravity.v1.MsgBatchSendToEthClaim',
+    color: colors.gravity,
+    displayName: 'Send to ETH claim'
+  },
+  '/gravity.v1.MsgConfirmBatch': {
+    typeUrl: 'gravity.v1.MsgConfirmBatch',
+    color: colors.gravity,
+    displayName: 'Confirm Batch'
+  },
+  '/gravity.v1.MsgRequestBatch': {
+    typeUrl: 'gravity.v1.MsgRequestBatch',
+    color: colors.gravity,
+    displayName: 'Request Batch'
+  },
+  '/gravity.v1.MsgSendToCosmosClaim': {
+    typeUrl: 'gravity.v1.MsgSendToCosmosClaim',
+    color: colors.gravity,
+    displayName: 'Send to Cosmos claim'
+  },
+  '/gravity.v1.MsgSendToEth': {
+    typeUrl: 'gravity.v1.MsgSendToEth',
+    color: colors.gravity,
+    displayName: 'Send to ETH'
+  },
+  '/gravity.v1.MsgSetMinFeeTransferToEth': {
+    typeUrl: 'gravity.v1.MsgSetMinFeeTransferToEth',
+    color: colors.gravity,
+    displayName: 'Set min fee'
+  },
+  '/gravity.v1.MsgValsetConfirm': {
+    typeUrl: 'gravity.v1.MsgValsetConfirm',
+    color: colors.gravity,
+    displayName: 'Valset Confirm'
+  },
+  '/gravity.v1.MsgValsetUpdatedClaim': {
+    typeUrl: 'gravity.v1.MsgValsetUpdatedClaim',
+    color: colors.gravity,
+    displayName: 'Valset Updated Claim'
   }
 }
 

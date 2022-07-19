@@ -14,6 +14,7 @@ import Dropdown from 'components/Dropdown'
 import { createProposal } from 'ledgers/transactions'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
+import { useNotifications } from 'components/NotificationPopup/hooks'
 import {
   CancelRoundedIcon,
   InputContainer,
@@ -21,6 +22,7 @@ import {
   StyledTextField
 } from './styles'
 import { typeSwitch } from './ProposalTypes/types'
+import { validateInput } from './ProposalTypes/validateInput'
 
 type ProposalProps = {
   modalProps: ModalProps
@@ -28,12 +30,15 @@ type ProposalProps = {
 }
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
+  const { setError } = useNotifications()
   const { address } = useSelector(({ profile }: RootState) => profile)
+
   const { proposalData } = useSelector(
     (state: RootState) => state.proposalsModal.modal
   )
   const [proposal, setProposal] = useState<string>('1')
   const [title, setTitle] = useState<string>('')
+  const [proposalError, setProposalError] = useState<boolean>()
 
   const delayInput = _.debounce(
     (value) =>
@@ -45,7 +50,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
           type: Number(proposal)
         }
       }),
-    1000
+    250
   )
 
   const handleClose = () => {
@@ -56,6 +61,11 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
 
   const handleProposalType = (proposalValue: string) => {
     setProposal(proposalValue)
+    setTitle('')
+    handleModal({
+      ...modalProps,
+      proposalData: { ...initialModalState.proposalData }
+    })
   }
 
   const handleProposalSubmit = async (proposerAddress: string) => {
@@ -81,8 +91,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         hash: result.transactionHash
       })
     } catch (error) {
-      console.log('ERROR', error)
-
+      setError(error.message)
       handleModal({
         ...modalProps,
         open: true,
@@ -96,6 +105,12 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
 
     return () => delayInput.cancel()
   }, [title, proposal])
+
+  useEffect(() => {
+    const { error } = validateInput(proposalData)
+
+    setProposalError(error)
+  }, [proposalData])
 
   return (
     <ModalContainer>
@@ -172,6 +187,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
           <Box gap={1} display="flex">
             <InputContainer
               placeholder="e.g. Voting guides update"
+              required
               disableUnderline
               fullWidth
               value={title}
@@ -196,6 +212,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
       <Box>
         <Button
           variant="contained"
+          disabled={proposalError}
           color="primary"
           onClick={() => handleProposalSubmit(address)}
           sx={({ palette }) => ({
