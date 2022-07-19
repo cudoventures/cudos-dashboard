@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { CssBaseline } from '@mui/material'
 import { ApolloProvider } from '@apollo/client'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 
 import { RecoilRoot } from 'recoil'
@@ -109,6 +109,7 @@ const App = () => {
                     <Route path=":proposalId" element={<ProposalDetails />} />
                   </Route>
                 </Route>
+                <Route path="*" element={<Navigate to="/dashboard" />} />
               </Routes>
               <NotificationPopup type="error" />
               <NotificationPopup type="warning" />
