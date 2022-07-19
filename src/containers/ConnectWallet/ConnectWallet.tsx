@@ -35,7 +35,6 @@ const ConnectWallet = () => {
         updateUser({
           address,
           keplrName,
-          // lastLoggedAddress: address,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
