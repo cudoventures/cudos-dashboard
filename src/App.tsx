@@ -39,7 +39,7 @@ const App = () => {
   const connectAccount = useCallback(async () => {
     try {
       const { address, keplrName } = await ConnectLedger()
-      if (address !== lastLoggedAddress) {
+      if (address !== lastLoggedAddress || lastLoggedAddress === '') {
         dispatch(
           updateUserTransactions({
             offsetCount: 0,
@@ -73,6 +73,16 @@ const App = () => {
 
   useEffect(() => {
     window.addEventListener('keplr_keystorechange', async () => {
+      dispatch(updateUser({ lastLoggedAddress: '' }))
+      dispatch(
+        updateUserTransactions({
+          offsetCount: 0,
+          data: [],
+          hasActivity: false,
+          loading: true
+        })
+      )
+
       await connectAccount()
     })
 
@@ -89,9 +99,12 @@ const App = () => {
         <ThemeProvider theme={theme[themeColor]}>
           <CssBaseline />
           {location.pathname !== '/' ? null : (
-            <Routes>
-              <Route path="/" element={<ConnectWallet />} />
-            </Routes>
+            <>
+              <Routes>
+                <Route path="/" element={<ConnectWallet />} />
+              </Routes>
+              <NotificationPopup type="warning" />
+            </>
           )}
           {location.pathname === '/' ? null : (
             <Layout>

@@ -19,7 +19,7 @@ const ConnectWallet = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
-  const { setError } = useNotifications()
+  const { setWarning } = useNotifications()
 
   const connect = async () => {
     try {
@@ -35,7 +35,6 @@ const ConnectWallet = () => {
         updateUser({
           address,
           keplrName,
-          lastLoggedAddress: address,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
@@ -44,7 +43,9 @@ const ConnectWallet = () => {
       )
       navigate('dashboard')
     } catch (error) {
-      setError(error.message)
+      setWarning(
+        'Failed connecting to wallet! Please check your Keplr installation.'
+      )
     }
   }
 

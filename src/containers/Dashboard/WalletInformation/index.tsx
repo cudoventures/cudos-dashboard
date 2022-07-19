@@ -73,7 +73,6 @@ const WalletInformation: React.FC = () => {
             balance: new BigNumber(walletBalance),
             availableRewards: new BigNumber(totalRewards),
             stakedValidators: validatorArray,
-            lastLoggedAddress,
             stakedBalance: new BigNumber(stakedAmountBalance)
           })
         )

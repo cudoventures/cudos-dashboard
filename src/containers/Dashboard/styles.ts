@@ -145,5 +145,11 @@ export const styles: SxMap = {
     flexDirection: 'column',
     gap: 2,
     height: '100%'
+  },
+  circularProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
   }
 } as const

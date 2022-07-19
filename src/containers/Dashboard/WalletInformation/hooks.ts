@@ -33,18 +33,21 @@ export const useDelegationRewards = () => {
   }
 
   const formatDelegationRewards = (data: any) => {
-    data.delegationRewards
-      .filter((value: any) => value.coins.length)
-      .map((value: any) => {
-        rewardArray.push(value.coins[0].amount)
-        return value
-      })
+    if (data.delegationRewards.length) {
+      data.delegationRewards
+        .filter((value: any) => value.coins.length)
+        .map((value: any) => {
+          rewardArray.push(value.coins[0].amount)
+          return value
+        })
 
-    const totalRewards = formatBigNum(
-      rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))
-    )
+      const totalRewards = formatBigNum(
+        rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))
+      )
 
-    return new BigNumber(totalRewards)
+      return new BigNumber(totalRewards)
+    }
+    return {}
   }
 
   useAccountDelegationRewardsQuery({
