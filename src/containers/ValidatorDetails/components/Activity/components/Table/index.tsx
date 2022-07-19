@@ -31,7 +31,10 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
   const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollHeight, scrollTop, clientHeight } = e.currentTarget
 
-    if (scrollTop + clientHeight === scrollHeight && hasNextPage) {
+    if (
+      Math.ceil(scrollTop + clientHeight) + 50 >= scrollHeight &&
+      hasNextPage
+    ) {
       await loadNextPage()
     }
   }

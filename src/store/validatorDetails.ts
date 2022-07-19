@@ -16,7 +16,7 @@ export type ValidatorState = {
   }
 }
 
-const initialState: ValidatorState = {
+export const initialState: ValidatorState = {
   validator: '',
   operatorAddress: '',
   selfDelegateAddress: '',
