@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
+import BackgroundImage from 'assets/background.svg'
+
 export const styles = {
   connectContainer: {
     display: 'grid',
@@ -42,7 +43,7 @@ export const styles = {
   backgroundStyle: {
     width: '100vw',
     height: '100vh',
-    backgroundImage: 'url(src/assets/background.svg)',
+    backgroundImage: `url('${BackgroundImage}')`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat'
   }
