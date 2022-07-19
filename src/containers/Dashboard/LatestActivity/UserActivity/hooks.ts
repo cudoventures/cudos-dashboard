@@ -57,7 +57,7 @@ export const useUserTransactions = () => {
         data: formatTransactions(data.subscriptionData.data),
         offsetCount: state.offsetCount + LIMIT,
         hasActivity: !!data.subscriptionData.data.messagesByAddress.length,
-        loading: false
+        loading: data.subscriptionData.loading
       }
       dispatch(updateUserTransactions(stateChange))
     }

@@ -41,7 +41,7 @@ const UserInfo = () => {
       updateUser({
         address: '',
         keplrName: '',
-        lastLoggedAddress,
+        lastLoggedAddress: address,
         balance: new BigNumber(0),
         availableRewards: new BigNumber(0),
         stakedValidators: [],
