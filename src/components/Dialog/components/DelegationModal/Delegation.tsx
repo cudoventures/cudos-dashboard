@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Typography,
   Box,
@@ -20,11 +20,7 @@ import {
   StargateClient
 } from 'cudosjs'
 
-import {
-  DelegationStatus,
-  initialModalState,
-  ModalProps
-} from 'store/validator'
+import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { calculateFee, delegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -34,6 +30,7 @@ import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { formatNumber, formatToken } from 'utils/format_token'
+import _ from 'lodash'
 import {
   ModalContainer,
   StyledTextField,
@@ -53,6 +50,7 @@ type DelegationProps = {
 
 const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const [balance, setBalance] = useState<string>('')
+  const [delegationAmount, setDelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
   const { address } = useSelector(({ profile }: RootState) => profile)
@@ -115,12 +113,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     return calculatedFee
   }
 
-  const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
-    handleModal({ ...modalProps, amount: ev.target.value })
+  const handleAmount = async (amount: string) => {
+    handleModal({ ...modalProps, amount })
     let fee = ''
 
-    if (Number(ev.target.value) > 0) {
-      const estimatedFee = await getEstimatedFee(ev.target.value)
+    if (Number(amount) > 0) {
+      const estimatedFee = await getEstimatedFee(amount)
 
       fee = formatToken(
         estimatedFee.amount,
@@ -131,9 +129,17 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     handleModal({
       ...modalProps,
       fee,
-      amount: ev.target.value
+      amount
     })
   }
+
+  const handleAmountChange = (
+    ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setDelegationAmount(ev.target.value)
+  }
+
+  const delayInput = _.debounce((value) => handleAmount(value), 500)
 
   const handleMaxAmoount = async () => {
     let fee = ''
@@ -155,7 +161,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   }
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: DelegationStatus.LOADING })
+    handleModal({ ...modalProps, status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
@@ -171,12 +177,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
       handleModal({
         ...modalProps,
-        status: DelegationStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         gasUsed: delegationResult.gasUsed,
         txHash: delegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: DelegationStatus.FAILURE })
+      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
     }
   }
 
@@ -185,6 +191,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       ...initialModalState
     })
   }
+
+  useEffect(() => {
+    delayInput(delegationAmount)
+
+    return () => delayInput.cancel()
+  }, [delegationAmount])
 
   return (
     validator && (
@@ -330,7 +342,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                 type="number"
                 fullWidth
                 placeholder="0 CUDOS"
-                value={amount || ''}
+                value={delegationAmount || ''}
                 InputProps={{
                   disableUnderline: true,
                   sx: {
@@ -363,7 +375,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   background: theme.custom.backgrounds.light
                 })}
                 size="small"
-                onChange={handleAmount}
+                onChange={(e) => handleAmountChange(e)}
               />
             </Box>
           </Box>

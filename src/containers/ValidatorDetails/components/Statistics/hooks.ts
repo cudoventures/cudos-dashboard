@@ -227,7 +227,9 @@ export const useStatistics = () => {
   }
 
   useEffect(() => {
-    fetchBalance()
+    if (selfDelegateAddress) {
+      fetchBalance()
+    }
   }, [selfDelegateAddress])
 
   return {

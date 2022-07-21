@@ -23,6 +23,7 @@ const Dropdown = ({
   selectedValue: (param: string) => void
 }) => {
   const [type, setType] = React.useState('1')
+  const [animate, setAnimate] = React.useState(false)
 
   const handleChange = (event: SelectChangeEvent) => {
     setType(event.target.value)
@@ -32,9 +33,11 @@ const Dropdown = ({
   const dropdownArrow = () => {
     return (
       <img
-        style={{
-          cursor: 'pointer'
-        }}
+        style={
+          animate
+            ? { transform: 'rotate(180deg)', cursor: 'pointer' }
+            : { cursor: 'pointer' }
+        }
         src={ArrowIcon}
         alt="Arrow"
       />
@@ -56,6 +59,8 @@ const Dropdown = ({
         <Select
           IconComponent={() => dropdownArrow()}
           fullWidth
+          onClick={() => setAnimate(!animate)}
+          open={animate}
           value={type}
           sx={{
             cursor: 'pointer'
@@ -67,7 +72,15 @@ const Dropdown = ({
             'aria-label': 'Without label'
           }}
           MenuProps={{
-            PaperProps: { style: { background: 'text.secondary' } }
+            PaperProps: {
+              style: {
+                background: 'text.secondary',
+                borderRadius: '5px',
+                marginTop: '17px',
+                width: '485px',
+                marginLeft: '5px'
+              }
+            }
           }}
         >
           {data.map((type) => (

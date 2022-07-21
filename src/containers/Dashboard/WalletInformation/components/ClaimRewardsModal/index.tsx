@@ -1,13 +1,21 @@
-import { ModalStatus, initialModalState } from 'store/validator'
+import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import Dialog from 'components/Dialog'
-import Delegation from './Delegation'
+import Loading from 'components/Dialog/components/Loading'
+import Failure from 'components/Dialog/components/Failure'
+import Rewards from './Rewards'
 import Success from './Success'
-import Loading from '../Loading'
-import Failure from '../Failure'
-import useModal from './hooks'
 
-const DelegationModal: React.FC = () => {
-  const { modal, handleModal } = useModal()
+type RewardsClaimProps = {
+  modal: ModalProps
+  handleModal: (newState: any) => void
+  validators: string[]
+}
+
+const RewardsClaimModal: React.FC<RewardsClaimProps> = ({
+  modal,
+  handleModal,
+  validators
+}) => {
   const { open, status } = modal
 
   const handleClose = () => {
@@ -25,7 +33,13 @@ const DelegationModal: React.FC = () => {
       case ModalStatus.FAILURE:
         return <Failure modalProps={modal} handleModal={handleModal} />
       default:
-        return <Delegation modalProps={modal} handleModal={handleModal} />
+        return (
+          <Rewards
+            modalProps={modal}
+            handleModal={handleModal}
+            validators={validators}
+          />
+        )
     }
   }
 
@@ -36,4 +50,4 @@ const DelegationModal: React.FC = () => {
   )
 }
 
-export default DelegationModal
+export default RewardsClaimModal
