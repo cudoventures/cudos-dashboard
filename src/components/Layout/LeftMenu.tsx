@@ -11,9 +11,12 @@ import { styles } from './styles'
 const MenuItems = [
   { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
   { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
-  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' },
-  { icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' }
+  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' }
 ]
+
+if (import.meta.env.VITE_CHAIN_STATUS !== 'mainnet') {
+  MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
+}
 
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
@@ -39,7 +42,7 @@ const Menu = () => {
           <Link
             to={item.link}
             key={item.link}
-            style={{ marginTop: index === MenuItems.length - 1 ? 'auto' : 0 }}
+            style={{ marginTop: item.link === '/faucet' ? 'auto' : 0 }}
           >
             <Tooltip
               title={item.text}
