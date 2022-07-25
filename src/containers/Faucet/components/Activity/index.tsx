@@ -49,7 +49,7 @@ const Activity = () => {
         <Stack direction="row" gap={1} alignItems="center">
           <InfoIcon style={{ width: '20px', height: 'auto' }} />
           <Typography variant="h5" fontWeight={900}>
-            What is Faucet?
+            What is a Faucet?
           </Typography>
         </Stack>
         <Typography color="text.secondary">

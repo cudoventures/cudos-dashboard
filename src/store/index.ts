@@ -12,6 +12,7 @@ import proposalDetailsReducer from './proposalDetails'
 import userTransactionsReducer from './userTransactions'
 import votingModalReducer from './votingModal'
 import depositModalReducer from './depositModal'
+import faucetModalReducer from './faucetModal'
 import validatorDetailsReducer from './validatorDetails'
 import notificationsReducer from './notifications'
 
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   proposalsModal: proposalsModalReducer,
   votingModal: votingModalReducer,
   depositModal: depositModalReducer,
+  faucetModal: faucetModalReducer,
   proposals: proposalsReducer,
   proposalDetails: proposalDetailsReducer,
   validatorDetails: validatorDetailsReducer,
@@ -39,6 +41,7 @@ const persistConfig = {
     'votingModal',
     'proposalsModal',
     'depositModal',
+    'faucetModal',
     'proposalDetails',
     'validator',
     'validatorDetails'

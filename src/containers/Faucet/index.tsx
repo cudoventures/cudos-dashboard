@@ -3,8 +3,9 @@ import Form from './components/Form'
 import Activity from './components/Activity'
 
 import { styles } from './styles'
+import FaucetModal from './components/FaucetModal'
 
-const Staking = () => {
+const Faucet = () => {
   return (
     <Fade in timeout={500}>
       <Box sx={styles.faucetContainer}>
@@ -29,13 +30,14 @@ const Staking = () => {
             Here your can recieve tokens for testing and development purposes
           </Typography>
         </Box>
-        <Box display="flex" gap={2} overflow="hidden">
+        <Box display="flex" gap={2} sx={{ maxHeight: '500px' }}>
           <Form />
           <Activity />
+          <FaucetModal />
         </Box>
       </Box>
     </Fade>
   )
 }
 
-export default Staking
+export default Faucet
