@@ -2,11 +2,11 @@ import { useState, useRef } from 'react'
 import { Box, Button, Stack, Typography } from '@mui/material'
 import ReCaptcha from 'react-google-recaptcha'
 import Card from 'components/Card'
-import axios from 'axios'
 import { StyledTextField } from 'components/Dialog/components/styles'
 import BigNumber from 'bignumber.js'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import { FaucetStatus } from 'store/faucetModal'
+import getFaucetTokens from 'api/getFaucetTokens'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
@@ -68,21 +68,21 @@ const Form = () => {
 
     try {
       handleModal({ open: true, status: FaucetStatus.LOADING })
-      const response = await axios
-        .post(import.meta.env.VITE_FAUCET_URL, data)
-        .then((res) => {
-          if (res.data.transfers[0].status === 'error') {
-            handleModal({
-              open: true,
-              status: FaucetStatus.FAILURE,
-              error: 'Maximum amount of 10 CUDOS reached for this account.'
-            })
-          } else {
-            handleModal({ open: true, status: FaucetStatus.SUCCESS })
-          }
-          captchaRef.current.reset()
-          setAmount('')
+
+      const response = await getFaucetTokens(data)
+
+      if (response.data.transfers[0].status === 'error') {
+        handleModal({
+          open: true,
+          status: FaucetStatus.FAILURE,
+          error: 'Maximum amount of 10 CUDOS reached for this account.'
         })
+      } else {
+        handleModal({ open: true, status: FaucetStatus.SUCCESS })
+      }
+
+      captchaRef.current.reset()
+      setAmount('')
     } catch (error) {
       handleModal({
         open: true,
