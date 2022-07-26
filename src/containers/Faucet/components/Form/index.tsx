@@ -7,9 +7,9 @@ import { StyledTextField } from 'components/Dialog/components/styles'
 import BigNumber from 'bignumber.js'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import { FaucetStatus } from 'store/faucetModal'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
-import CosmosNetworkConfig from '../../../../ledgers/CosmosNetworkConfig'
 
 const Form = () => {
   const captchaRef = useRef<any>(null)
