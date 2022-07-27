@@ -26,6 +26,7 @@ import { useNotifications } from 'components/NotificationPopup/hooks'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { fetchRewards } from 'api/getRewards'
 import { useState } from 'react'
+import InfoIcon from 'assets/vectors/info-alt.svg?component'
 
 type RewardsProps = {
   modalProps: ModalProps
@@ -181,11 +182,21 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         </Box>
         <Stack direction="row" alignItems="center">
           <Switch checked={restake} onChange={() => setRestake(!restake)} />
+          <Typography fontWeight={700}>Restake</Typography>
           <Tooltip
             title="By enabling Restake your claimed rewards will be automatically re-delegated to the respective Validators"
             placement="right"
           >
-            <Typography fontWeight={700}>Restake</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                padding: 0.5
+              }}
+            >
+              <InfoIcon style={{ width: '20px', height: 'auto' }} />
+            </Box>
           </Tooltip>
         </Stack>
       </Box>
