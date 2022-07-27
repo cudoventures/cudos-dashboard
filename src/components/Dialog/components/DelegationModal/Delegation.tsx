@@ -12,13 +12,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import {
-  coin,
-  GasPrice,
-  MsgDelegateEncodeObject,
-  SigningStargateClient,
-  StargateClient
-} from 'cudosjs'
+import { coin, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
 
 import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { calculateFee, delegate } from 'ledgers/transactions'
@@ -31,6 +25,7 @@ import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { formatNumber, formatToken } from 'utils/format_token'
 import _ from 'lodash'
+import { signingClient } from 'ledgers/utils'
 import {
   ModalContainer,
   StyledTextField,
@@ -57,8 +52,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
-      const walletBalance = await client.getBalance(
+      const walletBalance = await signingClient.getBalance(
         address,
         CosmosNetworkConfig.CURRENCY_DENOM
       )
@@ -74,20 +68,6 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   }, [address])
 
   const getEstimatedFee = async (amount: string) => {
-    window.keplr.defaultOptions = {
-      sign: {
-        preferNoSetFee: true
-      }
-    }
-    const offlineSigner = window.getOfflineSigner(
-      import.meta.env.VITE_APP_CHAIN_ID
-    )
-
-    const client = await SigningStargateClient.connectWithSigner(
-      import.meta.env.VITE_APP_RPC,
-      offlineSigner
-    )
-
     const msg = MsgDelegate.fromPartial({
       delegatorAddress: address,
       validatorAddress: validator?.address,
@@ -104,7 +84,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+    const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 

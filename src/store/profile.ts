@@ -7,7 +7,7 @@ export interface WalletState {
   lastLoggedAddress: string
   balance: BigNumber
   availableRewards: BigNumber
-  stakedValidators: string[]
+  stakedValidators: { address: string; amount: string }[]
   stakedBalance: BigNumber
 }
 

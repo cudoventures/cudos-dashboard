@@ -1,8 +1,7 @@
-/* eslint-disable import/prefer-default-export */
 import copy from 'copy-to-clipboard'
-import { StargateClient } from 'cudosjs'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
+import { client } from 'ledgers/utils'
 import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
 
 export const copyToClipboard = (value: string): void => {
@@ -21,12 +20,7 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
 }
 
 export const getWalletBalance = async (address: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const broadcaster = await StargateClient.connect(
-    import.meta.env.VITE_APP_RPC!
-  )
-
-  const updateWalletBalance = await broadcaster.getBalance(
+  const updateWalletBalance = await client.getBalance(
     address,
     CosmosNetworkConfig.CURRENCY_DENOM
   )
@@ -37,12 +31,7 @@ export const getWalletBalance = async (address: string) => {
 }
 
 export const getStakedBalance = async (address: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const broadcaster = await StargateClient.connect(
-    import.meta.env.VITE_APP_RPC!
-  )
-
-  const updateWalletBalance = await broadcaster.getBalanceStaked(address)
+  const updateWalletBalance = await client.getBalanceStaked(address)
 
   if (updateWalletBalance === null) {
     return new BigNumber(0)

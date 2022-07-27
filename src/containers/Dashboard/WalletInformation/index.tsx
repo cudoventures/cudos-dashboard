@@ -208,11 +208,7 @@ const WalletInformation: React.FC = () => {
           </Box>
         </Box>
       </Box>
-      <ClaimRewardsModal
-        modal={modalState}
-        handleModal={handleModal}
-        validators={stakedValidators}
-      />
+      <ClaimRewardsModal modal={modalState} handleModal={handleModal} />
     </Card>
   )
 }

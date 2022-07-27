@@ -1,4 +1,12 @@
-import { Typography, Box, InputAdornment, Button } from '@mui/material'
+import {
+  Typography,
+  Box,
+  InputAdornment,
+  Button,
+  Switch,
+  Stack,
+  Tooltip
+} from '@mui/material'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 
 import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
@@ -16,18 +24,16 @@ import {
 import { updateUser } from 'store/profile'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
+import { fetchRewards } from 'api/getRewards'
+import { useState } from 'react'
 
 type RewardsProps = {
   modalProps: ModalProps
   handleModal: (modalProps: ModalProps) => void
-  validators: string[]
 }
 
-const Rewards: React.FC<RewardsProps> = ({
-  modalProps,
-  handleModal,
-  validators
-}) => {
+const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
+  const [restake, setRestake] = useState<boolean>(true)
   const { amount } = modalProps
   const { setError } = useNotifications()
   const dispatch = useDispatch()
@@ -43,7 +49,13 @@ const Rewards: React.FC<RewardsProps> = ({
         return
       }
 
-      const { result, fee } = await claimRewards(validators, address)
+      const { validatorArray } = await fetchRewards(address)
+
+      const { result, fee } = await claimRewards(
+        validatorArray,
+        address,
+        restake
+      )
 
       handleModal({
         ...modalProps,
@@ -167,6 +179,15 @@ const Rewards: React.FC<RewardsProps> = ({
             size="small"
           />
         </Box>
+        <Stack direction="row" alignItems="center">
+          <Switch checked={restake} onChange={() => setRestake(!restake)} />
+          <Tooltip
+            title="By enabling Restake your claimed rewards will be automatically re-delegated to the respective Validators"
+            placement="right"
+          >
+            <Typography fontWeight={700}>Restake</Typography>
+          </Tooltip>
+        </Stack>
       </Box>
       <Button
         variant="contained"
