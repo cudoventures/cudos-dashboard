@@ -19,6 +19,7 @@ import RequireKeplr from './components/RequireKeplr/RequireKeplr'
 import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import Dashboard from './containers/Dashboard'
 import Proposals from './containers/Proposals'
+import Faucet from './containers/Faucet'
 import ProposalDetails from './containers/Proposals/ProposalDetails'
 import Staking from './containers/Staking'
 import ValidatorDetails from './containers/ValidatorDetails'
@@ -122,6 +123,11 @@ const App = () => {
                     <Route path=":proposalId" element={<ProposalDetails />} />
                   </Route>
                 </Route>
+                {import.meta.env.VITE_CHAIN_STATUS !== 'mainnet' && (
+                  <Route path="faucet">
+                    <Route index element={<Faucet />} />
+                  </Route>
+                )}
                 <Route path="*" element={<Navigate to="/dashboard" />} />
               </Routes>
               <NotificationPopup type="error" />

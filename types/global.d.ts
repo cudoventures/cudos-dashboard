@@ -148,6 +148,10 @@ declare global {
     VITE_APP_EXPLORER_V2: string
     VITE_APP_FEE_MULTIPLIER: number
     VITE_BRIDGE_URL: string
+    VITE_FAUCET_ADDRESS: string
+    VITE_CHAIN_STATUS: string
+    VITE_CAPTCHA_SITE_KEY: string
+    VITE_FAUCET_URL: string
   }
 
   interface SxMap {

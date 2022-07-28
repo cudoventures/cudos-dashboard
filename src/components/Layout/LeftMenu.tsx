@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import DashboardIcon from 'assets/vectors/dashboard.svg?component'
 import ProposalsIcon from 'assets/vectors/proposals.svg?component'
 import StakingIcon from 'assets/vectors/staking.svg?component'
+import FaucetIcon from 'assets/vectors/faucet.svg?component'
 
 import { styles } from './styles'
 
@@ -12,6 +13,10 @@ const MenuItems = [
   { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
   { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' }
 ]
+
+if (import.meta.env.VITE_CHAIN_STATUS !== 'mainnet') {
+  MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
+}
 
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
@@ -26,9 +31,19 @@ const Menu = () => {
 
   return (
     <Box sx={styles.menuContainer}>
-      <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
+      <Box
+        display="flex"
+        alignItems="center"
+        flexDirection="column"
+        gap={2}
+        height="100%"
+      >
         {MenuItems.map((item, index) => (
-          <Link to={item.link} key={item.link}>
+          <Link
+            to={item.link}
+            key={item.link}
+            style={{ marginTop: item.link === '/faucet' ? 'auto' : 0 }}
+          >
             <Tooltip
               title={item.text}
               placement="right"
