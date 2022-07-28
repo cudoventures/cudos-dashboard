@@ -1,12 +1,13 @@
 import { ValidatorType } from 'store/validator'
 import numeral from 'numeral'
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { getValidatorConditionClass } from 'utils/get_validator_condition'
 import Condition from 'components/Condition'
 import AvatarName from 'components/AvatarName'
 import Table from 'components/Table'
 import { useNotifications } from 'components/NotificationPopup/hooks'
+import { formatNumber } from 'utils/format_token'
 import columns from './utils'
 import useTable from './hooks'
 
@@ -19,7 +20,7 @@ const ValidatorsTable: React.FC = () => {
   const items = sortItems(state.items)
 
   const formattedItems = items.map((x: ValidatorType, i: number) => {
-    const condition =
+    const conditionColor =
       x.status === 3 ? getValidatorConditionClass(x.condition) : 'grey'
     const percentDisplay =
       x.status === 3
@@ -45,7 +46,12 @@ const ValidatorsTable: React.FC = () => {
       ),
       commission: `${numeral(x.commission).format('0.[00]')}%`,
       self: `${numeral(x.selfPercent).format('0.[00]')}%`,
-      condition: <Condition color={condition} />,
+      condition: (
+        <Stack direction="row" alignItems="center" gap={1}>
+          <Condition color={conditionColor} />
+          <Typography>{formatNumber(x.condition.toString(), 2)}%</Typography>
+        </Stack>
+      ),
       votingPower: (
         <Box display="flex" alignItems="center" gap={2}>
           <Typography variant="body2" color="text.primary" fontWeight={600}>

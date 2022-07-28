@@ -7,7 +7,6 @@ const ConditionContainer = styled('div', {
   height: '10px',
   background:
     theme.custom.conditions[color as keyof typeof theme.custom.conditions],
-  margin: '0 auto',
   borderRadius: '50%'
 }))
 
