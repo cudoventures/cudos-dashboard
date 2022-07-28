@@ -213,7 +213,7 @@ export const claimRewards = async (
       })
     })
 
-    if (restake) {
+    if (restake && Number(validator.amount) > 0) {
       msgAny.push({
         typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
         value: MsgUndelegate.fromPartial({
