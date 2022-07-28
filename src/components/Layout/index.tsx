@@ -17,14 +17,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }}
     >
       <Header />
-      <Box display="flex" gap={8} flexGrow={1} sx={{ overflow: 'auto' }}>
+      <Box
+        display="flex"
+        gap={8}
+        flexGrow={1}
+        sx={{ overflow: 'auto' }}
+        justifyContent="center"
+      >
         <LeftMenu />
-        <Box
-          sx={{ paddingRight: '2rem' }}
-          flexGrow={1}
-          flex={1}
-          overflow="auto"
-        >
+        <Box sx={{ paddingRight: '2rem' }} maxWidth="100%">
           {children}
         </Box>
       </Box>

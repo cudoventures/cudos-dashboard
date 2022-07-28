@@ -11,7 +11,7 @@ const ValidatorDetails = () => {
 
   return (
     <Fade in timeout={500}>
-      <Box display="flex" flexDirection="column" gap={2}>
+      <Box display="flex" flexDirection="column" gap={2} maxWidth="1320px">
         <Navigation />
         {!state.loading ? (
           <>

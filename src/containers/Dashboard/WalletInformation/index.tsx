@@ -93,7 +93,7 @@ const WalletInformation: React.FC = () => {
   return (
     <Card
       sx={{
-        width: '100%',
+        maxWidth: '981px',
         display: 'flex',
         gap: 8
       }}

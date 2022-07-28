@@ -43,12 +43,15 @@ export const styles: SxMap = {
     flexGrow: 1,
     height: '100%',
     overflow: 'auto',
-    position: 'relative'
+    position: 'relative',
+    maxWidth: '981px'
   },
   networkStatisticsCard: {
     flex: 3,
     minHeight: '700px',
-    height: '100%'
+    height: '100%',
+    maxWidth: '600px',
+    minWidth: '320px'
   },
   networkCardStyle: {
     height: '101px',
@@ -137,10 +140,10 @@ export const styles: SxMap = {
     display: 'flex',
     gap: 2,
     minHeight: '700px',
+    maxHeight: '40%',
     height: '100%'
   },
   dashboardLeftContent: {
-    flex: 9,
     display: 'flex',
     flexDirection: 'column',
     gap: 2,

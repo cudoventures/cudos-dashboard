@@ -21,7 +21,7 @@ const ProposalDetails = () => {
   return (
     <>
       <Fade in timeout={500}>
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="flex" flexDirection="column" gap={2} maxWidth="1320px">
           <Navigation />
           {!overview?.content['@type'] ? (
             <Box
@@ -29,7 +29,8 @@ const ProposalDetails = () => {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                transform: 'translate(-50%, -50%)'
+                transform: 'translate(-50%, -50%)',
+                maxWidth: '1320px'
               }}
             >
               <CircularProgress size={60} />

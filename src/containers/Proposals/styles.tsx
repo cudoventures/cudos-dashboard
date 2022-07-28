@@ -93,7 +93,7 @@ export const styles: SxMap = {
     marginRight: '7px'
   },
   tableContainer: {
-    width: '100%',
+    width: '1320px',
     flex: 1,
     overflow: 'scroll',
     padding: '0 20px'

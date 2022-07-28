@@ -6,6 +6,7 @@ export const styles: SxMap = {
     gap: 1
   },
   validatorsContainer: {
+    maxWidth: '1320px',
     overflow: 'hidden',
     display: 'flex',
     flexGrow: 1,

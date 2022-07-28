@@ -30,7 +30,11 @@ const Faucet = () => {
             Here your can recieve tokens for testing and development purposes
           </Typography>
         </Box>
-        <Box display="flex" gap={2} sx={{ maxHeight: '500px' }}>
+        <Box
+          display="flex"
+          gap={2}
+          sx={{ maxHeight: '500px', maxWidth: '1320px' }}
+        >
           <Form />
           <Activity />
           <FaucetModal />
