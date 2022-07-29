@@ -45,7 +45,9 @@ const columns: Column[] = [
   {
     key: 'condition',
     label: 'Condition',
-    align: 'center'
+    sortKey: 'condition',
+    align: 'center',
+    sort: true
   },
   {
     key: 'action',

@@ -384,7 +384,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
           >
             Condition
           </Typography>
-          <Stack direction="row" alignItems="center">
+          <Stack direction="row" alignItems="center" gap={1}>
             <Condition color={conditionColor} />
             <Typography
               color="text.primary"
