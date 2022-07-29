@@ -32,8 +32,10 @@ import {
 } from 'cudosjs'
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
+import { formatToken } from 'utils/format_token'
 import { ClientUpdateProposal, UpgradeProposal } from './ibc-go/codec/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
+import { signingClient } from './utils'
 
 const PROPOSAL_TYPES = {
   PROPOSAL_TYPE_TEXT: 1,
@@ -63,26 +65,22 @@ export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
   }
 }
 
+export const getFee = async (address: string, message: any[], memo: string) => {
+  const gasUsed = await signingClient.simulate(address, message, memo)
+
+  const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+  const fee = calculateFee(gasLimit, gasPrice)
+
+  return fee
+}
+
 export const delegate = async (
   delegatorAddress: string,
   validatorAddress: string,
   amount: string,
   memo: string
 ): Promise<DeliverTxResponse> => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
-    }
-  }
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
   const delegationAmount = {
     amount: new BigNumber(amount)
       .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
@@ -106,13 +104,9 @@ export const delegate = async (
     value: msg
   }
 
-  const gasUsed = await client.simulate(delegatorAddress, [msgAny], memo)
+  const fee = await getFee(delegatorAddress, [msgAny], memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
-
-  const result = await client.delegateTokens(
+  const result = await signingClient.delegateTokens(
     delegatorAddress,
     validatorAddress,
     delegationAmount,
@@ -129,15 +123,6 @@ export const undelegate = async (
   amount: string,
   memo: string
 ): Promise<DeliverTxResponse> => {
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
   const undelegationAmount = {
     amount: new BigNumber(amount || 0)
       .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
@@ -161,13 +146,9 @@ export const undelegate = async (
     value: msg
   }
 
-  const gasUsed = await client.simulate(delegatorAddress, [msgAny], memo)
+  const fee = await getFee(delegatorAddress, [msgAny], memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
-
-  const result = await client.undelegateTokens(
+  const result = await signingClient.undelegateTokens(
     delegatorAddress,
     validatorAddress,
     undelegationAmount,
@@ -185,15 +166,6 @@ export const redelegate = async (
   amount: string,
   memo: string
 ): Promise<DeliverTxResponse> => {
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
   const msg = MsgBeginRedelegate.fromPartial({
     delegatorAddress,
     validatorSrcAddress,
@@ -211,13 +183,9 @@ export const redelegate = async (
     value: msg
   }
 
-  const gasUsed = await client.simulate(delegatorAddress, [msgAny], memo)
+  const fee = await getFee(delegatorAddress, [msgAny], memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
-
-  const result = await client.signAndBroadcast(
+  const result = await signingClient.signAndBroadcast(
     delegatorAddress,
     [msgAny],
     fee,
@@ -228,45 +196,48 @@ export const redelegate = async (
 }
 
 export const claimRewards = async (
-  stakedValidators: string[],
-  address: string
+  stakedValidators: { address: string; amount: string }[],
+  address: string,
+  restake: boolean
 ) => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
-    }
-  }
-
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
   const msgMemo = ''
 
   const msgAny: any[] = []
 
-  stakedValidators.map((validator) =>
+  stakedValidators.forEach((validator) => {
     msgAny.push({
       typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
       value: MsgWithdrawDelegatorReward.fromPartial({
         delegatorAddress: address,
-        validatorAddress: validator
+        validatorAddress: validator.address
       })
     })
+
+    if (restake && Number(validator.amount) > 0) {
+      msgAny.push({
+        typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+        value: MsgUndelegate.fromPartial({
+          delegatorAddress: address,
+          validatorAddress: validator.address,
+          amount: {
+            amount: new BigNumber(formatToken(validator.amount, 'cudos').value)
+              .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+              .toString(10),
+            denom: CosmosNetworkConfig.CURRENCY_DENOM
+          }
+        })
+      })
+    }
+  })
+
+  const fee = await getFee(address, [...msgAny], msgMemo)
+
+  const result = await signingClient.signAndBroadcast(
+    address,
+    msgAny,
+    fee,
+    msgMemo
   )
-
-  const gasUsed = await client.simulate(address, [...msgAny], msgMemo)
-
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
-
-  const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
   return { result, fee: fee.amount[0].amount }
 }
@@ -276,20 +247,6 @@ export const voteProposal = async (
   proposalId: number | undefined,
   votingOption: number
 ) => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
-    }
-  }
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
   const msg = MsgVote.fromPartial({
     proposalId,
     voter: voterAddress,
@@ -303,13 +260,9 @@ export const voteProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const gasUsed = await client.simulate(voterAddress, [msgAny], memo)
+  const fee = await getFee(voterAddress, [msgAny], memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
-
-  const result = await client.signAndBroadcast(
+  const result = await signingClient.signAndBroadcast(
     voterAddress,
     [msgAny],
     fee,
@@ -327,20 +280,6 @@ export const depositProposal = async (
   proposalId: number | undefined,
   amount: string
 ) => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
-    }
-  }
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
   const msg = MsgDeposit.fromPartial({
     proposalId,
     depositor: depositorAddress,
@@ -361,13 +300,9 @@ export const depositProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const gasUsed = await client.simulate(depositorAddress, [msgAny], memo)
+  const fee = await getFee(depositorAddress, [msgAny], memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
-
-  const result = await client.signAndBroadcast(
+  const result = await signingClient.signAndBroadcast(
     depositorAddress,
     [msgAny],
     fee,
@@ -516,11 +451,7 @@ export const createProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const gasUsed = await client.simulate(proposerAddress, [msgAny], memo)
-
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-  const fee = calculateFee(gasLimit, gasPrice)
+  const fee = await getFee(proposerAddress, [msgAny], memo)
 
   const result = await client.signAndBroadcast(
     proposerAddress,

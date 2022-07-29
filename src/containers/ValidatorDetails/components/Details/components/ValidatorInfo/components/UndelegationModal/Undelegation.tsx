@@ -6,13 +6,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import {
-  coin,
-  GasPrice,
-  MsgUndelegateEncodeObject,
-  SigningStargateClient,
-  StargateClient
-} from 'cudosjs'
+import { coin, GasPrice, MsgUndelegateEncodeObject } from 'cudosjs'
 
 import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { calculateFee, undelegate } from 'ledgers/transactions'
@@ -30,6 +24,7 @@ import {
   SummaryContainer,
   CancelRoundedIcon
 } from 'components/Dialog/components/styles'
+import { signingClient } from 'ledgers/utils'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
@@ -53,8 +48,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
-      const walletBalance = await client.getDelegation(
+      const walletBalance = await signingClient.getDelegation(
         address,
         validator?.address || ''
       )
@@ -74,20 +68,6 @@ const Undelegation: React.FC<UndelegationProps> = ({
     let fee = ''
 
     if (Number(amount) > 0) {
-      window.keplr.defaultOptions = {
-        sign: {
-          preferNoSetFee: true
-        }
-      }
-      const offlineSigner = window.getOfflineSigner(
-        import.meta.env.VITE_APP_CHAIN_ID
-      )
-
-      const client = await SigningStargateClient.connectWithSigner(
-        import.meta.env.VITE_APP_RPC,
-        offlineSigner
-      )
-
       const msg = MsgUndelegate.fromPartial({
         delegatorAddress: address,
         validatorAddress: validator?.address,
@@ -99,7 +79,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
-      const gasUsed = await client.simulate(address, [msgAny], 'memo')
+      const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
 
       const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -127,20 +107,6 @@ const Undelegation: React.FC<UndelegationProps> = ({
   const delayInput = _.debounce((value) => handleAmount(value), 500)
 
   const getEstimatedFee = async (amount: string) => {
-    window.keplr.defaultOptions = {
-      sign: {
-        preferNoSetFee: true
-      }
-    }
-    const offlineSigner = window.getOfflineSigner(
-      import.meta.env.VITE_APP_CHAIN_ID
-    )
-
-    const client = await SigningStargateClient.connectWithSigner(
-      import.meta.env.VITE_APP_RPC,
-      offlineSigner
-    )
-
     const msg = MsgUndelegate.fromPartial({
       delegatorAddress: address,
       validatorAddress: validator?.address,
@@ -157,7 +123,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
-    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+    const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 

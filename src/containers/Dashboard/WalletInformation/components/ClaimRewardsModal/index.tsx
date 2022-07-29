@@ -8,13 +8,11 @@ import Success from './Success'
 type RewardsClaimProps = {
   modal: ModalProps
   handleModal: (newState: any) => void
-  validators: string[]
 }
 
 const RewardsClaimModal: React.FC<RewardsClaimProps> = ({
   modal,
-  handleModal,
-  validators
+  handleModal
 }) => {
   const { open, status } = modal
 
@@ -33,13 +31,7 @@ const RewardsClaimModal: React.FC<RewardsClaimProps> = ({
       case ModalStatus.FAILURE:
         return <Failure modalProps={modal} handleModal={handleModal} />
       default:
-        return (
-          <Rewards
-            modalProps={modal}
-            handleModal={handleModal}
-            validators={validators}
-          />
-        )
+        return <Rewards modalProps={modal} handleModal={handleModal} />
     }
   }
 
