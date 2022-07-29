@@ -77,7 +77,6 @@ const Dropdown = ({
                 background: 'text.secondary',
                 borderRadius: '5px',
                 marginTop: '17px',
-                width: '485px',
                 marginLeft: '5px'
               }
             }
