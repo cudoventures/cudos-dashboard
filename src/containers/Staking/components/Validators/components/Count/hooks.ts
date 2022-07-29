@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 
 export default () => {
-  const items = useSelector((state: RootState) => state.validator.items)
+  const count = useSelector((state: RootState) => state.validator.count)
 
   return {
-    count: items.length
+    count
   }
 }
