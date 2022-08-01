@@ -1,7 +1,7 @@
 import { Tabs, Tab } from '@mui/material'
 import useTabs from './hooks'
 
-const labels = ['Active', 'Inactive', 'All']
+const labels = ['Active', 'Inactive', 'My Delegations', 'All']
 
 const TabsHeader: React.FC = () => {
   const { tab, handleTabChange } = useTabs()

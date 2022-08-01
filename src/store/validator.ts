@@ -40,6 +40,7 @@ export type ValidatorsState = {
   loading: boolean
   exists: boolean
   tab: number
+  count: number
   sortKey: string
   sortDirection: 'asc' | 'desc'
   votingPowerOverall: number
@@ -65,6 +66,7 @@ const initialState: ValidatorsState = {
   items: [],
   votingPowerOverall: 0,
   tab: 0,
+  count: 0,
   sortKey: 'votingPower',
   sortDirection: 'desc',
   modal: {

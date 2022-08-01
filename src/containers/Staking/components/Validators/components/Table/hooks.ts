@@ -24,6 +24,10 @@ export default () => {
     (state: RootState) => state.validatorDetails.modals
   )
 
+  const stakedValidators = useSelector(
+    (state: RootState) => state.profile.stakedValidators
+  ).map((validator) => validator.address)
+
   const handleSetState = (stateChange: any) => {
     dispatch(updateValidators({ ...stateChange }))
   }
@@ -159,6 +163,10 @@ export default () => {
       sorted = sorted.filter((x) => x.status !== 3)
     }
 
+    if (tab === 2) {
+      sorted = sorted.filter((x) => stakedValidators.includes(x.validator))
+    }
+
     if (sortKey && sortDirection) {
       sorted.sort((a, b) => {
         let compareA = R.pathOr<number | string>(0, [sortKey], a)
@@ -180,6 +188,7 @@ export default () => {
       })
     }
 
+    handleSetState({ count: sorted.length })
     return sorted
   }
 
