@@ -10,6 +10,7 @@ import { RootState } from 'store'
 import { depositProposal } from 'ledgers/transactions'
 import BigNumber from 'bignumber.js'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
+import { formatNumber } from 'utils/format_token'
 import { CancelRoundedIcon, ModalContainer, StyledTextField } from './styles'
 
 type DepositProps = {
@@ -140,7 +141,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
                 Balance
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                {Number(balance.toString()).toFixed(2)} CUDOS
+                {formatNumber(balance.toString(), 2)} CUDOS
               </Typography>
             </Box>
           </Box>
@@ -161,22 +162,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
                   padding: '0 10px'
                 }
               },
-              startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
-              endAdornment: (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  disabled={balance === new BigNumber('0')}
-                  sx={() => ({
-                    padding: '4px 15px',
-                    fontWeight: 600
-                  })}
-                  onClick={() => setDepositAmount(Number(balance).toString())}
-                >
-                  MAX
-                </Button>
-              )
+              startAdornment: <img src={CudosLogo} alt="cudos-logo" />
             }}
             sx={(theme) => ({
               background: theme.custom.backgrounds.light
