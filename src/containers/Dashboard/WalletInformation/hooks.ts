@@ -44,10 +44,9 @@ export const useDelegationRewards = () => {
       const totalRewards = formatBigNum(
         rewardArray.reduce((a: BigNumber, b: BigNumber) => BigNumber.sum(a, b))
       )
-
       return new BigNumber(totalRewards)
     }
-    return {}
+    return new BigNumber(0)
   }
 
   useAccountDelegationRewardsQuery({

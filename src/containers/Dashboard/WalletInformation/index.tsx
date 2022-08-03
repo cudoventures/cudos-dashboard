@@ -111,10 +111,10 @@ const WalletInformation: React.FC = () => {
           <CudosLogo style={{ width: '46px', height: 'auto' }} />
           <Box>
             <Typography fontSize={30} fontWeight={700}>
-              {formatNumber(balance.toString(), 2)}
+              {formatNumber(Number(balance).toFixed(2), 2)}
             </Typography>
             <Typography color="primary.main" fontWeight={700}>
-              ${formatNumber((rate * Number(balance)).toString(), 2)}
+              ${formatNumber((rate * Number(balance)).toFixed(2), 2)}
             </Typography>
           </Box>
         </Box>
@@ -156,10 +156,10 @@ const WalletInformation: React.FC = () => {
           <Stack direction="row" alignItems="center" gap="6px">
             <CudosLogo style={{ width: '20px', height: 'auto' }} />
             <Typography variant="h5" fontWeight={700}>
-              {formatNumber(stakedBalance.toString(), 2)}
+              {formatNumber(Number(stakedBalance).toFixed(2), 2)}
             </Typography>
             <Typography variant="h6" color="primary.main" fontWeight={700}>
-              ${formatNumber((rate * Number(stakedBalance)).toString(), 2)}
+              ${formatNumber((rate * Number(stakedBalance)).toFixed(2), 2)}
             </Typography>
           </Stack>
         </Box>
@@ -182,12 +182,12 @@ const WalletInformation: React.FC = () => {
             <Stack direction="row" alignItems="center" gap="6px">
               <CudosLogo style={{ width: '20px', height: 'auto' }} />
               <Typography variant="h5" fontWeight={700}>
-                {formatNumber(state.availableRewards.toString(), 2)}
+                {formatNumber(Number(availableRewards).toFixed(2), 2)}
               </Typography>
               <Typography variant="h6" color="primary.main" fontWeight={700}>
                 $
                 {formatNumber(
-                  (rate * Number(state.availableRewards)).toString(),
+                  (rate * Number(state.availableRewards)).toFixed(2),
                   2
                 )}
               </Typography>
