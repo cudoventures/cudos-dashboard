@@ -25,7 +25,7 @@ export type ProposalType = {
 }
 
 export const initialState: ProposalsState = {
-  loading: false,
+  loading: true,
   exists: false,
   hasNextPage: false,
   isNextPageLoading: false,
