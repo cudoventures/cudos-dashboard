@@ -91,31 +91,32 @@ const Redelegations: React.FC<RedelegationsProps> = (props) => {
       </Tooltip>
     ),
     amount: (
-      <Stack direction="row" gap={1} alignItems="center">
-        <Box>
-          <img src={CudosLogo} alt="Cudos Logo" />
-        </Box>
-        <Typography color="text.primary">
-          {formatNumber(
-            item.entries[0].amount.value,
-            item.entries[0].amount.exponent
-          )}
-        </Typography>
-        <Typography>
-          {item.entries[0].amount.displayDenom.toUpperCase()}
-        </Typography>
+      <Stack gap={1} alignItems="flex-start">
+        {item.entries.map((entry) => (
+          <Stack key={entry.completionTime} direction="row" gap={1}>
+            <Box>
+              <img src={CudosLogo} alt="Cudos Logo" />
+            </Box>
+            <Typography color="text.primary">
+              {formatNumber(entry.amount.value, entry.amount.exponent)}
+            </Typography>
+            <Typography>{entry.amount.displayDenom.toUpperCase()}</Typography>
+          </Stack>
+        ))}
       </Stack>
     ),
     completionTime: (
-      <Stack direction="row" gap={1} alignItems="center">
-        <AccessTimeRoundedIcon color="primary" />
-        <Typography fontSize={12} color="text.secondary">
-          {moment(
-            moment(item.entries[0].completionTime).parseZone().toLocaleString()
-          )
-            .format('DD MMM YYYY LTS')
-            .toLocaleString()}
-        </Typography>
+      <Stack gap={1} alignItems="flex-start">
+        {item.entries.map((entry) => (
+          <Stack key={entry.completionTime} direction="row" gap={1}>
+            <AccessTimeRoundedIcon color="primary" />
+            <Typography fontSize={12} color="text.secondary">
+              {moment(moment(entry.completionTime).parseZone().toLocaleString())
+                .format('DD MMM YYYY LTS')
+                .toLocaleString()}
+            </Typography>
+          </Stack>
+        ))}
       </Stack>
     )
   }))
