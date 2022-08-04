@@ -104,8 +104,13 @@ const Table: React.FC<TableProps> = ({
       >
         <MuiTable sx={{ tableLayout: 'fixed' }}>
           <TableBody>
-            {items.map((item: any) => (
-              <TableRow key={item.idx}>
+            {items.map((item: any, index: number) => (
+              <TableRow
+                key={item.idx}
+                sx={({ custom }) => ({
+                  background: index % 2 !== 0 ? custom.backgrounds.light : null
+                })}
+              >
                 {columns.map((col: any) => (
                   <TableCell
                     key={col.key}
