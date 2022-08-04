@@ -49,7 +49,9 @@ const ValidatorsTable: React.FC = () => {
       condition: (
         <Stack direction="row" alignItems="center" gap={1}>
           <Condition color={conditionColor} />
-          <Typography>{formatNumber(x.condition.toString(), 2)}%</Typography>
+          <Typography>
+            {formatNumber(Number(x.condition).toFixed(2), 2)}%
+          </Typography>
         </Stack>
       ),
       votingPower: (

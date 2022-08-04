@@ -141,7 +141,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
                 Balance
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                {formatNumber(balance.toString(), 2)} CUDOS
+                {formatNumber(Number(balance).toFixed(2), 2)} CUDOS
               </Typography>
             </Box>
           </Box>
