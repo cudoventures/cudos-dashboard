@@ -1,4 +1,5 @@
-import { ValidatorType } from 'store/validator'
+import { useEffect } from 'react'
+import { updateValidators, ValidatorType } from 'store/validator'
 import numeral from 'numeral'
 import { Box, Typography, Button, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +9,7 @@ import AvatarName from 'components/AvatarName'
 import Table from 'components/Table'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import { formatNumber } from 'utils/format_token'
+import { useDispatch } from 'react-redux'
 import columns from './utils'
 import useTable from './hooks'
 
@@ -15,9 +17,14 @@ const ValidatorsTable: React.FC = () => {
   const { state, handleSort, sortItems, handleModal } = useTable()
   const { setWarning } = useNotifications()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const { sortKey, sortDirection } = state
   const items = sortItems(state.items)
+
+  useEffect(() => {
+    dispatch(updateValidators({ count: items.length }))
+  }, [items.length])
 
   const formattedItems = items.map((x: ValidatorType, i: number) => {
     const conditionColor =
