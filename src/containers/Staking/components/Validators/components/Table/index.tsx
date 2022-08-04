@@ -54,7 +54,12 @@ const ValidatorsTable: React.FC = () => {
       commission: `${numeral(x.commission).format('0.[00]')}%`,
       self: `${numeral(x.selfPercent).format('0.[00]')}%`,
       condition: (
-        <Stack direction="row" alignItems="center" gap={1}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          gap={1}
+        >
           <Condition color={conditionColor} />
           <Typography>{formatNumber(x.condition.toString(), 2)}%</Typography>
         </Stack>
