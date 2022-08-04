@@ -6,8 +6,6 @@ import {
   Typography
 } from '@mui/material'
 import moment from 'moment'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import Card from 'components/Card'
@@ -20,10 +18,8 @@ import { styles } from '../styles'
 import { useUserTransactions } from './UserActivity/hooks'
 
 const LatestActivity = () => {
-  useUserTransactions()
-  const { data, hasActivity, loading } = useSelector(
-    (state: RootState) => state.userTransactions
-  )
+  const { state } = useUserTransactions()
+  const { data, loading, hasActivity } = state
 
   const formattedItems = data.map((tx: any, idx) => {
     const txType: string = tx.messages[0]['@type']

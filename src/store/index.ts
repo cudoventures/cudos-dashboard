@@ -44,7 +44,8 @@ const persistConfig = {
     'faucetModal',
     'proposalDetails',
     'validator',
-    'validatorDetails'
+    'validatorDetails',
+    'userTransactions'
   ]
 }
 
