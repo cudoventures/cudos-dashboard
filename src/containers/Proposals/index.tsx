@@ -11,6 +11,7 @@ import CrossIcon from 'assets/vectors/cross-blue.svg'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import NoData from 'components/NoData'
 import VotingModal from './components/VotingModal'
 import ProposalModal from './components/ProposalModal'
 import DepositModal from './components/DepositModal'
@@ -105,7 +106,11 @@ const Proposals = () => {
           <Box>
             {!proposalState.items.length ? (
               <Box sx={styles.circularProgress}>
-                <CircularProgress size={60} />
+                {proposalState.loading ? (
+                  <CircularProgress size={60} />
+                ) : (
+                  <NoData />
+                )}
               </Box>
             ) : (
               <Proposal />

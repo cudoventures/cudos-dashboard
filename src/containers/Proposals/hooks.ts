@@ -50,6 +50,7 @@ export const useProposals = () => {
       const newItems = R.uniq([...state.items, ...formatProposals(data)])
       newItems.sort((a, b) => b.id - a.id)
       handleSetState({
+        loading: false,
         items: newItems,
         hasNextPage: true,
         isNextPageLoading: false,
@@ -75,6 +76,7 @@ export const useProposals = () => {
         newItems.sort((a, b) => b.id - a.id)
         // set new state
         handleSetState({
+          loading: false,
           items: newItems,
           isNextPageLoading: false,
           hasNextPage: state.items.length < state.rawDataTotal,
