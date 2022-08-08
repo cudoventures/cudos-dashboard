@@ -6,7 +6,6 @@ import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 
-import { RecoilRoot } from 'recoil'
 import { ConnectLedger } from 'ledgers/KeplrLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
@@ -95,49 +94,47 @@ const App = () => {
   }, [])
 
   return (
-    <RecoilRoot>
-      <ApolloProvider client={apolloClient}>
-        <ThemeProvider theme={theme[themeColor]}>
-          <CssBaseline />
-          {location.pathname !== '/' ? null : (
-            <>
-              <Routes>
-                <Route path="/" element={<ConnectWallet />} />
-              </Routes>
-              <NotificationPopup type="warning" />
-            </>
-          )}
-          {location.pathname === '/' ? null : (
-            <Layout>
-              <Routes>
-                <Route element={<RequireKeplr />}>
-                  <Route path="dashboard">
-                    <Route index element={<Dashboard />} />
-                  </Route>
-                  <Route path="staking">
-                    <Route index element={<Staking />} />
-                    <Route path=":validatorId" element={<ValidatorDetails />} />
-                  </Route>
-                  <Route path="proposals">
-                    <Route index element={<Proposals />} />
-                    <Route path=":proposalId" element={<ProposalDetails />} />
-                  </Route>
+    <ApolloProvider client={apolloClient}>
+      <ThemeProvider theme={theme[themeColor]}>
+        <CssBaseline />
+        {location.pathname !== '/' ? null : (
+          <>
+            <Routes>
+              <Route path="/" element={<ConnectWallet />} />
+            </Routes>
+            <NotificationPopup type="warning" />
+          </>
+        )}
+        {location.pathname === '/' ? null : (
+          <Layout>
+            <Routes>
+              <Route element={<RequireKeplr />}>
+                <Route path="dashboard">
+                  <Route index element={<Dashboard />} />
                 </Route>
-                {import.meta.env.VITE_CHAIN_STATUS !== 'mainnet' && (
-                  <Route path="faucet">
-                    <Route index element={<Faucet />} />
-                  </Route>
-                )}
-                <Route path="*" element={<Navigate to="/dashboard" />} />
-              </Routes>
-              <NotificationPopup type="error" />
-              <NotificationPopup type="warning" />
-              <NotificationPopup type="info" />
-            </Layout>
-          )}
-        </ThemeProvider>
-      </ApolloProvider>
-    </RecoilRoot>
+                <Route path="staking">
+                  <Route index element={<Staking />} />
+                  <Route path=":validatorId" element={<ValidatorDetails />} />
+                </Route>
+                <Route path="proposals">
+                  <Route index element={<Proposals />} />
+                  <Route path=":proposalId" element={<ProposalDetails />} />
+                </Route>
+              </Route>
+              {import.meta.env.VITE_CHAIN_STATUS !== 'mainnet' && (
+                <Route path="faucet">
+                  <Route index element={<Faucet />} />
+                </Route>
+              )}
+              <Route path="*" element={<Navigate to="/dashboard" />} />
+            </Routes>
+            <NotificationPopup type="error" />
+            <NotificationPopup type="warning" />
+            <NotificationPopup type="info" />
+          </Layout>
+        )}
+      </ThemeProvider>
+    </ApolloProvider>
   )
 }
 
