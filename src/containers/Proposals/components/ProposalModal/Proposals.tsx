@@ -2,19 +2,18 @@ import { Box, Button, InputAdornment, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import {
-  initialModalState,
-  ModalProps,
-  ProposalStatus,
-  ProposalTypes
-} from 'store/proposalsModal'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
-
 import Dropdown from 'components/Dropdown'
 import { createProposal } from 'ledgers/transactions'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useNotifications } from 'components/NotificationPopup/hooks'
+import {
+  initialProposalModalState,
+  ModalStatus,
+  ProposalModalProps,
+  ProposalTypes
+} from 'store/modal'
 import {
   CancelRoundedIcon,
   InputContainer,
@@ -25,17 +24,15 @@ import { typeSwitch } from './ProposalTypes/types'
 import { validateInput } from './ProposalTypes/validateInput'
 
 type ProposalProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: ProposalModalProps
+  handleModal: (modalProps: Partial<ProposalModalProps>) => void
 }
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { setError } = useNotifications()
   const { address } = useSelector(({ profile }: RootState) => profile)
 
-  const { proposalData } = useSelector(
-    (state: RootState) => state.proposalsModal.modal
-  )
+  const { proposalData } = modalProps
   const [proposal, setProposal] = useState<string>('1')
   const [title, setTitle] = useState<string>('')
   const [proposalError, setProposalError] = useState<boolean>()
@@ -43,7 +40,6 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const delayInput = _.debounce(
     (value) =>
       handleModal({
-        ...modalProps,
         proposalData: {
           ...proposalData,
           title: value,
@@ -55,7 +51,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialProposalModalState
     })
   }
 
@@ -63,17 +59,15 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
     setProposal(proposalValue)
     setTitle('')
     handleModal({
-      ...modalProps,
-      proposalData: { ...initialModalState.proposalData }
+      proposalData: { ...initialProposalModalState.proposalData }
     })
   }
 
   const handleProposalSubmit = async (proposerAddress: string) => {
     try {
       handleModal({
-        ...modalProps,
         open: true,
-        status: ProposalStatus.LOADING,
+        status: ModalStatus.LOADING,
         proposalData: {
           ...proposalData,
           type: Number(proposal)
@@ -84,18 +78,16 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         proposerAddress
       )
       handleModal({
-        ...modalProps,
         open: true,
-        status: ProposalStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         fee: new BigNumber(gasFee),
         hash: result.transactionHash
       })
     } catch (error) {
       setError(error.message)
       handleModal({
-        ...modalProps,
         open: true,
-        status: ProposalStatus.FAILURE
+        status: ModalStatus.FAILURE
       })
     }
   }

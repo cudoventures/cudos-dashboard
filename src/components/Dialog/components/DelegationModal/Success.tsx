@@ -1,26 +1,21 @@
 import { OpenInNewRounded as OpenInNewRoundedIcon } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/validator'
-
+import { DelegationModalProps, initialDelegationModalState } from 'store/modal'
 import numeral from 'numeral'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store'
 import SuccessIcon from 'assets/vectors/success.svg'
 import { ModalContainer, CancelRoundedIcon } from '../styles'
 
 type SuccessProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: DelegationModalProps
+  handleModal: (modalProps: DelegationModalProps) => void
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { validator, amount, gasUsed, txHash, fee } = modalProps
-
-  const { address } = useSelector(({ profile }: RootState) => profile)
+  const { validator, gasUsed, txHash, fee } = modalProps
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialDelegationModalState
     })
   }
 

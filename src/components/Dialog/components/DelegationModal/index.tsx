@@ -1,4 +1,4 @@
-import { ModalStatus, initialModalState } from 'store/validator'
+import { ModalStatus, initialDelegationModalState } from 'store/modal'
 import Dialog from 'components/Dialog'
 import Delegation from './Delegation'
 import Success from './Success'
@@ -12,8 +12,12 @@ const DelegationModal: React.FC = () => {
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialDelegationModalState
     })
+  }
+
+  const handleTryAgain = () => {
+    handleModal({ status: ModalStatus.IN_PROGRESS })
   }
 
   const renderComponent = () => {
@@ -23,9 +27,17 @@ const DelegationModal: React.FC = () => {
       case ModalStatus.SUCCESS:
         return <Success modalProps={modal} handleModal={handleModal} />
       case ModalStatus.FAILURE:
-        return <Failure modalProps={modal} handleModal={handleModal} />
-      default:
+        return (
+          <Failure
+            failureMessage={modal.failureMessage}
+            handleClose={handleClose}
+            handleTryAgain={handleTryAgain}
+          />
+        )
+      case ModalStatus.IN_PROGRESS:
         return <Delegation modalProps={modal} handleModal={handleModal} />
+      default:
+        return null
     }
   }
 

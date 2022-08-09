@@ -1,25 +1,17 @@
 import { useSelector, useDispatch } from 'react-redux'
-
 import { RootState } from 'store'
-import { ModalProps } from 'store/validator'
-import { updateValidatorDetails } from 'store/validatorDetails'
+import { DelegationModalProps, updateModal } from 'store/modal'
 
 export default () => {
   const dispatch = useDispatch()
-  const modals = useSelector(
-    (state: RootState) => state.validatorDetails.modals
-  )
+  const modal = useSelector((state: RootState) => state.modal.delegation)
 
-  const handleModal = (modalState: ModalProps) => {
-    dispatch(
-      updateValidatorDetails({
-        modals: { ...modals, delegation: { ...modalState } }
-      })
-    )
+  const handleModal = (modalState: Partial<DelegationModalProps>) => {
+    dispatch(updateModal({ delegation: { ...modal, ...modalState } }))
   }
 
   return {
-    modal: modals.delegation,
+    modal,
     handleModal
   }
 }

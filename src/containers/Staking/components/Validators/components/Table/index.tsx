@@ -10,11 +10,14 @@ import Table from 'components/Table'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import { formatNumber } from 'utils/format_token'
 import { useDispatch } from 'react-redux'
+import { ModalStatus } from 'store/modal'
+import useModal from 'components/Dialog/components/DelegationModal/hooks'
 import columns from './utils'
 import useTable from './hooks'
 
 const ValidatorsTable: React.FC = () => {
-  const { state, handleSort, sortItems, handleModal } = useTable()
+  const { state, handleSort, sortItems } = useTable()
+  const { handleModal } = useModal()
   const { setWarning } = useNotifications()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -98,12 +101,12 @@ const ValidatorsTable: React.FC = () => {
 
             handleModal({
               open: true,
+              status: ModalStatus.IN_PROGRESS,
               validator: {
                 name: x.moniker,
                 imageUrl: x.avatarUrl,
                 address: x.validator
               },
-              status: null,
               amount: null,
               fee: '',
               gasUsed: 0,

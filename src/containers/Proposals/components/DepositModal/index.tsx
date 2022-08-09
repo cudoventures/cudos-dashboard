@@ -1,10 +1,9 @@
-import React from 'react'
 import Dialog from 'components/Dialog'
-import { DepositStatus, initialModalState } from 'store/depositModal'
+import Loading from 'components/Dialog/components/Loading'
+import Failure from 'components/Dialog/components/Failure'
+import { initialDepositModalState, ModalStatus } from 'store/modal'
 import useModal from './hooks'
-import Loading from './Loading'
 import Success from './Success'
-import Failure from './Failure'
 import Deposit from './Deposit'
 
 const DepositModal = () => {
@@ -13,19 +12,29 @@ const DepositModal = () => {
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialDepositModalState
     })
+  }
+
+  const handleTryAgain = () => {
+    handleModal({ status: ModalStatus.IN_PROGRESS })
   }
 
   const renderComponent = () => {
     switch (status) {
-      case DepositStatus.LOADING:
+      case ModalStatus.LOADING:
         return <Loading />
-      case DepositStatus.SUCCESS:
+      case ModalStatus.SUCCESS:
         return <Success modalProps={modal} handleModal={handleModal} />
-      case DepositStatus.FAILURE:
-        return <Failure modalProps={modal} handleModal={handleModal} />
-      case DepositStatus.DEPOSIT:
+      case ModalStatus.FAILURE:
+        return (
+          <Failure
+            failureMessage={modal.failureMessage}
+            handleClose={handleClose}
+            handleTryAgain={handleTryAgain}
+          />
+        )
+      case ModalStatus.IN_PROGRESS:
         return <Deposit modalProps={modal} handleModal={handleModal} />
       default:
         return null

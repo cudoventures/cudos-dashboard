@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux'
-
 import { RootState } from 'store'
-import { ModalProps, updateDepositModal } from 'store/depositModal'
+import { updateModal, DepositModalProps } from 'store/modal'
 
 export default () => {
   const dispatch = useDispatch()
-  const modal = useSelector((state: RootState) => state.depositModal.modal)
+  const modal = useSelector((state: RootState) => state.modal.deposit)
 
-  const handleModal = (modalState: ModalProps) => {
-    dispatch(updateDepositModal({ modal: { ...modalState } }))
+  const handleModal = (modalState: Partial<DepositModalProps>) => {
+    dispatch(updateModal({ deposit: { ...modal, ...modalState } }))
   }
 
   return {

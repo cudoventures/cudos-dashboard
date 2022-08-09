@@ -1,28 +1,26 @@
 import { Box, Typography, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/validator'
-
-import FailureIcon from 'assets/vectors/failure.svg'
+import FailureIcon from 'assets/vectors/failure.svg?component'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type FailureProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  failureMessage: {
+    title: string
+    subtitle: string
+  }
+  handleClose: () => void
+  handleTryAgain: () => void
 }
 
-const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
-  const handleClose = () => {
-    handleModal({
-      ...initialModalState
-    })
-  }
-
-  const handleTryAgain = () => {
-    handleModal({ ...modalProps, status: null })
-  }
+const Failure: React.FC<FailureProps> = ({
+  failureMessage,
+  handleClose,
+  handleTryAgain
+}) => {
+  const { title, subtitle } = failureMessage
 
   return (
     <ModalContainer sx={{ padding: '4rem' }}>
-      <img src={FailureIcon} alt="failure-icon" />
+      <FailureIcon />
       <CancelRoundedIcon onClick={handleClose} />
       <Box
         display="flex"
@@ -32,11 +30,10 @@ const Failure: React.FC<FailureProps> = ({ modalProps, handleModal }) => {
         gap={1}
       >
         <Typography variant="h4" fontWeight={900} letterSpacing={2}>
-          Delegation failed!
+          {title}
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          Seems like something went wrong with executing the transaction. Try
-          again or check your wallet balance.
+          {subtitle}
         </Typography>
       </Box>
       <Button

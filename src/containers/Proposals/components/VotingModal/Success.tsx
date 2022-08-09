@@ -3,8 +3,7 @@ import {
   OpenInNewRounded as OpenInNewRoundedIcon
 } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/votingModal'
-
+import { initialVotingModalState, VotingModalProps } from 'store/modal'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import SuccessIcon from 'assets/vectors/success.svg'
@@ -12,19 +11,17 @@ import { formatBigNum } from 'utils/projectUtils'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: VotingModalProps
+  handleModal: (modalProps: Partial<VotingModalProps>) => void
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
-  const { type, title, id, fee, hash } = useSelector(
-    (state: RootState) => state.votingModal.modal
-  )
+  const { type, title, id, fee, hash } = modalProps
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialVotingModalState
     })
   }
 

@@ -6,15 +6,12 @@ import profileReducer from './profile'
 import validatorReducer from './validator'
 import settingsReducer from './settings'
 import networkReducer from './network'
-import proposalsModalReducer from './proposalsModal'
 import proposalsReducer from './proposals'
 import proposalDetailsReducer from './proposalDetails'
 import userTransactionsReducer from './userTransactions'
-import votingModalReducer from './votingModal'
-import depositModalReducer from './depositModal'
-import faucetModalReducer from './faucetModal'
 import validatorDetailsReducer from './validatorDetails'
 import notificationsReducer from './notifications'
+import modalReducer from './modal'
 
 const rootReducer = combineReducers({
   profile: profileReducer,
@@ -23,14 +20,11 @@ const rootReducer = combineReducers({
   settings: settingsReducer,
   network: networkReducer,
   userTransactions: userTransactionsReducer,
-  proposalsModal: proposalsModalReducer,
-  votingModal: votingModalReducer,
-  depositModal: depositModalReducer,
-  faucetModal: faucetModalReducer,
   proposals: proposalsReducer,
   proposalDetails: proposalDetailsReducer,
   validatorDetails: validatorDetailsReducer,
-  notifications: notificationsReducer
+  notifications: notificationsReducer,
+  modal: modalReducer
 })
 
 const persistConfig = {
@@ -38,14 +32,11 @@ const persistConfig = {
   storage,
   blacklist: [
     'proposals',
-    'votingModal',
-    'proposalsModal',
-    'depositModal',
-    'faucetModal',
     'proposalDetails',
     'validator',
     'validatorDetails',
-    'userTransactions'
+    'userTransactions',
+    'modal'
   ]
 }
 

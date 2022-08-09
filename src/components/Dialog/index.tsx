@@ -12,16 +12,10 @@ const Dialog: React.FC<DialogProps> = ({
   children,
   height
 }) => {
-  const onClose = (ev: any, reason: string) => {
-    if (reason !== 'backdropClick') {
-      handleClose()
-    }
-  }
-
   return (
     <MuiDialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       PaperProps={{
         sx: {
           background: 'transparent',
@@ -29,6 +23,12 @@ const Dialog: React.FC<DialogProps> = ({
           position: 'fixed',
           overflow: 'hidden',
           minHeight: height
+        }
+      }}
+      BackdropProps={{
+        sx: {
+          backdropFilter: 'blur(3px)',
+          backgroundColor: 'rgba(0,0,30,0.4)'
         }
       }}
     >

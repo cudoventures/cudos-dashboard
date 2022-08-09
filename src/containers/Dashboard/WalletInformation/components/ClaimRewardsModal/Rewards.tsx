@@ -8,8 +8,6 @@ import {
   Tooltip
 } from '@mui/material'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
-
-import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { claimRewards } from 'ledgers/transactions'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import { useSelector, useDispatch } from 'react-redux'
@@ -27,10 +25,15 @@ import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { fetchRewards } from 'api/getRewards'
 import { useState } from 'react'
 import InfoIcon from 'assets/vectors/info-alt.svg?component'
+import {
+  initialRewardsModalProps,
+  ModalStatus,
+  RewardsModalProps
+} from 'store/modal'
 
 type RewardsProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: RewardsModalProps
+  handleModal: (modalProps: RewardsModalProps) => void
 }
 
 const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
@@ -68,13 +71,14 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
 
       dispatch(updateUser({ availableRewards: new BigNumber(0) }))
     } catch (err) {
+      console.log(err.message)
       handleModal({ ...modalProps, status: ModalStatus.FAILURE })
     }
   }
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialRewardsModalProps
     })
   }
 

@@ -13,8 +13,11 @@ import {
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import { coin, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
-
-import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
+import {
+  ModalStatus,
+  DelegationModalProps,
+  initialDelegationModalState
+} from 'store/modal'
 import { calculateFee, delegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -39,8 +42,8 @@ const gasPrice = GasPrice.fromString(
 )
 
 type DelegationProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: DelegationModalProps
+  handleModal: (modalProps: Partial<DelegationModalProps>) => void
 }
 
 const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
@@ -94,7 +97,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   }
 
   const handleAmount = async (amount: string) => {
-    handleModal({ ...modalProps, amount })
+    handleModal({ amount })
     let fee = ''
 
     if (Number(amount) > 0) {
@@ -107,7 +110,6 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     }
 
     handleModal({
-      ...modalProps,
       fee,
       amount
     })
@@ -134,14 +136,13 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     }
 
     handleModal({
-      ...modalProps,
       fee,
       amount: `${Number(balance) - Math.ceil(Number(fee) * 4)}` // multiplying by 4 because of Keplr
     })
   }
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: ModalStatus.LOADING })
+    handleModal({ status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
@@ -156,19 +157,27 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       )
 
       handleModal({
-        ...modalProps,
         status: ModalStatus.SUCCESS,
         gasUsed: delegationResult.gasUsed,
         txHash: delegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
+      handleModal({
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          title: 'Delegation Failed!',
+          subtitle:
+            e.message === 'Request rejected'
+              ? 'Request rejected by the user'
+              : 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+        }
+      })
     }
   }
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialDelegationModalState
     })
   }
 

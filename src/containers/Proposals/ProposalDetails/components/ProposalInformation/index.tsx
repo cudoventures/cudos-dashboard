@@ -5,11 +5,10 @@ import Card from 'components/Card'
 import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
-import { DepositStatus } from 'store/depositModal'
 import { formatAddress, formatDateTime } from 'utils/projectUtils'
-import { VotingStatus } from 'store/votingModal'
 import { proposalStatus } from 'containers/Proposals/proposalStatus'
 import { proposalType } from 'containers/Proposals/proposalType'
+import { ModalStatus } from 'store/modal'
 import useVotingModal from '../../../components/VotingModal/hooks'
 import useDepositModal from '../../../components/DepositModal/hooks'
 
@@ -53,7 +52,7 @@ const ProposalInformation = () => {
                   onClick={() =>
                     handleVotingModal({
                       open: true,
-                      status: VotingStatus.VOTE,
+                      status: ModalStatus.IN_PROGRESS,
                       id: overview.id,
                       title: overview.title,
                       fee: new BigNumber(0)
@@ -77,7 +76,7 @@ const ProposalInformation = () => {
                   onClick={() =>
                     handleDepositModal({
                       open: true,
-                      status: DepositStatus.DEPOSIT,
+                      status: ModalStatus.IN_PROGRESS,
                       id: overview.id,
                       title: overview.title,
                       amount: '',
@@ -105,7 +104,7 @@ const ProposalInformation = () => {
                 onClick={() =>
                   handleDepositModal({
                     open: true,
-                    status: DepositStatus.DEPOSIT,
+                    status: ModalStatus.IN_PROGRESS,
                     id: overview.id,
                     title: overview.title,
                     amount: '',
