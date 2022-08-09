@@ -42,11 +42,7 @@ const ProposalModal = () => {
   }
 
   return (
-    <Dialog
-      height={{ minHeight: '100%' }}
-      open={open}
-      handleClose={handleClose}
-    >
+    <Dialog open={open} handleClose={handleClose}>
       {renderComponent()}
     </Dialog>
   )
