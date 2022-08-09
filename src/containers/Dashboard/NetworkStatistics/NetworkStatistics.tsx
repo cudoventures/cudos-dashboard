@@ -5,7 +5,7 @@ import { RootState } from 'store'
 import Card from 'components/Card'
 import { useOnlineVotingPower } from '../VotingPower/hooks'
 import { useDataBlocks } from './Blocks/hooks'
-import { useMarketRecoil } from './Market/hooks'
+import { useMarket } from './Market/hooks'
 
 import { styles } from '../styles'
 
@@ -13,7 +13,7 @@ const NetworkStatistics = () => {
   const { price } = useSelector((state: RootState) => state.market)
   const { state: votingState } = useOnlineVotingPower()
   const { state: blockState } = useDataBlocks()
-  useMarketRecoil()
+  useMarket()
 
   const votingPowerPercent =
     votingState.totalVotingPower === 0

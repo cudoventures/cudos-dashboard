@@ -3867,11 +3867,6 @@ graphql@^16.3.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.5.0.tgz#41b5c1182eaac7f3d47164fb247f61e4dfb69c85"
   integrity sha512-qbHgh8Ix+j/qY+a/ZcJnFQ+j8ezakqPiHwPiZhV/3PgGlgf96QMBB5/f2rkiC9sgLoy/xvT6TSiaf2nTHJh5iA==
 
-hamt_plus@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/hamt_plus/-/hamt_plus-1.0.2.tgz#e21c252968c7e33b20f6a1b094cd85787a265601"
-  integrity sha1-4hwlKWjH4zsg9qGwlM2FeHomVgE=
-
 has-ansi@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
@@ -5512,13 +5507,6 @@ readonly-date@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/readonly-date/-/readonly-date-1.0.0.tgz#5af785464d8c7d7c40b9d738cbde8c646f97dcd9"
   integrity sha512-tMKIV7hlk0h4mO3JTmmVuIlJVXjKk3Sep9Bf5OH0O+758ruuVkUy2J9SttDLm91IEX/WHlXPSpxMGjPj4beMIQ==
-
-recoil@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.7.2.tgz#37aafc9e0674abae639263354a11c910e71bf78a"
-  integrity sha512-OT4pI7FOUHcIoRtjsL5Lqq+lFFzQfir4MIbUkqyJ3nqv3WfBP1pHepyurqTsK5gw+T+I2R8+uOD28yH+Lg5o4g==
-  dependencies:
-    hamt_plus "1.0.2"
 
 recrawl-sync@^2.0.3:
   version "2.2.2"

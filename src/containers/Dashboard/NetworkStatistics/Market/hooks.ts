@@ -1,28 +1,25 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable max-len */
 import * as R from 'ramda'
 import numeral from 'numeral'
-import { useRecoilState, SetterOrUpdater } from 'recoil'
 import Big from 'big.js'
 import { useDispatch } from 'react-redux'
 import { getDenom } from 'utils/get_denom'
 import { useMarketDataQuery, MarketDataQuery } from 'graphql/types'
 import { chainConfig } from 'configs'
 import { formatToken } from 'utils/format_token'
-import { updateMarket } from 'store/market'
-import { AtomState } from './types'
-import { writeMarket } from './selectors'
+import { MarketState, updateMarket } from 'store/market'
 
-export const useMarketRecoil = () => {
-  const [market, setMarket] = useRecoilState(writeMarket) as [
-    AtomState,
-    SetterOrUpdater<AtomState>
-  ]
-
+export const useMarket = () => {
   const dispatch = useDispatch()
 
-  const formatUseChainIdQuery = (data: MarketDataQuery): AtomState => {
-    let { communityPool, price, marketCap } = market
+  const formatUseChainIdQuery = (data: MarketDataQuery): MarketState => {
+    let price = null
+    let marketCap = 0
+    let communityPool: TokenUnit = {
+      value: '0',
+      displayDenom: '',
+      baseDenom: '',
+      exponent: 0
+    }
 
     if (data?.tokenPrice?.length) {
       price = numeral(
@@ -78,7 +75,6 @@ export const useMarketRecoil = () => {
     },
     onCompleted: (data) => {
       if (data) {
-        setMarket(formatUseChainIdQuery(data))
         dispatch(updateMarket(formatUseChainIdQuery(data)))
       }
     }
