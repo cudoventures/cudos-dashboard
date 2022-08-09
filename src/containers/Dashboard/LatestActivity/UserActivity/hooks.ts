@@ -2,13 +2,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
   GetMessagesByAddressQuery,
-  useGetMessagesByAddressListenerSubscription
+  useGetMessagesByAddressDistinctListenerSubscription
 } from 'graphql/types'
 import { RootState } from 'store'
 import { updateUserTransactions } from 'store/userTransactions'
 
-const LIMIT = 50
-const FILTER = 20
+const LIMIT = 20
 
 export const useUserTransactions = () => {
   const dispatch = useDispatch()
@@ -16,18 +15,7 @@ export const useUserTransactions = () => {
   const state = useSelector((state: RootState) => state.userTransactions)
 
   const formatTransactions = (data: GetMessagesByAddressQuery) => {
-    let formattedData = data.messagesByAddress
-    formattedData = formattedData.filter(
-      (ele, ind) =>
-        ind ===
-        formattedData.findIndex(
-          (elem) => elem.transaction.hash === ele.transaction.hash
-        )
-    )
-
-    if (data.messagesByAddress.length > FILTER + 1) {
-      formattedData = formattedData.slice(0, FILTER)
-    }
+    const formattedData = data.messagesByAddress
 
     return formattedData.map((x) => {
       const { transaction } = x
@@ -46,7 +34,7 @@ export const useUserTransactions = () => {
     })
   }
 
-  useGetMessagesByAddressListenerSubscription({
+  useGetMessagesByAddressDistinctListenerSubscription({
     variables: {
       limit: LIMIT,
       offset: 0,

@@ -29,3 +29,35 @@ query GetMessagesByAddress($address: _text, $limit: bigint = 50, $offset: bigint
     }
   }
 }
+
+subscription GetMessagesByAddressDistinctListener($address: _text, $limit: bigint = 50, $offset: bigint = 0 $types: _text = "{}") {
+  messagesByAddress: messages_by_address_distinct_on_tx_hash(args: {addresses: $address, types: $types, limit: $limit, offset: $offset}) {
+    transaction {
+      height
+      hash
+      success
+      messages
+      logs
+      block {
+        height
+        timestamp
+      }
+    }
+  }
+}
+
+query GetMessagesByAddressDistinct($address: _text, $limit: bigint = 50, $offset: bigint = 0 $types: _text = "{}") {
+  messagesByAddress: messages_by_address_distinct_on_tx_hash(args: {addresses: $address, types: $types, limit: $limit, offset: $offset}) {
+    transaction {
+      height
+      hash
+      success
+      messages
+      logs
+      block {
+        height
+        timestamp
+      }
+    }
+  }
+}

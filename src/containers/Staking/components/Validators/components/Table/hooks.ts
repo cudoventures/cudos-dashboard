@@ -188,7 +188,6 @@ export default () => {
       })
     }
 
-    handleSetState({ count: sorted.length })
     return sorted
   }
 
