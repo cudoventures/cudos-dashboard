@@ -10,7 +10,7 @@ import { useMarket } from './Market/hooks'
 import { styles } from '../styles'
 
 const NetworkStatistics = () => {
-  const { price } = useSelector((state: RootState) => state.market)
+  const { apr } = useSelector((state: RootState) => state.market)
   const { state: votingState } = useOnlineVotingPower()
   const { state: blockState } = useDataBlocks()
   useMarket()
@@ -29,13 +29,13 @@ const NetworkStatistics = () => {
       </Box>
       <Box sx={styles.networkCardStyle}>
         <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-          PRICE
+          ANNUAL PERCENTAGE YIELD
         </Typography>
         <Typography sx={styles.networkCardContentStyle}>
-          {`$${price}`}
+          {`${apr.toFixed(2)}%`}
         </Typography>
         <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-          USD
+          APY
         </Typography>
       </Box>
       <Box sx={styles.networkCardStyle}>
