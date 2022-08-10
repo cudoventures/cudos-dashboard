@@ -29,6 +29,7 @@ export const ConnectLedger = async () => {
       coinDecimals: 18,
       coinGeckoId: 'cudos'
     },
+    walletUrlForStaking: import.meta.env.VITE_APP_STAKING_URL,
     feeCurrencies: [
       {
         coinDenom: 'CUDOS',
@@ -51,7 +52,8 @@ export const ConnectLedger = async () => {
       low: 5000000000000,
       average: 5000000000000 * 2,
       high: 5000000000000 * 4
-    }
+    },
+    features: ['ibc-transfer']
   }
 
   await window.keplr.experimentalSuggestChain(config)

@@ -152,6 +152,7 @@ declare global {
     VITE_CHAIN_STATUS: string
     VITE_CAPTCHA_SITE_KEY: string
     VITE_FAUCET_URL: string
+    VITE_APP_STAKING_URL: string
   }
 
   interface SxMap {

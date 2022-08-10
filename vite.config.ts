@@ -11,5 +11,8 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     svgr({ keepEmittedAssets: true })
-  ]
+  ],
+  build: {
+    target: 'esnext'
+  }
 })
