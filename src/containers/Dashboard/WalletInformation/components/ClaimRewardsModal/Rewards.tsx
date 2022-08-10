@@ -71,7 +71,6 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
 
       dispatch(updateUser({ availableRewards: new BigNumber(0) }))
     } catch (err) {
-      console.log(err.message)
       handleModal({ ...modalProps, status: ModalStatus.FAILURE })
     }
   }

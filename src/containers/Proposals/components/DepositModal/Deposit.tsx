@@ -65,7 +65,6 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
   }
 
   const handleClose = () => {
-    console.log('closing?')
     handleModal({
       ...initialDepositModalState
     })
