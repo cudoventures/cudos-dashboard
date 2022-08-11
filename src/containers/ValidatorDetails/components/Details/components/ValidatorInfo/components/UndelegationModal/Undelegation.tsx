@@ -157,7 +157,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
   }
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: ModalStatus.LOADING })
+    handleModal({ status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(

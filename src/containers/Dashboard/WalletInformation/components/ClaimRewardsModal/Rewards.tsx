@@ -33,7 +33,7 @@ import {
 
 type RewardsProps = {
   modalProps: RewardsModalProps
-  handleModal: (modalProps: RewardsModalProps) => void
+  handleModal: (modalProps: Partial<RewardsModalProps>) => void
 }
 
 const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
@@ -45,7 +45,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: ModalStatus.LOADING })
+    handleModal({ status: ModalStatus.LOADING })
 
     try {
       if (Number.isNaN(new BigNumber(amount || 0))) {
@@ -62,7 +62,6 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
       )
 
       handleModal({
-        ...modalProps,
         status: ModalStatus.SUCCESS,
         gasUsed: result.gasUsed,
         txHash: result.transactionHash,
@@ -71,7 +70,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
 
       dispatch(updateUser({ availableRewards: new BigNumber(0) }))
     } catch (err) {
-      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
+      handleModal({ status: ModalStatus.FAILURE })
     }
   }
 
