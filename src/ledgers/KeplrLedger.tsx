@@ -21,9 +21,7 @@ export const ConnectLedger = async () => {
 
   await wallet.connect()
 
-  const address = wallet.accountAddress
+  const key = await window.keplr.getKey(import.meta.env.VITE_APP_CHAIN_ID)
 
-  const { name } = await window.keplr.getKey(import.meta.env.VITE_APP_CHAIN_ID)
-
-  return { address, keplrName: name }
+  return { address: key.bech32Address, keplrName: key.name }
 }
