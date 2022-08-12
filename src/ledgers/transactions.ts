@@ -66,6 +66,10 @@ export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
 }
 
 export const getFee = async (address: string, message: any[], memo: string) => {
+  if (signingClient === null) {
+    return null
+  }
+
   const gasUsed = await signingClient.simulate(address, message, memo)
 
   const gasLimit = Math.round(gasUsed * feeMultiplier)
@@ -80,7 +84,7 @@ export const delegate = async (
   validatorAddress: string,
   amount: string,
   memo: string
-): Promise<DeliverTxResponse> => {
+): Promise<DeliverTxResponse | null> => {
   const delegationAmount = {
     amount: new BigNumber(amount)
       .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
@@ -106,6 +110,10 @@ export const delegate = async (
 
   const fee = await getFee(delegatorAddress, [msgAny], memo)
 
+  if (signingClient === null || fee === null) {
+    return null
+  }
+
   const result = await signingClient.delegateTokens(
     delegatorAddress,
     validatorAddress,
@@ -122,7 +130,7 @@ export const undelegate = async (
   validatorAddress: string,
   amount: string,
   memo: string
-): Promise<DeliverTxResponse> => {
+): Promise<DeliverTxResponse | null> => {
   const undelegationAmount = {
     amount: new BigNumber(amount || 0)
       .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
@@ -148,6 +156,10 @@ export const undelegate = async (
 
   const fee = await getFee(delegatorAddress, [msgAny], memo)
 
+  if (signingClient === null || fee === null) {
+    return null
+  }
+
   const result = await signingClient.undelegateTokens(
     delegatorAddress,
     validatorAddress,
@@ -165,7 +177,7 @@ export const redelegate = async (
   validatorDstAddress: string,
   amount: string,
   memo: string
-): Promise<DeliverTxResponse> => {
+): Promise<DeliverTxResponse | null> => {
   const msg = MsgBeginRedelegate.fromPartial({
     delegatorAddress,
     validatorSrcAddress,
@@ -184,6 +196,10 @@ export const redelegate = async (
   }
 
   const fee = await getFee(delegatorAddress, [msgAny], memo)
+
+  if (signingClient === null || fee === null) {
+    return null
+  }
 
   const result = await signingClient.signAndBroadcast(
     delegatorAddress,
@@ -232,6 +248,10 @@ export const claimRewards = async (
 
   const fee = await getFee(address, [...msgAny], msgMemo)
 
+  if (signingClient === null || fee === null) {
+    return {}
+  }
+
   const result = await signingClient.signAndBroadcast(
     address,
     msgAny,
@@ -261,6 +281,10 @@ export const voteProposal = async (
   const memo = 'Sent via CUDOS Dashboard'
 
   const fee = await getFee(voterAddress, [msgAny], memo)
+
+  if (signingClient === null || fee === null) {
+    return {}
+  }
 
   const result = await signingClient.signAndBroadcast(
     voterAddress,
@@ -301,6 +325,10 @@ export const depositProposal = async (
   const memo = 'Sent via CUDOS Dashboard'
 
   const fee = await getFee(depositorAddress, [msgAny], memo)
+
+  if (signingClient === null || fee === null) {
+    return {}
+  }
 
   const result = await signingClient.signAndBroadcast(
     depositorAddress,
@@ -452,6 +480,10 @@ export const createProposal = async (
   const memo = 'Sent via CUDOS Dashboard'
 
   const fee = await getFee(proposerAddress, [msgAny], memo)
+
+  if (signingClient === null || fee === null) {
+    return {}
+  }
 
   const result = await client.signAndBroadcast(
     proposerAddress,

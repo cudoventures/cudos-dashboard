@@ -48,6 +48,10 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
+      if (signingClient === null) {
+        return
+      }
+
       const walletBalance = await signingClient.getDelegation(
         address,
         validator?.address || ''
@@ -79,6 +83,10 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
+      if (signingClient === null) {
+        return null
+      }
+
       const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
 
       const gasLimit = Math.round(gasUsed * feeMultiplier)
@@ -96,6 +104,8 @@ const Undelegation: React.FC<UndelegationProps> = ({
       fee,
       amount
     })
+
+    return {}
   }
 
   const handleAmountChange = (
@@ -123,6 +133,10 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
+    if (signingClient === null) {
+      return null
+    }
+
     const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
@@ -134,10 +148,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
   const handleMaxAmoount = async () => {
     let fee = ''
+    const estimatedFee = await getEstimatedFee(delegated)
 
-    if (Number(delegated) > 0) {
-      const estimatedFee = await getEstimatedFee(delegated)
-
+    if (Number(delegated) > 0 && estimatedFee !== null) {
       fee = formatToken(
         estimatedFee.amount,
         CosmosNetworkConfig.CURRENCY_DENOM
@@ -167,6 +180,10 @@ const Undelegation: React.FC<UndelegationProps> = ({
         amount || '',
         ''
       )
+
+      if (delegationResult === null) {
+        return
+      }
 
       handleModal({
         ...modalProps,

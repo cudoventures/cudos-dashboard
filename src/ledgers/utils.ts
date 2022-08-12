@@ -434,21 +434,25 @@ export const unknownMessage = {
 }
 
 export const signingClient = await (async () => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
+  try {
+    window.keplr.defaultOptions = {
+      sign: {
+        preferNoSetFee: true
+      }
     }
+    const offlineSigner = window.getOfflineSignerOnlyAmino(
+      import.meta.env.VITE_APP_CHAIN_ID
+    )
+
+    const client = await SigningStargateClient.connectWithSigner(
+      import.meta.env.VITE_APP_RPC,
+      offlineSigner
+    )
+
+    return client
+  } catch (error) {
+    return null
   }
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
-
-  return client
 })()
 
 export const client = await (async () => {

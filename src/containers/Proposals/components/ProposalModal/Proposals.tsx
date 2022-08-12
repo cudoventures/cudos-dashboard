@@ -83,6 +83,11 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         proposalData,
         proposerAddress
       )
+
+      if (gasFee === undefined || result === undefined) {
+        return
+      }
+
       handleModal({
         ...modalProps,
         open: true,

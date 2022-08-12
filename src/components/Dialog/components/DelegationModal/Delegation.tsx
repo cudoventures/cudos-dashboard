@@ -52,6 +52,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
   useEffect(() => {
     const loadBalance = async () => {
+      if (signingClient === null) {
+        return
+      }
+
       const walletBalance = await signingClient.getBalance(
         address,
         CosmosNetworkConfig.CURRENCY_DENOM
@@ -84,6 +88,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
+    if (signingClient === null) {
+      return null
+    }
+
     const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
@@ -100,6 +108,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     if (Number(amount) > 0) {
       const estimatedFee = await getEstimatedFee(amount)
 
+      if (estimatedFee === null) {
+        return null
+      }
+
       fee = formatToken(
         estimatedFee.amount,
         CosmosNetworkConfig.CURRENCY_DENOM
@@ -111,6 +123,8 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       fee,
       amount
     })
+
+    return {}
   }
 
   const handleAmountChange = (
@@ -123,10 +137,9 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
   const handleMaxAmoount = async () => {
     let fee = ''
+    const estimatedFee = await getEstimatedFee(balance)
 
-    if (Number(balance) > 0) {
-      const estimatedFee = await getEstimatedFee(balance)
-
+    if (Number(balance) > 0 && estimatedFee !== null) {
       fee = formatToken(
         estimatedFee.amount,
         CosmosNetworkConfig.CURRENCY_DENOM
@@ -154,6 +167,10 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         amount || '',
         ''
       )
+
+      if (delegationResult === null) {
+        return
+      }
 
       handleModal({
         ...modalProps,

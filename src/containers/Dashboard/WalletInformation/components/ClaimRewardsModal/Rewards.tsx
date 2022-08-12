@@ -58,6 +58,10 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         restake
       )
 
+      if (result === undefined || fee === undefined) {
+        return
+      }
+
       handleModal({
         ...modalProps,
         status: ModalStatus.SUCCESS,

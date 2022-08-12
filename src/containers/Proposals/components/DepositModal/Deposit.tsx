@@ -49,6 +49,10 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
         amount
       )
 
+      if (gasFee === undefined || result === undefined) {
+        return
+      }
+
       handleModal({
         open: true,
         status: DepositStatus.SUCCESS,

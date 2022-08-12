@@ -45,6 +45,10 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
         votingOption
       )
 
+      if (gasFee === undefined || result === undefined) {
+        return
+      }
+
       handleModal({
         open: true,
         status: VotingStatus.SUCCESS,
