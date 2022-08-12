@@ -99,8 +99,8 @@ const ProposalVoting = () => {
             >
               {proposalState.overview.status ===
               'PROPOSAL_STATUS_DEPOSIT_PERIOD'
-                ? `Voted / Quorum (Not started yet)`
-                : `Voted / Quorum (${totalVotedPercent}%)`}
+                ? `Voted / Total (Not started yet)`
+                : `Voted / Total (${totalVotedPercent}%)`}
             </Typography>
             <Box>
               <Typography
