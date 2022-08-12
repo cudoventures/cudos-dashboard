@@ -20,10 +20,9 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
 }
 
 export const getWalletBalance = async (address: string) => {
-  const updateWalletBalance = await client.getBalance(
-    address,
-    CosmosNetworkConfig.CURRENCY_DENOM
-  )
+  const updateWalletBalance = await (
+    await client
+  ).getBalance(address, CosmosNetworkConfig.CURRENCY_DENOM)
 
   return new BigNumber(updateWalletBalance.amount)
     .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
@@ -31,7 +30,7 @@ export const getWalletBalance = async (address: string) => {
 }
 
 export const getStakedBalance = async (address: string) => {
-  const updateWalletBalance = await client.getBalanceStaked(address)
+  const updateWalletBalance = await (await client).getBalanceStaked(address)
 
   if (updateWalletBalance === null) {
     return new BigNumber(0)

@@ -52,10 +52,9 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
   useEffect(() => {
     const loadBalance = async () => {
-      const walletBalance = await signingClient.getBalance(
-        address,
-        CosmosNetworkConfig.CURRENCY_DENOM
-      )
+      const walletBalance = await (
+        await signingClient
+      ).getBalance(address, CosmosNetworkConfig.CURRENCY_DENOM)
 
       setBalance(
         new BigNumber(walletBalance.amount)
@@ -84,7 +83,9 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
+    const gasUsed = await (
+      await signingClient
+    ).simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 

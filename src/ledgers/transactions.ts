@@ -66,7 +66,7 @@ export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
 }
 
 export const getFee = async (address: string, message: any[], memo: string) => {
-  const gasUsed = await signingClient.simulate(address, message, memo)
+  const gasUsed = await (await signingClient).simulate(address, message, memo)
 
   const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -106,7 +106,9 @@ export const delegate = async (
 
   const fee = await getFee(delegatorAddress, [msgAny], memo)
 
-  const result = await signingClient.delegateTokens(
+  const result = await (
+    await signingClient
+  ).delegateTokens(
     delegatorAddress,
     validatorAddress,
     delegationAmount,
@@ -148,7 +150,9 @@ export const undelegate = async (
 
   const fee = await getFee(delegatorAddress, [msgAny], memo)
 
-  const result = await signingClient.undelegateTokens(
+  const result = await (
+    await signingClient
+  ).undelegateTokens(
     delegatorAddress,
     validatorAddress,
     undelegationAmount,
@@ -185,12 +189,9 @@ export const redelegate = async (
 
   const fee = await getFee(delegatorAddress, [msgAny], memo)
 
-  const result = await signingClient.signAndBroadcast(
-    delegatorAddress,
-    [msgAny],
-    fee,
-    memo
-  )
+  const result = await (
+    await signingClient
+  ).signAndBroadcast(delegatorAddress, [msgAny], fee, memo)
 
   return result
 }
@@ -232,12 +233,9 @@ export const claimRewards = async (
 
   const fee = await getFee(address, [...msgAny], msgMemo)
 
-  const result = await signingClient.signAndBroadcast(
-    address,
-    msgAny,
-    fee,
-    msgMemo
-  )
+  const result = await (
+    await signingClient
+  ).signAndBroadcast(address, msgAny, fee, msgMemo)
 
   return { result, fee: fee.amount[0].amount }
 }
@@ -262,12 +260,9 @@ export const voteProposal = async (
 
   const fee = await getFee(voterAddress, [msgAny], memo)
 
-  const result = await signingClient.signAndBroadcast(
-    voterAddress,
-    [msgAny],
-    fee,
-    memo
-  )
+  const result = await (
+    await signingClient
+  ).signAndBroadcast(voterAddress, [msgAny], fee, memo)
 
   return {
     result,
@@ -302,12 +297,9 @@ export const depositProposal = async (
 
   const fee = await getFee(depositorAddress, [msgAny], memo)
 
-  const result = await signingClient.signAndBroadcast(
-    depositorAddress,
-    [msgAny],
-    fee,
-    memo
-  )
+  const result = await (
+    await signingClient
+  ).signAndBroadcast(depositorAddress, [msgAny], fee, memo)
 
   return {
     result,

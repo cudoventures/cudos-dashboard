@@ -65,10 +65,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const walletBalance = await signingClient.getDelegation(
-        address,
-        validator?.address || ''
-      )
+      const walletBalance = await (
+        await signingClient
+      ).getDelegation(address, validator?.address || '')
 
       setDelegated(
         new BigNumber(walletBalance?.amount || 0)
@@ -102,7 +101,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
         value: msg
       }
 
-      const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
+      const gasUsed = await (
+        await signingClient
+      ).simulate(address, [msgAny], 'memo')
 
       const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -147,7 +148,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
       value: msg
     }
 
-    const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
+    const gasUsed = await (
+      await signingClient
+    ).simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 

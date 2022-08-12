@@ -48,10 +48,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const walletBalance = await signingClient.getDelegation(
-        address,
-        validator?.address || ''
-      )
+      const walletBalance = await (
+        await signingClient
+      ).getDelegation(address, validator?.address || '')
 
       setDelegated(
         new BigNumber(walletBalance?.amount || 0)
@@ -79,7 +78,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
-      const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
+      const gasUsed = await (
+        await signingClient
+      ).simulate(address, [msgAny], 'memo')
 
       const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -123,7 +124,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
-    const gasUsed = await signingClient.simulate(address, [msgAny], 'memo')
+    const gasUsed = await (
+      await signingClient
+    ).simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 
