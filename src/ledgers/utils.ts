@@ -434,11 +434,6 @@ export const unknownMessage = {
 }
 
 export const signingClient = await (async () => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
-    }
-  }
   const offlineSigner = window.getOfflineSignerOnlyAmino(
     import.meta.env.VITE_APP_CHAIN_ID
   )
