@@ -13,11 +13,13 @@ export default () => {
   const dispatch = useDispatch()
 
   const sortKey = useSelector((state: RootState) => state.validator.sortKey)
+  const filter = useSelector((state: RootState) => state.validator.filter)
   const sortDirection = useSelector(
     (state: RootState) => state.validator.sortDirection
   )
   const items = useSelector((state: RootState) => state.validator.items)
   const tab = useSelector((state: RootState) => state.validator.tab)
+  const address = useSelector((state: RootState) => state.profile.address)
 
   const stakedValidators = useSelector(
     (state: RootState) => state.profile.stakedValidators
@@ -77,6 +79,9 @@ export default () => {
           signedBlockWindow,
           missedBlockCounter
         )
+        const myDelegation = x.validatorInfo?.delegations.find(
+          (delegation) => delegation.delegatorAddress === address
+        )
 
         return {
           validator: x.validatorInfo?.operatorAddress || '',
@@ -96,7 +101,10 @@ export default () => {
           ),
           delegators: x.validatorInfo?.delegations.length || 0,
           avatarUrl: R.pathOr('', ['validatorDescription', 0, 'avatarUrl'], x),
-          moniker: R.pathOr('', ['validatorDescription', 0, 'moniker'], x)
+          moniker: R.pathOr('', ['validatorDescription', 0, 'moniker'], x),
+          myDelegation: myDelegation
+            ? Number(myDelegation?.amount.amount)
+            : undefined
         }
       })
 
@@ -183,7 +191,19 @@ export default () => {
       })
     }
 
+    if (filter) {
+      sorted = sorted.filter(
+        (x) => x.moniker.toUpperCase().indexOf(filter) > -1
+      )
+    }
+
     return sorted
+  }
+
+  const handleSearch = (input: string) => {
+    const filter = input.toUpperCase()
+
+    handleSetState({ filter })
   }
 
   // ==========================
@@ -202,9 +222,11 @@ export default () => {
     state: {
       sortDirection,
       sortKey,
-      items
+      items,
+      filter
     },
     handleSort,
-    sortItems
+    sortItems,
+    handleSearch
   }
 }

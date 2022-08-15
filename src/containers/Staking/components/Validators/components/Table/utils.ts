@@ -11,13 +11,19 @@ const columns: Column[] = [
     key: 'validator',
     label: 'Validator',
     color: 'text.primary',
-    colSpan: 2
+    colSpan: 2,
+    width: 300
   },
   {
     key: 'votingPower',
     label: 'Voting Power',
     sortKey: 'votingPower',
-    colSpan: 2,
+    sort: true
+  },
+  {
+    key: 'myDelegation',
+    label: 'My Delegation',
+    sortKey: 'myDelegation',
     sort: true
   },
   {
@@ -26,14 +32,16 @@ const columns: Column[] = [
     sortKey: 'commission',
     align: 'center',
     sort: true,
-    color: 'primary.main'
+    color: 'primary.main',
+    width: 70
   },
   {
     key: 'self',
     label: 'Self %',
     sortKey: 'selfPercent',
     align: 'right',
-    sort: true
+    sort: true,
+    width: 120
   },
   {
     key: 'delegators',
@@ -47,7 +55,8 @@ const columns: Column[] = [
     label: 'Condition',
     sortKey: 'condition',
     align: 'center',
-    sort: true
+    sort: true,
+    width: 120
   },
   {
     key: 'action',

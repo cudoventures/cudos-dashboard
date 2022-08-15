@@ -52,6 +52,7 @@ const Table: React.FC<TableProps> = ({
                     variant="body2"
                     color="text.secondary"
                     fontWeight={600}
+                    whiteSpace="nowrap"
                   >
                     {col.label}
                   </Typography>
