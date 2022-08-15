@@ -433,21 +433,35 @@ export const unknownMessage = {
   displayName: 'Unknown'
 }
 
-export const signingClient = await (async () => {
-  const offlineSigner = window.getOfflineSignerOnlyAmino(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
+export const signingClient = (async () => {
+  try {
+    window.keplr.defaultOptions = {
+      sign: {
+        preferNoSetFee: true
+      }
+    }
 
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
+    const offlineSigner = window.getOfflineSignerOnlyAmino(
+      import.meta.env.VITE_APP_CHAIN_ID
+    )
 
-  return client
+    const client = await SigningStargateClient.connectWithSigner(
+      import.meta.env.VITE_APP_RPC,
+      offlineSigner
+    )
+
+    return client
+  } catch (error) {
+    throw new Error('Check your Keplr installation.')
+  }
 })()
 
-export const client = await (async () => {
-  const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
+export const client = (async () => {
+  try {
+    const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
 
-  return client
+    return client
+  } catch (error) {
+    throw new Error('Check your Keplr installation.')
+  }
 })()
