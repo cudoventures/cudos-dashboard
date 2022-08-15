@@ -1,17 +1,16 @@
 import { OpenInNewRounded as OpenInNewRoundedIcon } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/validator'
-
 import numeral from 'numeral'
 import SuccessIcon from 'assets/vectors/success.svg'
 import {
   ModalContainer,
   CancelRoundedIcon
 } from 'components/Dialog/components/styles'
+import { initialRewardsModalProps, RewardsModalProps } from 'store/modal'
 
 type SuccessProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: RewardsModalProps
+  handleModal: (modalProps: Partial<RewardsModalProps>) => void
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
@@ -19,7 +18,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialRewardsModalProps
     })
   }
 

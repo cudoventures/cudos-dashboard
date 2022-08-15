@@ -10,7 +10,6 @@ import {
   getStakedBalance,
   getWalletBalance
 } from 'utils/projectUtils'
-
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
@@ -18,14 +17,17 @@ import { formatNumber } from 'utils/format_token'
 import BigNumber from 'bignumber.js'
 import { fetchRewards } from 'api/getRewards'
 import { useNotifications } from 'components/NotificationPopup/hooks'
+import { ModalStatus } from 'store/modal'
 import { styles } from '../styles'
 import ClaimRewardsModal from './components/ClaimRewardsModal'
 import { useDelegationRewards } from './hooks'
+import useRewardsModal from './components/ClaimRewardsModal/hooks'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
   const [copied, setCopied] = useState<boolean>(false)
-  const { state, modalState, handleModal } = useDelegationRewards()
+  const { state } = useDelegationRewards()
+  const { handleModal } = useRewardsModal()
   const {
     balance,
     availableRewards,
@@ -196,7 +198,11 @@ const WalletInformation: React.FC = () => {
           <Box>
             <Button
               onClick={() =>
-                handleModal({ open: true, amount: availableRewards })
+                handleModal({
+                  open: true,
+                  status: ModalStatus.IN_PROGRESS,
+                  amount: availableRewards.toString()
+                })
               }
               sx={{ fontWeight: 700 }}
               disabled={!stakedValidators.length}
@@ -208,7 +214,7 @@ const WalletInformation: React.FC = () => {
           </Box>
         </Box>
       </Box>
-      <ClaimRewardsModal modal={modalState} handleModal={handleModal} />
+      <ClaimRewardsModal />
     </Card>
   )
 }

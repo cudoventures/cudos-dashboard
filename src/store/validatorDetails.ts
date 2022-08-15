@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ModalProps, initialModalState } from './validator'
 
 export type ValidatorState = {
   validator: string
@@ -9,11 +8,6 @@ export type ValidatorState = {
   website: string
   avatarUrl: string
   moniker: string
-  modals: {
-    delegation: ModalProps
-    redelegation: ModalProps
-    undelegation: ModalProps
-  }
 }
 
 export const initialState: ValidatorState = {
@@ -23,12 +17,7 @@ export const initialState: ValidatorState = {
   description: '',
   website: '',
   avatarUrl: '',
-  moniker: '',
-  modals: {
-    delegation: { ...initialModalState },
-    redelegation: { ...initialModalState },
-    undelegation: { ...initialModalState }
-  }
+  moniker: ''
 }
 
 export const validatorDetailsSlice = createSlice({

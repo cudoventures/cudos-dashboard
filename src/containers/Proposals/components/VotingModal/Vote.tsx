@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import Dropdown from 'components/Dropdown'
 import {
-  ModalProps,
-  VotingStatus,
-  initialModalState,
+  initialVotingModalState,
+  ModalStatus,
+  VotingModalProps,
   VotingTypes
-} from 'store/votingModal'
+} from 'store/modal'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { voteProposal } from 'ledgers/transactions'
@@ -14,16 +14,14 @@ import BigNumber from 'bignumber.js'
 import { CancelRoundedIcon, ModalContainer, StyledTextField } from './styles'
 
 type VotingProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: VotingModalProps
+  handleModal: (modalProps: Partial<VotingModalProps>) => void
 }
 
 const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
   const [vote, setVote] = useState<string>('1')
 
-  const { id, title } = useSelector(
-    (state: RootState) => state.votingModal.modal
-  )
+  const { id, title } = modalProps
 
   const { address } = useSelector((state: RootState) => state.profile)
 
@@ -34,9 +32,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
   ) => {
     try {
       handleModal({
-        open: true,
-        status: VotingStatus.LOADING,
-        fee: new BigNumber(0)
+        status: ModalStatus.LOADING
       })
 
       const { gasFee, result } = await voteProposal(
@@ -46,8 +42,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
       )
 
       handleModal({
-        open: true,
-        status: VotingStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         title,
         id,
         type: votingOption,
@@ -56,9 +51,12 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
       })
     } catch (error) {
       handleModal({
-        open: true,
-        status: VotingStatus.FAILURE,
-        fee: new BigNumber(0)
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          title: 'Voting for Proposal Failed!',
+          subtitle: `Seems like something went wrong with voting for the proposal. Try
+          again or check your wallet balance.`
+        }
       })
     }
   }
@@ -68,9 +66,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
   }
 
   const handleClose = () => {
-    handleModal({
-      ...initialModalState
-    })
+    handleModal({ ...initialVotingModalState })
   }
 
   return (

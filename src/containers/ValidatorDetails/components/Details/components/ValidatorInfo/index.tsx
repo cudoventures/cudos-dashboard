@@ -13,7 +13,6 @@ import {
   ArrowUpwardRounded as ArrowUpwardRoundedIcon,
   KeyboardArrowDownRounded as KeyboardArrowDownRoundedIcon
 } from '@mui/icons-material'
-
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import Condition from 'components/Condition'
@@ -27,6 +26,7 @@ import { RootState } from 'store'
 import { updateNotifications } from 'store/notifications'
 import DelegationModal from 'components/Dialog/components/DelegationModal'
 import useDelegationModal from 'components/Dialog/components/DelegationModal/hooks'
+import { ModalStatus } from 'store/modal'
 import { OverviewType, StatusType } from '../../types'
 import { getValidatorStatus, getCondition } from './utils'
 import RedelegationModal from './components/RedelegationModal'
@@ -249,12 +249,12 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
                   onClick={() =>
                     handleDelegationModal({
                       open: true,
+                      status: ModalStatus.IN_PROGRESS,
                       validator: {
                         name: overview.moniker,
                         imageUrl: overview.avatarUrl,
                         address: overview.operatorAddress
                       },
-                      status: null,
                       amount: null,
                       fee: '',
                       gasUsed: 0,
@@ -278,12 +278,12 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
                   onClick={() =>
                     handleRedelegationModal({
                       open: true,
+                      status: ModalStatus.IN_PROGRESS,
                       validator: {
                         name: overview.moniker,
                         imageUrl: overview.avatarUrl,
                         address: overview.operatorAddress
                       },
-                      status: null,
                       amount: null,
                       fee: '',
                       gasUsed: 0,
@@ -307,12 +307,12 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
                   onClick={() =>
                     handleUndelegationModal({
                       open: true,
+                      status: ModalStatus.IN_PROGRESS,
                       validator: {
                         name: overview.moniker,
                         imageUrl: overview.avatarUrl,
                         address: overview.operatorAddress
                       },
-                      status: null,
                       amount: null,
                       fee: '',
                       gasUsed: 0,

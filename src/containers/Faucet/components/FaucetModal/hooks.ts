@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux'
-
 import { RootState } from 'store'
-import { ModalProps, updateFaucetModal } from 'store/faucetModal'
+import { updateModal, FaucetModalProps } from 'store/modal'
 
 export default () => {
   const dispatch = useDispatch()
-  const modal = useSelector((state: RootState) => state.faucetModal.modal)
+  const modal = useSelector((state: RootState) => state.modal.faucet)
 
-  const handleModal = (modalState: ModalProps) => {
-    dispatch(updateFaucetModal({ modal: { ...modalState } }))
+  const handleModal = (modalState: Partial<FaucetModalProps>) => {
+    dispatch(updateModal({ faucet: { ...modal, ...modalState } }))
   }
 
   return {

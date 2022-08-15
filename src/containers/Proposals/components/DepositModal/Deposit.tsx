@@ -1,31 +1,28 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
-import {
-  ModalProps,
-  DepositStatus,
-  initialModalState
-} from 'store/depositModal'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { depositProposal } from 'ledgers/transactions'
 import BigNumber from 'bignumber.js'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import { formatNumber } from 'utils/format_token'
+import {
+  DepositModalProps,
+  initialDepositModalState,
+  ModalStatus
+} from 'store/modal'
 import { CancelRoundedIcon, ModalContainer, StyledTextField } from './styles'
 
 type DepositProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: DepositModalProps
+  handleModal: (modalProps: Partial<DepositModalProps>) => void
 }
 
 const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
   const [depositAmount, setDepositAmount] = useState<string>('')
-
-  const { id, title } = useSelector(
-    (state: RootState) => state.depositModal.modal
-  )
-
   const { address, balance } = useSelector((state: RootState) => state.profile)
+
+  const { id, title } = modalProps
 
   const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
     setDepositAmount(ev.target.value)
@@ -39,7 +36,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
     try {
       handleModal({
         open: true,
-        status: DepositStatus.LOADING,
+        status: ModalStatus.LOADING,
         fee: new BigNumber(0)
       })
 
@@ -51,7 +48,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
 
       handleModal({
         open: true,
-        status: DepositStatus.SUCCESS,
+        status: ModalStatus.SUCCESS,
         amount,
         title,
         id,
@@ -61,7 +58,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
     } catch (error) {
       handleModal({
         open: true,
-        status: DepositStatus.FAILURE,
+        status: ModalStatus.FAILURE,
         fee: new BigNumber(0)
       })
     }
@@ -69,7 +66,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialDepositModalState
     })
   }
 
@@ -177,7 +174,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
             color="primary"
             disabled={Number(depositAmount) > Number(balance) || !depositAmount}
             onClick={() => handleSubmitDeposit(address, id, depositAmount)}
-            sx={({ palette }) => ({
+            sx={() => ({
               width: '225px',
               height: '50px',
               marginTop: '40px'

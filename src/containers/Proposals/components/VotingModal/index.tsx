@@ -1,10 +1,9 @@
-import React from 'react'
 import Dialog from 'components/Dialog'
-import { VotingStatus, initialModalState } from 'store/votingModal'
+import Loading from 'components/Dialog/components/Loading'
+import Failure from 'components/Dialog/components/Failure'
+import { initialVotingModalState, ModalStatus } from 'store/modal'
 import useModal from './hooks'
-import Loading from './Loading'
 import Success from './Success'
-import Failure from './Failure'
 import Vote from './Vote'
 
 const VotingModal = () => {
@@ -12,20 +11,28 @@ const VotingModal = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({
-      ...initialModalState
-    })
+    handleModal({ ...initialVotingModalState })
+  }
+
+  const handleTryAgain = () => {
+    handleModal({ status: ModalStatus.IN_PROGRESS })
   }
 
   const renderComponent = () => {
     switch (status) {
-      case VotingStatus.LOADING:
+      case ModalStatus.LOADING:
         return <Loading />
-      case VotingStatus.SUCCESS:
+      case ModalStatus.SUCCESS:
         return <Success modalProps={modal} handleModal={handleModal} />
-      case VotingStatus.FAILURE:
-        return <Failure modalProps={modal} handleModal={handleModal} />
-      case VotingStatus.VOTE:
+      case ModalStatus.FAILURE:
+        return (
+          <Failure
+            failureMessage={modal.failureMessage}
+            handleClose={handleClose}
+            handleTryAgain={handleTryAgain}
+          />
+        )
+      case ModalStatus.IN_PROGRESS:
         return <Vote modalProps={modal} handleModal={handleModal} />
       default:
         return null
@@ -33,11 +40,7 @@ const VotingModal = () => {
   }
 
   return (
-    <Dialog
-      height={{ minHeight: '100%' }}
-      open={open}
-      handleClose={handleClose}
-    >
+    <Dialog open={open} handleClose={handleClose}>
       {renderComponent()}
     </Dialog>
   )
