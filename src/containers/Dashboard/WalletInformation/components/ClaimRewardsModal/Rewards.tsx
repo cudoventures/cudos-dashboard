@@ -30,6 +30,9 @@ import {
   ModalStatus,
   RewardsModalProps
 } from 'store/modal'
+import { ValidatorType } from 'store/validator'
+import { toValidatorAddress } from 'utils/prefix_convert'
+import useValidators from 'containers/Staking/components/Validators/components/Table/hooks'
 
 type RewardsProps = {
   modalProps: RewardsModalProps
@@ -41,6 +44,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const { amount } = modalProps
   const { setError } = useNotifications()
   const dispatch = useDispatch()
+  const { state: validatorsState } = useValidators()
 
   const { address } = useSelector(({ profile }: RootState) => profile)
 
@@ -55,11 +59,16 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
 
       const { validatorArray } = await fetchRewards(address)
 
-      const { result, fee } = await claimRewards(
-        validatorArray,
-        address,
-        restake
-      )
+      const isValidator =
+        validatorsState.items.findIndex(
+          (item: ValidatorType) =>
+            item.validator === toValidatorAddress(address)
+        ) > -1
+
+      const { result, fee } = await claimRewards(validatorArray, address, {
+        restake,
+        withdrawCommission: isValidator
+      })
 
       handleModal({
         status: ModalStatus.SUCCESS,
@@ -70,7 +79,13 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
 
       dispatch(updateUser({ availableRewards: new BigNumber(0) }))
     } catch (err) {
-      handleModal({ status: ModalStatus.FAILURE })
+      handleModal({
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          subtitle: err.message,
+          title: 'Claiming Rewards Failed'
+        }
+      })
     }
   }
 
