@@ -8,8 +8,6 @@ import {
   Tooltip
 } from '@mui/material'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
-
-import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import { claimRewards } from 'ledgers/transactions'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import { useSelector, useDispatch } from 'react-redux'
@@ -27,10 +25,15 @@ import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { fetchRewards } from 'api/getRewards'
 import { useState } from 'react'
 import InfoIcon from 'assets/vectors/info-alt.svg?component'
+import {
+  initialRewardsModalProps,
+  ModalStatus,
+  RewardsModalProps
+} from 'store/modal'
 
 type RewardsProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: RewardsModalProps
+  handleModal: (modalProps: Partial<RewardsModalProps>) => void
 }
 
 const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
@@ -42,7 +45,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: ModalStatus.LOADING })
+    handleModal({ status: ModalStatus.LOADING })
 
     try {
       if (Number.isNaN(new BigNumber(amount || 0))) {
@@ -59,7 +62,6 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
       )
 
       handleModal({
-        ...modalProps,
         status: ModalStatus.SUCCESS,
         gasUsed: result.gasUsed,
         txHash: result.transactionHash,
@@ -68,13 +70,13 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
 
       dispatch(updateUser({ availableRewards: new BigNumber(0) }))
     } catch (err) {
-      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
+      handleModal({ status: ModalStatus.FAILURE })
     }
   }
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialRewardsModalProps
     })
   }
 

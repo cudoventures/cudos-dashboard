@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Box, Button, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,9 +28,9 @@ const ConnectWallet = () => {
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
-      const balance = await getWalletBalance(address)
-      const stakedAmountBalance = await getStakedBalance(address)
-      const { totalRewards, validatorArray } = await fetchRewards(address)
+      const balance = await getWalletBalance(address!)
+      const stakedAmountBalance = await getStakedBalance(address!)
+      const { totalRewards, validatorArray } = await fetchRewards(address!)
 
       dispatch(
         updateUser({

@@ -12,10 +12,10 @@ import { RootState } from 'store'
 import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import NoData from 'components/NoData'
+import { ModalStatus } from 'store/modal'
 import VotingModal from './components/VotingModal'
 import ProposalModal from './components/ProposalModal'
 import DepositModal from './components/DepositModal'
-import { ProposalStatus } from '../../store/proposalsModal'
 import useModal from './components/ProposalModal/hooks'
 import {
   useProposals,
@@ -36,7 +36,7 @@ const Proposals = () => {
 
   const proposalState = useSelector((state: RootState) => state.proposals)
   const { proposalData } = useSelector(
-    (state: RootState) => state.proposalsModal.modal
+    (state: RootState) => state.modal.proposal
   )
 
   const displayTotal =
@@ -87,7 +87,7 @@ const Proposals = () => {
                 onClick={() =>
                   handleModal({
                     open: true,
-                    status: ProposalStatus.CREATE,
+                    status: ModalStatus.IN_PROGRESS,
                     fee: new BigNumber(0),
                     proposalData: { ...proposalData }
                   })

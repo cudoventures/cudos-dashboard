@@ -3,29 +3,26 @@ import {
   OpenInNewRounded as OpenInNewRoundedIcon
 } from '@mui/icons-material'
 import { Box, Typography, Divider, Stack, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/proposalsModal'
-
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import SuccessIcon from 'assets/vectors/success.svg'
 import { formatBigNum } from 'utils/projectUtils'
+import { initialProposalModalState, ProposalModalProps } from 'store/modal'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: ProposalModalProps
+  handleModal: (modalProps: Partial<ProposalModalProps>) => void
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { address } = useSelector(({ profile }: RootState) => profile)
 
-  const { fee, hash, proposalData } = useSelector(
-    (state: RootState) => state.proposalsModal.modal
-  )
+  const { fee, hash, proposalData } = modalProps
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialProposalModalState
     })
   }
 
@@ -142,7 +139,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
       <Button
         variant="contained"
         color="primary"
-        sx={(theme) => ({
+        sx={() => ({
           width: '50%',
           fontWeight: 700
         })}

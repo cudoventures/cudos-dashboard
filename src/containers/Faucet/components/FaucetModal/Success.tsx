@@ -1,21 +1,12 @@
 import { Box, Typography, Button } from '@mui/material'
-import { initialModalState, ModalProps } from 'store/faucetModal'
-
 import SuccessIcon from 'assets/vectors/success.svg'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 
 type SuccessProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  handleClose: () => void
 }
 
-const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const handleClose = () => {
-    handleModal({
-      ...initialModalState
-    })
-  }
-
+const Success: React.FC<SuccessProps> = ({ handleClose }) => {
   return (
     <ModalContainer sx={{ padding: '4rem' }}>
       <img src={SuccessIcon} alt="success-icon" />

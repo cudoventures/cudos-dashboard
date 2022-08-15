@@ -1,25 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export enum ModalStatus {
-  LOADING = 'LOADING',
-  SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE'
-}
-
-export type ModalProps = {
-  open: boolean
-  validator: {
-    name: string
-    imageUrl: string
-    address: string
-  } | null
-  status: ModalStatus | null
-  amount: string | null
-  fee: any
-  gasUsed: number
-  txHash: string
-}
-
 export type ValidatorType = {
   validator: string
   votingPower: number
@@ -45,7 +25,6 @@ export type ValidatorsState = {
   sortDirection: 'asc' | 'desc'
   votingPowerOverall: number
   items: ValidatorType[]
-  modal: ModalProps
 }
 
 export type ItemType = Override<ValidatorType, { validator: AvatarName }>
@@ -68,10 +47,7 @@ const initialState: ValidatorsState = {
   tab: 0,
   count: 0,
   sortKey: 'votingPower',
-  sortDirection: 'desc',
-  modal: {
-    ...initialModalState
-  }
+  sortDirection: 'desc'
 }
 
 export const validatorsSlice = createSlice({

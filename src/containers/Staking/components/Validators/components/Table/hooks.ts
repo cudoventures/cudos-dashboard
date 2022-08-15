@@ -3,12 +3,11 @@ import numeral from 'numeral'
 import Big from 'big.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store'
-import { ValidatorType, updateValidators, ModalProps } from 'store/validator'
+import { ValidatorType, updateValidators } from 'store/validator'
 import { getValidatorCondition } from 'utils/get_validator_condition'
 import { formatToken } from 'utils/format_token'
 import { useValidatorsQuery, ValidatorsQuery } from 'graphql/types'
 import { StakingParams, SlashingParams } from 'models'
-import { updateValidatorDetails } from 'store/validatorDetails'
 
 export default () => {
   const dispatch = useDispatch()
@@ -19,10 +18,6 @@ export default () => {
   )
   const items = useSelector((state: RootState) => state.validator.items)
   const tab = useSelector((state: RootState) => state.validator.tab)
-
-  const modals = useSelector(
-    (state: RootState) => state.validatorDetails.modals
-  )
 
   const stakedValidators = useSelector(
     (state: RootState) => state.profile.stakedValidators
@@ -203,14 +198,6 @@ export default () => {
     }
   })
 
-  const handleModal = (modalState: ModalProps) => {
-    dispatch(
-      updateValidatorDetails({
-        modals: { ...modals, delegation: { ...modalState } }
-      })
-    )
-  }
-
   return {
     state: {
       sortDirection,
@@ -218,7 +205,6 @@ export default () => {
       items
     },
     handleSort,
-    sortItems,
-    handleModal
+    sortItems
   }
 }

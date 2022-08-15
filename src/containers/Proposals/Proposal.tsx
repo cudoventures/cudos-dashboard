@@ -11,13 +11,12 @@ import LinkIcon from 'assets/vectors/link-icon.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { formatAddress, formatDateTime } from 'utils/projectUtils'
-import { VotingStatus } from 'store/votingModal'
 import BigNumber from 'bignumber.js'
-import { DepositStatus } from 'store/depositModal'
 import { useNavigate } from 'react-router-dom'
 import { ProposalType, updateProposals } from 'store/proposals'
 import { updateProposalDetails } from 'store/proposalDetails'
 import { useEffect, useState } from 'react'
+import { ModalStatus } from 'store/modal'
 import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { proposalStatus } from './proposalStatus'
@@ -127,7 +126,7 @@ const Proposal = () => {
                           onClick={() =>
                             handleVotingModal({
                               open: true,
-                              status: VotingStatus.VOTE,
+                              status: ModalStatus.IN_PROGRESS,
                               id: proposal.id,
                               title: proposal.title,
                               fee: new BigNumber(0)
@@ -153,7 +152,7 @@ const Proposal = () => {
                           onClick={() =>
                             handleDepositModal({
                               open: true,
-                              status: DepositStatus.DEPOSIT,
+                              status: ModalStatus.IN_PROGRESS,
                               id: proposal.id,
                               title: proposal.title,
                               amount: '',
@@ -183,7 +182,7 @@ const Proposal = () => {
                         onClick={() =>
                           handleDepositModal({
                             open: true,
-                            status: DepositStatus.DEPOSIT,
+                            status: ModalStatus.IN_PROGRESS,
                             id: proposal.id,
                             title: proposal.title,
                             amount: '',

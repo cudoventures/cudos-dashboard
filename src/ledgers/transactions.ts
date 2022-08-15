@@ -407,11 +407,6 @@ export const createProposal = async (
   proposalData: any,
   proposerAddress: string
 ) => {
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true
-    }
-  }
   const offlineSigner = window.getOfflineSigner(
     import.meta.env.VITE_APP_CHAIN_ID
   )

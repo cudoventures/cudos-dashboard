@@ -1,24 +1,24 @@
-import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
 import Dialog from 'components/Dialog'
 import Loading from 'components/Dialog/components/Loading'
 import Failure from 'components/Dialog/components/Failure'
+import { initialRewardsModalProps, ModalStatus } from 'store/modal'
 import Rewards from './Rewards'
 import Success from './Success'
+import useModal from './hooks'
 
-type RewardsClaimProps = {
-  modal: ModalProps
-  handleModal: (newState: any) => void
-}
-
-const RewardsClaimModal: React.FC<RewardsClaimProps> = ({
-  modal,
-  handleModal
-}) => {
+const RewardsClaimModal: React.FC = () => {
+  const { modal, handleModal } = useModal()
   const { open, status } = modal
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialRewardsModalProps
+    })
+  }
+
+  const handleTryAgain = () => {
+    handleModal({
+      status: ModalStatus.IN_PROGRESS
     })
   }
 
@@ -29,7 +29,13 @@ const RewardsClaimModal: React.FC<RewardsClaimProps> = ({
       case ModalStatus.SUCCESS:
         return <Success modalProps={modal} handleModal={handleModal} />
       case ModalStatus.FAILURE:
-        return <Failure modalProps={modal} handleModal={handleModal} />
+        return (
+          <Failure
+            failureMessage={modal.failureMessage}
+            handleClose={handleClose}
+            handleTryAgain={handleTryAgain}
+          />
+        )
       default:
         return <Rewards modalProps={modal} handleModal={handleModal} />
     }

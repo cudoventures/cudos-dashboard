@@ -13,7 +13,7 @@ const IBCUpgrade = () => {
   const { modal, handleModal } = useModal()
 
   const { proposalData } = useSelector(
-    (state: RootState) => state.proposalsModal.modal
+    (state: RootState) => state.modal.proposal
   )
 
   let fileReader: any = null

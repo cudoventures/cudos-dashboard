@@ -1,8 +1,8 @@
 import Dialog from 'components/Dialog'
 import Loading from 'components/Dialog/components/Loading'
-import { FaucetStatus, initialModalState } from 'store/faucetModal'
+import { initialFaucetModalProps, ModalStatus } from 'store/modal'
+import Failure from 'components/Dialog/components/Failure'
 import useModal from './hooks'
-import Failure from './Failure'
 import Success from './Success'
 
 const FaucetModal = () => {
@@ -11,18 +11,24 @@ const FaucetModal = () => {
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialFaucetModalProps
     })
   }
 
   const renderComponent = () => {
     switch (status) {
-      case FaucetStatus.LOADING:
+      case ModalStatus.LOADING:
         return <Loading />
-      case FaucetStatus.SUCCESS:
-        return <Success modalProps={modal} handleModal={handleModal} />
-      case FaucetStatus.FAILURE:
-        return <Failure modalProps={modal} handleModal={handleModal} />
+      case ModalStatus.SUCCESS:
+        return <Success handleClose={handleClose} />
+      case ModalStatus.FAILURE:
+        return (
+          <Failure
+            failureMessage={modal.failureMessage}
+            handleClose={handleClose}
+            handleTryAgain={handleClose}
+          />
+        )
       default:
         return null
     }

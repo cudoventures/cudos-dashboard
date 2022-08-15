@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useCallback, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -49,11 +50,11 @@ const App = () => {
           })
         )
       }
-      const balance = await getWalletBalance(address)
+      const balance = await getWalletBalance(address!)
 
-      const stakedAmountBalance = await getStakedBalance(address)
+      const stakedAmountBalance = await getStakedBalance(address!)
 
-      const { totalRewards, validatorArray } = await fetchRewards(address)
+      const { totalRewards, validatorArray } = await fetchRewards(address!)
 
       dispatch(
         updateUser({

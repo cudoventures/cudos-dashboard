@@ -6,8 +6,11 @@ import {
 } from '@mui/icons-material'
 import { MsgBeginRedelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import { coin, GasPrice } from 'cudosjs'
-
-import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
+import {
+  ModalStatus,
+  RedelegationModalProps,
+  initialRedelegationModalState
+} from 'store/modal'
 import { calculateFee, redelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -33,8 +36,8 @@ const gasPrice = GasPrice.fromString(
 )
 
 type RedelegationProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: RedelegationModalProps
+  handleModal: (modalProps: Partial<RedelegationModalProps>) => void
 }
 
 const Redelegation: React.FC<RedelegationProps> = ({
@@ -80,7 +83,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
   }, [address])
 
   const handleAmount = async (amount: string) => {
-    handleModal({ ...modalProps, amount })
+    handleModal({
+      amount
+    })
     let fee = ''
 
     if (Number(amount) > 0) {
@@ -116,9 +121,8 @@ const Redelegation: React.FC<RedelegationProps> = ({
     }
 
     handleModal({
-      ...modalProps,
-      fee,
-      amount
+      amount,
+      fee
     })
   }
 
@@ -172,16 +176,15 @@ const Redelegation: React.FC<RedelegationProps> = ({
     }
 
     handleModal({
-      ...modalProps,
-      fee,
-      amount: delegated
+      amount: delegated,
+      fee
     })
 
     setRedelegationAmount(delegated)
   }
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: ModalStatus.LOADING })
+    handleModal({ status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
@@ -197,19 +200,27 @@ const Redelegation: React.FC<RedelegationProps> = ({
       )
 
       handleModal({
-        ...modalProps,
         status: ModalStatus.SUCCESS,
         gasUsed: redelegationResult.gasUsed,
         txHash: redelegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
+      handleModal({
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          title: 'Redelegation Failed!',
+          subtitle:
+            e.message === 'Request rejected'
+              ? 'Request rejected by the user'
+              : 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+        }
+      })
     }
   }
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialRedelegationModalState
     })
   }
 

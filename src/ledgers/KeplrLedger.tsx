@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+import { KeplrWallet } from 'cudosjs'
 
 declare global {
   interface Window {
@@ -10,57 +10,18 @@ declare global {
 }
 
 export const ConnectLedger = async () => {
-  const config = {
-    rpc: import.meta.env.VITE_APP_RPC,
-    rest: import.meta.env.VITE_APP_API,
-    chainName: import.meta.env.VITE_APP_CHAIN_NAME,
-    chainId: import.meta.env.VITE_APP_CHAIN_ID,
-    currencies: [
-      {
-        coinDenom: 'CUDOS',
-        coinMinimalDenom: 'acudos',
-        coinDecimals: 18,
-        coinGeckoId: 'cudos'
-      }
-    ],
-    stakeCurrency: {
-      coinDenom: 'CUDOS',
-      coinMinimalDenom: 'acudos',
-      coinDecimals: 18,
-      coinGeckoId: 'cudos'
-    },
-    feeCurrencies: [
-      {
-        coinDenom: 'CUDOS',
-        coinMinimalDenom: 'acudos',
-        coinDecimals: 18,
-        coinGeckoId: 'cudos'
-      }
-    ],
-    bip44: { coinType: 118 },
-    bech32Config: {
-      bech32PrefixAccAddr: 'cudos',
-      bech32PrefixAccPub: 'cudospub',
-      bech32PrefixValAddr: 'cudosvaloper',
-      bech32PrefixValPub: 'cudosvaloperpub',
-      bech32PrefixConsAddr: 'cudosvalcons',
-      bech32PrefixConsPub: 'cudosvalconspub'
-    },
-    coinType: 118,
-    gasPriceStep: {
-      low: 5000000000000,
-      average: 5000000000000 * 2,
-      high: 5000000000000 * 4
-    }
-  }
+  const wallet = new KeplrWallet({
+    CHAIN_ID: import.meta.env.VITE_APP_CHAIN_ID,
+    CHAIN_NAME: import.meta.env.VITE_APP_CHAIN_NAME,
+    RPC: import.meta.env.VITE_APP_RPC,
+    API: import.meta.env.VITE_APP_API,
+    STAKING: import.meta.env.VITE_APP_STAKING_URL,
+    GAS_PRICE: import.meta.env.VITE_APP_GAS_PRICE
+  })
 
-  await window.keplr.experimentalSuggestChain(config)
-  const offlineSigner = await window.getOfflineSignerOnlyAmino(config.chainId)
-  const { name } = await window.keplr.getKey(config.chainId)
+  await wallet.connect()
 
-  const accounts = await offlineSigner.getAccounts()
+  const key = await window.keplr.getKey(import.meta.env.VITE_APP_CHAIN_ID)
 
-  const { address } = accounts[0]
-
-  return { address, keplrName: name }
+  return { address: key.bech32Address, keplrName: key.name }
 }

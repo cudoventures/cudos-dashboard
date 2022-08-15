@@ -7,8 +7,11 @@ import {
 } from '@mui/icons-material'
 import { MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import { coin, GasPrice, MsgUndelegateEncodeObject } from 'cudosjs'
-
-import { ModalStatus, initialModalState, ModalProps } from 'store/validator'
+import {
+  ModalStatus,
+  UndelegationModalProps,
+  initialUndelegationModalState
+} from 'store/modal'
 import { calculateFee, undelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
@@ -32,8 +35,8 @@ const gasPrice = GasPrice.fromString(
 )
 
 type UndelegationProps = {
-  modalProps: ModalProps
-  handleModal: (modalProps: ModalProps) => void
+  modalProps: UndelegationModalProps
+  handleModal: (modalProps: Partial<UndelegationModalProps>) => void
 }
 
 const Undelegation: React.FC<UndelegationProps> = ({
@@ -63,7 +66,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
   }, [address])
 
   const handleAmount = async (amount: string) => {
-    handleModal({ ...modalProps, amount })
+    handleModal({
+      amount
+    })
     let fee = ''
 
     if (Number(amount) > 0) {
@@ -93,9 +98,8 @@ const Undelegation: React.FC<UndelegationProps> = ({
     }
 
     handleModal({
-      ...modalProps,
-      fee,
-      amount
+      amount,
+      fee
     })
   }
 
@@ -148,23 +152,22 @@ const Undelegation: React.FC<UndelegationProps> = ({
     }
 
     handleModal({
-      ...modalProps,
-      fee,
-      amount: delegated
+      amount: delegated,
+      fee
     })
 
     setUndelegationAmount(delegated)
   }
 
   const handleSubmit = async (): Promise<void> => {
-    handleModal({ ...modalProps, status: ModalStatus.LOADING })
+    handleModal({ status: ModalStatus.LOADING })
 
     try {
       const walletAccount = await window.keplr.getKey(
         import.meta.env.VITE_APP_CHAIN_ID
       )
 
-      const delegationResult = await undelegate(
+      const undelegationResult = await undelegate(
         walletAccount.bech32Address,
         validator?.address || '',
         amount || '',
@@ -172,19 +175,27 @@ const Undelegation: React.FC<UndelegationProps> = ({
       )
 
       handleModal({
-        ...modalProps,
         status: ModalStatus.SUCCESS,
-        gasUsed: delegationResult.gasUsed,
-        txHash: delegationResult.transactionHash
+        gasUsed: undelegationResult.gasUsed,
+        txHash: undelegationResult.transactionHash
       })
     } catch (e) {
-      handleModal({ ...modalProps, status: ModalStatus.FAILURE })
+      handleModal({
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          title: 'Undelegation Failed!',
+          subtitle:
+            e.message === 'Request rejected'
+              ? 'Request rejected by the user'
+              : 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+        }
+      })
     }
   }
 
   const handleClose = () => {
     handleModal({
-      ...initialModalState
+      ...initialUndelegationModalState
     })
   }
 

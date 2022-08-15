@@ -5,9 +5,9 @@ import Card from 'components/Card'
 import { StyledTextField } from 'components/Dialog/components/styles'
 import BigNumber from 'bignumber.js'
 import { useNotifications } from 'components/NotificationPopup/hooks'
-import { FaucetStatus } from 'store/faucetModal'
 import getFaucetTokens from 'api/getFaucetTokens'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
+import { ModalStatus } from 'store/modal'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
 
@@ -67,18 +67,21 @@ const Form = () => {
     }
 
     try {
-      handleModal({ open: true, status: FaucetStatus.LOADING })
+      handleModal({ open: true, status: ModalStatus.LOADING })
 
       const response = await getFaucetTokens(data)
 
       if (response.data.transfers[0].status === 'error') {
         handleModal({
           open: true,
-          status: FaucetStatus.FAILURE,
-          error: 'Maximum amount of 10 CUDOS reached for this account.'
+          status: ModalStatus.FAILURE,
+          failureMessage: {
+            title: 'Transaction failed!',
+            subtitle: 'Maximum amount of 10 CUDOS reached for this account.'
+          }
         })
       } else {
-        handleModal({ open: true, status: FaucetStatus.SUCCESS })
+        handleModal({ open: true, status: ModalStatus.SUCCESS })
       }
 
       captchaRef.current.reset()
@@ -86,8 +89,11 @@ const Form = () => {
     } catch (error) {
       handleModal({
         open: true,
-        status: FaucetStatus.FAILURE,
-        error: 'Seems like something went wrong with executing the transaction.'
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          title: 'Transaction failed!',
+          subtitle: 'Seems like something went wrong with the transaction.'
+        }
       })
       captchaRef.current.reset()
     }
