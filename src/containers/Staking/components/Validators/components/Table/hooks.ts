@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import * as R from 'ramda'
 import numeral from 'numeral'
 import Big from 'big.js'
@@ -209,7 +210,7 @@ export default () => {
   // ==========================
   // Fetch Data
   // ==========================
-  useValidatorsQuery({
+  const validatorsQuery = useValidatorsQuery({
     onCompleted: (data) => {
       handleSetState({
         loading: false,
@@ -217,6 +218,21 @@ export default () => {
       })
     }
   })
+
+  useEffect(() => {
+    const fetchValidators = async () => {
+      await validatorsQuery.fetchMore({}).then(({ data }) => {
+        handleSetState({
+          delegations: {
+            loading: false,
+            ...formatValidators(data)
+          }
+        })
+      })
+    }
+
+    fetchValidators()
+  }, [address, stakedValidators])
 
   return {
     state: {
