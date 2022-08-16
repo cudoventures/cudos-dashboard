@@ -14,6 +14,7 @@ export type ValidatorType = {
   topVotingPower?: boolean // top 34% VP
   avatarUrl: string
   moniker: string
+  myDelegation?: number
 }
 
 export type ValidatorsState = {
@@ -25,6 +26,7 @@ export type ValidatorsState = {
   sortDirection: 'asc' | 'desc'
   votingPowerOverall: number
   items: ValidatorType[]
+  filter: string
 }
 
 export type ItemType = Override<ValidatorType, { validator: AvatarName }>
@@ -47,7 +49,8 @@ const initialState: ValidatorsState = {
   tab: 0,
   count: 0,
   sortKey: 'votingPower',
-  sortDirection: 'desc'
+  sortDirection: 'desc',
+  filter: ''
 }
 
 export const validatorsSlice = createSlice({

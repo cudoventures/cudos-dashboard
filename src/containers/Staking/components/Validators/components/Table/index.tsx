@@ -8,10 +8,11 @@ import Condition from 'components/Condition'
 import AvatarName from 'components/AvatarName'
 import Table from 'components/Table'
 import { useNotifications } from 'components/NotificationPopup/hooks'
-import { formatNumber } from 'utils/format_token'
+import { formatNumber, formatToken } from 'utils/format_token'
 import { useDispatch } from 'react-redux'
 import { ModalStatus } from 'store/modal'
 import useModal from 'components/Dialog/components/DelegationModal/hooks'
+import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import columns from './utils'
 import useTable from './hooks'
 
@@ -38,6 +39,7 @@ const ValidatorsTable: React.FC = () => {
         : '0%'
     const votingPower = numeral(x.votingPower).format('0,0')
     const isJailed = x.jailed
+    const { myDelegation } = x
     return {
       idx: `${i + 1}`,
       delegators: numeral(x.delegators).format('0,0'),
@@ -83,6 +85,16 @@ const ValidatorsTable: React.FC = () => {
             {percentDisplay}
           </Typography>
         </Box>
+      ),
+      myDelegation: myDelegation && (
+        <Stack direction="row" gap={1} alignItems="center">
+          <Typography color="text.primary" fontWeight={700} variant="body2">
+            {formatNumber(formatToken(myDelegation, 'acudos').value, 2)}
+          </Typography>
+          <CudosLogo
+            style={{ minWidth: '15px', width: '15px', height: 'auto' }}
+          />
+        </Stack>
       ),
       action: (
         <Button

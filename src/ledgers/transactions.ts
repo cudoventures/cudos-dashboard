@@ -1,5 +1,8 @@
 import BigNumber from 'bignumber.js'
-import { MsgWithdrawDelegatorReward } from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
+import {
+  MsgWithdrawDelegatorReward,
+  MsgWithdrawValidatorCommission
+} from 'cosmjs-types/cosmos/distribution/v1beta1/tx'
 import { TextProposal } from 'cosmjs-types/cosmos/gov/v1beta1/gov'
 import { ParameterChangeProposal } from 'cosmjs-types/cosmos/params/v1beta1/params'
 import { CommunityPoolSpendProposal } from 'cosmjs-types/cosmos/distribution/v1beta1/distribution'
@@ -33,6 +36,7 @@ import {
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
 import { formatToken } from 'utils/format_token'
+import { toValidatorAddress } from 'utils/prefix_convert'
 import { ClientUpdateProposal, UpgradeProposal } from './ibc-go/codec/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { signingClient } from './utils'
@@ -199,8 +203,12 @@ export const redelegate = async (
 export const claimRewards = async (
   stakedValidators: { address: string; amount: string }[],
   address: string,
-  restake: boolean
+  options: {
+    restake: boolean
+    withdrawCommission: boolean
+  }
 ) => {
+  const { restake, withdrawCommission } = options
   const msgMemo = ''
 
   const msgAny: any[] = []
@@ -230,6 +238,15 @@ export const claimRewards = async (
       })
     }
   })
+
+  if (withdrawCommission) {
+    msgAny.push({
+      typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
+      value: MsgWithdrawValidatorCommission.fromPartial({
+        validatorAddress: toValidatorAddress(address)
+      })
+    })
+  }
 
   const fee = await getFee(address, [...msgAny], msgMemo)
 
