@@ -4,15 +4,12 @@ const columns: Column[] = [
   {
     key: 'idx',
     label: '#',
-    width: 70,
-    colSpan: 2
+    width: 50
   },
   {
     key: 'validator',
     label: 'Validator',
-    color: 'text.primary',
-    colSpan: 2,
-    width: 300
+    color: 'text.primary'
   },
   {
     key: 'votingPower',
