@@ -45,7 +45,7 @@ const Header = () => {
           >
             <CudosLogo />
             <Typography variant="body2" fontWeight={700}>
-              Gravity Bridge
+              Cudos Bridge
             </Typography>
             <LinkIcon style={{ color: 'white' }} />
           </Box>
