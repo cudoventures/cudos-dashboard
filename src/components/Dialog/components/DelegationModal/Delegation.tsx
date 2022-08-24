@@ -136,9 +136,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       ).value
     }
 
+    const amount = (Number(balance) - Math.ceil(Number(fee) * 4)).toString() // multiplying by 4 because of Keplr
+
+    setDelegationAmount(amount)
     handleModal({
       fee,
-      amount: `${Number(balance) - Math.ceil(Number(fee) * 4)}` // multiplying by 4 because of Keplr
+      amount
     })
   }
 
@@ -345,7 +348,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   },
                   startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
                   endAdornment: (
-                    <Tooltip title="Total balance minus the highest estimated fee">
+                    <Tooltip title="Total balance minus the highest estimated fee (estimated transaction fee x4)">
                       <Button
                         variant="contained"
                         color="primary"
