@@ -45,7 +45,10 @@ const UserInfo = () => {
         balance: new BigNumber(0),
         availableRewards: new BigNumber(0),
         stakedValidators: [],
-        stakedBalance: new BigNumber(0)
+        stakedBalance: new BigNumber(0),
+        delegations: [],
+        redelegations: [],
+        undelegations: []
       })
     )
     navigate('/')

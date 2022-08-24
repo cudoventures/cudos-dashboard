@@ -28,6 +28,7 @@ import {
   CancelRoundedIcon
 } from 'components/Dialog/components/styles'
 import { signingClient } from 'ledgers/utils'
+import { fetchUndedelegations } from 'api/getAccountUndelegations'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
@@ -179,6 +180,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         gasUsed: undelegationResult.gasUsed,
         txHash: undelegationResult.transactionHash
       })
+      await fetchUndedelegations(address)
     } catch (e) {
       handleModal({
         status: ModalStatus.FAILURE,

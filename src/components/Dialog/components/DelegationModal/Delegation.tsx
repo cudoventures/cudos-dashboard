@@ -29,6 +29,7 @@ import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { formatNumber, formatToken } from 'utils/format_token'
 import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
+import { fetchDelegations } from 'api/getAccountDelegations'
 import {
   ModalContainer,
   StyledTextField,
@@ -165,6 +166,8 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         gasUsed: delegationResult.gasUsed,
         txHash: delegationResult.transactionHash
       })
+
+      await fetchDelegations(address)
     } catch (e) {
       handleModal({
         status: ModalStatus.FAILURE,
