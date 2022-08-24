@@ -16,7 +16,7 @@ import { calculateFee, undelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import AvatarName from 'components/AvatarName'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
@@ -29,6 +29,7 @@ import {
 } from 'components/Dialog/components/styles'
 import { signingClient } from 'ledgers/utils'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
+import { updateUser } from 'store/profile'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
@@ -47,6 +48,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
   const [delegated, setDelegated] = useState<string>('')
   const [undelegationAmount, setUndelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
+  const dispatch = useDispatch()
 
   const { address } = useSelector(({ profile }: RootState) => profile)
 
@@ -180,7 +182,12 @@ const Undelegation: React.FC<UndelegationProps> = ({
         gasUsed: undelegationResult.gasUsed,
         txHash: undelegationResult.transactionHash
       })
-      await fetchUndedelegations(address)
+      const { undelegationsArray } = await fetchUndedelegations(address)
+      dispatch(
+        updateUser({
+          undelegations: undelegationsArray
+        })
+      )
     } catch (e) {
       handleModal({
         status: ModalStatus.FAILURE,

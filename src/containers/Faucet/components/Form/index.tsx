@@ -183,7 +183,7 @@ const Form = () => {
             !address
           }
         >
-          Recieve Tokens
+          Receive Tokens
         </Button>
       </Box>
     </Card>

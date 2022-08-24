@@ -22,13 +22,15 @@ import { calculateFee, delegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import AvatarName from 'components/AvatarName'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { formatNumber, formatToken } from 'utils/format_token'
 import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
+import { updateUser } from 'store/profile'
+import { getStakedBalance } from 'utils/projectUtils'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import {
   ModalContainer,
@@ -53,6 +55,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const { validator, amount, fee } = modalProps
 
   const { address } = useSelector(({ profile }: RootState) => profile)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const loadBalance = async () => {
@@ -125,7 +128,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
   const delayInput = _.debounce((value) => handleAmount(value), 500)
 
-  const handleMaxAmoount = async () => {
+  const handleMaxAmount = async () => {
     let fee = ''
 
     if (Number(balance) > 0) {
@@ -137,9 +140,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       ).value
     }
 
+    const amount = (Number(balance) - Math.ceil(Number(fee) * 4)).toString() // multiplying by 4 because of Keplr
+
+    setDelegationAmount(amount)
     handleModal({
       fee,
-      amount: `${Number(balance) - Math.ceil(Number(fee) * 4)}` // multiplying by 4 because of Keplr
+      amount
     })
   }
 
@@ -164,7 +170,15 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         txHash: delegationResult.transactionHash
       })
 
-      await fetchDelegations(address)
+      const { delegationsArray } = await fetchDelegations(address)
+      const stakedAmountBalance = await getStakedBalance(address)
+
+      dispatch(
+        updateUser({
+          delegations: delegationsArray,
+          stakedBalance: new BigNumber(stakedAmountBalance)
+        })
+      )
     } catch (e) {
       handleModal({
         status: ModalStatus.FAILURE,
@@ -348,7 +362,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   },
                   startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
                   endAdornment: (
-                    <Tooltip title="Total balance minus the highest estimated fee">
+                    <Tooltip title="Total balance minus the highest estimated fee (estimated transaction fee x4)">
                       <Button
                         variant="contained"
                         color="primary"
@@ -357,7 +371,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                           padding: '4px 15px',
                           fontWeight: 600
                         })}
-                        onClick={handleMaxAmoount}
+                        onClick={handleMaxAmount}
                       >
                         MAX
                       </Button>

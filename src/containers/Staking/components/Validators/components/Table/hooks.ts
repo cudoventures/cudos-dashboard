@@ -25,6 +25,9 @@ export default () => {
   const stakedValidators = useSelector(
     (state: RootState) => state.profile.stakedValidators
   ).map((validator) => validator.address)
+  const stakedBalance = useSelector((state: RootState) =>
+    Number(state.profile.stakedBalance)
+  )
 
   const handleSetState = (stateChange: any) => {
     dispatch(updateValidators({ ...stateChange }))
@@ -231,8 +234,15 @@ export default () => {
       })
     }
 
-    fetchValidators()
-  }, [address, stakedValidators])
+    // fetching with a timeout to give time for the delegations to update
+    setTimeout(async () => {
+      await fetchValidators()
+    }, 5000)
+  }, [address, stakedBalance])
+
+  useEffect(() => {
+    return handleSearch('')
+  }, [])
 
   return {
     state: {
