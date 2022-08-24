@@ -29,6 +29,7 @@ import {
 } from 'components/Dialog/components/styles'
 import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
+import { fetchRedelegations } from 'api/getAccountRedelegations'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
@@ -204,6 +205,8 @@ const Redelegation: React.FC<RedelegationProps> = ({
         gasUsed: redelegationResult.gasUsed,
         txHash: redelegationResult.transactionHash
       })
+
+      await fetchRedelegations(address)
     } catch (e) {
       handleModal({
         status: ModalStatus.FAILURE,

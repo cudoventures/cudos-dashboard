@@ -9,6 +9,13 @@ export interface WalletState {
   availableRewards: BigNumber
   stakedValidators: { address: string; amount: string }[]
   stakedBalance: BigNumber
+  delegations: { address: string; amount: string }[]
+  redelegations: {
+    sourceAddress: string
+    destinationAddress: string
+    amount: string
+  }[]
+  undelegations: { validatorAddress: string; amount: string }[]
 }
 
 const initialState: WalletState = {
@@ -18,7 +25,10 @@ const initialState: WalletState = {
   balance: new BigNumber(0),
   availableRewards: new BigNumber(0),
   stakedValidators: [],
-  stakedBalance: new BigNumber(0)
+  stakedBalance: new BigNumber(0),
+  delegations: [],
+  redelegations: [],
+  undelegations: []
 }
 
 export enum TransactionCurrency {

@@ -14,6 +14,9 @@ import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import Header from 'components/Layout/Header'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 
+import { fetchDelegations } from 'api/getAccountDelegations'
+import { fetchRedelegations } from 'api/getAccountRedelegations'
+import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import { styles } from './styles'
 
 const ConnectWallet = () => {
@@ -31,6 +34,9 @@ const ConnectWallet = () => {
       const balance = await getWalletBalance(address!)
       const stakedAmountBalance = await getStakedBalance(address!)
       const { totalRewards, validatorArray } = await fetchRewards(address!)
+      const { delegationsArray } = await fetchDelegations(address)
+      const { redelegationsArray } = await fetchRedelegations(address)
+      const { undelegationsArray } = await fetchUndedelegations(address)
 
       dispatch(
         updateUser({
@@ -39,7 +45,10 @@ const ConnectWallet = () => {
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
-          stakedBalance: new BigNumber(stakedAmountBalance)
+          stakedBalance: new BigNumber(stakedAmountBalance),
+          delegations: delegationsArray,
+          redelegations: redelegationsArray,
+          undelegations: undelegationsArray
         })
       )
       navigate('dashboard')

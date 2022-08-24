@@ -5,6 +5,7 @@ import Statistics from './components/Statistics'
 import Delegators from './components/Delegators'
 import Activity from './components/Activity'
 import { useValidatorDetails } from './components/Details/hooks'
+import MyDelegations from './components/MyDelegations'
 
 const ValidatorDetails = () => {
   const { state } = useValidatorDetails()
@@ -17,6 +18,7 @@ const ValidatorDetails = () => {
           <>
             <Details />
             <Statistics />
+            <MyDelegations />
             <Delegators />
             <Activity />
           </>
