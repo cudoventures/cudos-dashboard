@@ -31,6 +31,7 @@ import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
 import { updateUser } from 'store/profile'
 import { getStakedBalance } from 'utils/projectUtils'
+import { fetchDelegations } from 'api/getAccountDelegations'
 import {
   ModalContainer,
   StyledTextField,
@@ -169,10 +170,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         txHash: delegationResult.transactionHash
       })
 
+      const { delegationsArray } = await fetchDelegations(address)
       const stakedAmountBalance = await getStakedBalance(address)
 
       dispatch(
         updateUser({
+          delegations: delegationsArray,
           stakedBalance: new BigNumber(stakedAmountBalance)
         })
       )
