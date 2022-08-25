@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import * as R from 'ramda'
 import { updateProposalDetails } from 'store/proposalDetails'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import {
   useProposalDetailsSubSubscription,
   ProposalDetailsQuery
@@ -10,6 +10,7 @@ import {
 
 export const useProposalDetails = () => {
   const dispatch = useDispatch()
+  const { proposalId } = useParams()
   const proposalState = useSelector((state: RootState) => state.proposalDetails)
 
   const handleSetState = (stateChange: any) => {
@@ -75,7 +76,7 @@ export const useProposalDetails = () => {
   // ==========================
   useProposalDetailsSubSubscription({
     variables: {
-      proposalId: proposalState.id ? proposalState.id : 0
+      proposalId: Number(proposalId) || 0
     },
     onSubscriptionData: (data) => {
       handleSetState(formatProposalQuery(data.subscriptionData.data))
