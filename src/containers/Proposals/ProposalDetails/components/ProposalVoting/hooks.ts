@@ -4,6 +4,7 @@ import { chainConfig } from 'configs'
 import { updateProposalDetails } from 'store/proposalDetails'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
+import { useParams } from 'react-router-dom'
 import {
   useProposalDetailsTallyQuery,
   ProposalDetailsTallyQuery,
@@ -12,6 +13,7 @@ import {
 
 export const useVotesGraph = () => {
   const dispatch = useDispatch()
+  const { proposalId } = useParams()
   const proposalState = useSelector((state: RootState) => state.proposalDetails)
 
   const handleSetState = (stateChange: any) => {
@@ -70,7 +72,7 @@ export const useVotesGraph = () => {
 
   useProposalDetailsTallyQuery({
     variables: {
-      proposalId: proposalState.id ? proposalState.id : 0
+      proposalId: Number(proposalId) || 0
     },
     onCompleted: (data) => {
       handleSetState(foramtProposalTally(data))
@@ -79,7 +81,7 @@ export const useVotesGraph = () => {
 
   useProposalDetailsTallySubscriptionSubscription({
     variables: {
-      proposalId: proposalState.id ? proposalState.id : 0
+      proposalId: Number(proposalId) || 0
     },
     onSubscriptionData: (data: any) => {
       handleSetState(foramtProposalTallySub(data.subscriptionData.data))
