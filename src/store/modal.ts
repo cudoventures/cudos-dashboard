@@ -8,6 +8,12 @@ export enum ModalStatus {
   IN_PROGRESS = 'IN_PROGRESS'
 }
 
+export enum FailureMessage {
+  REJECTED_BY_USER = 'Request rejected',
+  REDELEGATION_IN_PROGRESS = 'Query failed with (18): failed to execute message; message index: 0: redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation: invalid request',
+  DEFAULT = 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+}
+
 export type Modal = {
   open: boolean
   status: ModalStatus | null
