@@ -7,8 +7,8 @@ import Dropdown from 'components/Dropdown'
 import { createProposal } from 'ledgers/transactions'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
-import { useNotifications } from 'components/NotificationPopup/hooks'
 import {
+  FailureMessage,
   initialProposalModalState,
   ModalStatus,
   ProposalModalProps,
@@ -29,7 +29,6 @@ type ProposalProps = {
 }
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
-  const { setError } = useNotifications()
   const { address } = useSelector(({ profile }: RootState) => profile)
 
   const { proposalData } = modalProps
@@ -63,6 +62,17 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
     })
   }
 
+  const handleError = (error: string) => {
+    if (
+      error.includes(
+        FailureMessage.CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_NUMBER
+      )
+    ) {
+      return FailureMessage.CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_END_USER
+    }
+    return FailureMessage.DEFAULT_PROPOSAL_FAILED
+  }
+
   const handleProposalSubmit = async (proposerAddress: string) => {
     try {
       handleModal({
@@ -84,10 +94,13 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         hash: result.transactionHash
       })
     } catch (error) {
-      setError(error.message)
       handleModal({
         open: true,
-        status: ModalStatus.FAILURE
+        status: ModalStatus.FAILURE,
+        failureMessage: {
+          title: 'Creating Proposal Failed.',
+          subtitle: handleError(error.message)
+        }
       })
     }
   }

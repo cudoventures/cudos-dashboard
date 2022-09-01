@@ -62,11 +62,11 @@ const Redelegation: React.FC<RedelegationProps> = ({
   const handleError = (error: string) => {
     switch (error) {
       case FailureMessage.REJECTED_BY_USER:
-        return 'Request rejected by the user'
+        return FailureMessage.REJECTED_BY_USER_END_USER
       case FailureMessage.REDELEGATION_IN_PROGRESS:
-        return 'Redelegation to this validator already in progress. First redelegation to this validator must complete before next redelegation.'
+        return FailureMessage.REDELEGATION_IN_PROGRESS_END_USER
       default:
-        return FailureMessage.DEFAULT
+        return FailureMessage.DEFAULT_TRANSACTION_FAILED
     }
   }
 
