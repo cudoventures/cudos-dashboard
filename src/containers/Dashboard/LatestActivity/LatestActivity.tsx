@@ -96,7 +96,7 @@ const LatestActivity = () => {
         <Stack direction="row" gap={1} alignItems="center">
           <AccessTimeRoundedIcon color="primary" />
           <Typography fontSize={12} color="text.secondary">
-            {moment(moment(tx.timestamp).parseZone().toLocaleString())
+            {moment(new Date(moment(tx.timestamp).parseZone().toLocaleString()))
               .format('DD MMM YYYY LTS')
               .toLocaleString()}
           </Typography>
