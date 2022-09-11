@@ -6,6 +6,8 @@ import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import { updateUser } from 'store/profile'
 import { copyToClipboard, formatAddress } from 'utils/projectUtils'
+import KeplrLogo from 'assets/vectors/keplr-logo.svg'
+import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
 import LinkIcon from 'assets/vectors/link-icon.svg'
 import CopyIcon from 'assets/vectors/copy-icon.svg'
 import ArrowIcon from 'assets/vectors/arrow-down.svg'
@@ -16,7 +18,7 @@ import { styles } from './styles'
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { address, lastLoggedAddress, keplrName } = useSelector(
+  const { address, accountName, connectedLedger } = useSelector(
     (state: RootState) => state.profile
   )
 
@@ -40,7 +42,7 @@ const UserInfo = () => {
     dispatch(
       updateUser({
         address: '',
-        keplrName: '',
+        accountName: '',
         lastLoggedAddress: address,
         balance: new BigNumber(0),
         availableRewards: new BigNumber(0),
@@ -48,7 +50,8 @@ const UserInfo = () => {
         stakedBalance: new BigNumber(0),
         delegations: [],
         redelegations: [],
-        undelegations: []
+        undelegations: [],
+        connectedLedger: ''
       })
     )
     navigate('/')
@@ -58,17 +61,30 @@ const UserInfo = () => {
     <Box sx={styles.user} onMouseLeave={() => setOpen(false)}>
       <Box onMouseEnter={() => setOpen(true)} sx={styles.userContainer}>
         <Box sx={styles.userInnerContainer}>
+          <Box>
+            <img
+              src={connectedLedger === 'Keplr' ? KeplrLogo : CosmostationLogo}
+              alt="Logo"
+              style={{ position: 'absolute', left: 15, top: 12 }}
+            />
+          </Box>
           <Typography variant="body2">
             Hi,
             <Typography component="span" variant="body2" fontWeight={700}>
-              {` ${getMiddleEllipsis(keplrName, { beginning: 8, ending: 4 })}`}
+              {` ${getMiddleEllipsis(accountName, {
+                beginning: 8,
+                ending: 4
+              })}`}
             </Typography>
           </Typography>
           <Box>
             <img
               style={{
                 cursor: 'pointer',
-                transform: open ? 'rotate(180deg)' : 'rotate(360deg)'
+                transform: open ? 'rotate(180deg)' : 'rotate(360deg)',
+                position: 'absolute',
+                right: 15,
+                top: 20
               }}
               src={ArrowIcon}
               alt="Arrow Icon"
