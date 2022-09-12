@@ -83,7 +83,11 @@ const Unbondings: React.FC<UnbondingsProps> = (props) => {
           <Stack key={entry.completionTime} direction="row" gap={1}>
             <AccessTimeRoundedIcon color="primary" />
             <Typography fontSize={12} color="text.secondary">
-              {moment(moment(entry.completionTime).parseZone().toLocaleString())
+              {moment(
+                new Date(
+                  moment(entry.completionTime).parseZone().toLocaleString()
+                )
+              )
                 .format('DD MMM YYYY LTS')
                 .toLocaleString()}
             </Typography>
