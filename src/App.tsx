@@ -30,6 +30,7 @@ import theme from './theme'
 import { RootState } from './store'
 
 import '@fontsource/poppins'
+import { getUnbondingBalance } from 'api/getUnbondingBalance'
 
 const App = () => {
   const location = useLocation()
@@ -65,6 +66,8 @@ const App = () => {
 
       const { undelegationsArray } = await fetchUndedelegations(address)
 
+      const { unbondingBalance } = await getUnbondingBalance(address)
+
       dispatch(
         updateUser({
           address,
@@ -74,6 +77,7 @@ const App = () => {
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
           stakedBalance: new BigNumber(stakedAmountBalance),
+          unbondingBalance: new BigNumber(unbondingBalance),
           delegations: delegationsArray,
           redelegations: redelegationsArray,
           undelegations: undelegationsArray

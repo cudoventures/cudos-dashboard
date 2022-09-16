@@ -207,7 +207,7 @@ const MyDelegations = () => {
             </Typography>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>
-                {formatBigNum(undelegationsBalance)}
+                {formatNumber(formatBigNum(undelegationsBalance), 2)}
               </Typography>
               <Typography fontWeight={700} color="text.secondary">
                 CUDOS
@@ -234,7 +234,11 @@ const MyDelegations = () => {
               <Typography fontWeight={700}>
                 {formatNumber(
                   formatBigNum(
-                    new BigNumber(checkRewards[0].amount || new BigNumber(0))
+                    new BigNumber(
+                      checkRewards.length
+                        ? checkRewards[0].amount
+                        : new BigNumber(0)
+                    )
                   ),
                   2
                 )}
@@ -248,7 +252,11 @@ const MyDelegations = () => {
               {formatNumber(
                 calculateValue(
                   formatBigNum(
-                    new BigNumber(checkRewards[0].amount || new BigNumber(0))
+                    new BigNumber(
+                      checkRewards.length
+                        ? checkRewards[0].amount
+                        : new BigNumber(0)
+                    )
                   )
                 ),
                 2

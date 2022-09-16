@@ -9,13 +9,18 @@ export interface WalletState {
   availableRewards: BigNumber
   stakedValidators: { address: string; amount: string }[]
   stakedBalance: BigNumber
+  unbondingBalance: BigNumber
   delegations: { address: string; amount: string }[]
   redelegations: {
     sourceAddress: string
     destinationAddress: string
     amount: string
   }[]
-  undelegations: { validatorAddress: string; amount: string }[]
+  undelegations: {
+    validatorAddress: string
+    amount: string[]
+    completionTime: string[]
+  }[]
 }
 
 const initialState: WalletState = {
@@ -26,6 +31,7 @@ const initialState: WalletState = {
   availableRewards: new BigNumber(0),
   stakedValidators: [],
   stakedBalance: new BigNumber(0),
+  unbondingBalance: new BigNumber(0),
   delegations: [],
   redelegations: [],
   undelegations: []

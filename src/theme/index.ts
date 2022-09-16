@@ -43,6 +43,13 @@ const dark = createTheme({
         }
       }
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          maxWidth: '800px'
+        }
+      }
+    },
     MuiPopover: {
       styleOverrides: {
         paper: {
