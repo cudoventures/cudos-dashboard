@@ -8,6 +8,19 @@ export enum ModalStatus {
   IN_PROGRESS = 'IN_PROGRESS'
 }
 
+export enum FailureMessage {
+  REJECTED_BY_USER = 'Request rejected',
+  REJECTED_BY_USER_END_USER = 'Request rejected by the user',
+  REDELEGATION_IN_PROGRESS = 'Query failed with (18): failed to execute message; message index: 0: redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation: invalid request',
+  REDELEGATION_IN_PROGRESS_END_USER = 'Redelegation to this validator already in progress. First redelegation to this validator must complete before next redelegation.',
+  CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_NUMBER = 'err: json: cannot unmarshal number into Go value of type string: failed to set parameter: invalid proposal content: invalid request',
+  CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_END_USER = 'Failed to parse field "Change Value", please wrap the input in " " and try again.',
+  DEFAULT_PROPOSAL_FAILED = 'Seems like something went wrong with creating the proposal. Try again or check your wallet balance.',
+  DEFAULT_TRANSACTION_FAILED = 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.',
+  DEFAULT_VOTING_PROPOSAL_FAILED = 'Seems like something went wrong with voting for the proposal. Try again or check your wallet balance.',
+  DEFAULT_DEPOSITING_PROPOSAL_FAILED = 'Seems like something went wrong with depositing for the proposal. Try again or check your wallet balance.'
+}
+
 export type Modal = {
   open: boolean
   status: ModalStatus | null
@@ -43,8 +56,7 @@ export const initialRewardsModalProps: RewardsModalProps = {
   txHash: '',
   failureMessage: {
     title: 'Claiming Rewards Failed',
-    subtitle:
-      'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+    subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED
   }
 }
 
@@ -74,8 +86,7 @@ export const initialDelegationModalState: DelegationModalProps = {
   txHash: '',
   failureMessage: {
     title: 'Delegation Failed',
-    subtitle:
-      'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+    subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED
   }
 }
 
@@ -121,8 +132,7 @@ export const initialVotingModalState: VotingModalProps = {
   hash: '',
   failureMessage: {
     title: 'Voting for Proposal Failed!',
-    subtitle: `Seems like something went wrong with voting for the proposal. Try
-    again or check your wallet balance.`
+    subtitle: FailureMessage.DEFAULT_VOTING_PROPOSAL_FAILED
   }
 }
 
@@ -190,8 +200,7 @@ export const initialProposalModalState: ProposalModalProps = {
   },
   failureMessage: {
     title: 'Creating Proposal Failed!',
-    subtitle: `Seems like something went wrong with creating the proposal. Try again
-    or check your wallet balance.`
+    subtitle: FailureMessage.DEFAULT_PROPOSAL_FAILED
   }
 }
 
@@ -229,8 +238,7 @@ export const initialDepositModalState: DepositModalProps = {
   hash: '',
   failureMessage: {
     title: 'Voting for Proposal Failed!',
-    subtitle: `Seems like something went wrong with depositing for the proposal. Try again
-    or check your wallet balance.`
+    subtitle: FailureMessage.DEFAULT_DEPOSITING_PROPOSAL_FAILED
   }
 }
 
@@ -247,8 +255,7 @@ export const initialFaucetModalProps: FaucetModalProps = {
   status: null,
   failureMessage: {
     title: 'Transaction failed!',
-    subtitle:
-      'Seems like something went wrong with executing the transaction. Please try again.'
+    subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED
   }
 }
 

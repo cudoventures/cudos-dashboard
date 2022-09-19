@@ -9,7 +9,8 @@ import { coin, GasPrice } from 'cudosjs'
 import {
   ModalStatus,
   RedelegationModalProps,
-  initialRedelegationModalState
+  initialRedelegationModalState,
+  FailureMessage
 } from 'store/modal'
 import { calculateFee, redelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
@@ -47,15 +48,33 @@ const Redelegation: React.FC<RedelegationProps> = ({
   handleModal
 }) => {
   const [delegated, setDelegated] = useState<string>('')
-  const [redelegationAddress, setRedelegationAddress] = useState<string>('')
   const [redelegationAmount, setRedelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address } = useSelector(({ profile }: RootState) => profile)
+  const { address, connectedLedger } = useSelector(
+    ({ profile }: RootState) => profile
+  )
   const validators = useSelector(({ validator }: RootState) => validator.items)
-  const data = validators.map((item) => ({
-    value: item.validator,
+
+  const filteredValidators = validators.filter(
+    (item) => item.validator !== validator?.address
+  )
+
+  const handleError = (error: string) => {
+    switch (error) {
+      case FailureMessage.REJECTED_BY_USER:
+        return FailureMessage.REJECTED_BY_USER_END_USER
+      case FailureMessage.REDELEGATION_IN_PROGRESS:
+        return FailureMessage.REDELEGATION_IN_PROGRESS_END_USER
+      default:
+        return FailureMessage.DEFAULT_TRANSACTION_FAILED
+    }
+  }
+
+  const data = filteredValidators.map((item, idx) => ({
+    value: (idx + 1).toString(),
+    address: item.validator,
     label: (
       <AvatarName
         name={item.moniker}
@@ -65,15 +84,26 @@ const Redelegation: React.FC<RedelegationProps> = ({
     )
   }))
 
-  const handleDropdown = (validatorAddress: string) => {
-    setRedelegationAddress(validatorAddress)
+  const [redelegationAddress, setRedelegationAddress] = useState<string>(
+    data[0].address
+  )
+
+  const handleDropdown = (validatorIndex: string) => {
+    const validatorAddress = data.filter(
+      (item, idx) => idx + 1 === Number(validatorIndex)
+    )
+
+    setRedelegationAddress(validatorAddress[0].address)
   }
 
   useEffect(() => {
     const loadBalance = async () => {
-      const walletBalance = await (
-        await signingClient
-      ).getDelegation(address, validator?.address || '')
+      const client = await signingClient(connectedLedger)
+
+      const walletBalance = await client.getDelegation(
+        address,
+        validator?.address || ''
+      )
 
       setDelegated(
         new BigNumber(walletBalance?.amount || 0)
@@ -92,35 +122,39 @@ const Redelegation: React.FC<RedelegationProps> = ({
     let fee = ''
 
     if (Number(amount) > 0) {
-      const msg = MsgBeginRedelegate.fromPartial({
-        delegatorAddress: address,
-        validatorSrcAddress: validator?.address,
-        validatorDstAddress: redelegationAddress,
-        amount: coin(
-          new BigNumber(amount || 0)
-            .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
-            .toString(10),
+      try {
+        const msg = MsgBeginRedelegate.fromPartial({
+          delegatorAddress: address,
+          validatorSrcAddress: validator?.address,
+          validatorDstAddress: redelegationAddress,
+          amount: coin(
+            new BigNumber(amount || 0)
+              .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+              .toString(10),
+            CosmosNetworkConfig.CURRENCY_DENOM
+          )
+        })
+
+        const msgAny = {
+          typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
+          value: msg
+        }
+
+        const client = await signingClient(connectedLedger)
+
+        const gasUsed = await client.simulate(address, [msgAny], 'memo')
+
+        const gasLimit = Math.round(gasUsed * feeMultiplier)
+
+        const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
+
+        fee = formatToken(
+          calculatedFee.amount,
           CosmosNetworkConfig.CURRENCY_DENOM
-        )
-      })
-
-      const msgAny = {
-        typeUrl: '/cosmos.staking.v1beta1.MsgBeginRedelegate',
-        value: msg
+        ).value
+      } catch (error) {
+        fee = '0'
       }
-
-      const gasUsed = await (
-        await signingClient
-      ).simulate(address, [msgAny], 'memo')
-
-      const gasLimit = Math.round(gasUsed * feeMultiplier)
-
-      const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
-
-      fee = formatToken(
-        calculatedFee.amount,
-        CosmosNetworkConfig.CURRENCY_DENOM
-      ).value
     }
 
     handleModal({
@@ -155,9 +189,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
       value: msg
     }
 
-    const gasUsed = await (
-      await signingClient
-    ).simulate(address, [msgAny], 'memo')
+    const client = await signingClient(connectedLedger)
+
+    const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -190,16 +224,13 @@ const Redelegation: React.FC<RedelegationProps> = ({
     handleModal({ status: ModalStatus.LOADING })
 
     try {
-      const walletAccount = await window.keplr.getKey(
-        import.meta.env.VITE_APP_CHAIN_ID
-      )
-
       const redelegationResult = await redelegate(
-        walletAccount.bech32Address,
+        address,
         validator?.address || '',
         redelegationAddress,
         amount || '',
-        ''
+        '',
+        connectedLedger
       )
 
       handleModal({
@@ -219,10 +250,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         status: ModalStatus.FAILURE,
         failureMessage: {
           title: 'Redelegation Failed!',
-          subtitle:
-            e.message === 'Request rejected'
-              ? 'Request rejected by the user'
-              : 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+          subtitle: handleError(e.message)
         }
       })
     }
