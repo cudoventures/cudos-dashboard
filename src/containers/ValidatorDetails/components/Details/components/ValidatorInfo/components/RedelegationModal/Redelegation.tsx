@@ -52,7 +52,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address } = useSelector(({ profile }: RootState) => profile)
+  const { address, connectedLedger } = useSelector(
+    ({ profile }: RootState) => profile
+  )
   const validators = useSelector(({ validator }: RootState) => validator.items)
 
   const filteredValidators = validators.filter(
@@ -96,9 +98,12 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const walletBalance = await (
-        await signingClient
-      ).getDelegation(address, validator?.address || '')
+      const client = await signingClient(connectedLedger)
+
+      const walletBalance = await client.getDelegation(
+        address,
+        validator?.address || ''
+      )
 
       setDelegated(
         new BigNumber(walletBalance?.amount || 0)
@@ -135,9 +140,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
           value: msg
         }
 
-        const gasUsed = await (
-          await signingClient
-        ).simulate(address, [msgAny], 'memo')
+        const client = await signingClient(connectedLedger)
+
+        const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
         const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -184,9 +189,9 @@ const Redelegation: React.FC<RedelegationProps> = ({
       value: msg
     }
 
-    const gasUsed = await (
-      await signingClient
-    ).simulate(address, [msgAny], 'memo')
+    const client = await signingClient(connectedLedger)
+
+    const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -219,16 +224,13 @@ const Redelegation: React.FC<RedelegationProps> = ({
     handleModal({ status: ModalStatus.LOADING })
 
     try {
-      const walletAccount = await window.keplr.getKey(
-        import.meta.env.VITE_APP_CHAIN_ID
-      )
-
       const redelegationResult = await redelegate(
-        walletAccount.bech32Address,
+        address,
         validator?.address || '',
         redelegationAddress,
         amount || '',
-        ''
+        '',
+        connectedLedger
       )
 
       handleModal({
