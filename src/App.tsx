@@ -7,9 +7,11 @@ import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import BigNumber from 'bignumber.js'
 
-import { ConnectLedger } from 'ledgers/KeplrLedger'
+import { connectKeplrLedger } from 'ledgers/KeplrLedger'
+import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
@@ -18,7 +20,7 @@ import { fetchDelegations } from 'api/getAccountDelegations'
 import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
-import RequireKeplr from './components/RequireKeplr/RequireKeplr'
+import RequireLedger from './components/RequireLedger/RequireLedger'
 import ConnectWallet from './containers/ConnectWallet/ConnectWallet'
 import Dashboard from './containers/Dashboard'
 import Proposals from './containers/Proposals'
@@ -40,9 +42,23 @@ const App = () => {
 
   const dispatch = useDispatch()
 
-  const connectAccount = useCallback(async () => {
+  const switchLedgerType = async (ledgerType: string) => {
+    let ledger
+    switch (ledgerType) {
+      case CosmosNetworkConfig.KEPLR_LEDGER:
+        ledger = await connectKeplrLedger()
+        return ledger
+      case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+        ledger = await connectCosmostationLedger()
+        return ledger
+      default:
+        return { address: '', accountName: '' }
+    }
+  }
+
+  const connectAccount = useCallback(async (ledgerType: string) => {
     try {
-      const { address, keplrName } = await ConnectLedger()
+      const { address, accountName } = await switchLedgerType(ledgerType)
       if (address !== lastLoggedAddress || lastLoggedAddress === '') {
         dispatch(
           updateUserTransactions({
@@ -69,7 +85,8 @@ const App = () => {
         updateUser({
           address,
           lastLoggedAddress: address,
-          keplrName,
+          connectedLedger: ledgerType,
+          accountName,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
@@ -96,12 +113,21 @@ const App = () => {
         })
       )
 
-      await connectAccount()
+      await connectAccount(CosmosNetworkConfig.KEPLR_LEDGER)
     })
+
+    if (window.cosmostation) {
+      window.cosmostation.cosmos.on('accountChanged', async () => {
+        await connectAccount(CosmosNetworkConfig.COSMOSTATION_LEDGER)
+      })
+    }
 
     return () => {
       window.removeEventListener('keplr_keystorechange', async () => {
-        await connectAccount()
+        await connectAccount(CosmosNetworkConfig.KEPLR_LEDGER)
+      })
+      window.removeEventListener('accountChanged', async () => {
+        await connectAccount(CosmosNetworkConfig.COSMOSTATION_LEDGER)
       })
     }
   }, [])
@@ -121,7 +147,7 @@ const App = () => {
         {location.pathname === '/' ? null : (
           <Layout>
             <Routes>
-              <Route element={<RequireKeplr />}>
+              <Route element={<RequireLedger />}>
                 <Route path="dashboard">
                   <Route index element={<Dashboard />} />
                 </Route>

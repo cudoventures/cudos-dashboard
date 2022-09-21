@@ -69,8 +69,15 @@ export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
   }
 }
 
-export const getFee = async (address: string, message: any[], memo: string) => {
-  const gasUsed = await (await signingClient).simulate(address, message, memo)
+export const getFee = async (
+  address: string,
+  ledgerType: string,
+  message: any[],
+  memo: string
+) => {
+  const client = await signingClient(ledgerType)
+
+  const gasUsed = await client.simulate(address, message, memo)
 
   const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -83,7 +90,8 @@ export const delegate = async (
   delegatorAddress: string,
   validatorAddress: string,
   amount: string,
-  memo: string
+  memo: string,
+  ledgerType: string
 ): Promise<DeliverTxResponse> => {
   const delegationAmount = {
     amount: new BigNumber(amount)
@@ -108,11 +116,11 @@ export const delegate = async (
     value: msg
   }
 
-  const fee = await getFee(delegatorAddress, [msgAny], memo)
+  const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
 
-  const result = await (
-    await signingClient
-  ).delegateTokens(
+  const client = await signingClient(ledgerType)
+
+  const result = await client.delegateTokens(
     delegatorAddress,
     validatorAddress,
     delegationAmount,
@@ -127,7 +135,8 @@ export const undelegate = async (
   delegatorAddress: string,
   validatorAddress: string,
   amount: string,
-  memo: string
+  memo: string,
+  ledgerType: string
 ): Promise<DeliverTxResponse> => {
   const undelegationAmount = {
     amount: new BigNumber(amount || 0)
@@ -152,11 +161,11 @@ export const undelegate = async (
     value: msg
   }
 
-  const fee = await getFee(delegatorAddress, [msgAny], memo)
+  const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
 
-  const result = await (
-    await signingClient
-  ).undelegateTokens(
+  const client = await signingClient(ledgerType)
+
+  const result = await client.undelegateTokens(
     delegatorAddress,
     validatorAddress,
     undelegationAmount,
@@ -172,7 +181,8 @@ export const redelegate = async (
   validatorSrcAddress: string,
   validatorDstAddress: string,
   amount: string,
-  memo: string
+  memo: string,
+  ledgerType: string
 ): Promise<DeliverTxResponse> => {
   const msg = MsgBeginRedelegate.fromPartial({
     delegatorAddress,
@@ -191,11 +201,16 @@ export const redelegate = async (
     value: msg
   }
 
-  const fee = await getFee(delegatorAddress, [msgAny], memo)
+  const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
 
-  const result = await (
-    await signingClient
-  ).signAndBroadcast(delegatorAddress, [msgAny], fee, memo)
+  const client = await signingClient(ledgerType)
+
+  const result = await client.signAndBroadcast(
+    delegatorAddress,
+    [msgAny],
+    fee,
+    memo
+  )
 
   return result
 }
@@ -206,7 +221,8 @@ export const claimRewards = async (
   options: {
     restake: boolean
     withdrawCommission: boolean
-  }
+  },
+  ledgerType: string
 ) => {
   const { restake, withdrawCommission } = options
   const msgMemo = ''
@@ -248,11 +264,11 @@ export const claimRewards = async (
     })
   }
 
-  const fee = await getFee(address, [...msgAny], msgMemo)
+  const fee = await getFee(address, ledgerType, [...msgAny], msgMemo)
 
-  const result = await (
-    await signingClient
-  ).signAndBroadcast(address, msgAny, fee, msgMemo)
+  const client = await signingClient(ledgerType)
+
+  const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
   return { result, fee: fee.amount[0].amount }
 }
@@ -260,7 +276,8 @@ export const claimRewards = async (
 export const voteProposal = async (
   voterAddress: string,
   proposalId: number | undefined,
-  votingOption: number
+  votingOption: number,
+  ledgerType: string
 ) => {
   const msg = MsgVote.fromPartial({
     proposalId,
@@ -275,11 +292,16 @@ export const voteProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const fee = await getFee(voterAddress, [msgAny], memo)
+  const fee = await getFee(voterAddress, ledgerType, [msgAny], memo)
 
-  const result = await (
-    await signingClient
-  ).signAndBroadcast(voterAddress, [msgAny], fee, memo)
+  const client = await signingClient(ledgerType)
+
+  const result = await client.signAndBroadcast(
+    voterAddress,
+    [msgAny],
+    fee,
+    memo
+  )
 
   return {
     result,
@@ -290,7 +312,8 @@ export const voteProposal = async (
 export const depositProposal = async (
   depositorAddress: string,
   proposalId: number | undefined,
-  amount: string
+  amount: string,
+  ledgerType: string
 ) => {
   const msg = MsgDeposit.fromPartial({
     proposalId,
@@ -312,11 +335,16 @@ export const depositProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const fee = await getFee(depositorAddress, [msgAny], memo)
+  const fee = await getFee(depositorAddress, ledgerType, [msgAny], memo)
 
-  const result = await (
-    await signingClient
-  ).signAndBroadcast(depositorAddress, [msgAny], fee, memo)
+  const client = await signingClient(ledgerType)
+
+  const result = await client.signAndBroadcast(
+    depositorAddress,
+    [msgAny],
+    fee,
+    memo
+  )
 
   return {
     result,
@@ -422,16 +450,10 @@ export const getProposalContent = (proposalData: any) => {
 
 export const createProposal = async (
   proposalData: any,
-  proposerAddress: string
+  proposerAddress: string,
+  ledgerType: string
 ) => {
-  const offlineSigner = window.getOfflineSigner(
-    import.meta.env.VITE_APP_CHAIN_ID
-  )
-
-  const client = await SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
-    offlineSigner
-  )
+  const client = await signingClient(ledgerType)
 
   const content = getProposalContent(proposalData)
 
@@ -455,7 +477,7 @@ export const createProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const fee = await getFee(proposerAddress, [msgAny], memo)
+  const fee = await getFee(proposerAddress, ledgerType, [msgAny], memo)
 
   const result = await client.signAndBroadcast(
     proposerAddress,
