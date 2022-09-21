@@ -48,7 +48,9 @@ export const formatBigNum = (number: BigNumber): string => {
 }
 
 export const formatDateTime = (dateTimeString: string): string => {
-  const localTimeString = moment(dateTimeString).parseZone().toLocaleString()
+  const localTimeString = moment(
+    new Date(moment(dateTimeString).parseZone().toLocaleString())
+  )
   const formattedTime = moment(localTimeString)
     .format('DD MMM YYYY LTS')
     .toLocaleString()
