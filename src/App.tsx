@@ -44,6 +44,20 @@ const App = () => {
 
   const dispatch = useDispatch()
 
+  const switchLedgerType = async (ledgerType: string) => {
+    let ledger
+    switch (ledgerType) {
+      case CosmosNetworkConfig.KEPLR_LEDGER:
+        ledger = await connectKeplrLedger()
+        return ledger
+      case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+        ledger = await connectCosmostationLedger()
+        return ledger
+      default:
+        return { address: '', accountName: '' }
+    }
+  }
+
   const connectAccount = useCallback(async (ledgerType: string) => {
     try {
       const { address, accountName } = await switchLedgerType(ledgerType)
