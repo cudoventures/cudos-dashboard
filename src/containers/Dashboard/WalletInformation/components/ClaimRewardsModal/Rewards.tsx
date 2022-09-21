@@ -46,9 +46,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const dispatch = useDispatch()
   const { state: validatorsState } = useValidators()
 
-  const { address, connectedLedger } = useSelector(
-    ({ profile }: RootState) => profile
-  )
+  const { address } = useSelector(({ profile }: RootState) => profile)
 
   const handleSubmit = async (): Promise<void> => {
     handleModal({ status: ModalStatus.LOADING })
@@ -67,15 +65,10 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
             item.validator === toValidatorAddress(address)
         ) > -1
 
-      const { result, fee } = await claimRewards(
-        validatorArray,
-        address,
-        {
-          restake,
-          withdrawCommission: isValidator
-        },
-        connectedLedger
-      )
+      const { result, fee } = await claimRewards(validatorArray, address, {
+        restake,
+        withdrawCommission: isValidator
+      })
 
       handleModal({
         status: ModalStatus.SUCCESS,

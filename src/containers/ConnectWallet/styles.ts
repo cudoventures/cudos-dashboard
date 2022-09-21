@@ -10,7 +10,7 @@ export const styles = {
     left: '50%',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    maxWidth: '600px'
+    maxWidth: '535px'
   },
   subHeaderContainer: {
     display: 'flex',
@@ -18,17 +18,12 @@ export const styles = {
   },
   connectButton: {
     height: '50px',
-    width: '290px',
+    width: '250px',
     marginTop: '50px',
-    marginBottom: '30px'
-  },
-  cosmostationConnectBtn: {
-    height: '50px',
-    width: '290px',
     marginBottom: '40px'
   },
   pluginWarning: {
-    maxWidth: '600px',
+    maxWidth: '490px',
     fontSize: '14px',
     height: '60px',
     backgroundColor: 'rgba(82, 166, 248, 0.1)',
@@ -40,11 +35,6 @@ export const styles = {
   },
   keplrLogo: {
     marginRight: '10px'
-  },
-  cosmostationLogo: {
-    marginRight: '10px',
-    width: '30px',
-    height: '30px'
   },
   infoIcon: {
     display: 'flex',

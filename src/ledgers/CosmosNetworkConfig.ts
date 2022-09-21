@@ -28,8 +28,4 @@ export default class CosmosNetworkConfig {
   static BECH32_PREFIX_CONS_PUB = 'cudosvalconspub'
 
   static BECH32_ACC_ADDR_LENGTH = 44
-
-  static KEPLR_LEDGER = 'Keplr'
-
-  static COSMOSTATION_LEDGER = 'Cosmostation'
 }
