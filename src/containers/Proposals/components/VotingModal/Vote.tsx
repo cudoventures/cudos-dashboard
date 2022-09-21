@@ -23,9 +23,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
 
   const { id, title } = modalProps
 
-  const { address, connectedLedger } = useSelector(
-    (state: RootState) => state.profile
-  )
+  const { address } = useSelector((state: RootState) => state.profile)
 
   const handleSubmitVote = async (
     voterAddress: string,
@@ -40,8 +38,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
       const { gasFee, result } = await voteProposal(
         voterAddress,
         proposalId,
-        votingOption,
-        connectedLedger
+        votingOption
       )
 
       handleModal({

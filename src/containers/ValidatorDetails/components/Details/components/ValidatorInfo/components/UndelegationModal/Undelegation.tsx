@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Typography, Box, InputAdornment, Button, Stack } from '@mui/material'
-import _, { add } from 'lodash'
+import _ from 'lodash'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
@@ -50,18 +50,13 @@ const Undelegation: React.FC<UndelegationProps> = ({
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address, connectedLedger } = useSelector(
-    ({ profile }: RootState) => profile
-  )
+  const { address } = useSelector(({ profile }: RootState) => profile)
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(connectedLedger)
-
-      const walletBalance = await client.getDelegation(
-        address,
-        validator?.address || ''
-      )
+      const walletBalance = await (
+        await signingClient
+      ).getDelegation(address, validator?.address || '')
 
       setDelegated(
         new BigNumber(walletBalance?.amount || 0)
@@ -91,9 +86,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
-      const client = await signingClient(connectedLedger)
-
-      const gasUsed = await client.simulate(address, [msgAny], 'memo')
+      const gasUsed = await (
+        await signingClient
+      ).simulate(address, [msgAny], 'memo')
 
       const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -136,9 +131,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
-    const client = await signingClient(connectedLedger)
-
-    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+    const gasUsed = await (
+      await signingClient
+    ).simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -171,12 +166,15 @@ const Undelegation: React.FC<UndelegationProps> = ({
     handleModal({ status: ModalStatus.LOADING })
 
     try {
+      const walletAccount = await window.keplr.getKey(
+        import.meta.env.VITE_APP_CHAIN_ID
+      )
+
       const undelegationResult = await undelegate(
-        address,
+        walletAccount.bech32Address,
         validator?.address || '',
         amount || '',
-        '',
-        connectedLedger
+        ''
       )
 
       handleModal({
