@@ -302,11 +302,11 @@ export const claimRewards = async (
       }
     })
 
-    restakeFee = await getFee(address, [...msgAny], msgMemo)
+    const client = await signingClient(ledgerType)
 
-    restakeTx = await (
-      await signingClient
-    ).signAndBroadcast(address, test, fee, msgMemo)
+    restakeFee = await getFee(address, ledgerType, [...msgAny], msgMemo)
+
+    restakeTx = await client.signAndBroadcast(address, test, fee, msgMemo)
   }
 
   if (restakeFee) {

@@ -48,7 +48,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const dispatch = useDispatch()
   const { state: validatorsState } = useValidators()
 
-  const { address, balance, availableRewards } = useSelector(
+  const { address, balance, availableRewards, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
   )
 
@@ -76,7 +76,8 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
           restake,
           withdrawCommission: isValidator,
           claimAndRestakeSeparateMsg
-        }
+        },
+        connectedLedger
       )
 
       handleModal({
