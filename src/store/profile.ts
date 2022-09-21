@@ -3,7 +3,8 @@ import BigNumber from 'bignumber.js'
 
 export interface WalletState {
   address: string
-  keplrName: string
+  accountName: string
+  connectedLedger: string
   lastLoggedAddress: string
   balance: BigNumber
   availableRewards: BigNumber
@@ -20,7 +21,8 @@ export interface WalletState {
 
 const initialState: WalletState = {
   address: '',
-  keplrName: '',
+  accountName: '',
+  connectedLedger: '',
   lastLoggedAddress: '',
   balance: new BigNumber(0),
   availableRewards: new BigNumber(0),

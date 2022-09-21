@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Box, Button, Typography } from '@mui/material'
+import { useState } from 'react'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
@@ -7,16 +8,20 @@ import { RootState } from 'store'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
 import { updateUser } from 'store/profile'
-import { ConnectLedger } from 'ledgers/KeplrLedger'
+import { connectKeplrLedger } from 'ledgers/KeplrLedger'
 import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import InfoIcon from 'assets/vectors/info-icon.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
+import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
 import Header from 'components/Layout/Header'
 import { useNotifications } from 'components/NotificationPopup/hooks'
-
 import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
+import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
+
+import { COLORS_DARK_THEME } from 'theme/colors'
 import { styles } from './styles'
 
 const ConnectWallet = () => {
@@ -24,10 +29,28 @@ const ConnectWallet = () => {
   const navigate = useNavigate()
   const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
   const { setWarning } = useNotifications()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [ledger, setLedger] = useState<string>('')
 
-  const connect = async () => {
+  const switchLedgerType = async (ledgerType: string) => {
+    let ledger
+    switch (ledgerType) {
+      case CosmosNetworkConfig.KEPLR_LEDGER:
+        ledger = await connectKeplrLedger()
+        return ledger
+      case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+        ledger = await connectCosmostationLedger()
+        return ledger
+      default:
+        return { address: '', accountName: '' }
+    }
+  }
+
+  const connect = async (ledgerType: string) => {
     try {
-      const { address, keplrName } = await ConnectLedger()
+      setLedger(ledgerType)
+      setLoading(true)
+      const { address, accountName } = await switchLedgerType(ledgerType)
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
@@ -41,7 +64,8 @@ const ConnectWallet = () => {
       dispatch(
         updateUser({
           address,
-          keplrName,
+          accountName,
+          connectedLedger: ledgerType,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
@@ -51,10 +75,13 @@ const ConnectWallet = () => {
           undelegations: undelegationsArray
         })
       )
+      setLoading(false)
       navigate('dashboard')
     } catch (error) {
+      setLedger('')
+      setLoading(false)
       setWarning(
-        'Failed connecting to wallet! Please check your Keplr installation.'
+        `Failed connecting to wallet! Please check your ${ledgerType} installation.`
       )
     }
   }
@@ -76,17 +103,66 @@ const ConnectWallet = () => {
           <Box>
             <Button
               variant="contained"
+              disabled={loading}
               color="primary"
-              onClick={() => connect()}
+              onClick={() => connect(CosmosNetworkConfig.KEPLR_LEDGER)}
               sx={styles.connectButton}
             >
               <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
-              Connect Keplr wallet
+              {loading && ledger === CosmosNetworkConfig.KEPLR_LEDGER ? (
+                <>
+                  <Typography sx={{ position: 'relative' }}>
+                    Loading...
+                  </Typography>
+                  <CircularProgress
+                    style={{
+                      position: 'absolute',
+                      right: 35,
+                      color: COLORS_DARK_THEME.PRIMARY_BLUE
+                    }}
+                    size={30}
+                  />
+                </>
+              ) : (
+                'Connect Keplr wallet'
+              )}
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              variant="contained"
+              disabled={loading}
+              color="primary"
+              onClick={() => connect(CosmosNetworkConfig.COSMOSTATION_LEDGER)}
+              sx={styles.cosmostationConnectBtn}
+            >
+              <img
+                style={styles.cosmostationLogo}
+                src={CosmostationLogo}
+                alt="Cosmostation Logo"
+              />
+              {loading && ledger === CosmosNetworkConfig.COSMOSTATION_LEDGER ? (
+                <>
+                  <Typography sx={{ position: 'relative' }}>
+                    Loading...
+                  </Typography>
+                  <CircularProgress
+                    style={{
+                      position: 'absolute',
+                      right: 35,
+                      color: COLORS_DARK_THEME.PRIMARY_BLUE
+                    }}
+                    size={30}
+                  />
+                </>
+              ) : (
+                'Connect Cosmostation wallet'
+              )}
             </Button>
           </Box>
           <Box sx={styles.pluginWarning} color="primary.main">
             <img style={styles.infoIcon} src={InfoIcon} alt="Info" />
-            Make sure you have Keplr plugin downloaded.
+            Make sure you have either Keplr or Cosmostation plugin downloaded.
           </Box>
         </Box>
       </Box>
