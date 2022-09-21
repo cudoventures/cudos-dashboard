@@ -8,7 +8,6 @@ import { RootState } from 'store'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
 import { updateUser } from 'store/profile'
-import { connectKeplrLedger } from 'ledgers/KeplrLedger'
 import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import InfoIcon from 'assets/vectors/info-icon.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
@@ -21,8 +20,6 @@ import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import { getUnbondingBalance } from 'api/getUnbondingBalance'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { switchLedgerType } from 'ledgers/utils'
-import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 
 import { COLORS_DARK_THEME } from 'theme/colors'
 import { styles } from './styles'
@@ -34,20 +31,6 @@ const ConnectWallet = () => {
   const { setWarning } = useNotifications()
   const [loading, setLoading] = useState<boolean>(false)
   const [ledger, setLedger] = useState<string>('')
-
-  const switchLedgerType = async (ledgerType: string) => {
-    let ledger
-    switch (ledgerType) {
-      case CosmosNetworkConfig.KEPLR_LEDGER:
-        ledger = await connectKeplrLedger()
-        return ledger
-      case CosmosNetworkConfig.COSMOSTATION_LEDGER:
-        ledger = await connectCosmostationLedger()
-        return ledger
-      default:
-        return { address: '', accountName: '' }
-    }
-  }
 
   const connect = async (ledgerType: string) => {
     try {
