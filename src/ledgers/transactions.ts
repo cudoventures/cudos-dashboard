@@ -309,12 +309,10 @@ export const claimRewards = async (
     restakeTx = await client.signAndBroadcast(address, test, fee, msgMemo)
   }
 
+  fee = fee.amount[0].amount
+
   if (restakeFee) {
-    fee = (
-      Number(fee.amount[0].amount) + Number(restakeFee.amount[0].amount)
-    ).toString()
-  } else {
-    fee = fee.amount[0].amount
+    fee = (Number(fee) + Number(restakeFee.amount[0].amount)).toString()
   }
 
   return { result, fee, restakeTx }
