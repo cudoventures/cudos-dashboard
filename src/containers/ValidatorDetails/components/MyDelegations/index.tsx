@@ -207,7 +207,7 @@ const MyDelegations = () => {
             </Typography>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>
-                {formatBigNum(undelegationsBalance)}
+                {formatNumber(formatBigNum(undelegationsBalance), 2)}
               </Typography>
               <Typography fontWeight={700} color="text.secondary">
                 CUDOS

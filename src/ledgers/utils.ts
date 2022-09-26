@@ -1,6 +1,8 @@
 import { OfflineSigner, SigningStargateClient, StargateClient } from 'cudosjs'
 import { getOfflineSigner as cosmostationSigner } from '@cosmostation/cosmos-client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
+import { connectKeplrLedger } from './KeplrLedger'
+import { connectCosmostationLedger } from './CosmoStationLedger'
 
 const colors = {
   staking: '#3d5afe',
@@ -435,7 +437,21 @@ export const unknownMessage = {
   displayName: 'Unknown'
 }
 
-const switchLedgerType = async (
+export const switchLedgerType = async (ledgerType: string) => {
+  let ledger
+  switch (ledgerType) {
+    case CosmosNetworkConfig.KEPLR_LEDGER:
+      ledger = await connectKeplrLedger()
+      return ledger
+    case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+      ledger = await connectCosmostationLedger()
+      return ledger
+    default:
+      return { address: '', accountName: '' }
+  }
+}
+
+const switchSigningClient = async (
   ledgerType: string
 ): Promise<OfflineSigner | undefined> => {
   let client
@@ -454,7 +470,7 @@ const switchLedgerType = async (
 export const signingClient = async (
   ledgerType: string
 ): Promise<SigningStargateClient> => {
-  const offlineSigner = await switchLedgerType(ledgerType)
+  const offlineSigner = await switchSigningClient(ledgerType)
 
   if (window.keplr) {
     window.keplr.defaultOptions = {

@@ -18,26 +18,33 @@ import BigNumber from 'bignumber.js'
 import { fetchRewards } from 'api/getRewards'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import { ModalStatus } from 'store/modal'
+import { getUnbondingBalance } from 'api/getUnbondingBalance'
+import useValidators from 'containers/Staking/components/Validators/components/Table/hooks'
 import { styles } from '../styles'
 import ClaimRewardsModal from './components/ClaimRewardsModal'
 import { useDelegationRewards } from './hooks'
 import useRewardsModal from './components/ClaimRewardsModal/hooks'
+import useUnbondingModal from './components/UnbondingTokensModal/hooks'
+import UnbondingModal from './components/UnbondingTokensModal'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
   const [copied, setCopied] = useState<boolean>(false)
   const { state } = useDelegationRewards()
-  const { handleModal } = useRewardsModal()
+  const { handleModal: handleRewardsModal } = useRewardsModal()
+  const { handleModal: handleunbondingModal } = useUnbondingModal()
   const {
     balance,
     availableRewards,
     stakedBalance,
+    unbondingBalance,
     address,
     stakedValidators,
     lastLoggedAddress
   } = state
   const dispatch = useDispatch()
   const { setError } = useNotifications()
+  const { state: validatorState } = useValidators()
 
   useEffect(() => {
     const getCurrencies = async () => {
@@ -68,6 +75,7 @@ const WalletInformation: React.FC = () => {
         )
         const walletBalance = await getWalletBalance(address)
         const stakedAmountBalance = await getStakedBalance(address)
+        const { unbondingBalance } = await getUnbondingBalance(address)
 
         dispatch(
           updateUser({
@@ -75,7 +83,8 @@ const WalletInformation: React.FC = () => {
             balance: new BigNumber(walletBalance),
             availableRewards: new BigNumber(totalRewards),
             stakedValidators: validatorArray,
-            stakedBalance: new BigNumber(stakedAmountBalance)
+            stakedBalance: new BigNumber(stakedAmountBalance),
+            unbondingBalance: new BigNumber(unbondingBalance)
           })
         )
       } catch (error: any) {
@@ -155,7 +164,12 @@ const WalletInformation: React.FC = () => {
           >
             Staked cudos
           </Typography>
-          <Stack direction="row" alignItems="center" gap="6px">
+          <Stack
+            sx={{ flexFlow: 'wrap' }}
+            direction="row"
+            alignItems="center"
+            gap="6px"
+          >
             <CudosLogo style={{ width: '20px', height: 'auto' }} />
             <Typography variant="h5" fontWeight={700}>
               {formatNumber(Number(stakedBalance).toFixed(2), 2)}
@@ -165,6 +179,59 @@ const WalletInformation: React.FC = () => {
             </Typography>
           </Stack>
         </Box>
+        {Number(unbondingBalance) !== 0 ? (
+          <Box sx={styles.availableRewards}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1,
+                padding: '5px 1rem'
+              }}
+            >
+              <Typography
+                textTransform="uppercase"
+                fontWeight={700}
+                color="text.secondary"
+              >
+                Unbonding cudos
+              </Typography>
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap="6px"
+                sx={{ flexFlow: 'wrap' }}
+              >
+                <CudosLogo style={{ width: '20px', height: 'auto' }} />
+                <Typography variant="h5" fontWeight={700}>
+                  {formatNumber(Number(unbondingBalance).toFixed(2), 2)}
+                </Typography>
+                <Typography variant="h6" color="primary.main" fontWeight={700}>
+                  $
+                  {formatNumber(
+                    (rate * Number(unbondingBalance)).toFixed(2),
+                    2
+                  )}
+                </Typography>
+              </Stack>
+            </Box>
+            <Box>
+              <Button
+                onClick={() =>
+                  handleunbondingModal({
+                    open: true
+                  })
+                }
+                sx={{ fontWeight: 700, minWidth: '150px' }}
+                disabled={!stakedValidators.length}
+                variant="contained"
+                color="primary"
+              >
+                View Details
+              </Button>
+            </Box>
+          </Box>
+        ) : null}
         <Box sx={styles.availableRewards}>
           <Box
             sx={{
@@ -181,7 +248,12 @@ const WalletInformation: React.FC = () => {
             >
               Available rewards
             </Typography>
-            <Stack direction="row" alignItems="center" gap="6px">
+            <Stack
+              sx={{ flexFlow: 'wrap' }}
+              direction="row"
+              alignItems="center"
+              gap="6px"
+            >
               <CudosLogo style={{ width: '20px', height: 'auto' }} />
               <Typography variant="h5" fontWeight={700}>
                 {formatNumber(Number(availableRewards).toFixed(2), 2)}
@@ -198,7 +270,7 @@ const WalletInformation: React.FC = () => {
           <Box>
             <Button
               onClick={() =>
-                handleModal({
+                handleRewardsModal({
                   open: true,
                   status: ModalStatus.IN_PROGRESS,
                   amount: availableRewards.toString()
@@ -215,6 +287,7 @@ const WalletInformation: React.FC = () => {
         </Box>
       </Box>
       <ClaimRewardsModal />
+      <UnbondingModal />
     </Card>
   )
 }
