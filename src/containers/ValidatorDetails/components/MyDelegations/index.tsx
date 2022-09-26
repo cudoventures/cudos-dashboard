@@ -35,7 +35,7 @@ const MyDelegations = () => {
   const price = useSelector((state: RootState) => state.market.price)
 
   const calculateValue = (cudos: string) => {
-    return `${Number(price) * Number(cudos)}`
+    return `${(Number(price) * Number(cudos)).toFixed(2)}`
   }
 
   const checkIfDelegated = delegations.filter(
@@ -249,17 +249,15 @@ const MyDelegations = () => {
             </Stack>
             <Typography variant="body2" fontWeight={700} color="primary.main">
               $
-              {formatNumber(
-                calculateValue(
+              {calculateValue(
+                formatNumber(
                   formatBigNum(
-                    new BigNumber(
-                      checkRewards.length
-                        ? checkRewards[0].amount
-                        : new BigNumber(0)
-                    )
-                  )
-                ),
-                2
+                    checkRewards.length
+                      ? new BigNumber(checkRewards[0].amount)
+                      : new BigNumber(0)
+                  ),
+                  2
+                )
               )}
             </Typography>
           </Box>

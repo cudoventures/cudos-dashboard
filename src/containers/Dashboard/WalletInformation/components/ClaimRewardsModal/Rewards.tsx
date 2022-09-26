@@ -23,7 +23,7 @@ import { updateUser } from 'store/profile'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { fetchRewards } from 'api/getRewards'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfoIcon from 'assets/vectors/info-alt.svg?component'
 import {
   initialRewardsModalProps,
@@ -41,12 +41,14 @@ type RewardsProps = {
 
 const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const [restake, setRestake] = useState<boolean>(true)
+  const [claimAndRestakeSeparateMsg, setClaimAndRestakeSeparateMsg] =
+    useState<boolean>(false)
   const { amount } = modalProps
   const { setError } = useNotifications()
   const dispatch = useDispatch()
   const { state: validatorsState } = useValidators()
 
-  const { address, connectedLedger } = useSelector(
+  const { address, balance, availableRewards, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
   )
 
@@ -67,20 +69,24 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
             item.validator === toValidatorAddress(address)
         ) > -1
 
-      const { result, fee } = await claimRewards(
+      const { result, fee, restakeTx } = await claimRewards(
         validatorArray,
         address,
         {
           restake,
-          withdrawCommission: isValidator
+          withdrawCommission: isValidator,
+          claimAndRestakeSeparateMsg
         },
         connectedLedger
       )
 
       handleModal({
         status: ModalStatus.SUCCESS,
-        gasUsed: result.gasUsed,
+        gasUsed: restakeTx?.transactionHash
+          ? result.gasUsed + restakeTx.gasUsed
+          : result.gasUsed,
         txHash: result.transactionHash,
+        txRestakeHash: restakeTx?.transactionHash || '',
         fee: formatToken(fee, CosmosNetworkConfig.CURRENCY_DENOM).value
       })
 
@@ -101,6 +107,21 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
       ...initialRewardsModalProps
     })
   }
+
+  const handleRestakeToggle = () => {
+    setRestake(!restake)
+    if (availableRewards.isGreaterThan(balance)) {
+      setClaimAndRestakeSeparateMsg(true)
+    }
+  }
+
+  useEffect(() => {
+    if (availableRewards.isGreaterThan(balance)) {
+      setClaimAndRestakeSeparateMsg(true)
+    } else {
+      setClaimAndRestakeSeparateMsg(false)
+    }
+  }, [availableRewards, balance, claimAndRestakeSeparateMsg])
 
   return (
     <ModalContainer>
@@ -182,7 +203,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
             margin="dense"
             fullWidth
             disabled
-            value={formatNumber(amount || '0', 2)}
+            value={formatNumber(Number(availableRewards).toFixed(2) || '0', 2)}
             sx={{
               '& .MuiInputBase-input.Mui-disabled': {
                 WebkitTextFillColor: 'white'
@@ -205,7 +226,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
           />
         </Box>
         <Stack direction="row" alignItems="center">
-          <Switch checked={restake} onChange={() => setRestake(!restake)} />
+          <Switch checked={restake} onChange={() => handleRestakeToggle()} />
           <Typography fontWeight={700}>Restake</Typography>
           <Tooltip
             title="By enabling Restake your claimed rewards will be automatically re-delegated to the respective Validators"

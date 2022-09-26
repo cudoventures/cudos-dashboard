@@ -43,6 +43,7 @@ export type RewardsModalProps = Modal & {
   amount: string | null
   fee: string
   txHash?: string
+  txRestakeHash?: string
   gasUsed: number
 }
 
@@ -54,6 +55,7 @@ export const initialRewardsModalProps: RewardsModalProps = {
   fee: '',
   gasUsed: 0,
   txHash: '',
+  txRestakeHash: '',
   failureMessage: {
     title: 'Claiming Rewards Failed',
     subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED

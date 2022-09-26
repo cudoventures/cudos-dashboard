@@ -221,13 +221,18 @@ export const claimRewards = async (
   options: {
     restake: boolean
     withdrawCommission: boolean
+    claimAndRestakeSeparateMsg: boolean
   },
   ledgerType: string
 ) => {
-  const { restake, withdrawCommission } = options
+  const { restake, withdrawCommission, claimAndRestakeSeparateMsg } = options
   const msgMemo = ''
 
   const msgAny: any[] = []
+  const test: any[] = []
+  let fee
+  let restakeFee
+  let restakeTx
 
   stakedValidators.forEach((validator) => {
     msgAny.push({
@@ -238,7 +243,11 @@ export const claimRewards = async (
       })
     })
 
-    if (restake && Number(validator.amount) > 0) {
+    if (
+      restake &&
+      Number(validator.amount) > 0 &&
+      !claimAndRestakeSeparateMsg
+    ) {
       msgAny.push({
         typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
         value: MsgUndelegate.fromPartial({
@@ -255,6 +264,8 @@ export const claimRewards = async (
     }
   })
 
+  msgAny.sort((a, b) => (a.typeUrl > b.typeUrl ? 1 : -1))
+
   if (withdrawCommission) {
     msgAny.push({
       typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission',
@@ -264,13 +275,47 @@ export const claimRewards = async (
     })
   }
 
-  const fee = await getFee(address, ledgerType, [...msgAny], msgMemo)
+  fee = await getFee(address, ledgerType, [...msgAny], msgMemo)
 
   const client = await signingClient(ledgerType)
 
   const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
-  return { result, fee: fee.amount[0].amount }
+  if (claimAndRestakeSeparateMsg) {
+    stakedValidators.forEach((validator) => {
+      if (Number(validator.amount) > 0) {
+        test.push({
+          typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+          value: MsgUndelegate.fromPartial({
+            delegatorAddress: address,
+            validatorAddress: validator.address,
+            amount: {
+              amount: new BigNumber(
+                formatToken(validator.amount, 'cudos').value
+              )
+                .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+                .toString(10),
+              denom: CosmosNetworkConfig.CURRENCY_DENOM
+            }
+          })
+        })
+      }
+    })
+
+    const client = await signingClient(ledgerType)
+
+    restakeFee = await getFee(address, ledgerType, [...msgAny], msgMemo)
+
+    restakeTx = await client.signAndBroadcast(address, test, fee, msgMemo)
+  }
+
+  fee = fee.amount[0].amount
+
+  if (restakeFee) {
+    fee = (Number(fee) + Number(restakeFee.amount[0].amount)).toString()
+  }
+
+  return { result, fee, restakeTx }
 }
 
 export const voteProposal = async (
