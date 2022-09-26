@@ -75,6 +75,7 @@ export const styles: SxMap = {
   },
   walletInfo: {
     flex: 4,
+    alignSelf: 'center',
     display: 'flex',
     flexDirection: 'column',
     gap: 1,
@@ -115,6 +116,7 @@ export const styles: SxMap = {
   }),
   availableRewards: ({ palette }) => ({
     display: 'flex',
+    justifyContent: 'space-between',
     borderLeft: `2px solid ${palette.primary.main}`,
     alignItems: 'center',
     gap: 4

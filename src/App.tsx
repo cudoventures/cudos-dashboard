@@ -9,14 +9,13 @@ import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import BigNumber from 'bignumber.js'
-
-import { connectKeplrLedger } from 'ledgers/KeplrLedger'
-import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
 import NotificationPopup from 'components/NotificationPopup'
 import { fetchDelegations } from 'api/getAccountDelegations'
+import { switchLedgerType } from 'ledgers/utils'
+import { getUnbondingBalance } from 'api/getUnbondingBalance'
 import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
@@ -41,20 +40,6 @@ const App = () => {
   const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
-
-  const switchLedgerType = async (ledgerType: string) => {
-    let ledger
-    switch (ledgerType) {
-      case CosmosNetworkConfig.KEPLR_LEDGER:
-        ledger = await connectKeplrLedger()
-        return ledger
-      case CosmosNetworkConfig.COSMOSTATION_LEDGER:
-        ledger = await connectCosmostationLedger()
-        return ledger
-      default:
-        return { address: '', accountName: '' }
-    }
-  }
 
   const connectAccount = useCallback(async (ledgerType: string) => {
     try {
@@ -81,6 +66,8 @@ const App = () => {
 
       const { undelegationsArray } = await fetchUndedelegations(address)
 
+      const { unbondingBalance } = await getUnbondingBalance(address)
+
       dispatch(
         updateUser({
           address,
@@ -91,6 +78,7 @@ const App = () => {
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
           stakedBalance: new BigNumber(stakedAmountBalance),
+          unbondingBalance: new BigNumber(unbondingBalance),
           delegations: delegationsArray,
           redelegations: redelegationsArray,
           undelegations: undelegationsArray

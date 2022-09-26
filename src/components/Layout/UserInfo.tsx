@@ -13,6 +13,7 @@ import CopyIcon from 'assets/vectors/copy-icon.svg'
 import ArrowIcon from 'assets/vectors/arrow-down.svg'
 
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { styles } from './styles'
 
 const UserInfo = () => {
@@ -57,13 +58,24 @@ const UserInfo = () => {
     navigate('/')
   }
 
+  const switchLedger = (ledger: string) => {
+    switch (ledger) {
+      case CosmosNetworkConfig.KEPLR_LEDGER:
+        return KeplrLogo
+      case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+        return CosmostationLogo
+      default:
+        return undefined
+    }
+  }
+
   return (
     <Box sx={styles.user} onMouseLeave={() => setOpen(false)}>
       <Box onMouseEnter={() => setOpen(true)} sx={styles.userContainer}>
         <Box sx={styles.userInnerContainer}>
           <Box>
             <img
-              src={connectedLedger === 'Keplr' ? KeplrLogo : CosmostationLogo}
+              src={switchLedger(connectedLedger)}
               alt="Logo"
               style={{ position: 'absolute', left: 15, top: 12 }}
             />
