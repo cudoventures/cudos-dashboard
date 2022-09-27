@@ -7007,8 +7007,6 @@ export type Query_Root = {
   delegation: Array<Delegation>;
   /** fetch aggregated fields from the table: "delegation" */
   delegation_aggregate: Delegation_Aggregate;
-  /** fetch data from the table: "delegation" using primary key columns */
-  delegation_by_pk?: Maybe<Delegation>;
   /** fetch data from the table: "distinct_message" */
   distinct_message: Array<Distinct_Message>;
   /** fetch aggregated fields from the table: "distinct_message" */
@@ -7653,12 +7651,6 @@ export type Query_RootDelegation_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Delegation_Order_By>>;
   where?: InputMaybe<Delegation_Bool_Exp>;
-};
-
-
-export type Query_RootDelegation_By_PkArgs = {
-  delegator_address: Scalars['String'];
-  validator_address: Scalars['String'];
 };
 
 
@@ -9086,8 +9078,6 @@ export type Subscription_Root = {
   delegation: Array<Delegation>;
   /** fetch aggregated fields from the table: "delegation" */
   delegation_aggregate: Delegation_Aggregate;
-  /** fetch data from the table: "delegation" using primary key columns */
-  delegation_by_pk?: Maybe<Delegation>;
   /** fetch data from the table: "distinct_message" */
   distinct_message: Array<Distinct_Message>;
   /** fetch aggregated fields from the table: "distinct_message" */
@@ -9646,12 +9636,6 @@ export type Subscription_RootDelegation_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']>;
   order_by?: InputMaybe<Array<Delegation_Order_By>>;
   where?: InputMaybe<Delegation_Bool_Exp>;
-};
-
-
-export type Subscription_RootDelegation_By_PkArgs = {
-  delegator_address: Scalars['String'];
-  validator_address: Scalars['String'];
 };
 
 
@@ -14004,7 +13988,7 @@ export type MarketDataQueryVariables = Exact<{
 }>;
 
 
-export type MarketDataQuery = { communityPool: Array<{ __typename?: 'community_pool', coins: any }>, inflation: Array<{ __typename?: 'inflation', value: any }>, tokenPrice: Array<{ __typename?: 'token_price', price: any, marketCap: any }>, supply: Array<{ __typename?: 'supply', coins: any }>, bondedTokens: Array<{ __typename?: 'staking_pool', bonded_tokens: any }> };
+export type MarketDataQuery = { communityPool: Array<{ __typename?: 'community_pool', coins: any }>, inflation: Array<{ __typename?: 'inflation', value: any }>, tokenPrice: Array<{ __typename?: 'token_price', price: any, marketCap: any }>, supply: Array<{ __typename?: 'supply', coins: any }>, apr: Array<{ __typename?: 'apr', value: any }>, bondedTokens: Array<{ __typename?: 'staking_pool', bonded_tokens: any }> };
 
 export type GetMessagesByAddressListenerSubscriptionVariables = Exact<{
   address?: InputMaybe<Scalars['_text']>;
@@ -14387,6 +14371,9 @@ export const MarketDataDocument = gql`
   }
   supply {
     coins
+  }
+  apr: apr(order_by: {height: desc}, limit: 1) {
+    value
   }
   bondedTokens: staking_pool(order_by: {height: desc}, limit: 1) {
     bonded_tokens
