@@ -51,8 +51,8 @@ export const unbondingsColumns: Column[] = [
     colSpan: 2
   },
   {
-    key: 'delegator',
-    label: 'Delegator'
+    key: 'validator',
+    label: 'Validator'
   },
   {
     key: 'amount',

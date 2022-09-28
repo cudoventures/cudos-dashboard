@@ -14,7 +14,7 @@ type SuccessProps = {
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { gasUsed, txHash, fee } = modalProps
+  const { gasUsed, txHash, fee, txRestakeHash } = modalProps
 
   const handleClose = () => {
     handleModal({
@@ -93,6 +93,38 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               })}
             />
           </Stack>
+          {txRestakeHash !== '' ? (
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              sx={{ cursor: 'pointer' }}
+            >
+              <Typography
+                variant="body2"
+                color="primary.main"
+                sx={{ textDecoration: 'underline' }}
+                onClick={() =>
+                  window
+                    .open(
+                      `${
+                        import.meta.env.VITE_APP_EXPLORER_V2
+                      }/transactions/${txRestakeHash}`,
+                      '_blank'
+                    )
+                    ?.focus()
+                }
+              >
+                Transaction link
+              </Typography>
+              <OpenInNewRoundedIcon
+                fontSize="small"
+                sx={(theme) => ({
+                  color: theme.palette.primary.main
+                })}
+              />
+            </Stack>
+          ) : null}
         </Box>
       </Box>
       <Button

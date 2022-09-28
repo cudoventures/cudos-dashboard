@@ -17,6 +17,11 @@ import { useNotifications } from 'components/NotificationPopup/hooks'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
+import { getUnbondingBalance } from 'api/getUnbondingBalance'
+import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
+import { switchLedgerType } from 'ledgers/utils'
+
+import { COLORS_DARK_THEME } from 'theme/colors'
 import { styles } from './styles'
 
 const ConnectWallet = () => {
@@ -37,6 +42,7 @@ const ConnectWallet = () => {
       const { delegationsArray } = await fetchDelegations(address)
       const { redelegationsArray } = await fetchRedelegations(address)
       const { undelegationsArray } = await fetchUndedelegations(address)
+      const { unbondingBalance } = await getUnbondingBalance(address)
 
       dispatch(
         updateUser({
@@ -46,6 +52,7 @@ const ConnectWallet = () => {
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
           stakedBalance: new BigNumber(stakedAmountBalance),
+          unbondingBalance: new BigNumber(unbondingBalance),
           delegations: delegationsArray,
           redelegations: redelegationsArray,
           undelegations: undelegationsArray

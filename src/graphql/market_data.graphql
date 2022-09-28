@@ -12,6 +12,9 @@ query MarketData ($denom: String) {
   supply {
     coins
   }
+   apr: apr(order_by: {height: desc}, limit: 1) {
+    value
+  }
   bondedTokens: staking_pool(order_by: {height: desc}, limit: 1) {
     bonded_tokens
   }

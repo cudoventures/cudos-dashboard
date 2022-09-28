@@ -8,13 +8,14 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import BigNumber from 'bignumber.js'
-
 import { ConnectLedger } from 'ledgers/KeplrLedger'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import { fetchRewards } from 'api/getRewards'
 import NotificationPopup from 'components/NotificationPopup'
 import { fetchDelegations } from 'api/getAccountDelegations'
+import { switchLedgerType } from 'ledgers/utils'
+import { getUnbondingBalance } from 'api/getUnbondingBalance'
 import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
@@ -65,6 +66,8 @@ const App = () => {
 
       const { undelegationsArray } = await fetchUndedelegations(address)
 
+      const { unbondingBalance } = await getUnbondingBalance(address)
+
       dispatch(
         updateUser({
           address,
@@ -74,6 +77,7 @@ const App = () => {
           availableRewards: new BigNumber(totalRewards),
           stakedValidators: validatorArray,
           stakedBalance: new BigNumber(stakedAmountBalance),
+          unbondingBalance: new BigNumber(unbondingBalance),
           delegations: delegationsArray,
           redelegations: redelegationsArray,
           undelegations: undelegationsArray

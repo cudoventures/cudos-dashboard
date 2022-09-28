@@ -8,6 +8,7 @@ export const fetchUndedelegations = async (
   const undelegationsArray: {
     validatorAddress: string
     amount: string
+    completionTime: string
   }[] = []
 
   try {
@@ -27,7 +28,8 @@ export const fetchUndedelegations = async (
         validatorAddress: value.validator_address,
         amount: value.entries.length
           ? value.entries.map((val: any) => val.balance)
-          : '0'
+          : '0',
+        completionTime: value.entries.map((entry: any) => entry.completion_time)
       })
     })
 

@@ -30,6 +30,7 @@ export type RewardsModalProps = Modal & {
   amount: string | null
   fee: string
   txHash?: string
+  txRestakeHash?: string
   gasUsed: number
 }
 
@@ -41,6 +42,7 @@ export const initialRewardsModalProps: RewardsModalProps = {
   fee: '',
   gasUsed: 0,
   txHash: '',
+  txRestakeHash: '',
   failureMessage: {
     title: 'Claiming Rewards Failed',
     subtitle:
@@ -252,6 +254,17 @@ export const initialFaucetModalProps: FaucetModalProps = {
   }
 }
 
+// ========================
+// UNBONDING MODAL
+// ========================
+export type UnbondingModalProps = {
+  open: boolean
+}
+
+export const initialUnbondingModalProps: UnbondingModalProps = {
+  open: false
+}
+
 export type ModalProps = {
   rewards: RewardsModalProps
   delegation: DelegationModalProps
@@ -261,6 +274,7 @@ export type ModalProps = {
   deposit: DepositModalProps
   voting: VotingModalProps
   faucet: FaucetModalProps
+  unbonding: UnbondingModalProps
 }
 
 export const initialModalState: ModalProps = {
@@ -271,7 +285,8 @@ export const initialModalState: ModalProps = {
   proposal: initialProposalModalState,
   deposit: initialDepositModalState,
   voting: initialVotingModalState,
-  faucet: initialFaucetModalProps
+  faucet: initialFaucetModalProps,
+  unbonding: initialUnbondingModalProps
 }
 
 export const modalSlice = createSlice({

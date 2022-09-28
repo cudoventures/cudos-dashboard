@@ -3,6 +3,7 @@ import numeral from 'numeral'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Card from 'components/Card'
+import Big from 'big.js'
 import { useOnlineVotingPower } from '../VotingPower/hooks'
 import { useDataBlocks } from './Blocks/hooks'
 import { useMarket } from './Market/hooks'
@@ -29,13 +30,13 @@ const NetworkStatistics = () => {
       </Box>
       <Box sx={styles.networkCardStyle}>
         <Typography color="text.secondary" sx={styles.networkCardTitleStyle}>
-          ANNUAL PERCENTAGE YIELD
+          ANNUAL PERCENTAGE RATE
         </Typography>
         <Typography sx={styles.networkCardContentStyle}>
-          {`${apr.toFixed(2)}%`}
+          {`${Big(apr).times(100).toFixed(2)}%`}
         </Typography>
         <Typography color="primary.main" sx={styles.networkCardFooterStyle}>
-          APY
+          APR
         </Typography>
       </Box>
       <Box sx={styles.networkCardStyle}>
