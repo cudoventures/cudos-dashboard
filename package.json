@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
+    "@cosmostation/cosmos-client": "^0.0.1",
+    "@cosmostation/extension-client": "0.1.7",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fontsource/poppins": "^4.5.5",

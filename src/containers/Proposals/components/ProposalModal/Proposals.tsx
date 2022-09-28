@@ -30,7 +30,9 @@ type ProposalProps = {
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { setError } = useNotifications()
-  const { address } = useSelector(({ profile }: RootState) => profile)
+  const { address, connectedLedger } = useSelector(
+    ({ profile }: RootState) => profile
+  )
 
   const { proposalData } = modalProps
   const [proposal, setProposal] = useState<string>('1')
@@ -75,7 +77,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
       })
       const { result, gasFee } = await createProposal(
         proposalData,
-        proposerAddress
+        proposerAddress,
+        connectedLedger
       )
       handleModal({
         open: true,
