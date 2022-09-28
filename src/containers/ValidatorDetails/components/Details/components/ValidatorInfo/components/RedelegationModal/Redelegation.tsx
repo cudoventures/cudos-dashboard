@@ -9,7 +9,8 @@ import { coin, GasPrice } from 'cudosjs'
 import {
   ModalStatus,
   RedelegationModalProps,
-  initialRedelegationModalState
+  initialRedelegationModalState,
+  FailureMessage
 } from 'store/modal'
 import { calculateFee, redelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
@@ -191,6 +192,17 @@ const Redelegation: React.FC<RedelegationProps> = ({
     setRedelegationAmount(delegated)
   }
 
+  const handleError = (error: string) => {
+    switch (error) {
+      case FailureMessage.REJECTED_BY_USER:
+        return FailureMessage.REJECTED_BY_USER_END_USER
+      case FailureMessage.REDELEGATION_IN_PROGRESS:
+        return FailureMessage.REDELEGATION_IN_PROGRESS_END_USER
+      default:
+        return FailureMessage.DEFAULT_TRANSACTION_FAILED
+    }
+  }
+
   const handleSubmit = async (): Promise<void> => {
     handleModal({ status: ModalStatus.LOADING })
 
@@ -221,10 +233,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         status: ModalStatus.FAILURE,
         failureMessage: {
           title: 'Redelegation Failed!',
-          subtitle:
-            e.message === 'Request rejected'
-              ? 'Request rejected by the user'
-              : 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+          subtitle: handleError(e.message)
         }
       })
     }
