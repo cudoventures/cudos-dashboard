@@ -12,14 +12,18 @@ export const styles: SxMap = {
     position: 'relative',
     background: custom.backgrounds.primary,
     borderRadius: '35px',
-    height: '48px'
+    height: '48px',
+    display: 'flex',
+    justifyContent: 'space-around'
   }),
   userInnerContainer: {
     fontSize: '14px',
     fontWeight: '500',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    alignContent: 'center',
+    alignSelf: 'center',
     whiteSpace: 'nowrap'
   },
   dropdownMenuContainer: ({ custom }) => ({
@@ -58,7 +62,6 @@ export const styles: SxMap = {
     }
   }),
   footerContainer: {
-    // position: 'relative',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
@@ -73,6 +76,7 @@ export const styles: SxMap = {
     marginRight: '20px'
   }),
   user: ({ custom }) => ({
+    position: 'relative',
     maxWidth: '224px',
     maxHeight: '48px',
     borderRadius: '55px',

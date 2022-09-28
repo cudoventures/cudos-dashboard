@@ -2,7 +2,7 @@ import { Navigate, useLocation, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 
-const RequireKeplr = () => {
+const RequireLedger = () => {
   const { address } = useSelector((state: RootState) => state.profile)
   const location = useLocation()
 
@@ -13,4 +13,4 @@ const RequireKeplr = () => {
   )
 }
 
-export default RequireKeplr
+export default RequireLedger
