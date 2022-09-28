@@ -48,14 +48,9 @@ export const AccountDelegationRewardsDocument = /* GraphQL */ `
 `
 
 export const AccountDelegationsDocument = /* GraphQL */ `
-  query AccountDelegations(
-    $address: String!
-    $offset: Int = 0
-    $limit: Int = 10
-  ) {
+  query AccountDelegations($address: String!, $offset: Int = 0) {
     delegations: action_delegation(
       address: $address
-      limit: $limit
       offset: $offset
       count_total: true
     ) {
@@ -66,14 +61,9 @@ export const AccountDelegationsDocument = /* GraphQL */ `
 `
 
 export const AccountRedelegationsDocument = /* GraphQL */ `
-  query AccountRedelegations(
-    $address: String!
-    $offset: Int = 0
-    $limit: Int = 10
-  ) {
+  query AccountRedelegations($address: String!, $offset: Int = 0) {
     redelegations: action_redelegation(
       address: $address
-      limit: $limit
       offset: $offset
       count_total: true
     ) {
@@ -84,14 +74,9 @@ export const AccountRedelegationsDocument = /* GraphQL */ `
 `
 
 export const AccountUndelegationsDocument = /* GraphQL */ `
-  query AccountUndelegations(
-    $address: String!
-    $offset: Int = 0
-    $limit: Int = 10
-  ) {
+  query AccountUndelegations($address: String!, $offset: Int = 0) {
     undelegations: action_unbonding_delegation(
       address: $address
-      limit: $limit
       offset: $offset
       count_total: true
     ) {

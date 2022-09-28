@@ -29,7 +29,6 @@ import useDelegationModal from 'components/Dialog/components/DelegationModal/hoo
 import { ModalStatus } from 'store/modal'
 import { OverviewType, StatusType } from '../../types'
 import { getValidatorStatus, getCondition } from './utils'
-import useValidators from '../../../../../Staking/components/Validators/components/Table/hooks'
 import RedelegationModal from './components/RedelegationModal'
 import useRedelegationModal from './components/RedelegationModal/hooks'
 import UndelegationModal from './components/UndelegationModal'
@@ -44,7 +43,6 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
   const [openActionsDropdown, setOpenActionsDropdown] = useState<boolean>(false)
   const info = useSelector((state: RootState) => state.notifications.info)
   const dispatch = useDispatch()
-  const { state } = useValidators()
   const { handleModal: handleDelegationModal } = useDelegationModal()
   const { handleModal: handleRedelegationModal } = useRedelegationModal()
   const { handleModal: handleUndelegationModal } = useUndelegationModal()
@@ -409,7 +407,9 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
           </Typography>
           <Typography fontWeight={700} color="text.primary" variant="body2">
             {status.lastSeen &&
-              moment(moment(status.lastSeen).parseZone().toLocaleString())
+              moment(
+                new Date(moment(status.lastSeen).parseZone().toLocaleString())
+              )
                 .format('DD MMM YYYY LTS')
                 .toLocaleString()}
           </Typography>

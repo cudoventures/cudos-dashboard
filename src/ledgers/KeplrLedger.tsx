@@ -3,14 +3,13 @@ import { KeplrWallet } from 'cudosjs'
 declare global {
   interface Window {
     keplr: any
-    cosmostation: any
     getOfflineSigner: any
     getOfflineSignerOnlyAmino: any
     meta: any
   }
 }
 
-export const connectKeplrLedger = async () => {
+export const ConnectLedger = async () => {
   const wallet = new KeplrWallet({
     CHAIN_ID: import.meta.env.VITE_APP_CHAIN_ID,
     CHAIN_NAME: import.meta.env.VITE_APP_CHAIN_NAME,
@@ -24,5 +23,5 @@ export const connectKeplrLedger = async () => {
 
   const key = await window.keplr.getKey(import.meta.env.VITE_APP_CHAIN_ID)
 
-  return { address: key.bech32Address, accountName: key.name }
+  return { address: key.bech32Address, keplrName: key.name }
 }

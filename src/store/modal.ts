@@ -8,19 +8,6 @@ export enum ModalStatus {
   IN_PROGRESS = 'IN_PROGRESS'
 }
 
-export enum FailureMessage {
-  REJECTED_BY_USER = 'Request rejected',
-  REJECTED_BY_USER_END_USER = 'Request rejected by the user',
-  REDELEGATION_IN_PROGRESS = 'Query failed with (18): failed to execute message; message index: 0: redelegation to this validator already in progress; first redelegation to this validator must complete before next redelegation: invalid request',
-  REDELEGATION_IN_PROGRESS_END_USER = 'Redelegation to this validator already in progress. First redelegation to this validator must complete before next redelegation.',
-  CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_NUMBER = 'err: json: cannot unmarshal number into Go value of type string: failed to set parameter: invalid proposal content: invalid request',
-  CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_END_USER = 'Failed to parse field "Change Value", please wrap the input in " " and try again.',
-  DEFAULT_PROPOSAL_FAILED = 'Seems like something went wrong with creating the proposal. Try again or check your wallet balance.',
-  DEFAULT_TRANSACTION_FAILED = 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.',
-  DEFAULT_VOTING_PROPOSAL_FAILED = 'Seems like something went wrong with voting for the proposal. Try again or check your wallet balance.',
-  DEFAULT_DEPOSITING_PROPOSAL_FAILED = 'Seems like something went wrong with depositing for the proposal. Try again or check your wallet balance.'
-}
-
 export type Modal = {
   open: boolean
   status: ModalStatus | null
@@ -43,6 +30,7 @@ export type RewardsModalProps = Modal & {
   amount: string | null
   fee: string
   txHash?: string
+  txRestakeHash?: string
   gasUsed: number
 }
 
@@ -54,9 +42,11 @@ export const initialRewardsModalProps: RewardsModalProps = {
   fee: '',
   gasUsed: 0,
   txHash: '',
+  txRestakeHash: '',
   failureMessage: {
     title: 'Claiming Rewards Failed',
-    subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED
+    subtitle:
+      'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
   }
 }
 
@@ -86,7 +76,8 @@ export const initialDelegationModalState: DelegationModalProps = {
   txHash: '',
   failureMessage: {
     title: 'Delegation Failed',
-    subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED
+    subtitle:
+      'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
   }
 }
 
@@ -132,7 +123,8 @@ export const initialVotingModalState: VotingModalProps = {
   hash: '',
   failureMessage: {
     title: 'Voting for Proposal Failed!',
-    subtitle: FailureMessage.DEFAULT_VOTING_PROPOSAL_FAILED
+    subtitle: `Seems like something went wrong with voting for the proposal. Try
+    again or check your wallet balance.`
   }
 }
 
@@ -200,7 +192,8 @@ export const initialProposalModalState: ProposalModalProps = {
   },
   failureMessage: {
     title: 'Creating Proposal Failed!',
-    subtitle: FailureMessage.DEFAULT_PROPOSAL_FAILED
+    subtitle: `Seems like something went wrong with creating the proposal. Try again
+    or check your wallet balance.`
   }
 }
 
@@ -238,7 +231,8 @@ export const initialDepositModalState: DepositModalProps = {
   hash: '',
   failureMessage: {
     title: 'Voting for Proposal Failed!',
-    subtitle: FailureMessage.DEFAULT_DEPOSITING_PROPOSAL_FAILED
+    subtitle: `Seems like something went wrong with depositing for the proposal. Try again
+    or check your wallet balance.`
   }
 }
 
@@ -255,8 +249,20 @@ export const initialFaucetModalProps: FaucetModalProps = {
   status: null,
   failureMessage: {
     title: 'Transaction failed!',
-    subtitle: FailureMessage.DEFAULT_TRANSACTION_FAILED
+    subtitle:
+      'Seems like something went wrong with executing the transaction. Please try again.'
   }
+}
+
+// ========================
+// UNBONDING MODAL
+// ========================
+export type UnbondingModalProps = {
+  open: boolean
+}
+
+export const initialUnbondingModalProps: UnbondingModalProps = {
+  open: false
 }
 
 export type ModalProps = {
@@ -268,6 +274,7 @@ export type ModalProps = {
   deposit: DepositModalProps
   voting: VotingModalProps
   faucet: FaucetModalProps
+  unbonding: UnbondingModalProps
 }
 
 export const initialModalState: ModalProps = {
@@ -278,7 +285,8 @@ export const initialModalState: ModalProps = {
   proposal: initialProposalModalState,
   deposit: initialDepositModalState,
   voting: initialVotingModalState,
-  faucet: initialFaucetModalProps
+  faucet: initialFaucetModalProps,
+  unbonding: initialUnbondingModalProps
 }
 
 export const modalSlice = createSlice({
