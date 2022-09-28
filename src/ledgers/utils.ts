@@ -1,4 +1,8 @@
-import { SigningStargateClient, StargateClient } from 'cudosjs'
+import { OfflineSigner, SigningStargateClient, StargateClient } from 'cudosjs'
+import { getOfflineSigner as cosmostationSigner } from '@cosmostation/cosmos-client'
+import CosmosNetworkConfig from './CosmosNetworkConfig'
+import { connectKeplrLedger } from './KeplrLedger'
+import { connectCosmostationLedger } from './CosmoStationLedger'
 
 const colors = {
   staking: '#3d5afe',
@@ -433,28 +437,56 @@ export const unknownMessage = {
   displayName: 'Unknown'
 }
 
-export const signingClient = (async () => {
-  try {
+export const switchLedgerType = async (ledgerType: string) => {
+  let ledger
+  switch (ledgerType) {
+    case CosmosNetworkConfig.KEPLR_LEDGER:
+      ledger = await connectKeplrLedger()
+      return ledger
+    case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+      ledger = await connectCosmostationLedger()
+      return ledger
+    default:
+      return { address: '', accountName: '' }
+  }
+}
+
+const switchSigningClient = async (
+  ledgerType: string
+): Promise<OfflineSigner | undefined> => {
+  let client
+  switch (ledgerType) {
+    case CosmosNetworkConfig.KEPLR_LEDGER:
+      client = await window.getOfflineSigner(import.meta.env.VITE_APP_CHAIN_ID)
+      return client
+    case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+      client = await cosmostationSigner(import.meta.env.VITE_APP_CHAIN_ID)
+      return client
+    default:
+      return undefined
+  }
+}
+
+export const signingClient = async (ledgerType: string) => {
+  const offlineSigner = await switchSigningClient(ledgerType)
+
+  if (window.keplr) {
     window.keplr.defaultOptions = {
       sign: {
         preferNoSetFee: true
       }
     }
-
-    const offlineSigner = window.getOfflineSignerOnlyAmino(
-      import.meta.env.VITE_APP_CHAIN_ID
-    )
-
-    const client = await SigningStargateClient.connectWithSigner(
-      import.meta.env.VITE_APP_RPC,
-      offlineSigner
-    )
-
-    return client
-  } catch (error) {
-    throw new Error('Check your Keplr installation.')
   }
-})()
+
+  if (!offlineSigner) {
+    throw new Error('Invalid signing client')
+  }
+
+  return SigningStargateClient.connectWithSigner(
+    import.meta.env.VITE_APP_RPC,
+    offlineSigner
+  )
+}
 
 export const client = (async () => {
   try {
