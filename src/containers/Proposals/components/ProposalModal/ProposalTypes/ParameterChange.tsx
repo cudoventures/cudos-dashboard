@@ -98,6 +98,7 @@ const ParameterChange = () => {
         <Box gap={1} display="flex">
           <InputContainer
             placeholder="Change Value"
+            type="number"
             name="changeValue"
             onChange={(e) => setEvent(e)}
             disableUnderline

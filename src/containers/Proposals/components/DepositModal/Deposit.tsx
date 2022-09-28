@@ -20,9 +20,7 @@ type DepositProps = {
 
 const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
   const [depositAmount, setDepositAmount] = useState<string>('')
-  const { address, balance, connectedLedger } = useSelector(
-    (state: RootState) => state.profile
-  )
+  const { address, balance } = useSelector((state: RootState) => state.profile)
 
   const { id, title } = modalProps
 
@@ -45,8 +43,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
       const { gasFee, result } = await depositProposal(
         depositorAddress,
         proposalId,
-        amount,
-        connectedLedger
+        amount
       )
 
       handleModal({

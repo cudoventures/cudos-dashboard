@@ -54,19 +54,14 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const [delegationAmount, setDelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
-  const { address, connectedLedger } = useSelector(
-    ({ profile }: RootState) => profile
-  )
+  const { address } = useSelector(({ profile }: RootState) => profile)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(connectedLedger)
-
-      const walletBalance = await client.getBalance(
-        address,
-        CosmosNetworkConfig.CURRENCY_DENOM
-      )
+      const walletBalance = await (
+        await signingClient
+      ).getBalance(address, CosmosNetworkConfig.CURRENCY_DENOM)
 
       setBalance(
         new BigNumber(walletBalance.amount)
@@ -95,9 +90,9 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const client = await signingClient(connectedLedger)
-
-    const gasUsed = await client.simulate(address, [msgAny], 'memo')
+    const gasUsed = await (
+      await signingClient
+    ).simulate(address, [msgAny], 'memo')
 
     const gasLimit = Math.round(gasUsed * feeMultiplier)
 
@@ -158,12 +153,15 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
     handleModal({ status: ModalStatus.LOADING })
 
     try {
+      const walletAccount = await window.keplr.getKey(
+        import.meta.env.VITE_APP_CHAIN_ID
+      )
+
       const delegationResult = await delegate(
-        address,
+        walletAccount.bech32Address,
         validator?.address || '',
         amount || '',
-        '',
-        connectedLedger
+        ''
       )
 
       handleModal({
