@@ -48,7 +48,6 @@ const Redelegation: React.FC<RedelegationProps> = ({
   handleModal
 }) => {
   const [delegated, setDelegated] = useState<string>('')
-  const [redelegationAddress, setRedelegationAddress] = useState<string>('')
   const [redelegationAmount, setRedelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
@@ -57,8 +56,14 @@ const Redelegation: React.FC<RedelegationProps> = ({
     ({ profile }: RootState) => profile
   )
   const validators = useSelector(({ validator }: RootState) => validator.items)
-  const data = validators.map((item) => ({
-    value: item.validator,
+
+  const filteredValidators = validators.filter(
+    (item) => item.validator !== validator?.address
+  )
+
+  const data = filteredValidators.map((item, idx) => ({
+    value: (idx + 1).toString(),
+    address: item.validator,
     label: (
       <AvatarName
         name={item.moniker}
@@ -68,8 +73,16 @@ const Redelegation: React.FC<RedelegationProps> = ({
     )
   }))
 
-  const handleDropdown = (validatorAddress: string) => {
-    setRedelegationAddress(validatorAddress)
+  const [redelegationAddress, setRedelegationAddress] = useState<string>(
+    data[0].address
+  )
+
+  const handleDropdown = (validatorIndex: string) => {
+    const validatorAddress = data.filter(
+      (item, idx) => idx + 1 === Number(validatorIndex)
+    )
+
+    setRedelegationAddress(validatorAddress[0].address)
   }
 
   useEffect(() => {
