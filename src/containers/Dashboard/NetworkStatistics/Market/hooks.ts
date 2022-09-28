@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import numeral from 'numeral'
-import Big from 'big.js'
 import { useDispatch } from 'react-redux'
 import { getDenom } from 'utils/get_denom'
 import { useMarketDataQuery, MarketDataQuery } from 'graphql/types'
@@ -34,6 +33,7 @@ export const useMarket = () => {
       data
     ).filter((x: any) => x.denom === chainConfig.primaryTokenUnit)
     const inflation = R.pathOr(0, ['inflation', 0, 'value'], data)
+    const apr = R.pathOr(0, ['apr', 0, 'value'], data)
 
     const rawSupplyAmount = getDenom(
       R.pathOr([], ['supply', 0, 'coins'], data),
@@ -49,11 +49,6 @@ export const useMarket = () => {
     }
 
     const bondedTokens = R.pathOr(1, ['bondedTokens', 0, 'bonded_tokens'], data)
-
-    const apr = Big(rawSupplyAmount)
-      .times(inflation)
-      .div(bondedTokens)
-      .toNumber()
 
     return {
       price,

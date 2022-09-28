@@ -32,7 +32,7 @@ const Deposits: React.FC = () => {
           fontWeight={700}
           textTransform="uppercase"
         >
-          {formatNumber(x.amount.value, 2)}
+          {formatNumber(Number(x.amount.value).toFixed(2), 2)}
         </Typography>
         <Typography
           fontWeight={700}
