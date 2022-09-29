@@ -10,6 +10,7 @@ import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { ModalStatus } from 'store/modal'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
+import { isValidCudosAddress } from 'utils/projectUtils'
 
 const Form = () => {
   const captchaRef = useRef<any>(null)
@@ -17,8 +18,21 @@ const Form = () => {
   const [amount, setAmount] = useState<string>('')
   const [showTransferBtn, setShowTransferBtn] = useState<boolean>(false)
   const { setWarning } = useNotifications()
+  const maxAmountAllowed: number = 100
 
   const { handleModal } = useModal()
+
+  const validInput = () => {
+
+    if (
+      Number(amount) > maxAmountAllowed || Number(amount) <= 0 ||
+      !amount || !address
+    ) {
+      return false
+    }
+
+    return true
+  }
 
   const handleAddress = (
     ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -34,15 +48,19 @@ const Form = () => {
 
   const checkCaptcha = async () => {
     const token = captchaRef.current.getValue()
+    const validatedInput = validInput()
 
-    if (!amount) {
-      captchaRef.current.reset()
-    }
-    if (token) {
+    if (token && validatedInput) {
       setShowTransferBtn(true)
-    } else {
-      setShowTransferBtn(false)
+      return
     }
+
+    if (!validatedInput) {
+      setWarning('Please fill the required fields first')
+    }
+
+    captchaRef.current.reset()
+    setShowTransferBtn(false)
   }
 
   const handleReceiveTokens = async () => {
@@ -52,10 +70,7 @@ const Form = () => {
       .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
       .toString(10)
 
-    const re = /^cudos[0-9a-z]{39}$/
-    const correctCudosAddress = address.match(re)
-
-    if (!correctCudosAddress) {
+    if (!isValidCudosAddress(address)) {
       setWarning('Wrong CUDOS Address Format')
       return
     }
@@ -77,7 +92,7 @@ const Form = () => {
           status: ModalStatus.FAILURE,
           failureMessage: {
             title: 'Transaction failed!',
-            subtitle: 'Maximum amount of 10 CUDOS reached for this account.'
+            subtitle: 'Maximum amount of 100 CUDOS reached for this account.'
           }
         })
       } else {
@@ -103,7 +118,7 @@ const Form = () => {
     <Card sx={{ padding: 0, flex: 1 }}>
       <Box sx={styles.formContainer}>
         <Typography variant="h5" fontWeight={900}>
-          Receive 10 Testnet CUDOS tokens
+          Receive Testnet CUDOS tokens
         </Typography>
         <Stack sx={{ width: '100%' }}>
           <Typography variant="body2" fontWeight={700}>
@@ -132,7 +147,7 @@ const Form = () => {
         </Stack>
         <Stack sx={{ width: '100%' }}>
           <Typography variant="body2" fontWeight={700}>
-            Amount (Maximum 10 CUDOS)
+            Amount (Maximum 100 CUDOS)
           </Typography>
           <StyledTextField
             variant="standard"
@@ -175,13 +190,7 @@ const Form = () => {
             width: '50%'
           })}
           onClick={handleReceiveTokens}
-          disabled={
-            Number(amount) > 10 ||
-            !amount ||
-            Number(amount) <= 0 ||
-            !showTransferBtn ||
-            !address
-          }
+          disabled={!showTransferBtn || !validInput()}
         >
           Receive Tokens
         </Button>
