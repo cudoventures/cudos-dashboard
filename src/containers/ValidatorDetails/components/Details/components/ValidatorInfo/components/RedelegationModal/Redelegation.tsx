@@ -9,7 +9,8 @@ import { coin, GasPrice } from 'cudosjs'
 import {
   ModalStatus,
   RedelegationModalProps,
-  initialRedelegationModalState
+  initialRedelegationModalState,
+  FailureMessage
 } from 'store/modal'
 import { calculateFee, redelegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
@@ -47,7 +48,6 @@ const Redelegation: React.FC<RedelegationProps> = ({
   handleModal
 }) => {
   const [delegated, setDelegated] = useState<string>('')
-  const [redelegationAddress, setRedelegationAddress] = useState<string>('')
   const [redelegationAmount, setRedelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
@@ -56,8 +56,14 @@ const Redelegation: React.FC<RedelegationProps> = ({
     ({ profile }: RootState) => profile
   )
   const validators = useSelector(({ validator }: RootState) => validator.items)
-  const data = validators.map((item) => ({
-    value: item.validator,
+
+  const filteredValidators = validators.filter(
+    (item) => item.validator !== validator?.address
+  )
+
+  const data = filteredValidators.map((item, idx) => ({
+    value: (idx + 1).toString(),
+    address: item.validator,
     label: (
       <AvatarName
         name={item.moniker}
@@ -67,8 +73,16 @@ const Redelegation: React.FC<RedelegationProps> = ({
     )
   }))
 
-  const handleDropdown = (validatorAddress: string) => {
-    setRedelegationAddress(validatorAddress)
+  const [redelegationAddress, setRedelegationAddress] = useState<string>(
+    data[0].address
+  )
+
+  const handleDropdown = (validatorIndex: string) => {
+    const validatorAddress = data.filter(
+      (item, idx) => idx + 1 === Number(validatorIndex)
+    )
+
+    setRedelegationAddress(validatorAddress[0].address)
   }
 
   useEffect(() => {
@@ -191,6 +205,17 @@ const Redelegation: React.FC<RedelegationProps> = ({
     setRedelegationAmount(delegated)
   }
 
+  const handleError = (error: string) => {
+    switch (error) {
+      case FailureMessage.REJECTED_BY_USER:
+        return FailureMessage.REJECTED_BY_USER_END_USER
+      case FailureMessage.REDELEGATION_IN_PROGRESS:
+        return FailureMessage.REDELEGATION_IN_PROGRESS_END_USER
+      default:
+        return FailureMessage.DEFAULT_TRANSACTION_FAILED
+    }
+  }
+
   const handleSubmit = async (): Promise<void> => {
     handleModal({ status: ModalStatus.LOADING })
 
@@ -221,10 +246,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         status: ModalStatus.FAILURE,
         failureMessage: {
           title: 'Redelegation Failed!',
-          subtitle:
-            e.message === 'Request rejected'
-              ? 'Request rejected by the user'
-              : 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.'
+          subtitle: handleError(e.message)
         }
       })
     }
