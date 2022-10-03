@@ -11,9 +11,11 @@ const ProposalModal = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({
-      ...initialProposalModalState
-    })
+    if (status !== ModalStatus.LOADING) {
+      handleModal({
+        ...initialProposalModalState
+      })
+    }
   }
 
   const handleTryAgain = () => {

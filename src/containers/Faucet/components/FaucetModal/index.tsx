@@ -10,9 +10,11 @@ const FaucetModal = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({
-      ...initialFaucetModalProps
-    })
+    if (status !== ModalStatus.LOADING) {
+      handleModal({
+        ...initialFaucetModalProps
+      })
+    }
   }
 
   const renderComponent = () => {

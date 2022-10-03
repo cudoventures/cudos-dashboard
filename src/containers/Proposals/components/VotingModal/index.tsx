@@ -11,7 +11,9 @@ const VotingModal = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({ ...initialVotingModalState })
+    if (status !== ModalStatus.LOADING) {
+      handleModal({ ...initialVotingModalState })
+    }
   }
 
   const handleTryAgain = () => {

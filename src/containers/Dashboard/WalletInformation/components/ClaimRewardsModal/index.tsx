@@ -11,9 +11,11 @@ const RewardsClaimModal: React.FC = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({
-      ...initialRewardsModalProps
-    })
+    if (status !== ModalStatus.LOADING) {
+      handleModal({
+        ...initialRewardsModalProps
+      })
+    }
   }
 
   const handleTryAgain = () => {

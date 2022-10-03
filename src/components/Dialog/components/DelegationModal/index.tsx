@@ -11,9 +11,11 @@ const DelegationModal: React.FC = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({
-      ...initialDelegationModalState
-    })
+    if (status !== ModalStatus.LOADING) {
+      handleModal({
+        ...initialDelegationModalState
+      })
+    }
   }
 
   const handleTryAgain = () => {
