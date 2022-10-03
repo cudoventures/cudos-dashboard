@@ -228,7 +228,7 @@ export const claimRewards = async (
   const msgMemo = ''
 
   const msgAny: any[] = []
-  const test: any[] = []
+  const msgRestake: any[] = []
   let fee
   let restakeFee
   let restakeTx
@@ -249,7 +249,7 @@ export const claimRewards = async (
     ) {
       msgAny.push({
         typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
-        value: MsgUndelegate.fromPartial({
+        value: MsgDelegate.fromPartial({
           delegatorAddress: address,
           validatorAddress: validator.address,
           amount: {
@@ -283,9 +283,9 @@ export const claimRewards = async (
   if (claimAndRestakeSeparateMsg) {
     stakedValidators.forEach((validator) => {
       if (Number(validator.amount) > 0) {
-        test.push({
+        msgRestake.push({
           typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
-          value: MsgUndelegate.fromPartial({
+          value: MsgDelegate.fromPartial({
             delegatorAddress: address,
             validatorAddress: validator.address,
             amount: {
@@ -303,9 +303,14 @@ export const claimRewards = async (
 
     const client = await signingClient(ledgerType)
 
-    restakeFee = await getFee(address, ledgerType, [...msgAny], msgMemo)
+    restakeFee = await getFee(address, ledgerType, [...msgRestake], msgMemo)
 
-    restakeTx = await client.signAndBroadcast(address, test, fee, msgMemo)
+    restakeTx = await client.signAndBroadcast(
+      address,
+      msgRestake,
+      restakeFee,
+      msgMemo
+    )
   }
 
   fee = fee.amount[0].amount
