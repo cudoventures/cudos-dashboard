@@ -1,33 +1,36 @@
 import { Box, Grid, Typography } from '@mui/material'
-import FooterLogo from 'assets/vectors/logo-footer.svg'
-import RedditIcon from 'assets/vectors/reddit.svg?component'
+import moment from 'moment'
 import TwitterIcon from 'assets/vectors/twitter.svg?component'
 import TelegramIcon from 'assets/vectors/telegram.svg?component'
 import DiscordIcon from 'assets/vectors/discord.svg?component'
-
+import LinkedInIcon from 'assets/vectors/linkedin.svg?component'
+import MediumIcon from 'assets/vectors/medium.svg?component'
+import YouTubeIcon from 'assets/vectors/youtube.svg?component'
+import FacebookIcon from 'assets/vectors/facebook.svg?component'
+import SpotifyIcon from 'assets/vectors/spotify.svg?component'
 import { styles } from './styles'
 
 const linksLeft = [
-  { text: 'FAQ', url: 'https://www.cudos.org/' },
-  { text: 'Terms & Conditions', url: 'https://www.cudos.org/' },
-  { text: 'Privacy Policy', url: 'https://www.cudos.org/' },
+  { text: 'Terms & Conditions', url: 'https://www.cudos.org/terms-and-conditions/' },
+  { text: 'Privacy Policy', url: 'https://www.cudos.org/privacy-policy' },
   { text: 'cudos.org', url: 'https://www.cudos.org/' },
-  { text: 'License © 2018 - 2022', url: 'https://www.cudos.org/' }
+  { text: `License © 2018 - ${moment().year()}`, url: 'https://www.cudos.org/' }
 ]
 
 const linksRight = [
-  // { icon: <RedditIcon />, url: 'https://www.cudos.org/' },
   { icon: <TwitterIcon />, url: 'https://twitter.com/CUDOS_' },
   { icon: <TelegramIcon />, url: 'https://t.me/cudostelegram' },
-  { icon: <DiscordIcon />, url: 'https://discord.com/invite/t397SKqf4u' }
+  { icon: <DiscordIcon />, url: 'https://discord.com/invite/t397SKqf4u' },
+  { icon: <LinkedInIcon />, url: 'https://www.linkedin.com/company/cudos1' },
+  { icon: <MediumIcon />, url: 'https://medium.com/cudos' },
+  { icon: <YouTubeIcon />, url: 'https://www.youtube.com/c/CUDOS' },
+  { icon: <FacebookIcon />, url: 'https://www.facebook.com/cudos.org' },
+  { icon: <SpotifyIcon />, url: 'https://open.spotify.com/show/2lZuBXJ270g7taK06tnK35' }
 ]
 
 const Footer = () => {
   return (
     <Box sx={styles.footerContainer} gap={6}>
-      <Grid item>
-        <img src={FooterLogo} alt="logo" />
-      </Grid>
       <Box display="flex" alignItems="center">
         {linksLeft.map((link) => (
           <Grid
