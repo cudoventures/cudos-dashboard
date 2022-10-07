@@ -11,9 +11,11 @@ const DepositModal = () => {
   const { open, status } = modal
 
   const handleClose = () => {
-    handleModal({
-      ...initialDepositModalState
-    })
+    if (status !== ModalStatus.LOADING) {
+      handleModal({
+        ...initialDepositModalState
+      })
+    }
   }
 
   const handleTryAgain = () => {

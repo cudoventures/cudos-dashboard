@@ -31,7 +31,7 @@ const Activity = () => {
     ),
     timestamp: (
       <Typography variant="body2" color="text.secondary">
-        {moment(new Date(item.timestamp.parseZone().fromNow(true)))}
+        {moment(new Date(item.timestamp)).parseZone().fromNow(true)}
       </Typography>
     )
   }))
