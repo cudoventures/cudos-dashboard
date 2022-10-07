@@ -1,6 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 
+export enum TooltipMessages {
+  DELEGATIONS = `Your delegations from the selected validator`,
+  REDELEGATIONS = `Your redelegations from the selected validator`,
+  UNDELEGATIONS = `Your undelegations from the selected validator`,
+  REWARDS = `Your accumulated rewards from the selected validator`
+}
+
 export interface WalletState {
   address: string
   accountName: string

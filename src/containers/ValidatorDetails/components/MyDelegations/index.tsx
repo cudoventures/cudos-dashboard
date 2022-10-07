@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
@@ -9,7 +9,7 @@ import { useNotifications } from 'components/NotificationPopup/hooks'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
-import { updateUser } from 'store/profile'
+import { TooltipMessages, updateUser } from 'store/profile'
 import { formatNumber } from 'utils/format_token'
 import { formatBigNum } from 'utils/projectUtils'
 
@@ -133,116 +133,183 @@ const MyDelegations = () => {
           justifyContent="space-between"
           sx={{ padding: '2rem' }}
         >
-          <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Delegations
-            </Typography>
-            <Stack direction="row" gap={1} alignItems="center">
-              <Typography fontWeight={700}>
+          <Tooltip
+            title={TooltipMessages.DELEGATIONS}
+            placement="right"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  background: 'white',
+                  color: 'black',
+                  padding: '13px 20px',
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  borderRadius: '15px'
+                }
+              }
+            }}
+          >
+            <Box display="flex" flexDirection="column" gap={0.5}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="text.secondary"
+                textTransform="uppercase"
+              >
+                Delegations
+              </Typography>
+              <Stack direction="row" gap={1} alignItems="center">
+                <Typography fontWeight={700}>
+                  {formatNumber(
+                    formatBigNum(
+                      new BigNumber(
+                        checkIfDelegated[0].amount || new BigNumber(0)
+                      )
+                    ),
+                    2
+                  )}
+                </Typography>
+                <Typography fontWeight={700} color="text.secondary">
+                  CUDOS
+                </Typography>
+              </Stack>
+              <Typography variant="body2" fontWeight={700} color="primary.main">
+                $
                 {formatNumber(
-                  formatBigNum(
-                    new BigNumber(
-                      checkIfDelegated[0].amount || new BigNumber(0)
+                  calculateValue(
+                    formatBigNum(
+                      new BigNumber(
+                        checkIfDelegated[0].amount || new BigNumber(0)
+                      )
                     )
                   ),
                   2
                 )}
               </Typography>
-              <Typography fontWeight={700} color="text.secondary">
-                CUDOS
+            </Box>
+          </Tooltip>
+          <Tooltip
+            title={TooltipMessages.REDELEGATIONS}
+            placement="right"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  background: 'white',
+                  color: 'black',
+                  padding: '13px 20px',
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  borderRadius: '15px'
+                }
+              }
+            }}
+          >
+            <Box display="flex" flexDirection="column" gap={0.5}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="text.secondary"
+                textTransform="uppercase"
+              >
+                Redelegations
               </Typography>
-            </Stack>
-            <Typography variant="body2" fontWeight={700} color="primary.main">
-              $
-              {formatNumber(
-                calculateValue(
-                  formatBigNum(
-                    new BigNumber(
-                      checkIfDelegated[0].amount || new BigNumber(0)
-                    )
-                  )
-                ),
-                2
-              )}
-            </Typography>
-          </Box>
-          <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Redelegations
-            </Typography>
-            <Stack direction="row" gap={1} alignItems="center">
-              <Typography fontWeight={700}>
-                {formatNumber(formatBigNum(redelegationsBalance), 2)}
-              </Typography>
-              <Typography fontWeight={700} color="text.secondary">
-                CUDOS
-              </Typography>
-            </Stack>
-            <Typography variant="body2" fontWeight={700} color="primary.main">
-              $
-              {formatNumber(
-                calculateValue(formatBigNum(redelegationsBalance)),
-                2
-              )}
-            </Typography>
-          </Box>
-          <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Undelegations
-            </Typography>
-            <Stack direction="row" gap={1} alignItems="center">
-              <Typography fontWeight={700}>
-                {formatNumber(formatBigNum(undelegationsBalance), 2)}
-              </Typography>
-              <Typography fontWeight={700} color="text.secondary">
-                CUDOS
-              </Typography>
-            </Stack>
-            <Typography variant="body2" fontWeight={700} color="primary.main">
-              $
-              {formatNumber(
-                calculateValue(formatBigNum(undelegationsBalance)),
-                2
-              )}
-            </Typography>
-          </Box>
-          <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Rewards
-            </Typography>
-            <Stack direction="row" gap={1} alignItems="center">
-              <Typography fontWeight={700}>
+              <Stack direction="row" gap={1} alignItems="center">
+                <Typography fontWeight={700}>
+                  {formatNumber(formatBigNum(redelegationsBalance), 2)}
+                </Typography>
+                <Typography fontWeight={700} color="text.secondary">
+                  CUDOS
+                </Typography>
+              </Stack>
+              <Typography variant="body2" fontWeight={700} color="primary.main">
+                $
                 {formatNumber(
-                  formatBigNum(
-                    new BigNumber(
-                      checkRewards.length
-                        ? checkRewards[0].amount
-                        : new BigNumber(0)
-                    )
-                  ),
+                  calculateValue(formatBigNum(redelegationsBalance)),
                   2
                 )}
               </Typography>
+            </Box>
+          </Tooltip>
+          <Tooltip
+            title={TooltipMessages.UNDELEGATIONS}
+            placement="right"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  background: 'white',
+                  color: 'black',
+                  padding: '13px 20px',
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  borderRadius: '15px'
+                }
+              }
+            }}
+          >
+            <Box display="flex" flexDirection="column" gap={0.5}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="text.secondary"
+                textTransform="uppercase"
+              >
+                Undelegations
+              </Typography>
+              <Stack direction="row" gap={1} alignItems="center">
+                <Typography fontWeight={700}>
+                  {formatNumber(formatBigNum(undelegationsBalance), 2)}
+                </Typography>
+                <Typography fontWeight={700} color="text.secondary">
+                  CUDOS
+                </Typography>
+              </Stack>
+              <Typography variant="body2" fontWeight={700} color="primary.main">
+                $
+                {formatNumber(
+                  calculateValue(formatBigNum(undelegationsBalance)),
+                  2
+                )}
+              </Typography>
+            </Box>
+          </Tooltip>
+          <Tooltip
+            title={TooltipMessages.REWARDS}
+            placement="right"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  background: 'white',
+                  color: 'black',
+                  padding: '13px 20px',
+                  fontSize: '14px',
+                  fontWeight: 700,
+                  borderRadius: '15px'
+                }
+              }
+            }}
+          >
+            <Box display="flex" flexDirection="column" gap={0.5}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="text.secondary"
+                textTransform="uppercase"
+              >
+                Rewards
+              </Typography>
+              <Stack direction="row" gap={1} alignItems="center">
+                <Typography fontWeight={700}>
+                  {formatNumber(
+                    formatBigNum(
+                      new BigNumber(
+                        checkRewards.length
+                          ? checkRewards[0].amount
+                          : new BigNumber(0)
+                      )
+                    ),
+                    2
+                  )}
+                </Typography>
               <Typography fontWeight={700} color="text.secondary">
                 CUDOS
               </Typography>
@@ -258,7 +325,8 @@ const MyDelegations = () => {
                   )
                 : formatNumber(formatBigNum(new BigNumber(0)), 2)}
             </Typography>
-          </Box>
+            </Box>
+          </Tooltip>
         </Box>
       ) : (
         <Box
