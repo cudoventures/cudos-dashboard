@@ -310,21 +310,18 @@ const MyDelegations = () => {
                     2
                   )}
                 </Typography>
-              <Typography fontWeight={700} color="text.secondary">
-                CUDOS
-              </Typography>
-            </Stack>
-            <Typography variant="body2" fontWeight={700} color="primary.main">
-              $
-              {checkRewards.length
-                ? calculateValue(
-                    formatNumber(
-                      formatBigNum(new BigNumber(checkRewards[0].amount)),
-                      2
+                <Typography fontWeight={700} color="text.secondary">
+                  CUDOS
+                </Typography>
+              </Stack>
+              <Typography variant="body2" fontWeight={700} color="primary.main">
+                $
+                {checkRewards[0].amount.length
+                  ? calculateValue(
+                      formatBigNum(new BigNumber(checkRewards[0].amount))
                     )
-                  )
-                : formatNumber(formatBigNum(new BigNumber(0)), 2)}
-            </Typography>
+                  : formatNumber(formatBigNum(new BigNumber(0)), 2)}
+              </Typography>
             </Box>
           </Tooltip>
         </Box>
