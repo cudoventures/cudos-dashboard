@@ -249,16 +249,14 @@ const MyDelegations = () => {
             </Stack>
             <Typography variant="body2" fontWeight={700} color="primary.main">
               $
-              {calculateValue(
-                formatNumber(
-                  formatBigNum(
-                    checkRewards.length
-                      ? new BigNumber(checkRewards[0].amount)
-                      : new BigNumber(0)
-                  ),
-                  2
-                )
-              )}
+              {checkRewards.length
+                ? calculateValue(
+                    formatNumber(
+                      formatBigNum(new BigNumber(checkRewards[0].amount)),
+                      2
+                    )
+                  )
+                : formatNumber(formatBigNum(new BigNumber(0)), 2)}
             </Typography>
           </Box>
         </Box>
