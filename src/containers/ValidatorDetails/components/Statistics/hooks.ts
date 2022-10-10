@@ -28,11 +28,11 @@ const initialState: AccountDetailState = {
   loading: true,
   exists: true,
   balance: {
-    available: defaultTokenUnit,
-    delegate: defaultTokenUnit,
+    holdings: defaultTokenUnit,
+    selfDelegated: defaultTokenUnit,
     unbonding: defaultTokenUnit,
-    reward: defaultTokenUnit,
-    commission: defaultTokenUnit,
+    rewards: defaultTokenUnit,
+    commissions: defaultTokenUnit,
     total: defaultTokenUnit
   },
   votingPower: {
@@ -132,11 +132,11 @@ export const useStatistics = () => {
         .toFixed(chainConfig.tokenUnits[chainConfig.primaryTokenUnit].exponent)
 
       const balance = {
-        available: availableAmount,
-        delegate: delegateAmount,
+        holdings: availableAmount,
+        selfDelegated: delegateAmount,
         unbonding: unbondingAmount,
-        reward: rewardsAmount,
-        commission: commissionAmount,
+        rewards: rewardsAmount,
+        commissions: commissionAmount,
         total: {
           value: total,
           displayDenom: availableAmount.displayDenom,

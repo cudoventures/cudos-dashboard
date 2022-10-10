@@ -21,16 +21,25 @@ const Statistics = () => {
 
   const switchStatType = (statType: string) => {
     switch (statType.toUpperCase()) {
-      case 'AVAILABLE':
-        return TooltipValidatorMessages.AVAILABLE
-      case 'DELEGATE':
-        return TooltipValidatorMessages.DELEGATE
+      case 'HOLDINGS':
+        return { name: 'HOLDINGS', message: TooltipValidatorMessages.HOLDINGS }
+      case 'SELFDELEGATED':
+        return {
+          name: 'SELF DELEGATED',
+          message: TooltipValidatorMessages.SELF_DELEGATED
+        }
       case 'UNBONDING':
-        return TooltipValidatorMessages.UNBONDING
-      case 'REWARD':
-        return TooltipValidatorMessages.REWARD
-      case 'COMMISSION':
-        return TooltipValidatorMessages.COMMISSION
+        return {
+          name: 'UNBONDING',
+          message: TooltipValidatorMessages.UNBONDING
+        }
+      case 'REWARDS':
+        return { name: 'REWARDS', message: TooltipValidatorMessages.REWARDS }
+      case 'COMMISSIONS':
+        return {
+          name: 'COMMISSIONS',
+          message: TooltipValidatorMessages.COMMISSIONS
+        }
       default:
         return ''
     }
@@ -46,6 +55,7 @@ const Statistics = () => {
         info: switchStatType(key)
       }
     })
+
   return (
     <Card>
       <Typography
@@ -62,10 +72,10 @@ const Statistics = () => {
         justifyContent="space-between"
         sx={{ padding: '2rem' }}
       >
-        {stats.map((stat) => (
+        {stats.map((stat: any) => (
           <Tooltip
             key={stat.type}
-            title={stat.info}
+            title={stat.info.message}
             placement="right"
             componentsProps={{
               tooltip: {
@@ -92,7 +102,7 @@ const Statistics = () => {
                 color="text.secondary"
                 textTransform="uppercase"
               >
-                {stat.type}
+                {stat.info.name}
               </Typography>
               <Stack direction="row" gap={1} alignItems="center">
                 <Typography fontWeight={700}>{stat.cudos}</Typography>
