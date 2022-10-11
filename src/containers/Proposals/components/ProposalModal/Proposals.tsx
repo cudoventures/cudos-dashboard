@@ -102,8 +102,6 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         hash: result.transactionHash
       })
     } catch (error) {
-      console.log('ERRRO', error)
-
       handleModal({
         open: true,
         status: ModalStatus.FAILURE,
