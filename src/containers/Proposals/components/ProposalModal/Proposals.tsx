@@ -74,6 +74,9 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
     ) {
       return FailureMessage.CREATING_PROPOSAL_FAILED_TO_UNMARSHAL_END_USER
     }
+    if (error.includes(FailureMessage.UNSUPPORTED_PROPOSAL_TYPE)) {
+      return FailureMessage.UNSUPPORTED_PROPOSAL_TYPE_END_USER
+    }
     return FailureMessage.DEFAULT_PROPOSAL_FAILED
   }
 
@@ -99,6 +102,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         hash: result.transactionHash
       })
     } catch (error) {
+      console.log('ERRRO', error)
+
       handleModal({
         open: true,
         status: ModalStatus.FAILURE,

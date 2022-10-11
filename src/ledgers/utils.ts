@@ -457,7 +457,9 @@ const switchSigningClient = async (
   let client
   switch (ledgerType) {
     case CosmosNetworkConfig.KEPLR_LEDGER:
-      client = await window.getOfflineSigner(import.meta.env.VITE_APP_CHAIN_ID)
+      client = await window.getOfflineSignerAuto(
+        import.meta.env.VITE_APP_CHAIN_ID
+      )
       return client
     case CosmosNetworkConfig.COSMOSTATION_LEDGER:
       client = await cosmostationSigner(import.meta.env.VITE_APP_CHAIN_ID)
