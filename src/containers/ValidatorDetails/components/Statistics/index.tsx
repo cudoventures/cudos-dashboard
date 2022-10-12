@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { TooltipValidatorMessages } from 'store/validatorDetails'
 import { formatNumber } from 'utils/format_token'
+import InfoIcon from 'assets/vectors/info-icon.svg'
 import { useStatistics } from './hooks'
 
 const Statistics = () => {
@@ -73,79 +74,108 @@ const Statistics = () => {
         sx={{ padding: '2rem' }}
       >
         {stats.map((stat: any) => (
-          <Tooltip
-            key={stat.type}
-            title={stat.info.message}
-            placement="right"
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  background: 'white',
-                  color: 'black',
-                  padding: '13px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  borderRadius: '15px'
-                }
-              }
-            }}
-          >
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap={0.5}
-              key={stat.type}
-            >
+          <Box display="flex" flexDirection="column" gap={0.5} key={stat.type}>
+            <Box>
+              <Box display="flex">
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  {stat.info.name}
+                </Typography>
+                <Tooltip
+                  key={stat.type}
+                  title={stat.info.message}
+                  placement="right"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        background: 'white',
+                        color: 'black',
+                        padding: '13px 20px',
+                        fontSize: '14px',
+                        fontWeight: 700,
+                        borderRadius: '15px'
+                      }
+                    }
+                  }}
+                >
+                  <Box alignSelf="center">
+                    <img
+                      style={{
+                        display: 'flex',
+                        width: '15px',
+                        height: '15px',
+                        marginLeft: '10px',
+                        marginBottom: '3px'
+                      }}
+                      src={InfoIcon}
+                      alt="Info"
+                    />
+                  </Box>
+                </Tooltip>
+              </Box>
+            </Box>
+            <Stack direction="row" gap={1} alignItems="center">
+              <Typography fontWeight={700}>{stat.cudos}</Typography>
+              <Typography fontWeight={700} color="text.secondary">
+                CUDOS
+              </Typography>
+            </Stack>
+            <Typography variant="body2" fontWeight={700} color="primary.main">
+              {stat.value}
+            </Typography>
+          </Box>
+        ))}
+
+        <Box display="flex" flexDirection="column" gap={0.5}>
+          <Box display="flex">
+            <Box>
               <Typography
                 variant="caption"
                 fontWeight={700}
                 color="text.secondary"
                 textTransform="uppercase"
               >
-                {stat.info.name}
-              </Typography>
-              <Stack direction="row" gap={1} alignItems="center">
-                <Typography fontWeight={700}>{stat.cudos}</Typography>
-                <Typography fontWeight={700} color="text.secondary">
-                  CUDOS
-                </Typography>
-              </Stack>
-              <Typography variant="body2" fontWeight={700} color="primary.main">
-                {stat.value}
+                Voting Power
               </Typography>
             </Box>
-          </Tooltip>
-        ))}
-        <Tooltip
-          title={TooltipValidatorMessages.VOTING_POWER}
-          placement="right"
-          componentsProps={{
-            tooltip: {
-              sx: {
-                background: 'white',
-                color: 'black',
-                padding: '13px 20px',
-                fontSize: '14px',
-                fontWeight: 700,
-                borderRadius: '15px'
-              }
-            }
-          }}
-        >
-          <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
+            <Tooltip
+              title={TooltipValidatorMessages.VOTING_POWER}
+              placement="right"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    background: 'white',
+                    color: 'black',
+                    padding: '13px 20px',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    borderRadius: '15px'
+                  }
+                }
+              }}
             >
-              Voting Power
-            </Typography>
-            <Typography fontWeight={700}>
-              {votingPowerPercent.format('0,0.00')}%
-            </Typography>
+              <Box alignSelf="center">
+                <img
+                  style={{
+                    display: 'flex',
+                    width: '15px',
+                    height: '15px',
+                    marginLeft: '10px'
+                  }}
+                  src={InfoIcon}
+                  alt="Info"
+                />
+              </Box>
+            </Tooltip>
           </Box>
-        </Tooltip>
+          <Typography fontWeight={700}>
+            {votingPowerPercent.format('0,0.00')}%
+          </Typography>
+        </Box>
       </Box>
     </Card>
   )
