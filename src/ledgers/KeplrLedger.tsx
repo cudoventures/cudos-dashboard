@@ -6,6 +6,7 @@ declare global {
     cosmostation: any
     getOfflineSigner: any
     getOfflineSignerOnlyAmino: any
+    getOfflineSignerAuto: any
     meta: any
   }
 }
