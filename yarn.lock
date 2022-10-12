@@ -2957,10 +2957,10 @@ csstype@^3.0.11, csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.11.tgz#d66700c5eacfac1940deb4e3ee5642792d85cd33"
   integrity sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==
 
-cudosjs@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.0.0.tgz#54023489205fddabd4caff7d70a88b04e3533b5d"
-  integrity sha512-IREAix5Guv0hQLRx1Pn16N1crS9dVvBeeVYjGYBoXt6PWB+cb2f3tmBrg4QiK3oV06XGpM7ipAIcPVaDsNWg5A==
+cudosjs@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.1.1.tgz#2e9bfcf910c37559d2a4d86976f9d418794d2383"
+  integrity sha512-IPIO0+9jQ3ovl/6LGI/NwKP2r3yl36R7evDSaeiQj1hxfDdY3M0IcTbxYAqOhkptmdsqpPVre/MZAqVR00mAUA==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.28.4"
     "@cosmjs/crypto" "^0.28.4"
