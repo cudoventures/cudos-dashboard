@@ -1,9 +1,9 @@
 export type BalanceType = {
-  available: TokenUnit
-  delegate: TokenUnit
+  holdings: TokenUnit
+  selfDelegated: TokenUnit
   unbonding: TokenUnit
-  reward: TokenUnit
-  commission?: TokenUnit
+  rewards: TokenUnit
+  commissions?: TokenUnit
   total: TokenUnit
 }
 

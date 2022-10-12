@@ -12,6 +12,7 @@ import { RootState } from 'store'
 import { TooltipMessages, updateUser } from 'store/profile'
 import { formatNumber } from 'utils/format_token'
 import { formatBigNum } from 'utils/projectUtils'
+import InfoIcon from 'assets/vectors/info-icon.svg'
 
 const MyDelegations = () => {
   const {
@@ -133,197 +134,262 @@ const MyDelegations = () => {
           justifyContent="space-between"
           sx={{ padding: '2rem' }}
         >
-          <Tooltip
-            title={TooltipMessages.DELEGATIONS}
-            placement="right"
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  background: 'white',
-                  color: 'black',
-                  padding: '13px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  borderRadius: '15px'
-                }
-              }
-            }}
-          >
-            <Box display="flex" flexDirection="column" gap={0.5}>
-              <Typography
-                variant="caption"
-                fontWeight={700}
-                color="text.secondary"
-                textTransform="uppercase"
+          <Box display="flex" flexDirection="column" gap={0.5}>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Delegations
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.DELEGATIONS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
               >
-                Delegations
-              </Typography>
-              <Stack direction="row" gap={1} alignItems="center">
-                <Typography fontWeight={700}>
-                  {formatNumber(
-                    formatBigNum(
-                      new BigNumber(
-                        checkIfDelegated[0].amount || new BigNumber(0)
-                      )
-                    ),
-                    2
-                  )}
-                </Typography>
-                <Typography fontWeight={700} color="text.secondary">
-                  CUDOS
-                </Typography>
-              </Stack>
-              <Typography variant="body2" fontWeight={700} color="primary.main">
-                $
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
+            <Stack direction="row" gap={1} alignItems="center">
+              <Typography fontWeight={700}>
                 {formatNumber(
-                  calculateValue(
-                    formatBigNum(
-                      new BigNumber(
-                        checkIfDelegated[0].amount || new BigNumber(0)
-                      )
+                  formatBigNum(
+                    new BigNumber(
+                      checkIfDelegated[0].amount || new BigNumber(0)
                     )
                   ),
                   2
                 )}
               </Typography>
-            </Box>
-          </Tooltip>
-          <Tooltip
-            title={TooltipMessages.REDELEGATIONS}
-            placement="right"
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  background: 'white',
-                  color: 'black',
-                  padding: '13px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  borderRadius: '15px'
-                }
-              }
-            }}
-          >
-            <Box display="flex" flexDirection="column" gap={0.5}>
-              <Typography
-                variant="caption"
-                fontWeight={700}
-                color="text.secondary"
-                textTransform="uppercase"
-              >
-                Redelegations
+              <Typography fontWeight={700} color="text.secondary">
+                CUDOS
               </Typography>
-              <Stack direction="row" gap={1} alignItems="center">
-                <Typography fontWeight={700}>
-                  {formatNumber(formatBigNum(redelegationsBalance), 2)}
-                </Typography>
-                <Typography fontWeight={700} color="text.secondary">
-                  CUDOS
-                </Typography>
-              </Stack>
-              <Typography variant="body2" fontWeight={700} color="primary.main">
-                $
-                {formatNumber(
-                  calculateValue(formatBigNum(redelegationsBalance)),
-                  2
-                )}
-              </Typography>
-            </Box>
-          </Tooltip>
-          <Tooltip
-            title={TooltipMessages.UNDELEGATIONS}
-            placement="right"
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  background: 'white',
-                  color: 'black',
-                  padding: '13px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  borderRadius: '15px'
-                }
-              }
-            }}
-          >
-            <Box display="flex" flexDirection="column" gap={0.5}>
-              <Typography
-                variant="caption"
-                fontWeight={700}
-                color="text.secondary"
-                textTransform="uppercase"
-              >
-                Undelegations
-              </Typography>
-              <Stack direction="row" gap={1} alignItems="center">
-                <Typography fontWeight={700}>
-                  {formatNumber(formatBigNum(undelegationsBalance), 2)}
-                </Typography>
-                <Typography fontWeight={700} color="text.secondary">
-                  CUDOS
-                </Typography>
-              </Stack>
-              <Typography variant="body2" fontWeight={700} color="primary.main">
-                $
-                {formatNumber(
-                  calculateValue(formatBigNum(undelegationsBalance)),
-                  2
-                )}
-              </Typography>
-            </Box>
-          </Tooltip>
-          <Tooltip
-            title={TooltipMessages.REWARDS}
-            placement="right"
-            componentsProps={{
-              tooltip: {
-                sx: {
-                  background: 'white',
-                  color: 'black',
-                  padding: '13px 20px',
-                  fontSize: '14px',
-                  fontWeight: 700,
-                  borderRadius: '15px'
-                }
-              }
-            }}
-          >
-            <Box display="flex" flexDirection="column" gap={0.5}>
-              <Typography
-                variant="caption"
-                fontWeight={700}
-                color="text.secondary"
-                textTransform="uppercase"
-              >
-                Rewards
-              </Typography>
-              <Stack direction="row" gap={1} alignItems="center">
-                <Typography fontWeight={700}>
-                  {formatNumber(
-                    formatBigNum(
-                      new BigNumber(
-                        checkRewards.length
-                          ? checkRewards[0].amount
-                          : new BigNumber(0)
-                      )
-                    ),
-                    2
-                  )}
-                </Typography>
-                <Typography fontWeight={700} color="text.secondary">
-                  CUDOS
-                </Typography>
-              </Stack>
-              <Typography variant="body2" fontWeight={700} color="primary.main">
-                $
-                {checkRewards[0].amount.length
-                  ? calculateValue(
-                      formatBigNum(new BigNumber(checkRewards[0].amount))
+            </Stack>
+            <Typography variant="body2" fontWeight={700} color="primary.main">
+              $
+              {formatNumber(
+                calculateValue(
+                  formatBigNum(
+                    new BigNumber(
+                      checkIfDelegated[0].amount || new BigNumber(0)
                     )
-                  : formatNumber(formatBigNum(new BigNumber(0)), 2)}
-              </Typography>
+                  )
+                ),
+                2
+              )}
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="column" gap={0.5}>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Redelegations
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.REDELEGATIONS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
             </Box>
-          </Tooltip>
+            <Stack direction="row" gap={1} alignItems="center">
+              <Typography fontWeight={700}>
+                {formatNumber(formatBigNum(redelegationsBalance), 2)}
+              </Typography>
+              <Typography fontWeight={700} color="text.secondary">
+                CUDOS
+              </Typography>
+            </Stack>
+            <Typography variant="body2" fontWeight={700} color="primary.main">
+              $
+              {formatNumber(
+                calculateValue(formatBigNum(redelegationsBalance)),
+                2
+              )}
+            </Typography>
+          </Box>
+
+          <Box display="flex" flexDirection="column" gap={0.5}>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Undelegations
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.UNDELEGATIONS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
+            <Stack direction="row" gap={1} alignItems="center">
+              <Typography fontWeight={700}>
+                {formatNumber(formatBigNum(undelegationsBalance), 2)}
+              </Typography>
+              <Typography fontWeight={700} color="text.secondary">
+                CUDOS
+              </Typography>
+            </Stack>
+            <Typography variant="body2" fontWeight={700} color="primary.main">
+              $
+              {formatNumber(
+                calculateValue(formatBigNum(undelegationsBalance)),
+                2
+              )}
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="column" gap={0.5}>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Rewards
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.REWARDS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
+            <Stack direction="row" gap={1} alignItems="center">
+              <Typography fontWeight={700}>
+                {formatNumber(
+                  formatBigNum(
+                    new BigNumber(
+                      checkRewards.length
+                        ? checkRewards[0].amount
+                        : new BigNumber(0)
+                    )
+                  ),
+                  2
+                )}
+              </Typography>
+              <Typography fontWeight={700} color="text.secondary">
+                CUDOS
+              </Typography>
+            </Stack>
+            <Typography variant="body2" fontWeight={700} color="primary.main">
+              $
+              {checkRewards[0].amount.length
+                ? calculateValue(
+                    formatBigNum(new BigNumber(checkRewards[0].amount))
+                  )
+                : formatNumber(formatBigNum(new BigNumber(0)), 2)}
+            </Typography>
+          </Box>
         </Box>
       ) : (
         <Box
