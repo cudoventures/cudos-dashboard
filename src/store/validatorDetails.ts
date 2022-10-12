@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export enum TooltipValidatorMessages {
-  AVAILABLE = `The amount of the current validator's available tokens`,
-  DELEGATE = `The amount of the current validator's personal delegations`,
-  UNBONDING = `The amount of the current validator's personal unbondings`,
-  REWARD = `The amount of the current validator's personal rewards`,
-  COMMISSION = `The amount of the current validator's personal commissions`,
-  VOTING_POWER = `By delegating to a validator, a user delegates voting power. The more voting power a validator has, the more weight they have in the consensus and governance processes.`
+  HOLDINGS = `This validators wallet balance of unstaked tokens`,
+  SELF_DELEGATED = `This validators delegation of tokens to their own node`,
+  UNBONDING = `Any tokens that are currently unbonding as stake by this validator`,
+  REWARDS = `This validators unclaimed personal rewards`,
+  COMMISSIONS = `This validators unclaimed personal commissions`,
+  VOTING_POWER = `The overall network voting power of this validator and their delegations. The more voting power a validator has, the more weight they have in the consensus and governance processes.`
 }
 
 export type ValidatorState = {
