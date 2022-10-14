@@ -1,1 +1,1 @@
-declare module "uint8-to-base64";
+declare module 'uint8-to-base64'

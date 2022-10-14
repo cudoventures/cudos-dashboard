@@ -21,7 +21,6 @@ import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import { getUnbondingBalance } from 'api/getUnbondingBalance'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 import { switchLedgerType } from 'ledgers/utils'
 
 import { COLORS_DARK_THEME } from 'theme/colors'

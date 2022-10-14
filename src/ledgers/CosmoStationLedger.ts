@@ -4,10 +4,13 @@ import CosmosNetworkConfig from './CosmosNetworkConfig'
 export const connectCosmostationLedger = async (): Promise<{
   address: string
   accountName: string
+  isLedger: boolean
 }> => {
   let userAccountAddress = ''
 
   let userAccountName = ''
+
+  const isLedger = false
 
   try {
     const provider = await cosmos()
@@ -46,13 +49,13 @@ export const connectCosmostationLedger = async (): Promise<{
       })
     }
 
-    const acccount = await provider.requestAccount(
+    const getAccount = await provider.requestAccount(
       import.meta.env.VITE_APP_CHAIN_NAME
     )
 
-    userAccountAddress = acccount.address
+    userAccountAddress = getAccount.address
 
-    userAccountName = acccount.name
+    userAccountName = getAccount.name
   } catch (e: any) {
     if (e instanceof InstallError) {
       throw new Error('Cosmostation extension not found')
@@ -63,5 +66,9 @@ export const connectCosmostationLedger = async (): Promise<{
     }
   }
 
-  return { address: userAccountAddress, accountName: userAccountName }
+  return {
+    address: userAccountAddress,
+    accountName: userAccountName,
+    isLedger
+  }
 }

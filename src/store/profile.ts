@@ -12,6 +12,7 @@ export interface WalletState {
   address: string
   accountName: string
   connectedLedger: string
+  isLedger: boolean
   lastLoggedAddress: string
   balance: BigNumber
   availableRewards: BigNumber
@@ -35,6 +36,7 @@ const initialState: WalletState = {
   address: '',
   accountName: '',
   connectedLedger: '',
+  isLedger: false,
   lastLoggedAddress: '',
   balance: new BigNumber(0),
   availableRewards: new BigNumber(0),

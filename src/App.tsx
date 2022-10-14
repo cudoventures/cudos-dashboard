@@ -14,8 +14,6 @@ import { fetchRewards } from 'api/getRewards'
 import NotificationPopup from 'components/NotificationPopup'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { connectKeplrLedger } from 'ledgers/KeplrLedger'
-import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 import { switchLedgerType } from 'ledgers/utils'
 import { getUnbondingBalance } from 'api/getUnbondingBalance'
 import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
@@ -39,7 +37,9 @@ const App = () => {
 
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const apolloClient = useApollo(null)
-  const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
+  const { lastLoggedAddress, isLedger } = useSelector(
+    (state: RootState) => state.profile
+  )
 
   const dispatch = useDispatch()
 
@@ -75,6 +75,7 @@ const App = () => {
           address,
           lastLoggedAddress: address,
           connectedLedger: ledgerType,
+          isLedger,
           accountName,
           balance: new BigNumber(balance),
           availableRewards: new BigNumber(totalRewards),

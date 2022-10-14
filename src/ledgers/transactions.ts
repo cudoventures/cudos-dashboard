@@ -24,21 +24,23 @@ import {
 import {
   DeliverTxResponse,
   GasPrice,
-  SigningStargateClient,
   coins,
   coin,
   MsgDelegateEncodeObject,
   MsgVoteEncodeObject,
   MsgDepositEncodeObject,
   MsgSubmitProposalEncodeObject,
-  MsgUndelegateEncodeObject
+  MsgUndelegateEncodeObject,
+  StargateClient
 } from 'cudosjs'
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
 import { formatToken } from 'utils/format_token'
 import { toValidatorAddress } from 'utils/prefix_convert'
+import { cosmos } from '@cosmostation/extension-client'
 import { ClientUpdateProposal, UpgradeProposal } from './ibc-go/codec/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
+
 import { signingClient } from './utils'
 
 const PROPOSAL_TYPES = {
@@ -91,13 +93,13 @@ export const delegate = async (
   amount: string,
   memo: string,
   ledgerType: string
-): Promise<DeliverTxResponse> => {
-  const delegationAmount = {
-    amount: new BigNumber(amount)
-      .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
-      .toString(10),
-    denom: CosmosNetworkConfig.CURRENCY_DENOM
-  }
+): Promise<any> => {
+  // const delegationAmount = {
+  //   amount: new BigNumber(amount)
+  //     .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+  //     .toString(10),
+  //   denom: CosmosNetworkConfig.CURRENCY_DENOM
+  // }
 
   const msg = MsgDelegate.fromPartial({
     delegatorAddress,
@@ -115,19 +117,74 @@ export const delegate = async (
     value: msg
   }
 
+  const msgs = [
+    {
+      type: '/cosmos.staking.v1beta1.MsgDelegate',
+      value: {
+        from_address: delegatorAddress,
+        to_address: validatorAddress,
+        amount: [
+          {
+            denom: CosmosNetworkConfig.CURRENCY_DENOM,
+            amount: new BigNumber(amount || 0)
+              .multipliedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+              .toString(10)
+          }
+        ]
+      }
+    }
+  ]
+
+  const options = {
+    memo: true,
+    fee: true,
+    gasRate: {
+      tiny: '120000000000000000',
+      low: '120000000000000000',
+      average: '120000000000000000'
+    }
+  }
+
   const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
 
-  const client = await signingClient(ledgerType)
+  // const client = await signingClient(ledgerType)
 
-  const result = await client.delegateTokens(
-    delegatorAddress,
-    validatorAddress,
-    delegationAmount,
-    fee,
-    memo
+  const client3 = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
+
+  const getSequence = await client3.getAccount(delegatorAddress)
+
+  const provider = await cosmos()
+
+  const client2 = await provider.signAmino(
+    import.meta.env.VITE_APP_CHAIN_NAME,
+    {
+      chain_id: import.meta.env.VITE_APP_CHAIN_ID,
+      fee,
+      memo,
+      msgs,
+      sequence: getSequence!.sequence.toString(),
+      account_number: getSequence!.accountNumber.toString()
+    },
+    options
   )
 
-  return result
+  const response = await provider.sendTransaction(
+    import.meta.env.VITE_APP_CHAIN_NAME,
+    encode(client2.signed_doc), // base64 string or Uint8Array
+    3 /* SEND_TRANSACTION_MODE or one of [0, 1, 2, 3] */
+  )
+
+  // console.log('clieresponsent2', response)
+
+  // const result = await client.delegateTokens(
+  //   delegatorAddress,
+  //   validatorAddress,
+  //   delegationAmount,
+  //   fee,
+  //   memo
+  // )
+
+  return ''
 }
 
 export const undelegate = async (
