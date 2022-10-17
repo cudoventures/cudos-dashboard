@@ -383,7 +383,7 @@ const MyDelegations = () => {
             </Stack>
             <Typography variant="body2" fontWeight={700} color="primary.main">
               $
-              {checkRewards[0].amount.length
+              {checkRewards.length > 0
                 ? calculateValue(
                     formatBigNum(new BigNumber(checkRewards[0].amount))
                   )
