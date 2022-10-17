@@ -2,7 +2,7 @@ import { OfflineAminoSigner, OfflineSigner, SigningStargateClient, StargateClien
 import { getOfflineSigner as cosmostationSigner } from '@cosmostation/cosmos-client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { connectKeplrLedger } from './KeplrLedger'
-import { connectCosmostationLedger } from './CosmoStationLedger'
+import { connectCosmostationLedger, connectMobileCosmostation } from './CosmoStationLedger'
 import { RequestAccountResponse, SignAminoDoc } from '@cosmostation/extension-client/types/message'
 import { cosmos, Cosmos } from '@cosmostation/extension-client'
 
@@ -447,6 +447,9 @@ export const switchLedgerType = async (ledgerType: string) => {
       return ledger
     case CosmosNetworkConfig.COSMOSTATION_LEDGER:
       ledger = await connectCosmostationLedger()
+      return ledger
+    case CosmosNetworkConfig.MOBILE_COSMOSTATION:
+      ledger = await connectMobileCosmostation()
       return ledger
     default:
       return { address: '', accountName: '' }

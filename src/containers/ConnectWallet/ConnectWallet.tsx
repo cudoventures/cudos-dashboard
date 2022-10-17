@@ -15,7 +15,7 @@ import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import Header from 'components/Layout/Header'
 import { useNotifications } from 'components/NotificationPopup/hooks'
-
+import { isMobile } from '@walletconnect/browser-utils'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
@@ -124,7 +124,7 @@ const ConnectWallet = () => {
               variant="contained"
               disabled={loading}
               color="primary"
-              onClick={() => connect(CosmosNetworkConfig.COSMOSTATION_LEDGER)}
+              onClick={() => connect(isMobile() ? CosmosNetworkConfig.MOBILE_COSMOSTATION : CosmosNetworkConfig.COSMOSTATION_LEDGER)}
               sx={styles.cosmostationConnectBtn}
             >
               <img

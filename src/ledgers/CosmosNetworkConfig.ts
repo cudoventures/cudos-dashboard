@@ -32,4 +32,6 @@ export default class CosmosNetworkConfig {
   static KEPLR_LEDGER = 'Keplr'
 
   static COSMOSTATION_LEDGER = 'Cosmostation'
+
+  static MOBILE_COSMOSTATION = 'Mobile Cosmostation'
 }

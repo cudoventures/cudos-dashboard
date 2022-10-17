@@ -1,5 +1,34 @@
 import { cosmos, InstallError } from '@cosmostation/extension-client'
+import WalletConnect from '@walletconnect/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
+import cosmostationWalletConnect from './cosmostation-wallet-connect'
+
+export const connectMobileCosmostation = async (): Promise<{
+  address: string
+  accountName: string
+}> => {
+
+  let userAccountAddress = ''
+  let userAccountName = ''
+
+  const connector: WalletConnect = await cosmostationWalletConnect.connect()
+  if (connector) {
+    try {
+      const request = cosmostationWalletConnect.getAccountsRequest([import.meta.env.VITE_APP_CHAIN_ID])
+      const accounts = await connector.sendCustomRequest(request)
+      const account = accounts[0]
+      userAccountAddress = account["bech32Address"]
+      userAccountName = account["bech32Address"]
+      
+    } catch (e) {
+      throw new Error(e)
+    }
+
+  }
+
+
+  return { address: userAccountAddress, accountName: userAccountName }
+}
 
 export const connectCosmostationLedger = async (): Promise<{
   address: string
