@@ -1,10 +1,18 @@
-import { OfflineAminoSigner, OfflineSigner, SigningStargateClient, StargateClient } from 'cudosjs'
+import {
+  OfflineAminoSigner,
+  OfflineSigner,
+  SigningStargateClient,
+  StargateClient
+} from 'cudosjs'
 import { getOfflineSigner as cosmostationSigner } from '@cosmostation/cosmos-client'
+import {
+  RequestAccountResponse,
+  SignAminoDoc
+} from '@cosmostation/extension-client/types/message'
+import { cosmos, Cosmos } from '@cosmostation/extension-client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { connectKeplrLedger } from './KeplrLedger'
 import { connectCosmostationLedger } from './CosmoStationLedger'
-import { RequestAccountResponse, SignAminoDoc } from '@cosmostation/extension-client/types/message'
-import { cosmos, Cosmos } from '@cosmostation/extension-client'
 
 const colors = {
   staking: '#3d5afe',
@@ -453,6 +461,39 @@ export const switchLedgerType = async (ledgerType: string) => {
   }
 }
 
+export const getLedgerSigner = async (
+  connector: Cosmos,
+  accountInfo: RequestAccountResponse
+) => {
+  const chainName = import.meta.env.VITE_APP_CHAIN_NAME
+  const signer: OfflineAminoSigner = {
+    getAccounts: async () => {
+      return [
+        {
+          address: accountInfo.address,
+          pubkey: accountInfo.publicKey,
+          algo: 'secp256k1'
+        }
+      ]
+    },
+    signAmino: async (_, signDoc) => {
+      const response = await connector.signAmino(
+        chainName,
+        signDoc as unknown as SignAminoDoc
+      )
+
+      return {
+        signed: response.signed_doc,
+        signature: {
+          pub_key: response.pub_key,
+          signature: response.signature
+        }
+      }
+    }
+  }
+  return signer
+}
+
 const switchSigningClient = async (
   ledgerType: string
 ): Promise<OfflineSigner | undefined> => {
@@ -463,17 +504,22 @@ const switchSigningClient = async (
         import.meta.env.VITE_APP_CHAIN_ID
       )
       return client
-    case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+    case CosmosNetworkConfig.COSMOSTATION_LEDGER: {
       const connector = await cosmos()
-      const connectedAccount = await connector.requestAccount(import.meta.env.VITE_APP_CHAIN_NAME)
+
+      const connectedAccount = await connector.requestAccount(
+        import.meta.env.VITE_APP_CHAIN_NAME
+      )
 
       if (connectedAccount.isLedger) {
         client = await getLedgerSigner(connector, connectedAccount)
-
-      } else {
-        client = await cosmostationSigner(import.meta.env.VITE_APP_CHAIN_ID)
+        return client
       }
+
+      client = await cosmostationSigner(import.meta.env.VITE_APP_CHAIN_ID)
+
       return client
+    }
     default:
       return undefined
   }
@@ -509,36 +555,3 @@ export const client = (async () => {
     throw new Error('Check your Keplr installation.')
   }
 })()
-
-export const getLedgerSigner = async (
-  connector: Cosmos,
-  accountInfo: RequestAccountResponse
-) => {
-  const chainName = import.meta.env.VITE_APP_CHAIN_NAME
-  const signer: OfflineAminoSigner = {
-    getAccounts: async () => {
-      return [
-        {
-          address: accountInfo.address,
-          pubkey: accountInfo.publicKey,
-          algo: "secp256k1",
-        },
-      ];
-    },
-    signAmino: async (_, signDoc) => {
-      const response = await connector.signAmino(
-        chainName,
-        signDoc as unknown as SignAminoDoc
-      );
-
-      return {
-        signed: response.signed_doc,
-        signature: {
-          pub_key: response.pub_key,
-          signature: response.signature,
-        },
-      };
-    },
-  };
-  return signer;
-};
