@@ -402,7 +402,9 @@ const Undelegation: React.FC<UndelegationProps> = ({
               width: '50%'
             })}
             onClick={handleSubmit}
-            disabled={Number(amount) > Number(delegated) || !amount}
+            disabled={
+              Number(amount) > Number(delegated) || !amount || fee.length <= 0
+            }
           >
             Submit
           </Button>
