@@ -1,4 +1,5 @@
-import { Box, Typography, Fade } from '@mui/material'
+import { Box, Typography, Fade, useMediaQuery } from '@mui/material'
+import theme from 'theme'
 import Form from './components/Form'
 import Activity from './components/Activity'
 
@@ -6,9 +7,14 @@ import { styles } from './styles'
 import FaucetModal from './components/FaucetModal'
 
 const Faucet = () => {
+  const isBigScreen = useMediaQuery(theme.dark.breakpoints.only('xl'))
+
   return (
     <Fade in timeout={500}>
-      <Box sx={styles.faucetContainer}>
+      <Box
+        style={{ maxWidth: isBigScreen ? '50vw' : '85vw' }}
+        sx={styles.faucetContainer}
+      >
         <Box
           position="sticky"
           top={0}
