@@ -1,6 +1,6 @@
 import { Box, Button, InputAdornment, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 import Dropdown from 'components/Dropdown'
@@ -15,6 +15,8 @@ import {
   ProposalModalProps,
   ProposalTypes
 } from 'store/modal'
+import { getWalletBalance } from 'utils/projectUtils'
+import { updateUser } from 'store/profile'
 import {
   CancelRoundedIcon,
   InputContainer,
@@ -39,6 +41,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const [proposal, setProposal] = useState<string>('1')
   const [title, setTitle] = useState<string>('')
   const [proposalError, setProposalError] = useState<boolean>()
+
+  const dispatch = useDispatch()
 
   const delayInput = _.debounce(
     (value) =>
@@ -101,6 +105,14 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         fee: new BigNumber(gasFee),
         hash: result.transactionHash
       })
+
+      const walletBalance = await getWalletBalance(address)
+
+      dispatch(
+        updateUser({
+          balance: walletBalance
+        })
+      )
     } catch (error) {
       handleModal({
         open: true,

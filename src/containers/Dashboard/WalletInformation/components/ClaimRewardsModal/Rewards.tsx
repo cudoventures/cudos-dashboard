@@ -33,6 +33,7 @@ import {
 import { ValidatorType } from 'store/validator'
 import { toValidatorAddress } from 'utils/prefix_convert'
 import useValidators from 'containers/Staking/components/Validators/components/Table/hooks'
+import { getWalletBalance } from 'utils/projectUtils'
 
 type RewardsProps = {
   modalProps: RewardsModalProps
@@ -90,7 +91,15 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         fee: formatToken(fee, CosmosNetworkConfig.CURRENCY_DENOM).value
       })
 
-      dispatch(updateUser({ availableRewards: new BigNumber(0) }))
+      const walletBalance = await getWalletBalance(address)
+      const { totalRewards } = await fetchRewards(address)
+
+      dispatch(
+        updateUser({
+          availableRewards: new BigNumber(totalRewards),
+          balance: walletBalance
+        })
+      )
     } catch (err) {
       handleModal({
         status: ModalStatus.FAILURE,
