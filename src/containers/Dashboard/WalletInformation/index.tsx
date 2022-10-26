@@ -273,6 +273,7 @@ const WalletInformation: React.FC = () => {
                 handleRewardsModal({
                   open: true,
                   status: ModalStatus.IN_PROGRESS,
+                  isSingleRewardWithdraw: false,
                   amount: availableRewards.toString()
                 })
               }

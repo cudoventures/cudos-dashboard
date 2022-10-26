@@ -42,6 +42,7 @@ export type RewardsModalProps = Modal & {
     imageUrl: string
     address: string
   } | null
+  isSingleRewardWithdraw: boolean
   amount: string | null
   fee: string
   txHash?: string
@@ -52,6 +53,7 @@ export type RewardsModalProps = Modal & {
 export const initialRewardsModalProps: RewardsModalProps = {
   open: false,
   status: null,
+  isSingleRewardWithdraw: false,
   validator: null,
   amount: null,
   fee: '',

@@ -43,13 +43,23 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const [restake, setRestake] = useState<boolean>(true)
   const [claimAndRestakeSeparateMsg, setClaimAndRestakeSeparateMsg] =
     useState<boolean>(false)
-  const { amount } = modalProps
+  const { amount, isSingleRewardWithdraw } = modalProps
   const { setError } = useNotifications()
   const dispatch = useDispatch()
   const { state: validatorsState } = useValidators()
 
   const { address, balance, availableRewards, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
+  )
+
+  const { stakedValidators } = useSelector((state: RootState) => state.profile)
+
+  const { validator } = useSelector(
+    (state: RootState) => state.validatorDetails
+  )
+
+  const getSingleReward = stakedValidators.filter(
+    (value) => value.address === validator
   )
 
   const handleSubmit = async (): Promise<void> => {
@@ -70,7 +80,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         ) > -1
 
       const { result, fee, restakeTx } = await claimRewards(
-        validatorArray,
+        isSingleRewardWithdraw ? getSingleReward : validatorArray,
         address,
         {
           restake,
@@ -90,7 +100,15 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         fee: formatToken(fee, CosmosNetworkConfig.CURRENCY_DENOM).value
       })
 
-      dispatch(updateUser({ availableRewards: new BigNumber(0) }))
+      const { validatorArray: updatedValidatorArray, totalRewards } =
+        await fetchRewards(address)
+
+      dispatch(
+        updateUser({
+          availableRewards: new BigNumber(totalRewards),
+          stakedValidators: updatedValidatorArray
+        })
+      )
     } catch (err) {
       handleModal({
         status: ModalStatus.FAILURE,
@@ -116,7 +134,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   }
 
   useEffect(() => {
-    if (availableRewards.isGreaterThan(balance)) {
+    if (new BigNumber(availableRewards).isGreaterThan(balance)) {
       setClaimAndRestakeSeparateMsg(true)
     } else {
       setClaimAndRestakeSeparateMsg(false)
@@ -203,7 +221,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
             margin="dense"
             fullWidth
             disabled
-            value={formatNumber(Number(availableRewards).toFixed(2) || '0', 2)}
+            value={formatNumber(amount || '0', 2)}
             sx={{
               '& .MuiInputBase-input.Mui-disabled': {
                 WebkitTextFillColor: 'white'
