@@ -29,7 +29,6 @@ export type VotingPowerType = {
 export type ValidatorDetailsState = {
   loading: boolean
   exists: boolean
-  desmosProfile: DesmosProfile | null
   status: StatusType
   votingPower: VotingPowerType
 }
