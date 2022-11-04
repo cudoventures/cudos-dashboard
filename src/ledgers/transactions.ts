@@ -280,7 +280,7 @@ export const claimRewards = async (
 
   const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
-  if (claimAndRestakeSeparateMsg) {
+  if (claimAndRestakeSeparateMsg && restake) {
     stakedValidators.forEach((validator) => {
       if (Number(validator.amount) > 0) {
         msgRestake.push({

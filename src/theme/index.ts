@@ -28,6 +28,15 @@ const dark = createTheme({
     fontFamily: ['Poppins', 'sans-serif'].join(','),
     fontSize: 14
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1925
+    }
+  },
   components: {
     MuiSelect: {
       styleOverrides: {

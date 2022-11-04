@@ -424,7 +424,8 @@ const Redelegation: React.FC<RedelegationProps> = ({
             disabled={
               Number(amount) > Number(delegated) ||
               !amount ||
-              !redelegationAddress
+              !redelegationAddress ||
+              fee.length <= 0
             }
           >
             Submit

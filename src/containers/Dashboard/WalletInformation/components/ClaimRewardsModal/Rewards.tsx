@@ -33,6 +33,7 @@ import {
 import { ValidatorType } from 'store/validator'
 import { toValidatorAddress } from 'utils/prefix_convert'
 import useValidators from 'containers/Staking/components/Validators/components/Table/hooks'
+import { getWalletBalance } from 'utils/projectUtils'
 
 type RewardsProps = {
   modalProps: RewardsModalProps
