@@ -254,59 +254,59 @@ const WalletInformation: React.FC = () => {
                 </Button>
               </Box>
             </Box>
-          ) : null}
-          <Box sx={styles.availableRewards}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-                padding: '5px 1rem'
-              }}
+        ) : null}
+        <Box sx={styles.availableRewards}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+              padding: '5px 1rem'
+            }}
+          >
+            <Typography
+              textTransform="uppercase"
+              fontWeight={700}
+              color="text.secondary"
             >
-              <Typography
-                textTransform="uppercase"
-                fontWeight={700}
-                color="text.secondary"
-              >
-                Available rewards
+              Available rewards
+            </Typography>
+            <Stack
+              sx={{ flexFlow: 'wrap' }}
+              direction="row"
+              alignItems="center"
+              gap="6px"
+            >
+              <CudosLogo style={{ width: '20px', height: 'auto' }} />
+              <Typography variant="h5" fontWeight={700}>
+                {formatNumber(Number(availableRewards).toFixed(2), 2)}
               </Typography>
-              <Stack
-                sx={{ flexFlow: 'wrap' }}
-                direction="row"
-                alignItems="center"
-                gap="6px"
-              >
-                <CudosLogo style={{ width: '20px', height: 'auto' }} />
-                <Typography variant="h5" fontWeight={700}>
-                  {formatNumber(Number(availableRewards).toFixed(2), 2)}
-                </Typography>
-                <Typography variant="h6" color="primary.main" fontWeight={700}>
-                  $
-                  {formatNumber(
-                    (rate * Number(state.availableRewards)).toFixed(2),
-                    2
-                  )}
-                </Typography>
-              </Stack>
-            </Box>
-            <Box>
-              <Button
-                onClick={() =>
-                  handleRewardsModal({
-                    open: true,
-                    status: ModalStatus.IN_PROGRESS,
-                    amount: availableRewards.toString()
-                  })
-                }
-                sx={{ fontWeight: 700 }}
-                disabled={!stakedValidators.length}
-                variant="contained"
-                color="primary"
-              >
-                Claim Rewards
-              </Button>
-            </Box>
+              <Typography variant="h6" color="primary.main" fontWeight={700}>
+                $
+                {formatNumber(
+                  (rate * Number(state.availableRewards)).toFixed(2),
+                  2
+                )}
+              </Typography>
+            </Stack>
+          </Box>
+          <Box>
+            <Button
+              onClick={() =>
+                handleRewardsModal({
+                  open: true,
+                  status: ModalStatus.IN_PROGRESS,
+                  isSingleRewardWithdraw: false,
+                  amount: availableRewards.toString()
+                })
+              }
+              sx={{ fontWeight: 700 }}
+              disabled={!stakedValidators.length}
+              variant="contained"
+              color="primary"
+            >
+              Claim Rewards
+            </Button>
           </Box>
         </Box>
       </Grid>

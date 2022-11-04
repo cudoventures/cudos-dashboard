@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack, Tooltip, Typography } from '@mui/material'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
@@ -9,9 +9,10 @@ import { useNotifications } from 'components/NotificationPopup/hooks'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
-import { updateUser } from 'store/profile'
+import { TooltipMessages, updateUser } from 'store/profile'
 import { formatNumber } from 'utils/format_token'
 import { formatBigNum } from 'utils/projectUtils'
+import InfoIcon from 'assets/vectors/info-icon.svg'
 
 const MyDelegations = () => {
   const {
@@ -134,14 +135,47 @@ const MyDelegations = () => {
           sx={{ padding: '2rem' }}
         >
           <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Delegations
-            </Typography>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Delegations
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.DELEGATIONS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>
                 {formatNumber(
@@ -172,14 +206,47 @@ const MyDelegations = () => {
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Redelegations
-            </Typography>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Redelegations
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.REDELEGATIONS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>
                 {formatNumber(formatBigNum(redelegationsBalance), 2)}
@@ -196,15 +263,49 @@ const MyDelegations = () => {
               )}
             </Typography>
           </Box>
+
           <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Undelegations
-            </Typography>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Undelegations
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.UNDELEGATIONS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>
                 {formatNumber(formatBigNum(undelegationsBalance), 2)}
@@ -222,14 +323,47 @@ const MyDelegations = () => {
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column" gap={0.5}>
-            <Typography
-              variant="caption"
-              fontWeight={700}
-              color="text.secondary"
-              textTransform="uppercase"
-            >
-              Rewards
-            </Typography>
+            <Box display="flex">
+              <Box>
+                <Typography
+                  variant="caption"
+                  fontWeight={700}
+                  color="text.secondary"
+                  textTransform="uppercase"
+                >
+                  Rewards
+                </Typography>
+              </Box>
+              <Tooltip
+                title={TooltipMessages.REWARDS}
+                placement="right"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      background: 'white',
+                      color: 'black',
+                      padding: '13px 20px',
+                      fontSize: '14px',
+                      fontWeight: 700,
+                      borderRadius: '15px'
+                    }
+                  }
+                }}
+              >
+                <Box alignSelf="center">
+                  <img
+                    style={{
+                      display: 'flex',
+                      width: '15px',
+                      height: '15px',
+                      marginLeft: '10px'
+                    }}
+                    src={InfoIcon}
+                    alt="Info"
+                  />
+                </Box>
+              </Tooltip>
+            </Box>
             <Stack direction="row" gap={1} alignItems="center">
               <Typography fontWeight={700}>
                 {formatNumber(
@@ -249,16 +383,11 @@ const MyDelegations = () => {
             </Stack>
             <Typography variant="body2" fontWeight={700} color="primary.main">
               $
-              {calculateValue(
-                formatNumber(
-                  formatBigNum(
-                    checkRewards.length
-                      ? new BigNumber(checkRewards[0].amount)
-                      : new BigNumber(0)
-                  ),
-                  2
-                )
-              )}
+              {checkRewards.length > 0
+                ? calculateValue(
+                    formatBigNum(new BigNumber(checkRewards[0].amount))
+                  )
+                : formatNumber(formatBigNum(new BigNumber(0)), 2)}
             </Typography>
           </Box>
         </Box>

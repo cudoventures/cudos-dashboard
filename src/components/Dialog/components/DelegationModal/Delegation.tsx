@@ -30,7 +30,7 @@ import { formatNumber, formatToken } from 'utils/format_token'
 import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
 import { updateUser } from 'store/profile'
-import { getStakedBalance } from 'utils/projectUtils'
+import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import {
   ModalContainer,
@@ -172,11 +172,13 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         txHash: delegationResult.transactionHash
       })
 
+      const walletBalance = await getWalletBalance(address)
       const { delegationsArray } = await fetchDelegations(address)
       const stakedAmountBalance = await getStakedBalance(address)
 
       dispatch(
         updateUser({
+          balance: walletBalance,
           delegations: delegationsArray,
           stakedBalance: new BigNumber(stakedAmountBalance)
         })
@@ -394,9 +396,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
             sx={() => ({
               width: '50%'
             })}
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             disabled={
-              Number(amount) > Number(balance) || !amount || Number(amount) <= 0
+              Number(amount) > Number(balance) ||
+              !amount ||
+              Number(amount) <= 0 ||
+              fee.length <= 0
             }
           >
             Submit

@@ -27,7 +27,9 @@ export enum FailureMessage {
   DEFAULT_PROPOSAL_FAILED = 'Seems like something went wrong with creating the proposal. Try again or check your wallet balance.',
   DEFAULT_TRANSACTION_FAILED = 'Seems like something went wrong with executing the transaction. Try again or check your wallet balance.',
   DEFAULT_VOTING_PROPOSAL_FAILED = 'Seems like something went wrong with voting for the proposal. Try again or check your wallet balance.',
-  DEFAULT_DEPOSITING_PROPOSAL_FAILED = 'Seems like something went wrong with depositing for the proposal. Try again or check your wallet balance.'
+  DEFAULT_DEPOSITING_PROPOSAL_FAILED = 'Seems like something went wrong with depositing for the proposal. Try again or check your wallet balance.',
+  UNSUPPORTED_PROPOSAL_TYPE = `Unsupported proposal type:`,
+  UNSUPPORTED_PROPOSAL_TYPE_END_USER = `Transaction cannot be completed using a Hardware Ledger!`
 }
 
 // ========================
@@ -40,6 +42,7 @@ export type RewardsModalProps = Modal & {
     imageUrl: string
     address: string
   } | null
+  isSingleRewardWithdraw: boolean
   amount: string | null
   fee: string
   txHash?: string
@@ -50,6 +53,7 @@ export type RewardsModalProps = Modal & {
 export const initialRewardsModalProps: RewardsModalProps = {
   open: false,
   status: null,
+  isSingleRewardWithdraw: false,
   validator: null,
   amount: null,
   fee: '',

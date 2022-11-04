@@ -20,19 +20,22 @@ import moment from 'moment'
 import Card from 'components/Card'
 import numeral from 'numeral'
 import { getValidatorConditionClass } from 'utils/get_validator_condition'
-import { copyToClipboard } from 'utils/projectUtils'
+import { copyToClipboard, formatBigNum } from 'utils/projectUtils'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { updateNotifications } from 'store/notifications'
 import DelegationModal from 'components/Dialog/components/DelegationModal'
 import useDelegationModal from 'components/Dialog/components/DelegationModal/hooks'
 import { ModalStatus } from 'store/modal'
+import ClaimRewardsModal from 'containers/Dashboard/WalletInformation/components/ClaimRewardsModal'
+import BigNumber from 'bignumber.js'
 import { OverviewType, StatusType } from '../../types'
 import { getValidatorStatus, getCondition } from './utils'
 import RedelegationModal from './components/RedelegationModal'
 import useRedelegationModal from './components/RedelegationModal/hooks'
 import UndelegationModal from './components/UndelegationModal'
 import useUndelegationModal from './components/UndelegationModal/hooks'
+import useRewardsModal from '../../../../../Dashboard/WalletInformation/components/ClaimRewardsModal/hooks'
 
 type InfoProps = {
   overview: OverviewType
@@ -42,10 +45,19 @@ type InfoProps = {
 const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
   const [openActionsDropdown, setOpenActionsDropdown] = useState<boolean>(false)
   const info = useSelector((state: RootState) => state.notifications.info)
+  const { stakedValidators } = useSelector((state: RootState) => state.profile)
+  const { validator } = useSelector(
+    (state: RootState) => state.validatorDetails
+  )
   const dispatch = useDispatch()
   const { handleModal: handleDelegationModal } = useDelegationModal()
   const { handleModal: handleRedelegationModal } = useRedelegationModal()
   const { handleModal: handleUndelegationModal } = useUndelegationModal()
+  const { handleModal: handleRewardsModal } = useRewardsModal()
+
+  const checkRewards = stakedValidators.filter(
+    (value) => value.address === validator
+  )
 
   const statusTheme = getValidatorStatus(
     status.status,
@@ -322,6 +334,33 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
                 >
                   Undelegate
                 </Button>
+                <Button
+                  variant="contained"
+                  disabled={
+                    !checkRewards.length || checkRewards[0].amount === '0'
+                  }
+                  color="primary"
+                  fullWidth
+                  sx={{ fontWeight: 700 }}
+                  startIcon={
+                    <ArrowUpwardRoundedIcon
+                      fontSize="small"
+                      sx={{ transform: 'rotate3d(0, 0, 1, 0.625turn)' }}
+                    />
+                  }
+                  onClick={() =>
+                    handleRewardsModal({
+                      open: true,
+                      status: ModalStatus.IN_PROGRESS,
+                      isSingleRewardWithdraw: true,
+                      amount: formatBigNum(
+                        new BigNumber(checkRewards[0].amount)
+                      )
+                    })
+                  }
+                >
+                  Claim Reward
+                </Button>
               </Box>
             </Collapse>
           </Box>
@@ -418,6 +457,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
       <DelegationModal />
       <UndelegationModal />
       <RedelegationModal />
+      <ClaimRewardsModal />
     </Box>
   )
 }

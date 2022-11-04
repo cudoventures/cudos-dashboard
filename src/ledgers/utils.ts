@@ -1,5 +1,15 @@
-import { OfflineSigner, SigningStargateClient, StargateClient } from 'cudosjs'
+import {
+  OfflineAminoSigner,
+  OfflineSigner,
+  SigningStargateClient,
+  StargateClient
+} from 'cudosjs'
 import { getOfflineSigner as cosmostationSigner } from '@cosmostation/cosmos-client'
+import {
+  RequestAccountResponse,
+  SignAminoDoc
+} from '@cosmostation/extension-client/types/message'
+import { cosmos, Cosmos } from '@cosmostation/extension-client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { connectKeplrLedger } from './KeplrLedger'
 import { connectCosmostationLedger } from './CosmoStationLedger'
@@ -451,17 +461,65 @@ export const switchLedgerType = async (ledgerType: string) => {
   }
 }
 
+export const getLedgerSigner = async (
+  connector: Cosmos,
+  accountInfo: RequestAccountResponse
+) => {
+  const chainName = import.meta.env.VITE_APP_CHAIN_NAME
+  const signer: OfflineAminoSigner = {
+    getAccounts: async () => {
+      return [
+        {
+          address: accountInfo.address,
+          pubkey: accountInfo.publicKey,
+          algo: 'secp256k1'
+        }
+      ]
+    },
+    signAmino: async (_, signDoc) => {
+      const response = await connector.signAmino(
+        chainName,
+        signDoc as unknown as SignAminoDoc
+      )
+
+      return {
+        signed: response.signed_doc,
+        signature: {
+          pub_key: response.pub_key,
+          signature: response.signature
+        }
+      }
+    }
+  }
+  return signer
+}
+
 const switchSigningClient = async (
   ledgerType: string
 ): Promise<OfflineSigner | undefined> => {
   let client
   switch (ledgerType) {
     case CosmosNetworkConfig.KEPLR_LEDGER:
-      client = await window.getOfflineSigner(import.meta.env.VITE_APP_CHAIN_ID)
+      client = await window.getOfflineSignerAuto(
+        import.meta.env.VITE_APP_CHAIN_ID
+      )
       return client
-    case CosmosNetworkConfig.COSMOSTATION_LEDGER:
+    case CosmosNetworkConfig.COSMOSTATION_LEDGER: {
+      const connector = await cosmos()
+
+      const connectedAccount = await connector.requestAccount(
+        import.meta.env.VITE_APP_CHAIN_NAME
+      )
+
+      if (connectedAccount.isLedger) {
+        client = await getLedgerSigner(connector, connectedAccount)
+        return client
+      }
+
       client = await cosmostationSigner(import.meta.env.VITE_APP_CHAIN_ID)
+
       return client
+    }
     default:
       return undefined
   }
