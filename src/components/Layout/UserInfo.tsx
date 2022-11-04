@@ -92,7 +92,7 @@ const UserInfo = () => {
           </Box>
         </Box>
       </Box>
-      <Collapse sx={{ marginTop: '-28px', zIndex: '-1' }} in={open}>
+      <Collapse sx={{ position: 'absolute', top: 21, zIndex: '-1' }} in={open}>
         <Box sx={styles.dropdownMenuContainer}>
           <Box sx={{ marginTop: '40px' }}>
             <Box sx={{ display: 'flex' }}>
