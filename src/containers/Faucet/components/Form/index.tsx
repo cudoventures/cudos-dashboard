@@ -16,18 +16,16 @@ const Form = () => {
   const captchaRef = useRef<any>(null)
   const [address, setAddress] = useState<string>('')
   const [amount, setAmount] = useState<string>('')
-  const [showTransferBtn, setShowTransferBtn] = useState<boolean>(false)
+  const [validatedCaptcha, setValidatedCaptcha] = useState<boolean>(false)
   const { setWarning } = useNotifications()
   const maxAmountAllowed: number = 100
 
   const { handleModal } = useModal()
 
-  const validInput = () => {
+  const validData = () => {
 
-    if (
-      Number(amount) > maxAmountAllowed || Number(amount) <= 0 ||
-      !amount || !address
-    ) {
+    if (!validatedCaptcha || Number(amount) > maxAmountAllowed || Number(amount) <= 0 ||
+      !amount || !address) {
       return false
     }
 
@@ -48,19 +46,13 @@ const Form = () => {
 
   const checkCaptcha = async () => {
     const token = captchaRef.current.getValue()
-    const validatedInput = validInput()
 
-    if (token && validatedInput) {
-      setShowTransferBtn(true)
+    if (token) {
+      setValidatedCaptcha(true)
       return
     }
 
-    if (!validatedInput) {
-      setWarning('Please fill the required fields first')
-    }
-
-    captchaRef.current.reset()
-    setShowTransferBtn(false)
+    setValidatedCaptcha(false)
   }
 
   const handleReceiveTokens = async () => {
@@ -176,9 +168,9 @@ const Form = () => {
                 justifyContent: 'center',
                 flex: 1
               }}
-              onChange={() => checkCaptcha()}
               theme="dark"
               ref={captchaRef}
+              onChange={checkCaptcha}
               sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
             />
           </Stack>
@@ -190,7 +182,7 @@ const Form = () => {
             width: '50%'
           })}
           onClick={handleReceiveTokens}
-          disabled={!showTransferBtn || !validInput()}
+          disabled={!validData()}
         >
           Receive Tokens
         </Button>
