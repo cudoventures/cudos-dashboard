@@ -15,7 +15,7 @@ import { styles } from './styles'
 
 const Dashboard = () => {
   const theme = useTheme()
-  const isBigScreen = useMediaQuery(theme.breakpoints.up('xl'))
+  const isBigScreen = useMediaQuery(theme.breakpoints.up('lg'))
 
   return (
     <Fade in timeout={500}>
@@ -37,7 +37,7 @@ const Dashboard = () => {
               item
               xs={12}
               md={12}
-              lg={12}
+              lg={9}
               xl={9}
             >
               <WalletInformation />
@@ -52,7 +52,7 @@ const Dashboard = () => {
               item
               xs={12}
               md={12}
-              lg={12}
+              lg={3}
               xl={3}
             >
               <NetworkStatistics />
