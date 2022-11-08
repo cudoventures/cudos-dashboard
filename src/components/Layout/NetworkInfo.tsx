@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import OnlineStatus from 'assets/vectors/online-status.svg'
+import theme from 'theme'
 
 import { styles } from './styles'
 
@@ -10,6 +11,7 @@ const NetworkInfo = () => {
         sx={{
           fontSize: '14px',
           fontWeight: '500',
+          whiteSpace: 'nowrap',
           display: 'flex',
           alignItems: 'center'
         }}

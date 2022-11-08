@@ -3,7 +3,9 @@ import {
   CircularProgress,
   Stack,
   Tooltip,
-  Typography
+  Typography,
+  useMediaQuery,
+  useTheme
 } from '@mui/material'
 import moment from 'moment'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
@@ -14,12 +16,16 @@ import { columnNames } from 'store/userTransactions'
 
 import { defaultMessages, unknownMessage } from 'ledgers/utils'
 import numeral from 'numeral'
+import { addEndingEllipsis } from 'utils/projectUtils'
 import { styles } from '../styles'
 import { useUserTransactions } from './UserActivity/hooks'
 
 const LatestActivity = () => {
   const { state } = useUserTransactions()
   const { data, loading, hasActivity } = state
+
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md' || 'xs'))
 
   const formattedItems = data.map((tx: any, idx) => {
     const txType: string = tx.messages[0]['@type']
@@ -69,8 +75,8 @@ const LatestActivity = () => {
             }
           >
             {getMiddleEllipsis(tx.hash, {
-              beginning: 10,
-              ending: 12
+              beginning: isSmallScreen ? 5 : 10,
+              ending: isSmallScreen ? 3 : 12
             })}
           </Typography>
         </Tooltip>
@@ -89,7 +95,9 @@ const LatestActivity = () => {
             letterSpacing: '1px'
           }}
         >
-          {txBadge.displayName}
+          {addEndingEllipsis(txBadge.displayName, {
+            begining: isSmallScreen ? 6 : 0
+          })}
         </Typography>
       ),
       date: (

@@ -26,9 +26,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           overflow="auto"
         >
           {children}
+          <Footer />
         </Box>
       </Box>
-      <Footer />
     </Box>
   )
 }

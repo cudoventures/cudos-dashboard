@@ -2,8 +2,8 @@ import copy from 'copy-to-clipboard'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
 import { client } from 'ledgers/utils'
+import { bech32 } from 'bech32'
 import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
-import { bech32 } from "bech32"
 
 export const isValidCudosAddress = (address: string) => {
   if (address === '' || address === undefined) {
@@ -12,8 +12,7 @@ export const isValidCudosAddress = (address: string) => {
 
   try {
     const { prefix: decodedPrefix } = bech32.decode(address)
-    return decodedPrefix === "cudos"
-
+    return decodedPrefix === 'cudos'
   } catch {
     // invalid checksum
     return false
@@ -71,4 +70,15 @@ export const formatDateTime = (dateTimeString: string): string => {
     .format('DD MMM YYYY LTS')
     .toLocaleString()
   return formattedTime
+}
+
+export const addEndingEllipsis = (
+  input: string,
+  options: { begining: number }
+) => {
+  const { begining } = options ?? {}
+  if (begining !== 0) {
+    return `${input.substring(0, begining)}...`
+  }
+  return input
 }
