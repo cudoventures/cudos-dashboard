@@ -41,7 +41,7 @@ const Header = () => {
 
   return (
     <Box>
-      <Box gap={2} sx={isMidLowRes ? headerStyles.smallerScreenHeaderContainer : headerStyles.headerContainer}>
+      <Box gap={2} sx={isMidLowRes && !isWelcomePage ? headerStyles.smallerScreenHeaderContainer : headerStyles.headerContainer}>
         <Box onClick={() => nagivate(isWelcomePage ? '/' : 'dashboard')} sx={headerStyles.logoHolder}>
           {logoComponent}
         </Box>
