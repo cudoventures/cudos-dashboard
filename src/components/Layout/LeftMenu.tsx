@@ -7,20 +7,25 @@ import StakingIcon from 'assets/vectors/staking.svg?component'
 import FaucetIcon from 'assets/vectors/faucet.svg?component'
 
 import { styles } from './styles'
-
-const MenuItems = [
-  { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
-  { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
-  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' }
-]
-
-if (import.meta.env.VITE_CHAIN_STATUS !== 'mainnet') {
-  MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
-}
+import { CHAIN_DETAILS } from 'utils/constants'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
+  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const { pathname } = useLocation()
+
+  const MenuItems = [
+    { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
+    { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
+    { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' }
+  ]
+
+  if (CHAIN_DETAILS.CHAIN_ID[chosenNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID]
+    !== CHAIN_DETAILS.CHAIN_ID.MAINNET) {
+    MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
+  }
 
   useEffect(() => {
     const selectedIndex = MenuItems.findIndex(
@@ -29,7 +34,7 @@ const Menu = () => {
     setSelected(selectedIndex)
   }, [pathname])
 
-  return (
+  return (loadingState ? null :
     <Box sx={styles.menuContainer}>
       <Box
         display="flex"

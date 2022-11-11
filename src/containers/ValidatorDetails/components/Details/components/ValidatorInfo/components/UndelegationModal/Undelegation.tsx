@@ -30,6 +30,7 @@ import {
 import { signingClient } from 'ledgers/utils'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import { updateUser } from 'store/profile'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
@@ -50,13 +51,13 @@ const Undelegation: React.FC<UndelegationProps> = ({
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address, connectedLedger } = useSelector(
+  const { address, connectedLedger, chosenNetwork } = useSelector(
     ({ profile }: RootState) => profile
   )
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger)
 
       const walletBalance = await client.getDelegation(
         address,
@@ -91,7 +92,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
-      const client = await signingClient(connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger)
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -136,7 +137,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
-    const client = await signingClient(connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -172,6 +173,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
     try {
       const undelegationResult = await undelegate(
+        chosenNetwork,
         address,
         validator?.address || '',
         amount || '',
@@ -184,7 +186,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         gasUsed: undelegationResult.gasUsed,
         txHash: undelegationResult.transactionHash
       })
-      const { undelegationsArray } = await fetchUndedelegations(address)
+      const { undelegationsArray } = await fetchUndedelegations(chosenNetwork!, address)
       dispatch(
         updateUser({
           undelegations: undelegationsArray
@@ -253,7 +255,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {import.meta.env.VITE_APP_CHAIN_NAME}
+                    {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
                   </Typography>
                 </Box>
               </Box>

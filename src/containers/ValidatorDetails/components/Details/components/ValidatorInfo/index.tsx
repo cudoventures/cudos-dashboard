@@ -36,6 +36,7 @@ import useRedelegationModal from './components/RedelegationModal/hooks'
 import UndelegationModal from './components/UndelegationModal'
 import useUndelegationModal from './components/UndelegationModal/hooks'
 import useRewardsModal from '../../../../../Dashboard/WalletInformation/components/ClaimRewardsModal/hooks'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type InfoProps = {
   overview: OverviewType
@@ -45,7 +46,7 @@ type InfoProps = {
 const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
   const [openActionsDropdown, setOpenActionsDropdown] = useState<boolean>(false)
   const info = useSelector((state: RootState) => state.notifications.info)
-  const { stakedValidators } = useSelector((state: RootState) => state.profile)
+  const { stakedValidators, chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { validator } = useSelector(
     (state: RootState) => state.validatorDetails
   )
@@ -107,7 +108,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/validators/${
+                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/validators/${
                     overview.operatorAddress
                   }`,
                   '_blank'

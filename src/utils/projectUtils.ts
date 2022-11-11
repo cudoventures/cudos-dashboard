@@ -1,9 +1,9 @@
 import copy from 'copy-to-clipboard'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
-import { client } from 'ledgers/utils'
 import { bech32 } from 'bech32'
 import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
+import { getQueryClient } from 'ledgers/utils'
 
 export const isValidCudosAddress = (address: string) => {
   if (address === '' || address === undefined) {
@@ -34,18 +34,18 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
   return `${text.slice(0, sliceIndex)}...${text.slice(len - 4, len)}`
 }
 
-export const getWalletBalance = async (address: string) => {
-  const updateWalletBalance = await (
-    await client
-  ).getBalance(address, CosmosNetworkConfig.CURRENCY_DENOM)
+export const getWalletBalance = async (chosenNetwork: string, address: string) => {
+  const queryClient = await getQueryClient(chosenNetwork)
+  const updateWalletBalance = await queryClient.getBalance(address, CosmosNetworkConfig.CURRENCY_DENOM)
 
   return new BigNumber(updateWalletBalance.amount)
     .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
     .toString(10)
 }
 
-export const getStakedBalance = async (address: string) => {
-  const updateWalletBalance = await (await client).getBalanceStaked(address)
+export const getStakedBalance = async (chosenNetwork: string, address: string) => {
+  const queryClient = await getQueryClient(chosenNetwork)
+  const updateWalletBalance = await queryClient.getBalanceStaked(address)
 
   if (updateWalletBalance === null) {
     return new BigNumber(0)

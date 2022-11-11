@@ -1,17 +1,17 @@
+import { useMemo } from 'react'
 import {
   ApolloClient,
-  InMemoryCache,
-  split,
-  HttpLink,
   ApolloLink,
   concat,
-  NormalizedCacheObject
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+  split
 } from '@apollo/client'
+import { createClient } from 'graphql-ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
-import { createClient } from 'graphql-ws'
-
-import { useMemo } from 'react'
+import { ApolloLinks } from './helpers'
 
 const defaultOptions: any = {
   watchQuery: {
@@ -26,28 +26,6 @@ const defaultOptions: any = {
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-const httpLink = new HttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_URL
-})
-
-const subscriptionLink = new GraphQLWsLink(
-  createClient({
-    url: import.meta.env.VITE_GRAPHQL_WS || 'ws://localhost:3000'
-  })
-)
-
-const link =
-  typeof window !== 'undefined'
-    ? split(
-        ({ query }) => {
-          const { kind, operation }: any = getMainDefinition(query)
-          return kind === 'OperationDefinition' && operation === 'subscription'
-        },
-        subscriptionLink,
-        httpLink
-      )
-    : httpLink
-
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {}
@@ -56,7 +34,30 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-function createApolloClient() {
+function createApolloClient(apolloLinks?: ApolloLinks) {
+
+  const httpLink = new HttpLink({
+    uri: apolloLinks?.uri as string
+  })
+
+  const subscriptionLink = new GraphQLWsLink(
+    createClient({
+      url: apolloLinks?.url as string
+    })
+  )
+
+  const link =
+    typeof window !== 'undefined'
+      ? split(
+        ({ query }) => {
+          const { kind, operation }: any = getMainDefinition(query)
+          return kind === 'OperationDefinition' && operation === 'subscription'
+        },
+        subscriptionLink,
+        httpLink
+      )
+      : httpLink
+
   const client = new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: concat(authMiddleware, link),
@@ -68,9 +69,9 @@ function createApolloClient() {
   return client
 }
 
-export function initializeApollo(initialState: any) {
+export function initializeApollo(initialState: any, apolloLinks: ApolloLinks) {
   // eslint-disable-next-line
-  const _apolloClient = apolloClient ?? createApolloClient()
+  const _apolloClient = createApolloClient(apolloLinks)
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -93,6 +94,13 @@ export function initializeApollo(initialState: any) {
 }
 
 export function useApollo(initialState: any) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState])
-  return store
+
+  const newApolloClient = useMemo(() => (apolloLinks?: ApolloLinks) => {
+    const store = initializeApollo(initialState, apolloLinks!)
+    return store
+
+    //eslint-disable-next-line
+  }, [initialState])
+
+  return newApolloClient
 }

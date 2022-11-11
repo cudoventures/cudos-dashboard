@@ -16,9 +16,11 @@ import LinkIcon from 'assets/vectors/link-icon.svg?component'
 import NetworkInfo from './NetworkInfo'
 
 import UserInfo from './UserInfo'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const Header = () => {
   const { theme } = useSelector((state: RootState) => state.settings)
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const dispatch = useDispatch()
   const location = useLocation()
 
@@ -56,7 +58,7 @@ const Header = () => {
                 spacing={2}
                 container
               >
-                <Grid alignSelf="center" item xl={2} lg={3} md={4} sm={8}>
+                <Grid alignSelf="center" item xl={2} lg={2} md={4} sm={8}>
                   <Box
                     display="flex"
                     alignItems="center"
@@ -68,7 +70,7 @@ const Header = () => {
                     }}
                     onClick={() =>
                       window
-                        .open(import.meta.env.VITE_BRIDGE_URL, '_blank')
+                        .open(CHAIN_DETAILS.BRIDGE_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.BRIDGE_URL], '_blank')
                         ?.focus()
                     }
                   >
@@ -80,14 +82,14 @@ const Header = () => {
                   </Box>
                 </Grid>
                 <Grid
-                  marginRight={isBigScreen ? '55px' : '0px'}
+                  marginRight={'70px'}
                   item
                   xl={2}
-                  lg={3}
+                  lg={2}
                   md={5}
                   sm={8}
                 >
-                  <NetworkInfo />
+                  <NetworkInfo componentStyle={'nav'} />
                 </Grid>
                 <Grid item xl={2} lg={3} md={5} sm={8}>
                   <UserInfo />

@@ -6,10 +6,12 @@ export enum ThemeType {
 }
 
 export interface SettingsState {
-  theme: ThemeType
+  loading?: boolean
+  theme?: ThemeType
 }
 
 const initialState: SettingsState = {
+  loading: false,
   theme: ThemeType.DARK
 }
 

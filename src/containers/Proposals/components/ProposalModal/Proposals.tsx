@@ -25,6 +25,7 @@ import {
 } from './styles'
 import { typeSwitch } from './ProposalTypes/types'
 import { validateInput } from './ProposalTypes/validateInput'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type ProposalProps = {
   modalProps: ProposalModalProps
@@ -33,7 +34,7 @@ type ProposalProps = {
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { setError } = useNotifications()
-  const { address, connectedLedger } = useSelector(
+  const { address, connectedLedger, chosenNetwork } = useSelector(
     ({ profile }: RootState) => profile
   )
 
@@ -95,6 +96,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         }
       })
       const { result, gasFee } = await createProposal(
+        chosenNetwork,
         proposalData,
         proposerAddress,
         connectedLedger
@@ -106,7 +108,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         hash: result.transactionHash
       })
 
-      const walletBalance = await getWalletBalance(address)
+      const walletBalance = await getWalletBalance(chosenNetwork!, address)
 
       dispatch(
         updateUser({
@@ -168,7 +170,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
                 Network
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                {import.meta.env.VITE_APP_CHAIN_NAME}
+                {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
               </Typography>
             </Box>
           </Box>

@@ -30,29 +30,30 @@ import { styles } from './styles'
 const ConnectWallet = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
+  const { lastLoggedAddress, chosenNetwork: currentNetwork } = useSelector((state: RootState) => state.profile)
   const { setWarning } = useNotifications()
   const [loading, setLoading] = useState<boolean>(false)
   const [ledger, setLedger] = useState<string>('')
 
-  const connect = async (ledgerType: string) => {
+  const connect = async (chosenNetwork: string, ledgerType: string) => {
     try {
       setLedger(ledgerType)
       setLoading(true)
-      const { address, accountName } = await switchLedgerType(ledgerType)
+      const { address, accountName } = await switchLedgerType(chosenNetwork, ledgerType)
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
-      const balance = await getWalletBalance(address!)
-      const stakedAmountBalance = await getStakedBalance(address!)
-      const { totalRewards, validatorArray } = await fetchRewards(address!)
-      const { delegationsArray } = await fetchDelegations(address)
-      const { redelegationsArray } = await fetchRedelegations(address)
-      const { undelegationsArray } = await fetchUndedelegations(address)
-      const { unbondingBalance } = await getUnbondingBalance(address)
+      const balance = await getWalletBalance(chosenNetwork, address!)
+      const stakedAmountBalance = await getStakedBalance(chosenNetwork, address!)
+      const { totalRewards, validatorArray } = await fetchRewards(chosenNetwork, address!)
+      const { delegationsArray } = await fetchDelegations(chosenNetwork, address)
+      const { redelegationsArray } = await fetchRedelegations(chosenNetwork, address)
+      const { undelegationsArray } = await fetchUndedelegations(chosenNetwork, address)
+      const { unbondingBalance } = await getUnbondingBalance(chosenNetwork, address)
 
       dispatch(
         updateUser({
+          chosenNetwork,
           address,
           accountName,
           connectedLedger: ledgerType,
@@ -96,7 +97,7 @@ const ConnectWallet = () => {
               variant="contained"
               disabled={loading}
               color="primary"
-              onClick={() => connect(CosmosNetworkConfig.KEPLR_LEDGER)}
+              onClick={() => connect(currentNetwork!, CosmosNetworkConfig.KEPLR_LEDGER)}
               sx={styles.connectButton}
             >
               <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
@@ -124,7 +125,7 @@ const ConnectWallet = () => {
               variant="contained"
               disabled={loading}
               color="primary"
-              onClick={() => connect(CosmosNetworkConfig.COSMOSTATION_LEDGER)}
+              onClick={() => connect(currentNetwork!, CosmosNetworkConfig.COSMOSTATION_LEDGER)}
               sx={styles.cosmostationConnectBtn}
             >
               <img

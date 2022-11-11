@@ -9,6 +9,7 @@ import SuccessIcon from 'assets/vectors/success.svg'
 import { formatBigNum } from 'utils/projectUtils'
 import { DepositModalProps, initialDepositModalState } from 'store/modal'
 import { ModalContainer, CancelRoundedIcon } from './styles'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type SuccessProps = {
   modalProps: DepositModalProps
@@ -16,7 +17,7 @@ type SuccessProps = {
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { address } = useSelector(({ profile }: RootState) => profile)
+  const { address, chosenNetwork } = useSelector(({ profile }: RootState) => profile)
   const { title, id, fee, hash, amount } = modalProps
 
   const handleClose = () => {
@@ -92,7 +93,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                 window
                   .open(
                     `${
-                      import.meta.env.VITE_APP_EXPLORER_V2
+                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                     }/transactions/${hash}`,
                     '_blank'
                   )

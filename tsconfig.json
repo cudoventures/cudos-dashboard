@@ -17,7 +17,7 @@
     "useUnknownInCatchVariables": false,
     "jsx": "react-jsx",
     "baseUrl": "./src",
-    "types": ["@honkhonk/vite-plugin-svgr/client"]
+    "types": ["@honkhonk/vite-plugin-svgr/client", "node"]
   },
   "include": ["src", "types"],
   "typeRoots": ["./types", "./node_modules/@types/"]

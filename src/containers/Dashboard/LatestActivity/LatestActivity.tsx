@@ -19,9 +19,13 @@ import numeral from 'numeral'
 import { addEndingEllipsis } from 'utils/projectUtils'
 import { styles } from '../styles'
 import { useUserTransactions } from './UserActivity/hooks'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const LatestActivity = () => {
   const { state } = useUserTransactions()
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { data, loading, hasActivity } = state
 
   const theme = useTheme()
@@ -45,7 +49,7 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/blocks/${tx.height}`,
+                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/blocks/${tx.height}`,
                   '_blank'
                 )
                 ?.focus()
@@ -66,7 +70,7 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${
+                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/transactions/${
                     tx.hash
                   }`,
                   '_blank'
