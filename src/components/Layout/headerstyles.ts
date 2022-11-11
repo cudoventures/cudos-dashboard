@@ -12,14 +12,14 @@ export const headerStyles = {
     textDecoration: 'none'
   },
   headerContainer: {
-    padding: '2rem 4rem',
+    padding: '2rem',
     justifyContent: 'space-between',
     alignItems: 'center',
     display: 'flex',
     flex: '1'
   },
   smallerScreenHeaderContainer: {
-    padding: '2rem 4rem',
+    padding: '2rem',
     justifyContent: 'space-between',
     flexDirection: 'column',
     alignItems: 'center',

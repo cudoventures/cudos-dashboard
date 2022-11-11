@@ -46,7 +46,7 @@ const Header = () => {
           {logoComponent}
         </Box>
         {isWelcomePage ? null :
-          <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
+          <Box gap={2} sx={{ marginRight: '2rem', display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
             <Box
               gap={1}
               sx={headerStyles.linkHolder}
