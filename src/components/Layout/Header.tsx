@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { headerStyles } from './headerstyles'
 import { useMidLowerResCheck, useMidlowResCheck } from './hooks/useScreenChecks'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { CHAIN_DETAILS } from 'utils/constants'
 import NetworkInfo from './NetworkInfo'
 import UserInfo from './UserInfo'
@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 
 const Header = () => {
 
+  const location = useLocation()
   const nagivate = useNavigate()
   const isMidLowewRes = useMidLowerResCheck()
   const isMidLowRes = useMidlowResCheck()
@@ -23,13 +24,19 @@ const Header = () => {
   const [logoComponent, setLogoComponent] = useState<JSX.Element>()
 
   useEffect(() => {
+
+    if (location.pathname === '/') {
+      setLogoComponent(<LogoHeader />)
+      return
+    }
+
     if (!loadingState) {
       setLogoComponent(
         isMainnet ? <LogoHeader /> : <TestNetLogoHeader />
       )
     }
 
-  }, [loadingState])
+  }, [loadingState, location.pathname])
 
   return (
     <Box>
@@ -37,25 +44,26 @@ const Header = () => {
         <Box onClick={() => nagivate('dashboard')} sx={headerStyles.logoHolder}>
           {logoComponent}
         </Box>
-        <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
-          <Box
-            gap={1}
-            sx={headerStyles.linkHolder}
-            onClick={() => window
-              .open(CHAIN_DETAILS.BRIDGE_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.BRIDGE_URL], '_blank')
-              ?.focus()}
-          >
-            <CudosLogo />
-            <Typography variant="body2" fontWeight={700}>
-              Cudos Bridge
-            </Typography>
-            <LinkIcon style={{ color: 'white' }} />
-          </Box>
-          <Box sx={{ display: 'flex' }}>
-            <NetworkInfo />
-            <UserInfo />
-          </Box>
-        </Box>
+        {location.pathname === '/' ? null :
+          <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
+            <Box
+              gap={1}
+              sx={headerStyles.linkHolder}
+              onClick={() => window
+                .open(CHAIN_DETAILS.BRIDGE_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.BRIDGE_URL], '_blank')
+                ?.focus()}
+            >
+              <CudosLogo />
+              <Typography variant="body2" fontWeight={700}>
+                Cudos Bridge
+              </Typography>
+              <LinkIcon style={{ color: 'white' }} />
+            </Box>
+            <Box sx={{ display: 'flex' }}>
+              <NetworkInfo />
+              <UserInfo />
+            </Box>
+          </Box>}
       </Box>
     </Box>
   )
