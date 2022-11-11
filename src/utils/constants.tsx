@@ -1,4 +1,4 @@
-// CONFIGURATIONS
+// APP SPECIFIC CHAIN CONFIGURATIONS
 export const CHAIN_DETAILS = {
     DEFAULT_NETWORK: import.meta.env.VITE_APP_DEFAULT_NETWORK || process.env.VITE_APP_DEFAULT_NETWORK || "",
     BRIDGE_URL: {
@@ -71,4 +71,15 @@ export const CHAIN_DETAILS = {
         ALIAS_NAME: 'Main Network',
         SHORT_NAMES: ['mainnet', 'cudos-1']
     }
+}
+
+// GENERAL APP CONFIGURATIONS
+export const SCREEN_RESOLUTIONS = {
+    HIGH: 1600,
+    MID_LOW: 1300,
+    LOW: 1000,
+    MID_LOWER: 850,
+    LOWER: 750,
+    MID_LOWEST: 450,
+    LOWEST: 200
 }

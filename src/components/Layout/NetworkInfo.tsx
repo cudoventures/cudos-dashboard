@@ -10,6 +10,7 @@ import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
 import { chainIDToAlias, handleAvailableNetworks } from 'utils/generalHelpers'
 import { updateUser } from 'store/profile'
+import Card from 'components/Card'
 
 export const networksToDisplayInMenu = handleAvailableNetworks(CHAIN_DETAILS.DEFAULT_NETWORK)
 
@@ -43,7 +44,7 @@ const NetworkLinkComponent = ({ network, setChosenNetwork }: {
   )
 }
 
-const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => {
+const NetworkInfo = () => {
 
   const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
@@ -56,14 +57,12 @@ const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => 
   }
 
   const collapsable = networksToDisplayInMenu.length > 1
-  const isMenu = componentStyle === 'menu'
 
   return (
 
     <StyledNetwork sx={
       !collapsable || loadingState ? {} : { cursor: 'pointer' }}>
       <Box
-        borderRadius={isMenu ? 3 : 5}
         onMouseEnter={!collapsable || loadingState ? () => { } : () => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         style={styles.userContainer}
@@ -91,12 +90,12 @@ const NetworkInfo = ({ componentStyle }: { componentStyle: 'menu' | 'nav' }) => 
         style={{ marginTop: '-28px', zIndex: '-1' }}
         in={open}
       >
-        <Box gap={3} style={styles.networkSelectionMenuContainer}>
+        <Card elevation={15} style={styles.networkSelectionMenuContainer}>
           {networksToDisplayInMenu.map((NETWORK, idx) => {
             return aliasChainName !== NETWORK.ALIAS_NAME ?
               <NetworkLinkComponent key={idx} network={NETWORK} setChosenNetwork={setChosenNetwork} /> : null
           })}
-        </Box>
+        </Card>
       </Collapse>
     </StyledNetwork>
   )

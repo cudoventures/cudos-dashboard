@@ -1,104 +1,49 @@
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme
-} from '@mui/material'
-import { useSelector, useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Box, Typography } from '@mui/material'
+import { useSelector } from 'react-redux'
 import { RootState } from 'store'
-import { ThemeType, updateSettings } from 'store/settings'
-import LogoHeader from 'assets/vectors/logo-header.svg'
+import { headerStyles } from './headerstyles'
+import { useMidLowerResCheck, useMidlowResCheck } from './hooks/useScreenChecks'
+import { useNavigate } from 'react-router-dom'
+import { CHAIN_DETAILS } from 'utils/constants'
+import NetworkInfo from './NetworkInfo'
+import UserInfo from './UserInfo'
+import LogoHeader from 'assets/vectors/logo-header.svg?component'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import LinkIcon from 'assets/vectors/link-icon.svg?component'
-import NetworkInfo from './NetworkInfo'
-
-import UserInfo from './UserInfo'
-import { CHAIN_DETAILS } from 'utils/constants'
 
 const Header = () => {
-  const { theme } = useSelector((state: RootState) => state.settings)
+
+  const nagivate = useNavigate()
+  const isMidLowewRes = useMidLowerResCheck()
+  const isMidLowRes = useMidlowResCheck()
   const { chosenNetwork } = useSelector((state: RootState) => state.profile)
-  const dispatch = useDispatch()
-  const location = useLocation()
-
-  const themeBreakpoint = useTheme()
-  const isSmallScreen = useMediaQuery(
-    themeBreakpoint.breakpoints.down('md' || 'xs')
-  )
-  const isBigScreen = useMediaQuery(themeBreakpoint.breakpoints.up('lg'))
-
-  const switchTheme = () => {
-    dispatch(
-      updateSettings({
-        theme: theme === ThemeType.DARK ? ThemeType.LIGHT : ThemeType.DARK
-      })
-    )
-  }
 
   return (
-    <Box sx={{ padding: '2rem', display: 'flex' }}>
-      <Grid container>
-        <img src={LogoHeader} alt="logo" />
-        {location.pathname === '/' ? null : (
+    <Box>
+      <Box gap={2} sx={isMidLowRes ? headerStyles.smallerScreenHeaderContainer : headerStyles.headerContainer}>
+        <Box onClick={() => nagivate('dashboard')} sx={headerStyles.logoHolder}>
+          <LogoHeader />
+        </Box>
+        <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
           <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              flex: '1'
-            }}
+            gap={1}
+            sx={headerStyles.linkHolder}
+            onClick={() => window
+              .open(CHAIN_DETAILS.BRIDGE_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.BRIDGE_URL], '_blank')
+              ?.focus()}
           >
-            <Container style={{ marginRight: 0 }}>
-              <Grid
-                justifyContent="flex-end"
-                sx={{ pr: isSmallScreen ? 0 : 7 }}
-                rowSpacing={2}
-                spacing={2}
-                container
-              >
-                <Grid alignSelf="center" item xl={2} lg={2} md={4} sm={8}>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap={1}
-                    sx={{
-                      padding: '0.5rem 1rem',
-                      cursor: 'pointer',
-                      width: '200px'
-                    }}
-                    onClick={() =>
-                      window
-                        .open(CHAIN_DETAILS.BRIDGE_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.BRIDGE_URL], '_blank')
-                        ?.focus()
-                    }
-                  >
-                    <CudosLogo />
-                    <Typography variant="body2" fontWeight={700}>
-                      Cudos Bridge
-                    </Typography>
-                    <LinkIcon style={{ color: 'white' }} />
-                  </Box>
-                </Grid>
-                <Grid
-                  marginRight={'70px'}
-                  item
-                  xl={2}
-                  lg={2}
-                  md={5}
-                  sm={8}
-                >
-                  <NetworkInfo componentStyle={'nav'} />
-                </Grid>
-                <Grid item xl={2} lg={3} md={5} sm={8}>
-                  <UserInfo />
-                </Grid>
-              </Grid>
-            </Container>
+            <CudosLogo />
+            <Typography variant="body2" fontWeight={700}>
+              Cudos Bridge
+            </Typography>
+            <LinkIcon style={{ color: 'white' }} />
           </Box>
-        )}
-      </Grid>
+          <Box sx={{ display: 'flex' }}>
+            <NetworkInfo />
+            <UserInfo />
+          </Box>
+        </Box>
+      </Box>
     </Box>
   )
 }

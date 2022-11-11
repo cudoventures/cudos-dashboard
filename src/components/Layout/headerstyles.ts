@@ -1,0 +1,29 @@
+export const headerStyles = {
+  linkHolder: {
+    cursor: 'pointer',
+    width: 'max-content',
+    marginRight: '20px',
+    display: "flex",
+    alignItems: "center"
+  },
+  logoHolder: {
+    cursor: 'pointer',
+    display: 'flex',
+    textDecoration: 'none'
+  },
+  headerContainer: {
+    padding: '2rem 4rem',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    display: 'flex',
+    flex: '1'
+  },
+  smallerScreenHeaderContainer: {
+    padding: '2rem 4rem',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'center',
+    display: 'flex',
+    flex: '1'
+  },
+} as const
