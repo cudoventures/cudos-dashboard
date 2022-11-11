@@ -132,9 +132,6 @@ const App = () => {
     }
   }, [])
 
-  const test = useCallback(() => {
-
-  }, [currentNetwork])
 
   useEffect(() => {
     dispatch(updateUser({ loadingState: true })
