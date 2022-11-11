@@ -11,20 +11,31 @@ import LogoHeader from 'assets/vectors/logo-header.svg?component'
 import TestNetLogoHeader from 'assets/vectors/testnet-logo-header.svg?component'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import LinkIcon from 'assets/vectors/link-icon.svg?component'
+import { useEffect, useState } from 'react'
 
 const Header = () => {
 
   const nagivate = useNavigate()
   const isMidLowewRes = useMidLowerResCheck()
   const isMidLowRes = useMidlowResCheck()
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const isMainnet = CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID] === CHAIN_DETAILS.CHAIN_ID.MAINNET
+  const [logoComponent, setLogoComponent] = useState<JSX.Element>()
+
+  useEffect(() => {
+    if (!loadingState) {
+      setLogoComponent(
+        isMainnet ? <LogoHeader /> : <TestNetLogoHeader />
+      )
+    }
+
+  }, [loadingState])
 
   return (
     <Box>
       <Box gap={2} sx={isMidLowRes ? headerStyles.smallerScreenHeaderContainer : headerStyles.headerContainer}>
         <Box onClick={() => nagivate('dashboard')} sx={headerStyles.logoHolder}>
-          {isMainnet ? <LogoHeader /> : <TestNetLogoHeader />}
+          {logoComponent}
         </Box>
         <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
           <Box
