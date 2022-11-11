@@ -3,8 +3,7 @@ import { StyledNetwork, styles } from './networkStyles'
 import ArrowIcon from 'assets/vectors/arrow-down.svg?component'
 import { CHAIN_DETAILS } from 'utils/constants'
 import { COLORS_DARK_THEME } from 'theme/colors'
-import globusIcon from 'assets/vectors/globus-icon.svg'
-import grayGlobusIcon from 'assets/vectors/gray-globus-icon.svg'
+import GlobusIcon from 'assets/vectors/globus-icon.svg?component'
 import { Typography, Box, Collapse } from '@mui/material'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,10 +27,14 @@ const NetworkLinkComponent = ({ network, setChosenNetwork }: {
       onMouseOut={() => setHovered(false)}
       onClick={() => setChosenNetwork(network.SHORT_NAMES[0].toUpperCase())}
     >
-      <img
-        style={{ marginRight: '10px' }}
-        src={hovered ? globusIcon : grayGlobusIcon}
-        alt="globus-icon"
+      <GlobusIcon
+        style={{
+          marginRight: '10px',
+          color:
+            hovered ?
+              COLORS_DARK_THEME.PRIMARY_BLUE :
+              COLORS_DARK_THEME.SECONDARY_TEXT
+        }}
       />
       <Typography
         color={
@@ -48,7 +51,7 @@ const NetworkInfo = () => {
 
   const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
-  const { chosenNetwork, address, loadingState } = useSelector((state: RootState) => state.profile)
+  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const aliasChainName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID])
 
   const setChosenNetwork = (selectedNetwork: string) => {
@@ -69,9 +72,14 @@ const NetworkInfo = () => {
       >
         <Box style={styles.userInnerContainer}>
           <Box style={{ display: 'flex' }}>
-            <img style={{ marginRight: '10px' }}
-              src={loadingState ? grayGlobusIcon : globusIcon}
-              alt="globus-icon"
+            <GlobusIcon
+              style={{
+                marginRight: '10px',
+                color:
+                  loadingState ?
+                    COLORS_DARK_THEME.SECONDARY_TEXT :
+                    COLORS_DARK_THEME.PRIMARY_BLUE
+              }}
             />
             {!loadingState ? <Typography> {aliasChainName} </Typography> :
               <Typography color={'text.secondary'}>

@@ -8,6 +8,7 @@ import { CHAIN_DETAILS } from 'utils/constants'
 import NetworkInfo from './NetworkInfo'
 import UserInfo from './UserInfo'
 import LogoHeader from 'assets/vectors/logo-header.svg?component'
+import TestNetLogoHeader from 'assets/vectors/testnet-logo-header.svg?component'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import LinkIcon from 'assets/vectors/link-icon.svg?component'
 
@@ -17,12 +18,13 @@ const Header = () => {
   const isMidLowewRes = useMidLowerResCheck()
   const isMidLowRes = useMidlowResCheck()
   const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+  const isMainnet = CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID] === CHAIN_DETAILS.CHAIN_ID.MAINNET
 
   return (
     <Box>
       <Box gap={2} sx={isMidLowRes ? headerStyles.smallerScreenHeaderContainer : headerStyles.headerContainer}>
         <Box onClick={() => nagivate('dashboard')} sx={headerStyles.logoHolder}>
-          <LogoHeader />
+          {isMainnet ? <LogoHeader /> : <TestNetLogoHeader />}
         </Box>
         <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
           <Box

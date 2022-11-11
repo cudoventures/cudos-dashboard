@@ -2,7 +2,7 @@ export const headerStyles = {
   linkHolder: {
     cursor: 'pointer',
     width: 'max-content',
-    marginRight: '20px',
+    marginRight: '10px',
     display: "flex",
     alignItems: "center"
   },
