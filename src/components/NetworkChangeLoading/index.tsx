@@ -12,7 +12,7 @@ const NetworkChangingLoading = () => {
 
     return (
         <Fragment>
-            <Box gap={2} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignContent: 'center', alignItems: 'center' }}>
+            <Box gap={2} sx={{ height: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignContent: 'center', alignItems: 'center' }}>
                 <CircularProgress />
                 <Typography variant="h5">
                     Connecting to {aliasChainName}...

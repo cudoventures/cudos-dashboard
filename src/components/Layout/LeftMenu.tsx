@@ -13,7 +13,7 @@ import { RootState } from 'store'
 
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
-  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { pathname } = useLocation()
 
   const MenuItems = [
@@ -34,7 +34,7 @@ const Menu = () => {
     setSelected(selectedIndex)
   }, [pathname])
 
-  return (loadingState ? null :
+  return (
     <Box sx={styles.menuContainer}>
       <Box
         display="flex"
