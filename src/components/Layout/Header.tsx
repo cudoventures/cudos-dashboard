@@ -56,7 +56,7 @@ const Header = () => {
                 spacing={2}
                 container
               >
-                <Grid alignSelf="center" item xl={2} lg={3} md={4} sm={8}>
+                <Grid alignSelf="center" item xl={2} lg={2} md={4} sm={8}>
                   <Box
                     display="flex"
                     alignItems="center"
@@ -83,7 +83,7 @@ const Header = () => {
                   marginRight={isBigScreen ? '55px' : '0px'}
                   item
                   xl={2}
-                  lg={3}
+                  lg={2}
                   md={5}
                   sm={8}
                 >
