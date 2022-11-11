@@ -21,11 +21,12 @@ const Header = () => {
   const isMidLowRes = useMidlowResCheck()
   const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const isMainnet = CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID] === CHAIN_DETAILS.CHAIN_ID.MAINNET
+  const isWelcomePage = location.pathname === '/'
   const [logoComponent, setLogoComponent] = useState<JSX.Element>()
 
   useEffect(() => {
 
-    if (location.pathname === '/') {
+    if (isWelcomePage) {
       setLogoComponent(<LogoHeader />)
       return
     }
@@ -41,10 +42,10 @@ const Header = () => {
   return (
     <Box>
       <Box gap={2} sx={isMidLowRes ? headerStyles.smallerScreenHeaderContainer : headerStyles.headerContainer}>
-        <Box onClick={() => nagivate('dashboard')} sx={headerStyles.logoHolder}>
+        <Box onClick={() => nagivate(isWelcomePage ? '/' : 'dashboard')} sx={headerStyles.logoHolder}>
           {logoComponent}
         </Box>
-        {location.pathname === '/' ? null :
+        {isWelcomePage ? null :
           <Box gap={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: isMidLowewRes ? 'column' : 'row' }}>
             <Box
               gap={1}
