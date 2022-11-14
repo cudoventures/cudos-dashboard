@@ -12,11 +12,11 @@ export const connectCosmostationLedger = async (): Promise<{
   try {
     const provider = await cosmos()
 
-    const activatedChains = await provider.getActivatedChains()
+    const activatedChains = await provider.getActivatedChainIds()
 
     if (
       !activatedChains.includes(
-        import.meta.env.VITE_APP_CHAIN_NAME.toLowerCase()
+        import.meta.env.VITE_APP_CHAIN_ID.toLowerCase()
       )
     ) {
       await provider.addChain({
@@ -46,8 +46,9 @@ export const connectCosmostationLedger = async (): Promise<{
       })
     }
 
+    // Although the method asks for CHAIN_NAME, it should receive CHAIN_ID as parameter if getActivatedChainIds is used above!
     const acccount = await provider.requestAccount(
-      import.meta.env.VITE_APP_CHAIN_NAME
+      import.meta.env.VITE_APP_CHAIN_ID
     )
 
     userAccountAddress = acccount.address
