@@ -1,22 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Fragment, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, CircularProgress, CssBaseline } from '@mui/material'
+import { Box, CssBaseline } from '@mui/material'
 import { ApolloClient, ApolloProvider, NormalizedCacheObject } from '@apollo/client'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
-import { fetchRedelegations } from 'api/getAccountRedelegations'
-import { fetchUndedelegations } from 'api/getAccountUndelegations'
-import BigNumber from 'bignumber.js'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
-import { fetchRewards } from 'api/getRewards'
 import NotificationPopup from 'components/NotificationPopup'
-import { fetchDelegations } from 'api/getAccountDelegations'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { switchLedgerType } from 'ledgers/utils'
-import { getUnbondingBalance } from 'api/getUnbondingBalance'
-import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
+import { connectUser } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import RequireLedger from './components/RequireLedger/RequireLedger'
@@ -54,7 +48,8 @@ const App = () => {
 
   const connectAccount = useCallback(async (chosenNetwork: string, ledgerType: string) => {
     try {
-      const { address, accountName } = await switchLedgerType(chosenNetwork!, ledgerType)
+
+      const { address } = await switchLedgerType(chosenNetwork!, ledgerType)
       if (address !== lastLoggedAddress || lastLoggedAddress === '') {
         dispatch(
           updateUserTransactions({
@@ -65,37 +60,10 @@ const App = () => {
           })
         )
       }
-      const balance = await getWalletBalance(chosenNetwork!, address!)
 
-      const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address!)
+      const connectedUser = await connectUser(chosenNetwork, ledgerType)
+      dispatch(updateUser({ ...connectedUser }))
 
-      const { totalRewards, validatorArray } = await fetchRewards(chosenNetwork!, address!)
-
-      const { delegationsArray } = await fetchDelegations(chosenNetwork!, address)
-
-      const { redelegationsArray } = await fetchRedelegations(chosenNetwork!, address)
-
-      const { undelegationsArray } = await fetchUndedelegations(chosenNetwork!, address)
-
-      const { unbondingBalance } = await getUnbondingBalance(chosenNetwork!, address)
-
-      dispatch(
-        updateUser({
-          chosenNetwork,
-          address,
-          lastLoggedAddress: address,
-          connectedLedger: ledgerType,
-          accountName,
-          balance: new BigNumber(balance),
-          availableRewards: new BigNumber(totalRewards),
-          stakedValidators: validatorArray,
-          stakedBalance: new BigNumber(stakedAmountBalance),
-          unbondingBalance: new BigNumber(unbondingBalance),
-          delegations: delegationsArray,
-          redelegations: redelegationsArray,
-          undelegations: undelegationsArray,
-        })
-      )
     } catch (e) {
       throw new Error('Failed to connect!')
     }

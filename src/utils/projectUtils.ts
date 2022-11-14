@@ -3,7 +3,12 @@ import BigNumber from 'bignumber.js'
 import moment from 'moment'
 import { bech32 } from 'bech32'
 import CosmosNetworkConfig from '../ledgers/CosmosNetworkConfig'
-import { getQueryClient } from 'ledgers/utils'
+import { getQueryClient, switchLedgerType } from 'ledgers/utils'
+import { fetchRewards } from 'api/getRewards'
+import { fetchDelegations } from 'api/getAccountDelegations'
+import { fetchRedelegations } from 'api/getAccountRedelegations'
+import { fetchUndedelegations } from 'api/getAccountUndelegations'
+import { getUnbondingBalance } from 'api/getUnbondingBalance'
 
 export const isValidCudosAddress = (address: string) => {
   if (address === '' || address === undefined) {
@@ -81,4 +86,41 @@ export const addEndingEllipsis = (
     return `${input.substring(0, begining)}...`
   }
   return input
+}
+
+export const connectUser = async (chosenNetwork: string, ledgerType: string): Promise<any> => {
+
+  try {
+
+    const { address, accountName } = await switchLedgerType(chosenNetwork!, ledgerType)
+    const balance = await getWalletBalance(chosenNetwork, address!)
+    const stakedAmountBalance = await getStakedBalance(chosenNetwork, address!)
+    const { totalRewards, validatorArray } = await fetchRewards(chosenNetwork, address!)
+    const { delegationsArray } = await fetchDelegations(chosenNetwork, address)
+    const { redelegationsArray } = await fetchRedelegations(chosenNetwork, address)
+    const { undelegationsArray } = await fetchUndedelegations(chosenNetwork, address)
+    const { unbondingBalance } = await getUnbondingBalance(chosenNetwork, address)
+
+    const connectedUser = {
+      chosenNetwork,
+      address,
+      lastLoggedAddress: address,
+      connectedLedger: ledgerType,
+      accountName,
+      balance: new BigNumber(balance),
+      availableRewards: new BigNumber(totalRewards),
+      stakedValidators: validatorArray,
+      stakedBalance: new BigNumber(stakedAmountBalance),
+      unbondingBalance: new BigNumber(unbondingBalance),
+      delegations: delegationsArray,
+      redelegations: redelegationsArray,
+      undelegations: undelegationsArray,
+    }
+
+    return connectedUser
+
+  } catch (error) {
+    console.error(error.message)
+  }
+
 }
