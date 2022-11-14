@@ -30,7 +30,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           flex={1}
           overflow="auto"
         >
-          {children}
+          <Box>
+            {children}
+          </Box>
           <Footer />
         </Box>
       </Box>
