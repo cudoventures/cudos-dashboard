@@ -3,12 +3,11 @@ import { Fragment } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "store"
 import { CHAIN_DETAILS } from "utils/constants"
-import { chainIDToAlias } from "utils/generalHelpers"
 
 const NetworkChangingLoading = () => {
 
     const { chosenNetwork } = useSelector((state: RootState) => state.profile)
-    const aliasChainName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID])
+    const aliasChainName = CHAIN_DETAILS[chosenNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME
 
     return (
         <Fragment>

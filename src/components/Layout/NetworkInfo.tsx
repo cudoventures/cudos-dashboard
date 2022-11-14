@@ -7,7 +7,7 @@ import GlobusIcon from 'assets/vectors/globus-icon.svg?component'
 import { Typography, Box, Collapse } from '@mui/material'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
-import { chainIDToAlias, handleAvailableNetworks } from 'utils/generalHelpers'
+import { handleAvailableNetworks } from 'utils/generalHelpers'
 import { updateUser } from 'store/profile'
 import Card from 'components/Card'
 
@@ -52,7 +52,7 @@ const NetworkInfo = () => {
   const dispatch = useDispatch()
   const [open, setOpen] = useState<boolean>(false)
   const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
-  const aliasChainName = chainIDToAlias(CHAIN_DETAILS.CHAIN_ID[chosenNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID])
+  const aliasChainName = CHAIN_DETAILS[chosenNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME
 
   const setChosenNetwork = (selectedNetwork: string) => {
     dispatch(updateUser({ chosenNetwork: selectedNetwork }))
