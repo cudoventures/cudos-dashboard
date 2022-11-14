@@ -19,7 +19,7 @@ export const connectKeplrLedger = async (chosenNetwork: string) => {
     RPC: CHAIN_DETAILS.RPC_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.RPC_ADDRESS],
     API: CHAIN_DETAILS.API_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.API_ADDRESS],
     STAKING: CHAIN_DETAILS.STAKING_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.API_ADDRESS],
-    GAS_PRICE: import.meta.env.VITE_APP_GAS_PRICE
+    GAS_PRICE: CHAIN_DETAILS.GAS_PRICE
   })
 
   await wallet.connect()

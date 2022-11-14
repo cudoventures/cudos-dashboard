@@ -38,11 +38,11 @@ export const connectCosmostationLedger = async (chosenNetwork: string): Promise<
         coinGeckoId: CosmosNetworkConfig.BECH32_PREFIX_ACC_ADDR,
 
         gasRate: {
-          average: (Number(import.meta.env.VITE_APP_GAS_PRICE) * 2).toString(),
+          average: (Number(CHAIN_DETAILS.GAS_PRICE) * 2).toString(),
 
-          low: (Number(import.meta.env.VITE_APP_GAS_PRICE) * 2).toString(),
+          low: (Number(CHAIN_DETAILS.GAS_PRICE) * 2).toString(),
 
-          tiny: import.meta.env.VITE_APP_GAS_PRICE.toString()
+          tiny: CHAIN_DETAILS.GAS_PRICE.toString()
         }
       })
     }

@@ -24,14 +24,14 @@ import {
 import {
   DeliverTxResponse,
   GasPrice,
-  SigningStargateClient,
   coins,
   coin,
   MsgDelegateEncodeObject,
   MsgVoteEncodeObject,
   MsgDepositEncodeObject,
   MsgSubmitProposalEncodeObject,
-  MsgUndelegateEncodeObject
+  MsgUndelegateEncodeObject,
+  DEFAULT_GAS_MULTIPLIER
 } from 'cudosjs'
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
@@ -40,6 +40,7 @@ import { toValidatorAddress } from 'utils/prefix_convert'
 import { ClientUpdateProposal, UpgradeProposal } from './ibc-go/codec/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { signingClient } from './utils'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const PROPOSAL_TYPES = {
   PROPOSAL_TYPE_TEXT: 1,
@@ -51,9 +52,8 @@ const PROPOSAL_TYPES = {
   PROPOSAL_TYPE_IBC_UPGRADE: 7
 }
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
@@ -79,7 +79,7 @@ export const getFee = async (
   const client = await signingClient(chosenNetwork, ledgerType)
   const gasUsed = await client.simulate(address, message, memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
+  const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
   const fee = calculateFee(gasLimit, gasPrice)
 

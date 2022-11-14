@@ -5,7 +5,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgBeginRedelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, GasPrice } from 'cudosjs'
+import { coin, DEFAULT_GAS_MULTIPLIER, GasPrice } from 'cudosjs'
 import {
   ModalStatus,
   RedelegationModalProps,
@@ -34,9 +34,8 @@ import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { updateUser } from 'store/profile'
 import { CHAIN_DETAILS } from 'utils/constants'
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 type RedelegationProps = {
@@ -133,7 +132,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-      const gasLimit = Math.round(gasUsed * feeMultiplier)
+      const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
       const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 
@@ -179,7 +178,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-    const gasLimit = Math.round(gasUsed * feeMultiplier)
+    const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
     const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 

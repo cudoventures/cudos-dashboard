@@ -6,7 +6,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, GasPrice, MsgUndelegateEncodeObject } from 'cudosjs'
+import { coin, DEFAULT_GAS_MULTIPLIER, GasPrice, MsgUndelegateEncodeObject } from 'cudosjs'
 import {
   ModalStatus,
   UndelegationModalProps,
@@ -21,20 +21,19 @@ import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { formatNumber, formatToken } from 'utils/format_token'
+import { signingClient } from 'ledgers/utils'
+import { fetchUndedelegations } from 'api/getAccountUndelegations'
+import { updateUser } from 'store/profile'
+import { CHAIN_DETAILS } from 'utils/constants'
 import {
   ModalContainer,
   StyledTextField,
   SummaryContainer,
   CancelRoundedIcon
 } from 'components/Dialog/components/styles'
-import { signingClient } from 'ledgers/utils'
-import { fetchUndedelegations } from 'api/getAccountUndelegations'
-import { updateUser } from 'store/profile'
-import { CHAIN_DETAILS } from 'utils/constants'
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 type UndelegationProps = {
@@ -96,7 +95,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-      const gasLimit = Math.round(gasUsed * feeMultiplier)
+      const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
       const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 
@@ -141,7 +140,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-    const gasLimit = Math.round(gasUsed * feeMultiplier)
+    const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
     const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 

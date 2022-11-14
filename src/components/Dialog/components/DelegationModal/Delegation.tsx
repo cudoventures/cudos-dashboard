@@ -12,7 +12,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
+import { coin, DEFAULT_GAS_MULTIPLIER, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
 import {
   ModalStatus,
   DelegationModalProps,
@@ -32,17 +32,17 @@ import { signingClient } from 'ledgers/utils'
 import { updateUser } from 'store/profile'
 import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import { fetchDelegations } from 'api/getAccountDelegations'
+import { CHAIN_DETAILS } from 'utils/constants'
+
 import {
   ModalContainer,
   StyledTextField,
   SummaryContainer,
   CancelRoundedIcon
 } from '../styles'
-import { CHAIN_DETAILS } from 'utils/constants'
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 type DelegationProps = {
@@ -100,7 +100,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-    const gasLimit = Math.round(gasUsed * feeMultiplier)
+    const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
     const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 

@@ -1,6 +1,31 @@
 // APP SPECIFIC CHAIN CONFIGURATIONS
 export const CHAIN_DETAILS = {
+    GAS_PRICE: import.meta.env.VITE_APP_GAS_PRICE || process.env.VITE_APP_GAS_PRICE || "",
     DEFAULT_NETWORK: import.meta.env.VITE_APP_DEFAULT_NETWORK || process.env.VITE_APP_DEFAULT_NETWORK || "",
+    CAPTCHA_SECRET_KEY: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_CAPTCHA_SECRET_KEY || process.env.VITE_APP_LOCAL_CAPTCHA_SECRET_KEY || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_CAPTCHA_SECRET_KEY || process.env.VITE_APP_PRIVATE_CAPTCHA_SECRET_KEY || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_CAPTCHA_SECRET_KEY || process.env.VITE_APP_PUBLIC_CAPTCHA_SECRET_KEY || "",
+        MAINNET: ''
+    },
+    CAPTCHA_SITE_KEY: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_CAPTCHA_SITE_KEY || process.env.VITE_APP_LOCAL_CAPTCHA_SITE_KEY || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_CAPTCHA_SITE_KEY || process.env.VITE_APP_PRIVATE_CAPTCHA_SITE_KEY || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_CAPTCHA_SITE_KEY || process.env.VITE_APP_PUBLIC_CAPTCHA_SITE_KEY || "",
+        MAINNET: ''
+    },
+    FAUCET_URL: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_FAUCET_URL || process.env.VITE_APP_LOCAL_FAUCET_URL || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_FAUCET_URL || process.env.VITE_APP_PRIVATE_FAUCET_URL || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_FAUCET_URL || process.env.VITE_APP_PUBLIC_FAUCET_URL || "",
+        MAINNET: ''
+    },
+    FAUCET_ADDRESS: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_FAUCET_ADDRESS || process.env.VITE_APP_LOCAL_FAUCET_ADDRESS || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_FAUCET_ADDRESS || process.env.VITE_APP_PRIVATE_FAUCET_ADDRESS || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_FAUCET_ADDRESS || process.env.VITE_APP_PUBLIC_FAUCET_ADDRESS || "",
+        MAINNET: ''
+    },
     BRIDGE_URL: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_BRIDGE_URL || process.env.VITE_APP_LOCAL_BRIDGE_URL || "",
         PRIVATE: import.meta.env.VITE_APP_PRIVATE_BRIDGE_URL || process.env.VITE_APP_PRIVATE_BRIDGE_URL || "",
@@ -9,15 +34,15 @@ export const CHAIN_DETAILS = {
     },
     GRAPHQL_URL: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_GRAPHQL_URL || process.env.VITE_APP_LOCAL_GRAPHQL_URL || "",
-        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_URL  || process.env.VITE_APP_PRIVATE_GRAPHQL_URL  || "",
-        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_URL  || process.env.VITE_APP_PUBLIC_GRAPHQL_URL  || "",
-        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_URL  || process.env.VITE_APP_MAINNET_GRAPHQL_URL  || ""
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_URL || process.env.VITE_APP_PRIVATE_GRAPHQL_URL || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_URL || process.env.VITE_APP_PUBLIC_GRAPHQL_URL || "",
+        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_URL || process.env.VITE_APP_MAINNET_GRAPHQL_URL || ""
     },
     GRAPHQL_WS: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_GRAPHQL_WS || process.env.VITE_APP_LOCAL_GRAPHQL_WS || "",
-        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_WS  || process.env.VITE_APP_PRIVATE_GRAPHQL_WS  || "",
-        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_WS  || process.env.VITE_APP_PUBLIC_GRAPHQL_WS  || "",
-        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_WS || process.env.VITE_APP_MAINNET_GRAPHQL_WS  || ""
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_GRAPHQL_WS || process.env.VITE_APP_PRIVATE_GRAPHQL_WS || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_GRAPHQL_WS || process.env.VITE_APP_PUBLIC_GRAPHQL_WS || "",
+        MAINNET: import.meta.env.VITE_APP_MAINNET_GRAPHQL_WS || process.env.VITE_APP_MAINNET_GRAPHQL_WS || ""
     },
     RPC_ADDRESS: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_RPC || process.env.VITE_APP_LOCAL_RPC || "",
