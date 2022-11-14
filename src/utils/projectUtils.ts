@@ -9,6 +9,7 @@ import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import { getUnbondingBalance } from 'api/getUnbondingBalance'
+import { CHAIN_DETAILS } from './constants'
 
 export const isValidCudosAddress = (address: string) => {
   if (address === '' || address === undefined) {
@@ -123,4 +124,23 @@ export const connectUser = async (chosenNetwork: string, ledgerType: string): Pr
     console.error(error.message)
   }
 
+}
+
+export const handleAvailableNetworks = (defaultNetwork: string): networkToDisplay[] => {
+
+  if (
+    CHAIN_DETAILS[defaultNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME ===
+    CHAIN_DETAILS.LOCAL.ALIAS_NAME
+  ) {
+    return [CHAIN_DETAILS.LOCAL]
+  }
+
+  if (
+    CHAIN_DETAILS[defaultNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME ===
+    CHAIN_DETAILS.PRIVATE.ALIAS_NAME
+  ) {
+    return [CHAIN_DETAILS.PRIVATE]
+  }
+
+  return [CHAIN_DETAILS.PUBLIC, CHAIN_DETAILS.MAINNET]
 }

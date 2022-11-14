@@ -7,7 +7,7 @@ import GlobusIcon from 'assets/vectors/globus-icon.svg?component'
 import { Typography, Box, Collapse } from '@mui/material'
 import { RootState } from 'store'
 import { useDispatch, useSelector } from 'react-redux'
-import { handleAvailableNetworks } from 'utils/generalHelpers'
+import { handleAvailableNetworks } from 'utils/projectUtils'
 import { updateUser } from 'store/profile'
 import Card from 'components/Card'
 
