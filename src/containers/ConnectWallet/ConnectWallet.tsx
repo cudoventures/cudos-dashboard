@@ -36,7 +36,7 @@ const ConnectWallet = () => {
       }
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
-      dispatch(updateUser({ ...connectedUser }))
+      dispatch(updateUser(connectedUser))
       setLoading(false)
       navigate('dashboard')
 

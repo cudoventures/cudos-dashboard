@@ -62,7 +62,7 @@ const App = () => {
       }
 
       const connectedUser = await connectUser(chosenNetwork, ledgerType)
-      dispatch(updateUser({ ...connectedUser }))
+      dispatch(updateUser(connectedUser))
 
     } catch (e) {
       throw new Error('Failed to connect!')
