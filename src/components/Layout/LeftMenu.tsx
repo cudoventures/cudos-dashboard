@@ -13,7 +13,7 @@ import { RootState } from 'store'
 
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const { pathname } = useLocation()
 
   const MenuItems = [
@@ -23,7 +23,7 @@ const Menu = () => {
   ]
 
   if (CHAIN_DETAILS.CHAIN_ID[chosenNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID]
-    !== CHAIN_DETAILS.CHAIN_ID.MAINNET) {
+    !== CHAIN_DETAILS.CHAIN_ID.MAINNET && !loadingState) {
     MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
   }
 
