@@ -5,7 +5,6 @@ export const styles: SxMap = {
     borderRadius: '1.3rem',
     marginBottom: '1rem',
     padding: '20px',
-    marginBottom: '1rem',
     position: 'sticky',
     top: 0
   }),
