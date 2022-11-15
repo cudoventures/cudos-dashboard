@@ -1,4 +1,4 @@
-import { Box, Typography, Fade, useMediaQuery } from '@mui/material'
+import { Box, Typography, Fade, useMediaQuery, Grid } from '@mui/material'
 import theme from 'theme'
 import Form from './components/Form'
 import Activity from './components/Activity'
@@ -7,14 +7,11 @@ import { styles } from './styles'
 import FaucetModal from './components/FaucetModal'
 
 const Faucet = () => {
-  const isBigScreen = useMediaQuery(theme.dark.breakpoints.only('xl'))
+  const isVeryBigScreen = useMediaQuery(theme.dark.breakpoints.up('xl'))
 
   return (
     <Fade in timeout={500}>
-      <Box
-        style={{ maxWidth: isBigScreen ? '50vw' : '85vw' }}
-        sx={styles.faucetContainer}
-      >
+      <Box sx={styles.faucetContainer}>
         <Box
           position="sticky"
           top={0}
@@ -36,10 +33,20 @@ const Faucet = () => {
             Here your can recieve tokens for testing and development purposes
           </Typography>
         </Box>
-        <Box display="flex" gap={2} sx={{ maxHeight: '500px' }}>
-          <Form />
-          <Activity />
-          <FaucetModal />
+        <Box sx={{ marginTop: isVeryBigScreen ? '20vh' : '' }}>
+          <Grid
+            justifyContent={isVeryBigScreen ? 'center' : ''}
+            gap={2}
+            container
+          >
+            <Grid item lg={5} xl={3} md={12} sm={12} xs={12}>
+              <Form />
+            </Grid>
+            <Grid item xl={3} lg={6} md={12} sm={12} xs={12}>
+              <Activity />
+            </Grid>
+            <FaucetModal />
+          </Grid>
         </Box>
       </Box>
     </Fade>

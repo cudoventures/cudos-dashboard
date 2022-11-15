@@ -4,7 +4,8 @@ import {
   Chip,
   Button,
   CircularProgress,
-  Fade
+  Fade,
+  Grid
 } from '@mui/material'
 import Card from 'components/Card'
 import CrossIcon from 'assets/vectors/cross-blue.svg'
@@ -68,55 +69,63 @@ const Proposals = () => {
             Here you can see the existing proposals’ statuses or create new one
           </Typography>
         </Box>
-        <Card onScroll={handleScroll} sx={styles.tableContainer}>
-          <Box sx={styles.tableHeader}>
-            <Typography
-              color="text.secondary"
-              sx={{ ...styles.subheaderStyle, marginTop: '5px' }}
-            >
-              PROPOSALS
-            </Typography>
-            <Chip label={displayTotal} color="primary" sx={styles.chipStyle} />
-            <Box>
-              <SearchProposals />
-            </Box>
-            <Box sx={styles.createProposalBtnContainer}>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() =>
-                  handleModal({
-                    open: true,
-                    status: ModalStatus.IN_PROGRESS,
-                    fee: new BigNumber(0),
-                    proposalData: { ...proposalData }
-                  })
-                }
-                sx={styles.crateProposalBtn}
-              >
-                <img
-                  style={{ marginRight: '10px' }}
-                  src={CrossIcon}
-                  alt="Cross"
+        <Grid justifyContent="center" container>
+          <Grid xl={7} item>
+            <Card onScroll={handleScroll} sx={styles.tableContainer}>
+              <Box sx={styles.tableHeader}>
+                <Typography
+                  color="text.secondary"
+                  sx={{ ...styles.subheaderStyle, marginTop: '5px' }}
+                >
+                  PROPOSALS
+                </Typography>
+                <Chip
+                  label={displayTotal}
+                  color="primary"
+                  sx={styles.chipStyle}
                 />
-                Create Proposal
-              </Button>
-            </Box>
-          </Box>
-          <Box>
-            {!proposalState.items.length ? (
-              <Box sx={styles.circularProgress}>
-                {proposalState.loading ? (
-                  <CircularProgress size={60} />
+                <Box>
+                  <SearchProposals />
+                </Box>
+                <Box sx={styles.createProposalBtnContainer}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() =>
+                      handleModal({
+                        open: true,
+                        status: ModalStatus.IN_PROGRESS,
+                        fee: new BigNumber(0),
+                        proposalData: { ...proposalData }
+                      })
+                    }
+                    sx={styles.crateProposalBtn}
+                  >
+                    <img
+                      style={{ marginRight: '10px' }}
+                      src={CrossIcon}
+                      alt="Cross"
+                    />
+                    Create Proposal
+                  </Button>
+                </Box>
+              </Box>
+              <Box>
+                {!proposalState.items.length ? (
+                  <Box sx={styles.circularProgress}>
+                    {proposalState.loading ? (
+                      <CircularProgress size={60} />
+                    ) : (
+                      <NoData />
+                    )}
+                  </Box>
                 ) : (
-                  <NoData />
+                  <Proposal />
                 )}
               </Box>
-            ) : (
-              <Proposal />
-            )}
-          </Box>
-        </Card>
+            </Card>
+          </Grid>
+        </Grid>
         <ProposalModal />
         <VotingModal />
         <DepositModal />

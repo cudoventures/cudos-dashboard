@@ -16,6 +16,7 @@ import { styles } from './styles'
 const Dashboard = () => {
   const theme = useTheme()
   const isBigScreen = useMediaQuery(theme.breakpoints.up('lg'))
+  const isVeryBigScreen = useMediaQuery(theme.breakpoints.up('xl'))
 
   return (
     <Fade in timeout={500}>
@@ -31,18 +32,26 @@ const Dashboard = () => {
           </Typography>
         </Box>
         <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
-          <Grid spacing={2} container>
+          <Grid
+            justifyContent={isVeryBigScreen ? 'center' : 'initial'}
+            spacing={2}
+            container
+          >
             <Grid
               style={{ paddingLeft: '0px' }}
               item
               xs={12}
               md={12}
               lg={9}
-              xl={9}
+              xl={6}
             >
               <WalletInformation />
-              <Grid marginTop="15px" item xs={12} md={12} lg={12}>
-                <Box sx={{ height: '430px' }}>
+              <Grid marginTop="15px" item xs={12} md={12} lg={12} xl={12}>
+                <Box
+                  sx={{
+                    height: '57vh'
+                  }}
+                >
                   <LatestActivity />
                 </Box>
               </Grid>
@@ -53,7 +62,7 @@ const Dashboard = () => {
               xs={12}
               md={12}
               lg={3}
-              xl={3}
+              xl={2}
             >
               <NetworkStatistics />
             </Grid>

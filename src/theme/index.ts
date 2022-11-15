@@ -34,7 +34,7 @@ const dark = createTheme({
       sm: 600,
       md: 900,
       lg: 1200,
-      xl: 1925
+      xl: 3000
     }
   },
   components: {
