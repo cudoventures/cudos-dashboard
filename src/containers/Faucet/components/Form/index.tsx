@@ -8,9 +8,9 @@ import { useNotifications } from 'components/NotificationPopup/hooks'
 import getFaucetTokens from 'api/getFaucetTokens'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { ModalStatus } from 'store/modal'
+import { isValidCudosAddress } from 'utils/projectUtils'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
-import { isValidCudosAddress } from 'utils/projectUtils'
 
 const Form = () => {
   const captchaRef = useRef<any>(null)
@@ -18,14 +18,18 @@ const Form = () => {
   const [amount, setAmount] = useState<string>('')
   const [validatedCaptcha, setValidatedCaptcha] = useState<boolean>(false)
   const { setWarning } = useNotifications()
-  const maxAmountAllowed: number = 100
+  const maxAmountAllowed = 100
 
   const { handleModal } = useModal()
 
   const validData = () => {
-
-    if (!validatedCaptcha || Number(amount) > maxAmountAllowed || Number(amount) <= 0 ||
-      !amount || !address) {
+    if (
+      !validatedCaptcha ||
+      Number(amount) > maxAmountAllowed ||
+      Number(amount) <= 0 ||
+      !amount ||
+      !address
+    ) {
       return false
     }
 
@@ -107,7 +111,7 @@ const Form = () => {
   }
 
   return (
-    <Card sx={{ padding: 0, flex: 1 }}>
+    <Card sx={{ padding: 0, flex: 1, height: '100%' }}>
       <Box sx={styles.formContainer}>
         <Typography variant="h5" fontWeight={900}>
           Receive Testnet CUDOS tokens

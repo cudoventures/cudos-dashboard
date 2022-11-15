@@ -3,6 +3,7 @@ export const styles: SxMap = {
     background: custom.backgrounds.primary,
     width: '88px',
     borderRadius: '1.3rem',
+    marginBottom: '1rem',
     padding: '20px',
     position: 'sticky',
     top: 0

@@ -69,7 +69,13 @@ const Activity = () => {
         >
           Recent Activity
         </Typography>
-        <Box sx={{ height: '100%', overflow: 'auto', paddingBottom: '1rem' }}>
+        <Box
+          sx={{
+            height: '280px',
+            overflow: 'auto',
+            paddingBottom: '1rem'
+          }}
+        >
           <Table>
             <TableBody
               sx={{
