@@ -22,9 +22,11 @@ import useDepositModal from './components/DepositModal/hooks'
 import { proposalStatus } from './proposalStatus'
 
 import { styles } from './styles'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const Proposal = () => {
   const proposalState = useSelector((state: RootState) => state.proposals)
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const [searchResults, setSearchResults] = useState<any>(proposalState)
   const { handleModal: handleVotingModal } = useVotingModal()
   const { handleModal: handleDepositModal } = useDepositModal()
@@ -33,7 +35,7 @@ const Proposal = () => {
 
   const handleExplorer = (address: string) => {
     window.open(
-      `${import.meta.env.VITE_APP_EXPLORER_V2?.toString()}/accounts/${address}`,
+      `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL].toString()}/accounts/${address}`,
       '_blank'
     )
   }

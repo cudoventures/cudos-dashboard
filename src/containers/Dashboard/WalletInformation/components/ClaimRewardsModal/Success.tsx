@@ -7,6 +7,9 @@ import {
   CancelRoundedIcon
 } from 'components/Dialog/components/styles'
 import { initialRewardsModalProps, RewardsModalProps } from 'store/modal'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type SuccessProps = {
   modalProps: RewardsModalProps
@@ -16,6 +19,8 @@ type SuccessProps = {
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { gasUsed, txHash, fee, txRestakeHash } = modalProps
 
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+  
   const handleClose = () => {
     handleModal({
       ...initialRewardsModalProps
@@ -77,7 +82,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                 window
                   .open(
                     `${
-                      import.meta.env.VITE_APP_EXPLORER_V2
+                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                     }/transactions/${txHash}`,
                     '_blank'
                   )
@@ -108,7 +113,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                   window
                     .open(
                       `${
-                        import.meta.env.VITE_APP_EXPLORER_V2
+                        CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                       }/transactions/${txRestakeHash}`,
                       '_blank'
                     )

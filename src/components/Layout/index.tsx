@@ -1,10 +1,10 @@
 import { Box } from '@mui/material'
 import Footer from './Footer'
-
 import Header from './Header'
 import LeftMenu from './LeftMenu'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
   return (
     <Box
       display="flex"
@@ -30,7 +30,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           flex={1}
           overflow="auto"
         >
-          <Box>{children}</Box>
+          {children}
           <Footer />
         </Box>
       </Box>

@@ -33,16 +33,16 @@ const Faucet = () => {
             Here your can recieve tokens for testing and development purposes
           </Typography>
         </Box>
-        <Box sx={{ marginTop: isVeryBigScreen ? '20vh' : '' }}>
+        <Box marginTop={isVeryBigScreen ? '20vh' : ''}>
           <Grid
-            justifyContent={isVeryBigScreen ? 'center' : ''}
+            justifyContent="center"
             gap={2}
             container
           >
-            <Grid item lg={5} xl={3} md={12} sm={12} xs={12}>
+            <Grid item lg={6} xl={3} md={12} sm={12} xs={12}>
               <Form />
             </Grid>
-            <Grid item xl={3} lg={6} md={12} sm={12} xs={12}>
+            <Grid item xl={3} lg={5} md={12} sm={12} xs={12}>
               <Activity />
             </Grid>
             <FaucetModal />

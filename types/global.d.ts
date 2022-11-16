@@ -53,6 +53,11 @@ declare module '@mui/material/styles' {
 declare global {
   type Override<T1, T2> = Omit<T1, keyof T2> & T2
 
+  interface networkToDisplay {
+    ALIAS_NAME: string;
+    SHORT_NAMES: string[];
+  }
+
   type ComponentDefault = {
     className?: string
   }

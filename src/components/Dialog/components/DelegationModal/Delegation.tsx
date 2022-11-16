@@ -12,7 +12,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
+import { coin, DEFAULT_GAS_MULTIPLIER, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
 import {
   ModalStatus,
   DelegationModalProps,
@@ -32,6 +32,8 @@ import { signingClient } from 'ledgers/utils'
 import { updateUser } from 'store/profile'
 import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import { fetchDelegations } from 'api/getAccountDelegations'
+import { CHAIN_DETAILS } from 'utils/constants'
+
 import {
   ModalContainer,
   StyledTextField,
@@ -39,9 +41,8 @@ import {
   CancelRoundedIcon
 } from '../styles'
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 type DelegationProps = {
@@ -54,14 +55,14 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const [delegationAmount, setDelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
-  const { address, connectedLedger } = useSelector(
+  const { address, connectedLedger, chosenNetwork } = useSelector(
     ({ profile }: RootState) => profile
   )
   const dispatch = useDispatch()
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger)
 
       const walletBalance = await client.getBalance(
         address,
@@ -95,11 +96,11 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const client = await signingClient(connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-    const gasLimit = Math.round(gasUsed * feeMultiplier)
+    const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
     const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 
@@ -159,6 +160,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
     try {
       const delegationResult = await delegate(
+        chosenNetwork,
         address,
         validator?.address || '',
         amount || '',
@@ -172,9 +174,9 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         txHash: delegationResult.transactionHash
       })
 
-      const walletBalance = await getWalletBalance(address)
-      const { delegationsArray } = await fetchDelegations(address)
-      const stakedAmountBalance = await getStakedBalance(address)
+      const walletBalance = await getWalletBalance(chosenNetwork!, address)
+      const { delegationsArray } = await fetchDelegations(chosenNetwork!, address)
+      const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address)
 
       dispatch(
         updateUser({
@@ -246,7 +248,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {import.meta.env.VITE_APP_CHAIN_NAME}
+                    {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
                   </Typography>
                 </Box>
               </Box>

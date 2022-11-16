@@ -3,71 +3,43 @@ import { useState } from 'react'
 import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import { updateUserTransactions } from 'store/userTransactions'
-import { fetchRewards } from 'api/getRewards'
 import { updateUser } from 'store/profile'
-import { connectKeplrLedger } from 'ledgers/KeplrLedger'
-import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
+import { connectUser } from 'utils/projectUtils'
 import InfoIcon from 'assets/vectors/info-icon.svg'
 import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import Header from 'components/Layout/Header'
 import { useNotifications } from 'components/NotificationPopup/hooks'
-
-import { fetchDelegations } from 'api/getAccountDelegations'
-import { fetchRedelegations } from 'api/getAccountRedelegations'
-import { fetchUndedelegations } from 'api/getAccountUndelegations'
-import { getUnbondingBalance } from 'api/getUnbondingBalance'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 import { switchLedgerType } from 'ledgers/utils'
-
 import { COLORS_DARK_THEME } from 'theme/colors'
+
 import { styles } from './styles'
 
 const ConnectWallet = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
+  const { lastLoggedAddress, chosenNetwork: currentNetwork } = useSelector((state: RootState) => state.profile)
   const { setWarning } = useNotifications()
   const [loading, setLoading] = useState<boolean>(false)
   const [ledger, setLedger] = useState<string>('')
 
-  const connect = async (ledgerType: string) => {
+  const connect = async (chosenNetwork: string, ledgerType: string) => {
     try {
       setLedger(ledgerType)
       setLoading(true)
-      const { address, accountName } = await switchLedgerType(ledgerType)
+      const { address } = await switchLedgerType(chosenNetwork, ledgerType)
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
-      const balance = await getWalletBalance(address!)
-      const stakedAmountBalance = await getStakedBalance(address!)
-      const { totalRewards, validatorArray } = await fetchRewards(address!)
-      const { delegationsArray } = await fetchDelegations(address)
-      const { redelegationsArray } = await fetchRedelegations(address)
-      const { undelegationsArray } = await fetchUndedelegations(address)
-      const { unbondingBalance } = await getUnbondingBalance(address)
 
-      dispatch(
-        updateUser({
-          address,
-          accountName,
-          connectedLedger: ledgerType,
-          balance: new BigNumber(balance),
-          availableRewards: new BigNumber(totalRewards),
-          stakedValidators: validatorArray,
-          stakedBalance: new BigNumber(stakedAmountBalance),
-          unbondingBalance: new BigNumber(unbondingBalance),
-          delegations: delegationsArray,
-          redelegations: redelegationsArray,
-          undelegations: undelegationsArray
-        })
-      )
+      const connectedUser = await connectUser(chosenNetwork, ledgerType)
+      dispatch(updateUser(connectedUser))
       setLoading(false)
       navigate('dashboard')
+
     } catch (error) {
       setLedger('')
       setLoading(false)
@@ -96,7 +68,7 @@ const ConnectWallet = () => {
               variant="contained"
               disabled={loading}
               color="primary"
-              onClick={() => connect(CosmosNetworkConfig.KEPLR_LEDGER)}
+              onClick={() => connect(currentNetwork!, CosmosNetworkConfig.KEPLR_LEDGER)}
               sx={styles.connectButton}
             >
               <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />
@@ -124,7 +96,7 @@ const ConnectWallet = () => {
               variant="contained"
               disabled={loading}
               color="primary"
-              onClick={() => connect(CosmosNetworkConfig.COSMOSTATION_LEDGER)}
+              onClick={() => connect(currentNetwork!, CosmosNetworkConfig.COSMOSTATION_LEDGER)}
               sx={styles.cosmostationConnectBtn}
             >
               <img

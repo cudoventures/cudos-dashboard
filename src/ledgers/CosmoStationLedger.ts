@@ -1,7 +1,8 @@
 import { cosmos, InstallError } from '@cosmostation/extension-client'
+import { CHAIN_DETAILS } from 'utils/constants'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 
-export const connectCosmostationLedger = async (): Promise<{
+export const connectCosmostationLedger = async (chosenNetwork: string): Promise<{
   address: string
   accountName: string
 }> => {
@@ -16,13 +17,13 @@ export const connectCosmostationLedger = async (): Promise<{
 
     if (
       !activatedChains.includes(
-        import.meta.env.VITE_APP_CHAIN_ID.toLowerCase()
+        CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID].toLowerCase()
       )
     ) {
       await provider.addChain({
-        chainId: import.meta.env.VITE_APP_CHAIN_ID,
+        chainId: CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID],
 
-        chainName: import.meta.env.VITE_APP_CHAIN_NAME,
+        chainName: CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME],
 
         addressPrefix: CosmosNetworkConfig.BECH32_PREFIX_ACC_ADDR,
 
@@ -30,25 +31,25 @@ export const connectCosmostationLedger = async (): Promise<{
 
         displayDenom: CosmosNetworkConfig.CURRENCY_DISPLAY_NAME,
 
-        restURL: import.meta.env.VITE_APP_API,
+        restURL: CHAIN_DETAILS.API_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.API_ADDRESS],
 
         decimals: 18,
 
         coinGeckoId: CosmosNetworkConfig.BECH32_PREFIX_ACC_ADDR,
 
         gasRate: {
-          average: (Number(import.meta.env.VITE_APP_GAS_PRICE) * 2).toString(),
+          average: (Number(CHAIN_DETAILS.GAS_PRICE) * 2).toString(),
 
-          low: (Number(import.meta.env.VITE_APP_GAS_PRICE) * 2).toString(),
+          low: (Number(CHAIN_DETAILS.GAS_PRICE) * 2).toString(),
 
-          tiny: import.meta.env.VITE_APP_GAS_PRICE.toString()
+          tiny: CHAIN_DETAILS.GAS_PRICE.toString()
         }
       })
     }
 
-    // Although the method asks for CHAIN_NAME, it should receive CHAIN_ID as parameter if getActivatedChainIds is used above!
+    // Although the method suggests CHAIN_NAME as parameter only, it can work with CHAIN_ID too!
     const acccount = await provider.requestAccount(
-      import.meta.env.VITE_APP_CHAIN_ID
+      CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID]
     )
 
     userAccountAddress = acccount.address

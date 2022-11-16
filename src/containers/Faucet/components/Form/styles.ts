@@ -5,6 +5,6 @@ export const styles: SxMap = {
     flexDirection: 'column',
     padding: '40px 80px',
     alignItems: 'center',
-    gap: 2
+    gap: 4
   }
 }

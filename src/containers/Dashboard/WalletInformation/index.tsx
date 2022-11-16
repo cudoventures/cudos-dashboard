@@ -35,6 +35,7 @@ import { useDelegationRewards } from './hooks'
 import useRewardsModal from './components/ClaimRewardsModal/hooks'
 import useUnbondingModal from './components/UnbondingTokensModal/hooks'
 import UnbondingModal from './components/UnbondingTokensModal'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
@@ -49,7 +50,8 @@ const WalletInformation: React.FC = () => {
     unbondingBalance,
     address,
     stakedValidators,
-    lastLoggedAddress
+    lastLoggedAddress,
+    chosenNetwork
   } = state
   const dispatch = useDispatch()
   const { setError } = useNotifications()
@@ -79,12 +81,13 @@ const WalletInformation: React.FC = () => {
     const fetchData = async () => {
       try {
         const { totalRewards, validatorArray } = await fetchRewards(
+          chosenNetwork!,
           address,
           controller.signal
         )
-        const walletBalance = await getWalletBalance(address)
-        const stakedAmountBalance = await getStakedBalance(address)
-        const { unbondingBalance } = await getUnbondingBalance(address)
+        const walletBalance = await getWalletBalance(chosenNetwork! ,address)
+        const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address)
+        const { unbondingBalance } = await getUnbondingBalance(chosenNetwork!, address)
 
         dispatch(
           updateUser({
@@ -108,7 +111,7 @@ const WalletInformation: React.FC = () => {
       clearInterval(timer)
       controller?.abort()
     }
-  }, [address, dispatch, lastLoggedAddress])
+  }, [address, dispatch, lastLoggedAddress, chosenNetwork])
 
   return (
     <Card
@@ -155,7 +158,7 @@ const WalletInformation: React.FC = () => {
                 window
                   .open(
                     `${
-                      import.meta.env.VITE_APP_EXPLORER_V2
+                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                     }/accounts/${address}`,
                     '_blank'
                   )

@@ -13,6 +13,7 @@ import { cosmos, Cosmos } from '@cosmostation/extension-client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { connectKeplrLedger } from './KeplrLedger'
 import { connectCosmostationLedger } from './CosmoStationLedger'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const colors = {
   staking: '#3d5afe',
@@ -447,14 +448,14 @@ export const unknownMessage = {
   displayName: 'Unknown'
 }
 
-export const switchLedgerType = async (ledgerType: string) => {
+export const switchLedgerType = async (chosenNetwork: string, ledgerType: string) => {
   let ledger
   switch (ledgerType) {
     case CosmosNetworkConfig.KEPLR_LEDGER:
-      ledger = await connectKeplrLedger()
+      ledger = await connectKeplrLedger(chosenNetwork)
       return ledger
     case CosmosNetworkConfig.COSMOSTATION_LEDGER:
-      ledger = await connectCosmostationLedger()
+      ledger = await connectCosmostationLedger(chosenNetwork)
       return ledger
     default:
       return { address: '', accountName: '' }
@@ -462,10 +463,11 @@ export const switchLedgerType = async (ledgerType: string) => {
 }
 
 export const getLedgerSigner = async (
+  chosenNetwork: string,
   connector: Cosmos,
   accountInfo: RequestAccountResponse
 ) => {
-  const chainName = import.meta.env.VITE_APP_CHAIN_NAME
+  const chainName = CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]
   const signer: OfflineAminoSigner = {
     getAccounts: async () => {
       return [
@@ -495,28 +497,29 @@ export const getLedgerSigner = async (
 }
 
 const switchSigningClient = async (
+  chosenNetwork: string,
   ledgerType: string
 ): Promise<OfflineSigner | undefined> => {
   let client
   switch (ledgerType) {
     case CosmosNetworkConfig.KEPLR_LEDGER:
       client = await window.getOfflineSignerAuto(
-        import.meta.env.VITE_APP_CHAIN_ID
+        CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID]
       )
       return client
     case CosmosNetworkConfig.COSMOSTATION_LEDGER: {
       const connector = await cosmos()
 
       const connectedAccount = await connector.requestAccount(
-        import.meta.env.VITE_APP_CHAIN_NAME
+        CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]
       )
 
       if (connectedAccount.isLedger) {
-        client = await getLedgerSigner(connector, connectedAccount)
+        client = await getLedgerSigner(chosenNetwork, connector, connectedAccount)
         return client
       }
 
-      client = await cosmostationSigner(import.meta.env.VITE_APP_CHAIN_ID)
+      client = await cosmostationSigner(CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID])
 
       return client
     }
@@ -525,8 +528,8 @@ const switchSigningClient = async (
   }
 }
 
-export const signingClient = async (ledgerType: string) => {
-  const offlineSigner = await switchSigningClient(ledgerType)
+export const signingClient = async (chosenNetwork: string, ledgerType: string) => {
+  const offlineSigner = await switchSigningClient(chosenNetwork, ledgerType)
 
   if (window.keplr) {
     window.keplr.defaultOptions = {
@@ -541,17 +544,20 @@ export const signingClient = async (ledgerType: string) => {
   }
 
   return SigningStargateClient.connectWithSigner(
-    import.meta.env.VITE_APP_RPC,
+    CHAIN_DETAILS.RPC_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.RPC_ADDRESS],
     offlineSigner
   )
 }
 
-export const client = (async () => {
+export const getQueryClient = async (chosenNetwork: string): Promise<StargateClient> => {
+  
   try {
-    const client = await StargateClient.connect(import.meta.env.VITE_APP_RPC)
-
+    const client = await StargateClient.connect(CHAIN_DETAILS.RPC_ADDRESS[chosenNetwork! as keyof typeof CHAIN_DETAILS.RPC_ADDRESS])
     return client
+
   } catch (error) {
-    throw new Error('Check your Keplr installation.')
+    console.error(error.message)
+    throw new Error('Failed to get query client')
   }
-})()
+
+}

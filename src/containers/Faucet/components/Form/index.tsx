@@ -11,6 +11,9 @@ import { ModalStatus } from 'store/modal'
 import { isValidCudosAddress } from 'utils/projectUtils'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 
 const Form = () => {
   const captchaRef = useRef<any>(null)
@@ -18,7 +21,8 @@ const Form = () => {
   const [amount, setAmount] = useState<string>('')
   const [validatedCaptcha, setValidatedCaptcha] = useState<boolean>(false)
   const { setWarning } = useNotifications()
-  const maxAmountAllowed = 100
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+  const maxAmountAllowed: number = 100
 
   const { handleModal } = useModal()
 
@@ -80,7 +84,10 @@ const Form = () => {
     try {
       handleModal({ open: true, status: ModalStatus.LOADING })
 
-      const response = await getFaucetTokens(data)
+      const response = await getFaucetTokens(
+        CHAIN_DETAILS.FAUCET_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_ADDRESS],
+        data
+      )
 
       if (response.data.transfers[0].status === 'error') {
         handleModal({
@@ -175,7 +182,7 @@ const Form = () => {
               theme="dark"
               ref={captchaRef}
               onChange={checkCaptcha}
-              sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
+              sitekey={CHAIN_DETAILS.CAPTCHA_SITE_KEY[chosenNetwork as keyof typeof CHAIN_DETAILS.CAPTCHA_SITE_KEY]}
             />
           </Stack>
         </Stack>
