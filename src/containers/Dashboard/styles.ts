@@ -41,6 +41,7 @@ export const styles: SxMap = {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
+    minHeight: '60vh',
     height: '100%',
     overflow: 'auto',
     position: 'relative'
