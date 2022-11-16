@@ -47,11 +47,7 @@ const Dashboard = () => {
             >
               <WalletInformation />
               <Grid marginTop="15px" item xs={12} md={12} lg={12} xl={12}>
-                <Box
-                  sx={{
-                    height: '57vh'
-                  }}
-                >
+                <Box>
                   <LatestActivity />
                 </Box>
               </Grid>

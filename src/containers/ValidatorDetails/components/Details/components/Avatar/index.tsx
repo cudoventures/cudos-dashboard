@@ -1,6 +1,7 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Tooltip, Typography } from '@mui/material'
 import Card from 'components/Card'
 import Avatar from 'components/Avatar'
+import { addEndingEllipsis } from 'utils/projectUtils'
 import { OverviewType } from '../../types'
 
 type AvatarProps = {
@@ -13,7 +14,6 @@ const ValidatorAvatar: React.FC<AvatarProps> = ({ overview }) => {
   return (
     <Card
       sx={{
-        minWidth: '300px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -21,12 +21,36 @@ const ValidatorAvatar: React.FC<AvatarProps> = ({ overview }) => {
         textAlign: 'center'
       }}
     >
-      <Box sx={{ width: '120px', height: '120px' }}>
+      <Box sx={{ width: '120px', height: '130px' }}>
         <Avatar address={operatorAddress} imageUrl={avatarUrl} />
       </Box>
       <Box display="flex" alignItems="center" flexDirection="column">
         <Typography fontWeight={700} lineHeight="30px" letterSpacing={1}>
-          {moniker}
+          {moniker.length > 25 ? (
+            <Tooltip
+              title={moniker}
+              placement="right"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    background: 'white',
+                    color: 'black',
+                    padding: '13px 20px',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    borderRadius: '15px'
+                  }
+                }
+              }}
+            >
+              <Box sx={{ cursor: 'pointer' }}>
+                {' '}
+                {addEndingEllipsis(moniker, { begining: 22 })}{' '}
+              </Box>
+            </Tooltip>
+          ) : (
+            moniker
+          )}
         </Typography>
       </Box>
     </Card>

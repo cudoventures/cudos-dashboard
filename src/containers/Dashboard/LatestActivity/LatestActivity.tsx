@@ -17,11 +17,11 @@ import { columnNames } from 'store/userTransactions'
 import { defaultMessages, unknownMessage } from 'ledgers/utils'
 import numeral from 'numeral'
 import { addEndingEllipsis } from 'utils/projectUtils'
-import { styles } from '../styles'
-import { useUserTransactions } from './UserActivity/hooks'
 import { RootState } from 'store'
 import { useSelector } from 'react-redux'
 import { CHAIN_DETAILS } from 'utils/constants'
+import { useUserTransactions } from './UserActivity/hooks'
+import { styles } from '../styles'
 
 const LatestActivity = () => {
   const { state } = useUserTransactions()
@@ -49,7 +49,11 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/blocks/${tx.height}`,
+                  `${
+                    CHAIN_DETAILS.EXPLORER_URL[
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
+                    ]
+                  }/blocks/${tx.height}`,
                   '_blank'
                 )
                 ?.focus()
@@ -70,9 +74,11 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/transactions/${
-                    tx.hash
-                  }`,
+                  `${
+                    CHAIN_DETAILS.EXPLORER_URL[
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
+                    ]
+                  }/transactions/${tx.hash}`,
                   '_blank'
                 )
                 ?.focus()
@@ -129,7 +135,9 @@ const LatestActivity = () => {
       <CircularProgress size={60} />
     </Box>
   ) : (
-    <Table items={formattedItems} columns={columnNames} />
+    <Box sx={{ height: '54vh', overflow: 'hidden' }}>
+      <Table items={formattedItems} columns={columnNames} />
+    </Box>
   )
 
   const noActivity =
