@@ -29,6 +29,7 @@ import useDelegationModal from 'components/Dialog/components/DelegationModal/hoo
 import { ModalStatus } from 'store/modal'
 import ClaimRewardsModal from 'containers/Dashboard/WalletInformation/components/ClaimRewardsModal'
 import BigNumber from 'bignumber.js'
+import { CHAIN_DETAILS } from 'utils/constants'
 import { OverviewType, StatusType } from '../../types'
 import { getValidatorStatus, getCondition } from './utils'
 import RedelegationModal from './components/RedelegationModal'
@@ -36,7 +37,6 @@ import useRedelegationModal from './components/RedelegationModal/hooks'
 import UndelegationModal from './components/UndelegationModal'
 import useUndelegationModal from './components/UndelegationModal/hooks'
 import useRewardsModal from '../../../../../Dashboard/WalletInformation/components/ClaimRewardsModal/hooks'
-import { CHAIN_DETAILS } from 'utils/constants'
 
 type InfoProps = {
   overview: OverviewType
@@ -46,7 +46,9 @@ type InfoProps = {
 const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
   const [openActionsDropdown, setOpenActionsDropdown] = useState<boolean>(false)
   const info = useSelector((state: RootState) => state.notifications.info)
-  const { stakedValidators, chosenNetwork } = useSelector((state: RootState) => state.profile)
+  const { stakedValidators, chosenNetwork } = useSelector(
+    (state: RootState) => state.profile
+  )
   const { validator } = useSelector(
     (state: RootState) => state.validatorDetails
   )
@@ -108,9 +110,11 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
             onClick={() =>
               window
                 .open(
-                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/validators/${
-                    overview.operatorAddress
-                  }`,
+                  `${
+                    CHAIN_DETAILS.EXPLORER_URL[
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
+                    ]
+                  }/validators/${overview.operatorAddress}`,
                   '_blank'
                 )
                 ?.focus()

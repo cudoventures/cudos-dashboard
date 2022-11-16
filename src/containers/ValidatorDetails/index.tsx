@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Fade } from '@mui/material'
+import { Box, CircularProgress, Fade, Grid } from '@mui/material'
 import Details from './components/Details'
 import Navigation from './components/Navigation'
 import Statistics from './components/Statistics'
@@ -15,13 +15,23 @@ const ValidatorDetails = () => {
       <Box display="flex" flexDirection="column" gap={2}>
         <Navigation />
         {!state.loading ? (
-          <>
-            <Details />
-            <Statistics />
-            <MyDelegations />
-            <Delegators />
-            <Activity />
-          </>
+          <Grid gap={2} display="flex" alignSelf="center" xl={8} container>
+            <Grid width="100%" xl={12} lg={12} item>
+              <Details />
+            </Grid>
+            <Grid xl={12} lg={12} md={12} item>
+              <Statistics />
+            </Grid>
+            <Grid xl={12} lg={12} md={12} item>
+              <MyDelegations />
+            </Grid>
+            <Grid xl={12} lg={12} item>
+              <Delegators />
+            </Grid>
+            <Grid xl={12} lg={12} item>
+              <Activity />
+            </Grid>
+          </Grid>
         ) : (
           <Box
             sx={{
