@@ -72,6 +72,7 @@ const Validators = () => {
           <Box
             sx={{
               display: 'flex',
+              height: '80vh',
               overflow: 'hidden',
               flexDirection: 'column'
             }}
