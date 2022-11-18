@@ -12,7 +12,12 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, DEFAULT_GAS_MULTIPLIER, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
+import {
+  coin,
+  DEFAULT_GAS_MULTIPLIER,
+  GasPrice,
+  MsgDelegateEncodeObject
+} from 'cudosjs'
 import {
   ModalStatus,
   DelegationModalProps,
@@ -61,6 +66,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    let isMounted = true
     const loadBalance = async () => {
       const client = await signingClient(chosenNetwork, connectedLedger)
 
@@ -68,15 +74,19 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         address,
         CosmosNetworkConfig.CURRENCY_DENOM
       )
-
-      setBalance(
-        new BigNumber(walletBalance.amount)
-          .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
-          .toString(10)
-      )
+      if (isMounted) {
+        setBalance(
+          new BigNumber(walletBalance.amount)
+            .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+            .toString(10)
+        )
+      }
     }
 
     loadBalance()
+    return () => {
+      isMounted = false
+    }
   }, [address])
 
   const getEstimatedFee = async (amount: string) => {
@@ -175,8 +185,14 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       })
 
       const walletBalance = await getWalletBalance(chosenNetwork!, address)
-      const { delegationsArray } = await fetchDelegations(chosenNetwork!, address)
-      const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address)
+      const { delegationsArray } = await fetchDelegations(
+        chosenNetwork!,
+        address
+      )
+      const stakedAmountBalance = await getStakedBalance(
+        chosenNetwork!,
+        address
+      )
 
       dispatch(
         updateUser({
@@ -248,7 +264,11 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
+                    {
+                      CHAIN_DETAILS.CHAIN_NAME[
+                        chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME
+                      ]
+                    }
                   </Typography>
                 </Box>
               </Box>

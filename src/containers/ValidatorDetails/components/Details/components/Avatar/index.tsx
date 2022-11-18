@@ -25,7 +25,12 @@ const ValidatorAvatar: React.FC<AvatarProps> = ({ overview }) => {
         <Avatar address={operatorAddress} imageUrl={avatarUrl} />
       </Box>
       <Box display="flex" alignItems="center" flexDirection="column">
-        <Typography fontWeight={700} lineHeight="30px" letterSpacing={1}>
+        <Typography
+          component="span"
+          fontWeight={700}
+          lineHeight="30px"
+          letterSpacing={1}
+        >
           {moniker.length > 25 ? (
             <Tooltip
               title={moniker}
