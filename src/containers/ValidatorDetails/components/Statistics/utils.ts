@@ -11,15 +11,16 @@ import {
   ValidatorVotingPowersDocument,
   AccountDelegationsDocument
 } from 'graphql/account_actions'
+import { CHAIN_DETAILS } from 'utils/constants'
 
-export const fetchCommission = async (address: string) => {
+export const fetchCommission = async (chosenNetwork: string, address: string) => {
   const defaultReturnValue = {
     commission: {
       coins: null
     }
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         validatorAddress: toValidatorAddress(address)
       },
@@ -31,14 +32,14 @@ export const fetchCommission = async (address: string) => {
   }
 }
 
-export const fetchAccountWithdrawalAddress = async (address: string) => {
+export const fetchAccountWithdrawalAddress = async (chosenNetwork: string, address: string) => {
   const defaultReturnValue = {
     withdrawalAddress: {
       address
     }
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },
@@ -50,14 +51,14 @@ export const fetchAccountWithdrawalAddress = async (address: string) => {
   }
 }
 
-export const fetchAvailableBalances = async (address: string) => {
+export const fetchAvailableBalances = async (chosenNetwork: string, address: string) => {
   const defaultReturnValue = {
     accountBalances: {
       coins: []
     }
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },
@@ -69,14 +70,14 @@ export const fetchAvailableBalances = async (address: string) => {
   }
 }
 
-export const fetchDelegationBalance = async (address: string) => {
+export const fetchDelegationBalance = async (chosenNetwork: string, address: string) => {
   const defaultReturnValue = {
     delegationBalance: {
       coins: []
     }
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },
@@ -88,14 +89,14 @@ export const fetchDelegationBalance = async (address: string) => {
   }
 }
 
-export const fetchUnbondingBalance = async (address: string) => {
+export const fetchUnbondingBalance = async (chosenNetwork: string, address: string) => {
   const defaultReturnValue = {
     unbondingBalance: {
       coins: []
     }
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },
@@ -107,12 +108,12 @@ export const fetchUnbondingBalance = async (address: string) => {
   }
 }
 
-export const fetchRewards = async (address: string) => {
+export const fetchRewards = async (chosenNetwork: string, address: string) => {
   const defaultReturnValue = {
     delegationRewards: []
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },
@@ -124,12 +125,12 @@ export const fetchRewards = async (address: string) => {
   }
 }
 
-export const fetchVotingPower = async (address: string) => {
+export const fetchVotingPower = async (chosenNetwork: string, address: string) => {
   const defaultVotingPower = {
     votingPower: []
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },
@@ -141,12 +142,12 @@ export const fetchVotingPower = async (address: string) => {
   }
 }
 
-export const fetchAccountDelegations = async (address: string) => {
+export const fetchAccountDelegations = async (chosenNetwork: string, address: string) => {
   const defaultAccountDelegations = {
     accountDelegations: []
   }
   try {
-    const { data } = await axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+    const { data } = await axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         address
       },

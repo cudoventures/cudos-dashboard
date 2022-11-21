@@ -3,6 +3,7 @@ export const styles: SxMap = {
     background: custom.backgrounds.primary,
     width: '88px',
     borderRadius: '1.3rem',
+    marginBottom: '1rem',
     padding: '20px',
     position: 'sticky',
     top: 0
@@ -14,7 +15,8 @@ export const styles: SxMap = {
     borderRadius: '35px',
     height: '48px',
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    minWidth: '224px'
   }),
   userInnerContainer: {
     fontSize: '14px',
@@ -66,14 +68,15 @@ export const styles: SxMap = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: 'inherit',
-    padding: '2rem'
+    padding: '1rem',
+    overflowWrap: 'anywhere'
   },
   networkContainer: ({ custom }) => ({
     maxHeight: '48px',
     borderRadius: '55px',
     backgroundColor: custom.backgrounds.primary,
     padding: '15px 20px 15px 20px',
-    marginRight: '20px'
+    width: '224px'
   }),
   user: ({ custom }) => ({
     position: 'relative',

@@ -1,10 +1,10 @@
 import { Box } from '@mui/material'
 import Footer from './Footer'
-
 import Header from './Header'
 import LeftMenu from './LeftMenu'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+
   return (
     <Box
       display="flex"
@@ -20,15 +20,20 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <Box display="flex" gap={8} flexGrow={1} sx={{ overflow: 'auto' }}>
         <LeftMenu />
         <Box
-          sx={{ paddingRight: '2rem' }}
+          sx={{
+            paddingRight: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column'
+          }}
           flexGrow={1}
           flex={1}
           overflow="auto"
         >
           {children}
+          <Footer />
         </Box>
       </Box>
-      <Footer />
     </Box>
   )
 }

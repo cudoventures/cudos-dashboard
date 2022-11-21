@@ -94,6 +94,7 @@ export const styles: SxMap = {
   },
   tableContainer: {
     width: '100%',
+    maxHeight: '80vh',
     flex: 1,
     overflow: 'scroll',
     padding: '0 20px'

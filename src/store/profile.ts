@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 export enum TooltipMessages {
   DELEGATIONS = `Your current delegated tokens to this validator`,
@@ -12,6 +13,8 @@ export interface WalletState {
   address: string
   accountName: string
   connectedLedger: string
+  chosenNetwork: string
+  loadingState: boolean
   lastLoggedAddress: string
   balance: BigNumber
   availableRewards: BigNumber
@@ -35,6 +38,8 @@ const initialState: WalletState = {
   address: '',
   accountName: '',
   connectedLedger: '',
+  chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK,
+  loadingState: false,
   lastLoggedAddress: '',
   balance: new BigNumber(0),
   availableRewards: new BigNumber(0),

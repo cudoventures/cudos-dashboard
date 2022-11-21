@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { depositProposal } from 'ledgers/transactions'
 import BigNumber from 'bignumber.js'
@@ -11,6 +11,8 @@ import {
   initialDepositModalState,
   ModalStatus
 } from 'store/modal'
+import { getWalletBalance } from 'utils/projectUtils'
+import { updateUser } from 'store/profile'
 import { CancelRoundedIcon, ModalContainer, StyledTextField } from './styles'
 
 type DepositProps = {
@@ -20,11 +22,13 @@ type DepositProps = {
 
 const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
   const [depositAmount, setDepositAmount] = useState<string>('')
-  const { address, balance, connectedLedger } = useSelector(
+  const { address, balance, connectedLedger, chosenNetwork } = useSelector(
     (state: RootState) => state.profile
   )
 
   const { id, title } = modalProps
+
+  const dispatch = useDispatch()
 
   const handleAmount = async (ev: ChangeEvent<HTMLInputElement>) => {
     setDepositAmount(ev.target.value)
@@ -43,6 +47,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
       })
 
       const { gasFee, result } = await depositProposal(
+        chosenNetwork,
         depositorAddress,
         proposalId,
         amount,
@@ -58,6 +63,14 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
         fee: new BigNumber(gasFee),
         hash: result.transactionHash
       })
+
+      const walletBalance = await getWalletBalance(chosenNetwork!, address)
+
+      dispatch(
+        updateUser({
+          balance: walletBalance
+        })
+      )
     } catch (error) {
       handleModal({
         open: true,

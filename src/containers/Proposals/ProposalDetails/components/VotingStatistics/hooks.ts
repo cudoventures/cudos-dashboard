@@ -5,8 +5,12 @@ import { useProposalDetailsVotesSubscription } from 'graphql/types'
 import { ProposalDetailsVotesWeightedDocument } from 'graphql/proposal_details_votes_weighted'
 import { useParams } from 'react-router-dom'
 import { VoteState } from './types'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
 
 export const useVotingStatistics = (resetPagination: any) => {
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { proposalId } = useParams()
   const [state, setState] = useState<VoteState>({
     data: [],
@@ -34,8 +38,8 @@ export const useVotingStatistics = (resetPagination: any) => {
     })
   }
 
-  const fetchWeightedVotes = async () => {
-    return axios.post(import.meta.env.VITE_GRAPHQL_URL, {
+  const fetchWeightedVotes = async (chosenNetwork: string) => {
+    return axios.post(CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.GRAPHQL_URL], {
       variables: {
         proposalId
       },
@@ -155,7 +159,7 @@ export const useVotingStatistics = (resetPagination: any) => {
       proposalId: Number(proposalId)
     },
     onSubscriptionData: (data) => {
-      fetchWeightedVotes().then((votesWeightedData) => {
+      fetchWeightedVotes(chosenNetwork).then((votesWeightedData) => {
         const mergedVotesData = mergeRegularVotesWithWeighted(
           data.subscriptionData.data?.proposalVote,
           votesWeightedData

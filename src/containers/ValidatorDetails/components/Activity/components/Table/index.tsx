@@ -12,6 +12,9 @@ import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import { defaultMessages, unknownMessage } from 'ledgers/utils'
 import numeral from 'numeral'
 import { columns } from './utils'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type ActivityTableProps = {
   loadNextPage: () => Promise<void>
@@ -28,6 +31,9 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
   hasNextPage = false,
   isNextPageLoading = false
 }) => {
+
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+  
   const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollHeight, scrollTop, clientHeight } = e.currentTarget
 
@@ -58,7 +64,7 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/blocks/${tx.height}`,
+                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/blocks/${tx.height}`,
                   '_blank'
                 )
                 ?.focus()
@@ -79,7 +85,7 @@ const ActivityTable: React.FC<ActivityTableProps> = ({
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${
+                  `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/transactions/${
                     tx.hash
                   }`,
                   '_blank'

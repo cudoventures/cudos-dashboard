@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Box, Button, Stack, Tooltip, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Grid,
+  Stack,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material'
 import Card from 'components/Card'
 import { useDispatch } from 'react-redux'
 import getCurrencyRate from 'api/getCurrency'
@@ -26,6 +35,7 @@ import { useDelegationRewards } from './hooks'
 import useRewardsModal from './components/ClaimRewardsModal/hooks'
 import useUnbondingModal from './components/UnbondingTokensModal/hooks'
 import UnbondingModal from './components/UnbondingTokensModal'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
@@ -40,7 +50,8 @@ const WalletInformation: React.FC = () => {
     unbondingBalance,
     address,
     stakedValidators,
-    lastLoggedAddress
+    lastLoggedAddress,
+    chosenNetwork
   } = state
   const dispatch = useDispatch()
   const { setError } = useNotifications()
@@ -70,12 +81,13 @@ const WalletInformation: React.FC = () => {
     const fetchData = async () => {
       try {
         const { totalRewards, validatorArray } = await fetchRewards(
+          chosenNetwork!,
           address,
           controller.signal
         )
-        const walletBalance = await getWalletBalance(address)
-        const stakedAmountBalance = await getStakedBalance(address)
-        const { unbondingBalance } = await getUnbondingBalance(address)
+        const walletBalance = await getWalletBalance(chosenNetwork! ,address)
+        const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address)
+        const { unbondingBalance } = await getUnbondingBalance(chosenNetwork!, address)
 
         dispatch(
           updateUser({
@@ -99,7 +111,7 @@ const WalletInformation: React.FC = () => {
       clearInterval(timer)
       controller?.abort()
     }
-  }, [address, dispatch, lastLoggedAddress])
+  }, [address, dispatch, lastLoggedAddress, chosenNetwork])
 
   return (
     <Card
@@ -109,77 +121,143 @@ const WalletInformation: React.FC = () => {
         gap: 8
       }}
     >
-      <Box sx={styles.walletInfo}>
-        <Typography
-          color="text.secondary"
-          textTransform="uppercase"
-          fontWeight={700}
-          letterSpacing={1}
-        >
-          Available tokens
-        </Typography>
-        <Box sx={styles.tokensContainer}>
-          <CudosLogo style={{ width: '46px', height: 'auto' }} />
-          <Box>
-            <Typography fontSize={30} fontWeight={700}>
-              {formatNumber(Number(balance).toFixed(2), 2)}
-            </Typography>
-            <Typography color="primary.main" fontWeight={700}>
-              ${formatNumber((rate * Number(balance)).toFixed(2), 2)}
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={styles.addressContainer}>
-          <Typography variant="body1">{formatAddress(address, 20)}</Typography>
-          <Tooltip
-            onClick={() => handleCopy(address)}
-            title={copied ? 'Copied' : 'Copy to clipboard'}
-          >
-            <img style={{ cursor: 'pointer' }} src={CopyIcon} alt="Copy" />
-          </Tooltip>
-          <Tooltip
-            title="Go to Explorer"
-            onClick={() =>
-              window
-                .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/accounts/${address}`,
-                  '_blank'
-                )
-                ?.focus()
-            }
-          >
-            <img style={{ cursor: 'pointer' }} src={LinkIcon} alt="Link" />
-          </Tooltip>
-        </Box>
-      </Box>
-      <Box sx={styles.stakingContainer}>
-        <Typography variant="h6" fontWeight={700} letterSpacing={1}>
-          My Wallet
-        </Typography>
-        <Box sx={styles.stakedTokens}>
+      <Grid container>
+        <Box sx={styles.walletInfo}>
           <Typography
+            color="text.secondary"
             textTransform="uppercase"
             fontWeight={700}
-            color="text.secondary"
+            letterSpacing={1}
           >
-            Staked cudos
+            Available tokens
           </Typography>
-          <Stack
-            sx={{ flexFlow: 'wrap' }}
-            direction="row"
-            alignItems="center"
-            gap="6px"
-          >
-            <CudosLogo style={{ width: '20px', height: 'auto' }} />
-            <Typography variant="h5" fontWeight={700}>
-              {formatNumber(Number(stakedBalance).toFixed(2), 2)}
+          <Box sx={styles.tokensContainer}>
+            <CudosLogo style={{ width: '46px', height: 'auto' }} />
+            <Box>
+              <Typography fontSize={30} fontWeight={700}>
+                {formatNumber(Number(balance).toFixed(2), 2)}
+              </Typography>
+              <Typography color="primary.main" fontWeight={700}>
+                ${formatNumber((rate * Number(balance)).toFixed(2), 2)}
+              </Typography>
+            </Box>
+          </Box>
+          <Box sx={styles.addressContainer}>
+            <Typography variant="body1">
+              {formatAddress(address, 20)}
             </Typography>
-            <Typography variant="h6" color="primary.main" fontWeight={700}>
-              ${formatNumber((rate * Number(stakedBalance)).toFixed(2), 2)}
-            </Typography>
-          </Stack>
+            <Tooltip
+              onClick={() => handleCopy(address)}
+              title={copied ? 'Copied' : 'Copy to clipboard'}
+            >
+              <img style={{ cursor: 'pointer' }} src={CopyIcon} alt="Copy" />
+            </Tooltip>
+            <Tooltip
+              title="Go to Explorer"
+              onClick={() =>
+                window
+                  .open(
+                    `${
+                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
+                    }/accounts/${address}`,
+                    '_blank'
+                  )
+                  ?.focus()
+              }
+            >
+              <img style={{ cursor: 'pointer' }} src={LinkIcon} alt="Link" />
+            </Tooltip>
+          </Box>
         </Box>
-        {Number(unbondingBalance) !== 0 ? (
+        <Box marginLeft="35px" sx={styles.stakingContainer}>
+          <Typography
+            sx={{ marginTop: '10px' }}
+            variant="h6"
+            fontWeight={700}
+            letterSpacing={1}
+          >
+            My Wallet
+          </Typography>
+          <Box sx={styles.stakedTokens}>
+            <Typography
+              textTransform="uppercase"
+              fontWeight={700}
+              color="text.secondary"
+            >
+              Staked cudos
+            </Typography>
+            <Stack
+              sx={{ flexFlow: 'wrap' }}
+              direction="row"
+              alignItems="center"
+              gap="6px"
+            >
+              <CudosLogo style={{ width: '20px', height: 'auto' }} />
+              <Typography variant="h5" fontWeight={700}>
+                {formatNumber(Number(stakedBalance).toFixed(2), 2)}
+              </Typography>
+              <Typography variant="h6" color="primary.main" fontWeight={700}>
+                ${formatNumber((rate * Number(stakedBalance)).toFixed(2), 2)}
+              </Typography>
+            </Stack>
+          </Box>
+          {Number(unbondingBalance) !== 0 ? (
+            <Box sx={styles.availableRewards}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 1,
+                  padding: '5px 1rem'
+                }}
+              >
+                <Typography
+                  textTransform="uppercase"
+                  fontWeight={700}
+                  color="text.secondary"
+                >
+                  Unbonding cudos
+                </Typography>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  gap="6px"
+                  sx={{ flexFlow: 'wrap' }}
+                >
+                  <CudosLogo style={{ width: '20px', height: 'auto' }} />
+                  <Typography variant="h5" fontWeight={700}>
+                    {formatNumber(Number(unbondingBalance).toFixed(2), 2)}
+                  </Typography>
+                  <Typography
+                    variant="h6"
+                    color="primary.main"
+                    fontWeight={700}
+                  >
+                    $
+                    {formatNumber(
+                      (rate * Number(unbondingBalance)).toFixed(2),
+                      2
+                    )}
+                  </Typography>
+                </Stack>
+              </Box>
+              <Box>
+                <Button
+                  onClick={() =>
+                    handleunbondingModal({
+                      open: true
+                    })
+                  }
+                  sx={{ fontWeight: 700, minWidth: '150px' }}
+                  disabled={!stakedValidators.length}
+                  variant="contained"
+                  color="primary"
+                >
+                  View Details
+                </Button>
+              </Box>
+            </Box>
+          ) : null}
           <Box sx={styles.availableRewards}>
             <Box
               sx={{
@@ -194,22 +272,22 @@ const WalletInformation: React.FC = () => {
                 fontWeight={700}
                 color="text.secondary"
               >
-                Unbonding cudos
+                Available rewards
               </Typography>
               <Stack
+                sx={{ flexFlow: 'wrap' }}
                 direction="row"
                 alignItems="center"
                 gap="6px"
-                sx={{ flexFlow: 'wrap' }}
               >
                 <CudosLogo style={{ width: '20px', height: 'auto' }} />
                 <Typography variant="h5" fontWeight={700}>
-                  {formatNumber(Number(unbondingBalance).toFixed(2), 2)}
+                  {formatNumber(Number(availableRewards).toFixed(2), 2)}
                 </Typography>
                 <Typography variant="h6" color="primary.main" fontWeight={700}>
                   $
                   {formatNumber(
-                    (rate * Number(unbondingBalance)).toFixed(2),
+                    (rate * Number(state.availableRewards)).toFixed(2),
                     2
                   )}
                 </Typography>
@@ -218,74 +296,24 @@ const WalletInformation: React.FC = () => {
             <Box>
               <Button
                 onClick={() =>
-                  handleunbondingModal({
-                    open: true
+                  handleRewardsModal({
+                    open: true,
+                    status: ModalStatus.IN_PROGRESS,
+                    isSingleRewardWithdraw: false,
+                    amount: availableRewards.toString()
                   })
                 }
-                sx={{ fontWeight: 700, minWidth: '150px' }}
+                sx={{ fontWeight: 700 }}
                 disabled={!stakedValidators.length}
                 variant="contained"
                 color="primary"
               >
-                View Details
+                Claim Rewards
               </Button>
             </Box>
           </Box>
-        ) : null}
-        <Box sx={styles.availableRewards}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
-              padding: '5px 1rem'
-            }}
-          >
-            <Typography
-              textTransform="uppercase"
-              fontWeight={700}
-              color="text.secondary"
-            >
-              Available rewards
-            </Typography>
-            <Stack
-              sx={{ flexFlow: 'wrap' }}
-              direction="row"
-              alignItems="center"
-              gap="6px"
-            >
-              <CudosLogo style={{ width: '20px', height: 'auto' }} />
-              <Typography variant="h5" fontWeight={700}>
-                {formatNumber(Number(availableRewards).toFixed(2), 2)}
-              </Typography>
-              <Typography variant="h6" color="primary.main" fontWeight={700}>
-                $
-                {formatNumber(
-                  (rate * Number(state.availableRewards)).toFixed(2),
-                  2
-                )}
-              </Typography>
-            </Stack>
-          </Box>
-          <Box>
-            <Button
-              onClick={() =>
-                handleRewardsModal({
-                  open: true,
-                  status: ModalStatus.IN_PROGRESS,
-                  amount: availableRewards.toString()
-                })
-              }
-              sx={{ fontWeight: 700 }}
-              disabled={!stakedValidators.length}
-              variant="contained"
-              color="primary"
-            >
-              Claim Rewards
-            </Button>
-          </Box>
         </Box>
-      </Box>
+      </Grid>
       <ClaimRewardsModal />
       <UnbondingModal />
     </Card>

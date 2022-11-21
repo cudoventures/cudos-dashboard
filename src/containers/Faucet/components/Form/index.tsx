@@ -8,25 +8,31 @@ import { useNotifications } from 'components/NotificationPopup/hooks'
 import getFaucetTokens from 'api/getFaucetTokens'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { ModalStatus } from 'store/modal'
+import { isValidCudosAddress } from 'utils/projectUtils'
 import useModal from '../FaucetModal/hooks'
 import { styles } from './styles'
-import { isValidCudosAddress } from 'utils/projectUtils'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 
 const Form = () => {
   const captchaRef = useRef<any>(null)
   const [address, setAddress] = useState<string>('')
   const [amount, setAmount] = useState<string>('')
-  const [showTransferBtn, setShowTransferBtn] = useState<boolean>(false)
+  const [validatedCaptcha, setValidatedCaptcha] = useState<boolean>(false)
   const { setWarning } = useNotifications()
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const maxAmountAllowed: number = 100
 
   const { handleModal } = useModal()
 
-  const validInput = () => {
-
+  const validData = () => {
     if (
-      Number(amount) > maxAmountAllowed || Number(amount) <= 0 ||
-      !amount || !address
+      !validatedCaptcha ||
+      Number(amount) > maxAmountAllowed ||
+      Number(amount) <= 0 ||
+      !amount ||
+      !address
     ) {
       return false
     }
@@ -48,19 +54,13 @@ const Form = () => {
 
   const checkCaptcha = async () => {
     const token = captchaRef.current.getValue()
-    const validatedInput = validInput()
 
-    if (token && validatedInput) {
-      setShowTransferBtn(true)
+    if (token) {
+      setValidatedCaptcha(true)
       return
     }
 
-    if (!validatedInput) {
-      setWarning('Please fill the required fields first')
-    }
-
-    captchaRef.current.reset()
-    setShowTransferBtn(false)
+    setValidatedCaptcha(false)
   }
 
   const handleReceiveTokens = async () => {
@@ -84,7 +84,10 @@ const Form = () => {
     try {
       handleModal({ open: true, status: ModalStatus.LOADING })
 
-      const response = await getFaucetTokens(data)
+      const response = await getFaucetTokens(
+        CHAIN_DETAILS.FAUCET_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_ADDRESS],
+        data
+      )
 
       if (response.data.transfers[0].status === 'error') {
         handleModal({
@@ -115,7 +118,7 @@ const Form = () => {
   }
 
   return (
-    <Card sx={{ padding: 0, flex: 1 }}>
+    <Card sx={{ padding: 0, flex: 1, height: '100%' }}>
       <Box sx={styles.formContainer}>
         <Typography variant="h5" fontWeight={900}>
           Receive Testnet CUDOS tokens
@@ -176,10 +179,10 @@ const Form = () => {
                 justifyContent: 'center',
                 flex: 1
               }}
-              onChange={() => checkCaptcha()}
               theme="dark"
               ref={captchaRef}
-              sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
+              onChange={checkCaptcha}
+              sitekey={CHAIN_DETAILS.CAPTCHA_SITE_KEY[chosenNetwork as keyof typeof CHAIN_DETAILS.CAPTCHA_SITE_KEY]}
             />
           </Stack>
         </Stack>
@@ -190,7 +193,7 @@ const Form = () => {
             width: '50%'
           })}
           onClick={handleReceiveTokens}
-          disabled={!showTransferBtn || !validInput()}
+          disabled={!validData()}
         >
           Receive Tokens
         </Button>

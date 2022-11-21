@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, InputAdornment } from '@mui/material'
+import { Box, Grid, InputAdornment } from '@mui/material'
 
 import DelegationModal from 'components/Dialog/components/DelegationModal'
 import { StyledTextField } from 'components/Dialog/components/styles'
@@ -21,59 +21,68 @@ const Validators = () => {
   }
 
   return (
-    <Box
-      sx={({ custom }) => ({
-        background: custom.backgrounds.primary,
-        padding: '1.2rem',
-        borderRadius: '1.3rem',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        gap: 1
-      })}
-    >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        gap={2}
-        alignItems="center"
-      >
-        <ValidatorsCount />
-        <StyledTextField
-          variant="standard"
-          margin="dense"
-          value={filter}
-          onChange={handleInput}
-          placeholder="Validator"
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              fontSize: '12px'
-            },
-            inputProps: {
-              style: {
-                padding: 0
-              }
-            },
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            )
-          }}
-          size="small"
-          sx={{ marginRight: 'auto' }}
-        />
-        <Tabs />
-      </Box>
-      <Box
-        sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column' }}
-      >
-        <ValidatorsTable />
-      </Box>
-      <DelegationModal />
-    </Box>
+    <Grid justifyContent="center" container>
+      <Grid xl={9} item>
+        <Box
+          sx={({ custom }) => ({
+            background: custom.backgrounds.primary,
+            padding: '1.2rem',
+            borderRadius: '1.3rem',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            gap: 1
+          })}
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            gap={2}
+            alignItems="center"
+          >
+            <ValidatorsCount />
+            <StyledTextField
+              variant="standard"
+              margin="dense"
+              value={filter}
+              onChange={handleInput}
+              placeholder="Validator"
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  fontSize: '12px'
+                },
+                inputProps: {
+                  style: {
+                    padding: 0
+                  }
+                },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                )
+              }}
+              size="small"
+              sx={{ marginRight: 'auto' }}
+            />
+            <Tabs />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              height: '80vh',
+              overflow: 'hidden',
+              flexDirection: 'column'
+            }}
+          >
+            <ValidatorsTable />
+          </Box>
+          <DelegationModal />
+        </Box>
+      </Grid>
+    </Grid>
   )
 }
 

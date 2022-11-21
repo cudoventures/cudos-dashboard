@@ -7,7 +7,6 @@ import {
   ValidatorDetailsQuery,
   ValidatorLastSeenListenerSubscription
 } from 'graphql/types'
-import { useDesmosProfile } from 'hooks'
 import { getValidatorCondition } from 'utils/get_validator_condition'
 import { chainConfig } from 'configs'
 import { SlashingParams } from 'models'
@@ -26,7 +25,6 @@ const initialTokenDenom: TokenUnit = {
 const initialState: ValidatorDetailsState = {
   loading: true,
   exists: true,
-  desmosProfile: null,
   status: {
     status: 0,
     jailed: false,
@@ -54,17 +52,6 @@ export const useValidatorDetails = () => {
   const handleSetState = (stateChange: any) => {
     setState((prevState) => R.mergeDeepLeft(stateChange, prevState))
   }
-
-  // ==========================
-  // Desmos Profile
-  // ==========================
-  const { formatDesmosProfile } = useDesmosProfile({
-    onComplete: (data) => {
-      handleSetState({
-        desmosProfile: formatDesmosProfile(data)
-      })
-    }
-  })
 
   useEffect(() => {
     handleSetState(initialState)
