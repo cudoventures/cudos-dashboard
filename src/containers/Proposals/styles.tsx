@@ -53,6 +53,7 @@ export const styles: SxMap = {
   },
   proposalContent: {
     display: 'flex',
+    flexDirection: 'column',
     marginLeft: '50px',
     marginTop: '10px',
     width: '50%',
