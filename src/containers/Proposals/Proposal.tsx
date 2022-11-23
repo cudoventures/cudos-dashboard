@@ -20,9 +20,12 @@ import { ModalStatus } from 'store/modal'
 import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { proposalStatus } from './proposalStatus'
+import { CHAIN_DETAILS } from 'utils/constants'
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
 
 import { styles } from './styles'
-import { CHAIN_DETAILS } from 'utils/constants'
+import markDownStyle from './markdown-styles.module.css'
 
 const Proposal = () => {
   const proposalState = useSelector((state: RootState) => state.proposals)
@@ -95,81 +98,51 @@ const Proposal = () => {
     <Box sx={{ position: 'relative', height: '100%' }}>
       {searchResults.items.length
         ? searchResults.items.map((proposal: any) => (
-            <Card key={proposal.id} sx={styles.cardContainer}>
-              <Box sx={{ position: 'relative' }}>
-                <Box sx={{ position: 'absolute' }}>
-                  <Typography
-                    color="text.secondary"
-                    sx={styles.cardEnumeration}
-                  >
-                    {`#${proposal.id}`}
+          <Card key={proposal.id} sx={styles.cardContainer}>
+            <Box sx={{ position: 'relative' }}>
+              <Box sx={{ position: 'absolute' }}>
+                <Typography
+                  color="text.secondary"
+                  sx={styles.cardEnumeration}
+                >
+                  {`#${proposal.id}`}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Box
+                  onClick={() => handleProposalDetails(proposal)}
+                  sx={{ display: 'flex', cursor: 'pointer' }}
+                >
+                  <Typography sx={styles.cardTitle}>
+                    {proposal.title}
                   </Typography>
                 </Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <Box
-                    onClick={() => handleProposalDetails(proposal)}
-                    sx={{ display: 'flex', cursor: 'pointer' }}
-                  >
-                    <Typography sx={styles.cardTitle}>
-                      {proposal.title}
-                    </Typography>
-                  </Box>
-                  {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
-                    <Box sx={{ position: 'relative' }}>
-                      <Box>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() =>
-                            handleVotingModal({
-                              open: true,
-                              status: ModalStatus.IN_PROGRESS,
-                              id: proposal.id,
-                              title: proposal.title,
-                              fee: new BigNumber(0)
-                            })
-                          }
-                          sx={styles.cardActionButton}
-                        >
-                          Vote Now
-                        </Button>
-                      </Box>
-                      <Box sx={{ position: 'absolute', marginTop: '10px' }}>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          startIcon={
-                            <ArrowUpwardRoundedIcon
-                              fontSize="small"
-                              sx={{
-                                transform: 'rotate3d(0, 0, 1, 0.125turn)'
-                              }}
-                            />
-                          }
-                          onClick={() =>
-                            handleDepositModal({
-                              open: true,
-                              status: ModalStatus.IN_PROGRESS,
-                              id: proposal.id,
-                              title: proposal.title,
-                              amount: '',
-                              fee: new BigNumber(0)
-                            })
-                          }
-                          sx={styles.cardActionButton}
-                        >
-                          Deposit
-                        </Button>
-                      </Box>
-                    </Box>
-                  ) : null}
-                  {proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? (
+                {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
+                  <Box sx={{ position: 'relative' }}>
                     <Box>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() =>
+                          handleVotingModal({
+                            open: true,
+                            status: ModalStatus.IN_PROGRESS,
+                            id: proposal.id,
+                            title: proposal.title,
+                            fee: new BigNumber(0)
+                          })
+                        }
+                        sx={styles.cardActionButton}
+                      >
+                        Vote Now
+                      </Button>
+                    </Box>
+                    <Box sx={{ position: 'absolute', marginTop: '10px' }}>
                       <Button
                         variant="contained"
                         color="secondary"
@@ -196,96 +169,131 @@ const Proposal = () => {
                         Deposit
                       </Button>
                     </Box>
-                  ) : null}
-                </Box>
-                <Box color="text.secondary" sx={styles.proposalContent}>
-                  <Typography>{proposal.description}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', width: '100%' }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      marginLeft: '50px',
-                      marginTop: '50px',
-                      width: '85%'
-                    }}
-                  >
-                    <Box sx={{ flex: '0 1 30%' }}>
-                      <Typography
-                        sx={{
-                          fontSize: '14px'
-                        }}
-                      >
-                        Proposer
-                      </Typography>
-                      <Box>
-                        <Typography
-                          color="primary.main"
-                          sx={styles.proposerAddress}
-                        >
-                          {formatAddress(proposal.proposerAddress, 18)}
-                          <Tooltip
-                            onClick={() =>
-                              handleExplorer(proposal.proposerAddress)
-                            }
-                            title="Go to Explorer"
-                          >
-                            <img
-                              style={{
-                                marginLeft: '10px',
-                                cursor: 'pointer'
-                              }}
-                              src={LinkIcon}
-                              alt="Link"
-                            />
-                          </Tooltip>
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ flex: '0 0 20%' }}>
-                      <Typography
-                        sx={{
-                          fontSize: '14px'
-                        }}
-                      >
-                        Submit Time
-                      </Typography>
-                      <Typography color="text.secondary" sx={styles.timeStyle}>
-                        {formatDateTime(proposal.submitTime)}
-                      </Typography>
-                    </Box>
-                    {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
-                      <Box sx={{ flex: '0 1 20%' }}>
-                        <Typography
+                  </Box>
+                ) : null}
+                {proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? (
+                  <Box>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      startIcon={
+                        <ArrowUpwardRoundedIcon
+                          fontSize="small"
                           sx={{
-                            fontSize: '14px'
+                            transform: 'rotate3d(0, 0, 1, 0.125turn)'
                           }}
-                        >
-                          Voting End Time
-                        </Typography>
-                        <Typography
-                          color="text.secondary"
-                          sx={styles.timeStyle}
-                        >
-                          {formatDateTime(proposal.votingEndTime)}
-                        </Typography>
-                      </Box>
-                    ) : null}
+                        />
+                      }
+                      onClick={() =>
+                        handleDepositModal({
+                          open: true,
+                          status: ModalStatus.IN_PROGRESS,
+                          id: proposal.id,
+                          title: proposal.title,
+                          amount: '',
+                          fee: new BigNumber(0)
+                        })
+                      }
+                      sx={styles.cardActionButton}
+                    >
+                      Deposit
+                    </Button>
+                  </Box>
+                ) : null}
+              </Box>
+              <Box color="text.secondary" sx={styles.proposalContent}>
+                <ReactMarkdown
+                  className={markDownStyle.reactMarkDown}
+                  remarkPlugins={[gfm]}
+                >
+                  {proposal.description}
+                </ReactMarkdown>
+              </Box>
+              <Box sx={{ display: 'flex', width: '100%' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    marginLeft: '50px',
+                    marginTop: '50px',
+                    width: '85%'
+                  }}
+                >
+                  <Box sx={{ flex: '0 1 30%' }}>
+                    <Typography
+                      sx={{
+                        fontSize: '14px'
+                      }}
+                    >
+                      Proposer
+                    </Typography>
                     <Box>
                       <Typography
+                        color="primary.main"
+                        sx={styles.proposerAddress}
+                      >
+                        {formatAddress(proposal.proposerAddress, 18)}
+                        <Tooltip
+                          onClick={() =>
+                            handleExplorer(proposal.proposerAddress)
+                          }
+                          title="Go to Explorer"
+                        >
+                          <img
+                            style={{
+                              marginLeft: '10px',
+                              cursor: 'pointer'
+                            }}
+                            src={LinkIcon}
+                            alt="Link"
+                          />
+                        </Tooltip>
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box sx={{ flex: '0 0 20%' }}>
+                    <Typography
+                      sx={{
+                        fontSize: '14px'
+                      }}
+                    >
+                      Submit Time
+                    </Typography>
+                    <Typography color="text.secondary" sx={styles.timeStyle}>
+                      {formatDateTime(proposal.submitTime)}
+                    </Typography>
+                  </Box>
+                  {proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? (
+                    <Box sx={{ flex: '0 1 20%' }}>
+                      <Typography
                         sx={{
                           fontSize: '14px'
                         }}
                       >
-                        Status
+                        Voting End Time
                       </Typography>
-                      <Box>{proposalStatus(proposal.status)}</Box>
+                      <Typography
+                        color="text.secondary"
+                        sx={styles.timeStyle}
+                      >
+                        {formatDateTime(proposal.votingEndTime)}
+                      </Typography>
                     </Box>
+                  ) : null}
+                  <Box>
+                    <Typography
+                      sx={{
+                        fontSize: '14px'
+                      }}
+                    >
+                      Status
+                    </Typography>
+                    <Box>{proposalStatus(proposal.status)}</Box>
                   </Box>
                 </Box>
               </Box>
-            </Card>
-          ))
+            </Box>
+          </Card>
+        ))
         : handleNoSearchResults()}
       {proposalState.isNextPageLoading && !proposalState.searchField ? (
         <Box
