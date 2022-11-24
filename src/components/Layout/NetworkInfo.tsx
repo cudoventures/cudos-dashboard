@@ -11,8 +11,6 @@ import { handleAvailableNetworks } from 'utils/projectUtils'
 import { updateUser } from 'store/profile'
 import Card from 'components/Card'
 
-export const networksToDisplayInMenu = handleAvailableNetworks(CHAIN_DETAILS.DEFAULT_NETWORK)
-
 const NetworkLinkComponent = ({ network, setChosenNetwork }: {
   network: networkToDisplay,
   setChosenNetwork: (selectedNetwork: string) => void
@@ -53,6 +51,7 @@ const NetworkInfo = () => {
   const [open, setOpen] = useState<boolean>(false)
   const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const aliasChainName = CHAIN_DETAILS[chosenNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME
+  const networksToDisplayInMenu = handleAvailableNetworks(CHAIN_DETAILS.DEFAULT_NETWORK)
 
   const setChosenNetwork = (selectedNetwork: string) => {
     dispatch(updateUser({ chosenNetwork: selectedNetwork }))

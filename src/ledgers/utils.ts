@@ -14,6 +14,7 @@ import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { connectKeplrLedger } from './KeplrLedger'
 import { connectCosmostationLedger } from './CosmoStationLedger'
 import { CHAIN_DETAILS } from 'utils/constants'
+import { isCosmostationInstalled, isKeplrInstalled } from 'utils/projectUtils'
 
 const colors = {
   staking: '#3d5afe',
@@ -449,17 +450,16 @@ export const unknownMessage = {
 }
 
 export const switchLedgerType = async (chosenNetwork: string, ledgerType: string) => {
-  let ledger
-  switch (ledgerType) {
-    case CosmosNetworkConfig.KEPLR_LEDGER:
-      ledger = await connectKeplrLedger(chosenNetwork)
-      return ledger
-    case CosmosNetworkConfig.COSMOSTATION_LEDGER:
-      ledger = await connectCosmostationLedger(chosenNetwork)
-      return ledger
-    default:
-      return { address: '', accountName: '' }
+
+  if (ledgerType === CosmosNetworkConfig.KEPLR_LEDGER && isKeplrInstalled()) {
+    return connectKeplrLedger(chosenNetwork)
   }
+
+  if (ledgerType === CosmosNetworkConfig.COSMOSTATION_LEDGER && isCosmostationInstalled()) {
+    return connectCosmostationLedger(chosenNetwork)
+  }
+
+  throw new Error("Invalid ledger")
 }
 
 export const getLedgerSigner = async (
@@ -550,7 +550,7 @@ export const signingClient = async (chosenNetwork: string, ledgerType: string) =
 }
 
 export const getQueryClient = async (chosenNetwork: string): Promise<StargateClient> => {
-  
+
   try {
     const client = await StargateClient.connect(CHAIN_DETAILS.RPC_ADDRESS[chosenNetwork! as keyof typeof CHAIN_DETAILS.RPC_ADDRESS])
     return client
