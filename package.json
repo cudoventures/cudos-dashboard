@@ -25,6 +25,7 @@
     "copy-to-clipboard": "^3.3.1",
     "cosmjs-types": "^0.4.1",
     "cudosjs": "^1.1.1",
+    "detect-browser": "^5.3.0",
     "dompurify": "^2.3.8",
     "graphql": "^16.3.0",
     "graphql-tag": "^2.0.0",

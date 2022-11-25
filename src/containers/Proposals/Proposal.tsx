@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import { ArrowUpwardRounded as ArrowUpwardRoundedIcon } from '@mui/icons-material'
 import Card from 'components/Card'
-import LinkIcon from 'assets/vectors/link-icon.svg'
+import LinkIcon from 'assets/vectors/link-icon.svg?component'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { formatAddress, formatDateTime } from 'utils/projectUtils'
@@ -23,6 +23,7 @@ import { proposalStatus } from './proposalStatus'
 import { CHAIN_DETAILS } from 'utils/constants'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
+import { COLORS_DARK_THEME } from 'theme/colors'
 
 import { styles } from './styles'
 import markDownStyle from './markdown-styles.module.css'
@@ -238,14 +239,15 @@ const Proposal = () => {
                           }
                           title="Go to Explorer"
                         >
-                          <img
-                            style={{
-                              marginLeft: '10px',
-                              cursor: 'pointer'
-                            }}
-                            src={LinkIcon}
-                            alt="Link"
-                          />
+                          <Box>
+                            <LinkIcon
+                              style={{
+                                marginLeft: '10px',
+                                cursor: 'pointer',
+                                color: COLORS_DARK_THEME.PRIMARY_BLUE
+                              }}
+                            />
+                          </Box>
                         </Tooltip>
                       </Typography>
                     </Box>

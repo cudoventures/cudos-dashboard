@@ -6,8 +6,6 @@ import {
   Stack,
   Tooltip,
   Typography,
-  useMediaQuery,
-  useTheme
 } from '@mui/material'
 import Card from 'components/Card'
 import { useDispatch } from 'react-redux'
@@ -19,8 +17,8 @@ import {
   getStakedBalance,
   getWalletBalance
 } from 'utils/projectUtils'
-import CopyIcon from 'assets/vectors/copy-icon.svg'
-import LinkIcon from 'assets/vectors/link-icon.svg'
+import CopyIcon from 'assets/vectors/copy-icon.svg?component'
+import LinkIcon from 'assets/vectors/link-icon.svg?component'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import { formatNumber } from 'utils/format_token'
 import BigNumber from 'bignumber.js'
@@ -36,6 +34,7 @@ import useRewardsModal from './components/ClaimRewardsModal/hooks'
 import useUnbondingModal from './components/UnbondingTokensModal/hooks'
 import UnbondingModal from './components/UnbondingTokensModal'
 import { CHAIN_DETAILS } from 'utils/constants'
+import { COLORS_DARK_THEME } from 'theme/colors'
 
 const WalletInformation: React.FC = () => {
   const [rate, setRate] = useState<number>(0)
@@ -85,7 +84,7 @@ const WalletInformation: React.FC = () => {
           address,
           controller.signal
         )
-        const walletBalance = await getWalletBalance(chosenNetwork! ,address)
+        const walletBalance = await getWalletBalance(chosenNetwork!, address)
         const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address)
         const { unbondingBalance } = await getUnbondingBalance(chosenNetwork!, address)
 
@@ -150,22 +149,35 @@ const WalletInformation: React.FC = () => {
               onClick={() => handleCopy(address)}
               title={copied ? 'Copied' : 'Copy to clipboard'}
             >
-              <img style={{ cursor: 'pointer' }} src={CopyIcon} alt="Copy" />
+              <Box>
+                <CopyIcon
+                  style={{
+                    cursor: 'pointer',
+                    color: COLORS_DARK_THEME.PRIMARY_BLUE
+                  }}
+                />
+              </Box>
             </Tooltip>
             <Tooltip
               title="Go to Explorer"
               onClick={() =>
                 window
                   .open(
-                    `${
-                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
+                    `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                     }/accounts/${address}`,
                     '_blank'
                   )
                   ?.focus()
               }
             >
-              <img style={{ cursor: 'pointer' }} src={LinkIcon} alt="Link" />
+              <Box>
+                <LinkIcon
+                  style={{
+                    cursor: 'pointer',
+                    color: COLORS_DARK_THEME.PRIMARY_BLUE
+                  }}
+                />
+              </Box>
             </Tooltip>
           </Box>
         </Box>

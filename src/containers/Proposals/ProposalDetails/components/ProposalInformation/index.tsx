@@ -1,6 +1,6 @@
 import { Box, Button, Tooltip, Typography, Divider } from '@mui/material'
 import { ArrowUpwardRounded as ArrowUpwardRoundedIcon } from '@mui/icons-material'
-import LinkIcon from 'assets/vectors/link-icon.svg'
+import LinkIcon from 'assets/vectors/link-icon.svg?component'
 import Card from 'components/Card'
 import { useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
@@ -11,9 +11,10 @@ import { proposalType } from 'containers/Proposals/proposalType'
 import { ModalStatus } from 'store/modal'
 import useVotingModal from '../../../components/VotingModal/hooks'
 import useDepositModal from '../../../components/DepositModal/hooks'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { COLORS_DARK_THEME } from 'theme/colors'
 
 import { styles } from '../../../styles'
-import { CHAIN_DETAILS } from 'utils/constants'
 
 const ProposalInformation = () => {
   const { overview } = useSelector((state: RootState) => state.proposalDetails)
@@ -164,11 +165,15 @@ const ProposalInformation = () => {
                     onClick={() => handleExplorer(overview.proposer)}
                     title="Go to Explorer"
                   >
-                    <img
-                      style={{ marginLeft: '10px', cursor: 'pointer' }}
-                      src={LinkIcon}
-                      alt="Link"
-                    />
+                    <Box>
+                      <LinkIcon
+                        style={{
+                          marginLeft: '10px',
+                          cursor: 'pointer',
+                          color: COLORS_DARK_THEME.PRIMARY_BLUE
+                        }}
+                      />
+                    </Box>
                   </Tooltip>
                 </Typography>
               </Box>
