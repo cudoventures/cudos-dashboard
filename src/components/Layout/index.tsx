@@ -17,11 +17,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }}
     >
       <Header />
-      <Box display="flex" gap={8} flexGrow={1} sx={{ overflow: 'auto' }}>
+      <Box display="flex" gap={4.5} flexGrow={1} sx={{ overflow: 'auto' }}>
         <LeftMenu />
         <Box
           sx={{
-            paddingRight: '2rem',
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column'

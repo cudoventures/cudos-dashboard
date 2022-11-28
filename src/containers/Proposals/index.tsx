@@ -58,7 +58,7 @@ const Proposals = () => {
 
   return (
     <Fade in timeout={500}>
-      <Box display="flex" flexDirection="column" gap={2} height="100%">
+      <Box paddingRight='2rem' display="flex" flexDirection="column" gap={2} height="100%">
         <Box sx={styles.stickyHeader}>
           <Typography sx={styles.headerStyle}>Proposals</Typography>
           <Typography

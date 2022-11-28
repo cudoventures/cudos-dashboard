@@ -1,7 +1,8 @@
 export const styles: SxMap = {
   menuContainer: ({ custom }) => ({
     background: custom.backgrounds.primary,
-    width: '88px',
+    width: 'min-content',
+    minHeight: '300px',
     borderRadius: '1.3rem',
     marginBottom: '1rem',
     padding: '20px',
@@ -44,7 +45,9 @@ export const styles: SxMap = {
   navigationButton: ({ custom, palette }) => ({
     padding: '1rem',
     height: '3rem',
-    width: '3rem',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
     borderRadius: '10px',
     color: palette.text.secondary,
     '&:hover': {

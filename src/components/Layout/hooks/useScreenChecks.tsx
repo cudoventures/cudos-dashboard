@@ -1,6 +1,11 @@
 import { useMediaQuery } from 'react-responsive'
 import { SCREEN_RESOLUTIONS } from "utils/constants"
 
+//CUSTOM
+export const useIsScreenLessThan = (pixels: string, measure: 'width' | 'height') => {
+    return useMediaQuery({ query: `(max-${measure}: ${pixels})` })
+}
+
 //WIDTH
 export const useHighResCheck = () => {
     return useMediaQuery({ query: `(max-width: ${SCREEN_RESOLUTIONS.HIGH}px)` })
