@@ -72,9 +72,10 @@ const Validators = () => {
           <Box
             sx={{
               display: 'flex',
-              height: '80vh',
               overflow: 'hidden',
-              flexDirection: 'column'
+              flexDirection: 'column',
+              height: 'calc(100vh - 370px)',
+              minHeight: '200px'
             }}
           >
             <ValidatorsTable />
