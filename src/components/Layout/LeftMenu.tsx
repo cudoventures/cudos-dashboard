@@ -1,51 +1,62 @@
 import { useEffect, useState } from 'react'
-import { Box, ToggleButton, Tooltip } from '@mui/material'
+import { Box, ToggleButton, Tooltip, Typography } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
-import DashboardIcon from 'assets/vectors/dashboard.svg?component'
-import ProposalsIcon from 'assets/vectors/proposals.svg?component'
-import StakingIcon from 'assets/vectors/staking.svg?component'
-import FaucetIcon from 'assets/vectors/faucet.svg?component'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
+import { getMenuItems, MenuItems } from './menuHelpers'
+import { useMidlowResCheck } from './hooks/useScreenChecks'
 
 import { styles } from './styles'
 
-const MenuItems = [
-  { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
-  { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
-  { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' }
-]
-
-if (import.meta.env.VITE_CHAIN_STATUS !== 'mainnet') {
-  MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
-}
-
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
+  const [menuItems, setMenuItems] = useState<MenuItems[]>([])
+  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const { pathname } = useLocation()
+  const isMidLowRes = useMidlowResCheck()
 
   useEffect(() => {
-    const selectedIndex = MenuItems.findIndex(
-      (menuItem) => menuItem.link === pathname
-    )
-    setSelected(selectedIndex)
+
+    setMenuItems(getMenuItems(chosenNetwork, loadingState))
+
+  }, [chosenNetwork, loadingState])
+
+  useEffect(() => {
+
+    if (menuItems.length) {
+      const selectedIndex = menuItems.findIndex(
+        (menuItem) => menuItem.link === pathname
+      )
+      setSelected(selectedIndex)
+      return
+    }
+
+    setSelected(0)
+
   }, [pathname])
 
   return (
     <Box sx={styles.menuContainer}>
       <Box
         display="flex"
-        alignItems="center"
+        alignItems="flex-start"
         flexDirection="column"
         gap={2}
         height="100%"
+        width='100%'
       >
-        {MenuItems.map((item, index) => (
+        {menuItems.map((item, index) => (
           <Link
             to={item.link}
             key={item.link}
-            style={{ marginTop: item.link === '/faucet' ? 'auto' : 0 }}
+            style={{
+              width: '100%',
+              textDecoration: 'none',
+              marginTop: item.link === '/faucet' ? 'auto' : 0
+            }}
           >
             <Tooltip
-              title={item.text}
+              title={isMidLowRes ? item.text : ''}
               placement="right"
               componentsProps={{
                 tooltip: {
@@ -68,6 +79,13 @@ const Menu = () => {
                 onClick={() => setSelected(index)}
               >
                 {item.icon}
+                {isMidLowRes ? null : <Typography
+                  marginLeft={2.5}
+                  variant='subtitle2'
+                  color={selected === index ? 'white' : 'inherit'}
+                >
+                  {item.text}
+                </Typography>}
               </ToggleButton>
             </Tooltip>
           </Link>

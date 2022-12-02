@@ -14,13 +14,13 @@ export const styles = {
   },
   subHeaderContainer: {
     display: 'flex',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: '25px'
   },
   connectButton: {
     height: '50px',
     width: '290px',
-    marginTop: '50px',
-    marginBottom: '30px'
+    marginBottom: '25px'
   },
   cosmostationConnectBtn: {
     height: '50px',

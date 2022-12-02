@@ -16,6 +16,9 @@ import moment from 'moment'
 import NoData from 'components/NoData'
 import { UnbondingsType, UnbondingType } from '../../types'
 import { unbondingsColumns } from '../../utils'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
 
 type UnbondingsProps = {
   unbondings: UnbondingsType
@@ -24,6 +27,8 @@ type UnbondingsProps = {
 
 const Unbondings: React.FC<UnbondingsProps> = (props) => {
   const { unbondings, handlePageCallback } = props
+
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
 
   const { page, rowsPerPage, handleChangePage } = usePagination({
     pageChangeCallback: handlePageCallback
@@ -50,7 +55,7 @@ const Unbondings: React.FC<UnbondingsProps> = (props) => {
           onClick={() =>
             window
               .open(
-                `${import.meta.env.VITE_APP_EXPLORER_V2}/accounts/${
+                `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/accounts/${
                   item.address
                 }`,
                 '_blank'

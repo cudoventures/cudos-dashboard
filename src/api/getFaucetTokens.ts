@@ -1,12 +1,11 @@
 import axios from 'axios'
-import { GET_FAUCET_TOKENS } from './config'
 
-const getFaucetTokens = async (data: {
+const getFaucetTokens = async (faucetAddress: string, data: {
   address: string
   coins: Array<string>
   captchaResponse: string
 }) => {
-  return axios.post(GET_FAUCET_TOKENS, data)
+  return axios.post(faucetAddress, data)
 }
 
 export default getFaucetTokens

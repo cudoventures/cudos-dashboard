@@ -4,6 +4,9 @@ import { DelegationModalProps, initialDelegationModalState } from 'store/modal'
 import numeral from 'numeral'
 import SuccessIcon from 'assets/vectors/success.svg'
 import { ModalContainer, CancelRoundedIcon } from '../styles'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type SuccessProps = {
   modalProps: DelegationModalProps
@@ -12,6 +15,7 @@ type SuccessProps = {
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { validator, gasUsed, txHash, fee } = modalProps
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
 
   const handleClose = () => {
     handleModal({
@@ -75,7 +79,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                   window
                     .open(
                       `${
-                        import.meta.env.VITE_APP_EXPLORER_V2
+                        CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                       }/transactions/${txHash}`,
                       '_blank'
                     )

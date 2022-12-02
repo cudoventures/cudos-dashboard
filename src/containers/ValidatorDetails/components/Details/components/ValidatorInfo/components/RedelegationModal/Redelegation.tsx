@@ -5,7 +5,7 @@ import {
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgBeginRedelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, GasPrice } from 'cudosjs'
+import { coin, DEFAULT_GAS_MULTIPLIER, GasPrice } from 'cudosjs'
 import {
   ModalStatus,
   RedelegationModalProps,
@@ -32,10 +32,10 @@ import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { updateUser } from 'store/profile'
+import { CHAIN_DETAILS } from 'utils/constants'
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 type RedelegationProps = {
@@ -52,7 +52,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address, connectedLedger } = useSelector(
+  const { address, connectedLedger, chosenNetwork } = useSelector(
     ({ profile }: RootState) => profile
   )
   const validators = useSelector(({ validator }: RootState) => validator.items)
@@ -87,7 +87,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger)
 
       const walletBalance = await client.getDelegation(
         address,
@@ -128,11 +128,11 @@ const Redelegation: React.FC<RedelegationProps> = ({
         value: msg
       }
 
-      const client = await signingClient(connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger)
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-      const gasLimit = Math.round(gasUsed * feeMultiplier)
+      const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
       const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 
@@ -174,11 +174,11 @@ const Redelegation: React.FC<RedelegationProps> = ({
       value: msg
     }
 
-    const client = await signingClient(connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-    const gasLimit = Math.round(gasUsed * feeMultiplier)
+    const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
     const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 
@@ -221,6 +221,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
     try {
       const redelegationResult = await redelegate(
+        chosenNetwork,
         address,
         validator?.address || '',
         redelegationAddress,
@@ -235,7 +236,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         txHash: redelegationResult.transactionHash
       })
 
-      const { redelegationsArray } = await fetchRedelegations(address)
+      const { redelegationsArray } = await fetchRedelegations(chosenNetwork!, address)
       dispatch(
         updateUser({
           redelegations: redelegationsArray
@@ -301,7 +302,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {import.meta.env.VITE_APP_CHAIN_NAME}
+                    {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
                   </Typography>
                 </Box>
               </Box>
@@ -424,7 +425,8 @@ const Redelegation: React.FC<RedelegationProps> = ({
             disabled={
               Number(amount) > Number(delegated) ||
               !amount ||
-              !redelegationAddress
+              !redelegationAddress ||
+              fee.length <= 0
             }
           >
             Submit

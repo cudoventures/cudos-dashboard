@@ -1,5 +1,6 @@
 export const styles: SxMap = {
   stakingContainer: {
+    paddingRight: '2rem',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',

@@ -3,7 +3,9 @@ import {
   CircularProgress,
   Stack,
   Tooltip,
-  Typography
+  Typography,
+  useMediaQuery,
+  useTheme
 } from '@mui/material'
 import moment from 'moment'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
@@ -14,12 +16,20 @@ import { columnNames } from 'store/userTransactions'
 
 import { defaultMessages, unknownMessage } from 'ledgers/utils'
 import numeral from 'numeral'
-import { styles } from '../styles'
+import { addEndingEllipsis } from 'utils/projectUtils'
+import { RootState } from 'store'
+import { useSelector } from 'react-redux'
+import { CHAIN_DETAILS } from 'utils/constants'
 import { useUserTransactions } from './UserActivity/hooks'
+import { styles } from '../styles'
 
 const LatestActivity = () => {
   const { state } = useUserTransactions()
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { data, loading, hasActivity } = state
+
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md' || 'xs'))
 
   const formattedItems = data.map((tx: any, idx) => {
     const txType: string = tx.messages[0]['@type']
@@ -39,7 +49,11 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/blocks/${tx.height}`,
+                  `${
+                    CHAIN_DETAILS.EXPLORER_URL[
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
+                    ]
+                  }/blocks/${tx.height}`,
                   '_blank'
                 )
                 ?.focus()
@@ -60,17 +74,19 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${import.meta.env.VITE_APP_EXPLORER_V2}/transactions/${
-                    tx.hash
-                  }`,
+                  `${
+                    CHAIN_DETAILS.EXPLORER_URL[
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
+                    ]
+                  }/transactions/${tx.hash}`,
                   '_blank'
                 )
                 ?.focus()
             }
           >
             {getMiddleEllipsis(tx.hash, {
-              beginning: 10,
-              ending: 12
+              beginning: isSmallScreen ? 5 : 10,
+              ending: isSmallScreen ? 3 : 12
             })}
           </Typography>
         </Tooltip>
@@ -89,7 +105,9 @@ const LatestActivity = () => {
             letterSpacing: '1px'
           }}
         >
-          {txBadge.displayName}
+          {addEndingEllipsis(txBadge.displayName, {
+            begining: isSmallScreen ? 6 : 0
+          })}
         </Typography>
       ),
       date: (
@@ -117,7 +135,9 @@ const LatestActivity = () => {
       <CircularProgress size={60} />
     </Box>
   ) : (
-    <Table items={formattedItems} columns={columnNames} />
+    <Box sx={{ height: '54vh', overflow: 'hidden' }}>
+      <Table items={formattedItems} columns={columnNames} />
+    </Box>
   )
 
   const noActivity =

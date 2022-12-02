@@ -8,9 +8,11 @@ import { updateUser } from 'store/profile'
 import { copyToClipboard, formatAddress } from 'utils/projectUtils'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
-import LinkIcon from 'assets/vectors/link-icon.svg'
-import CopyIcon from 'assets/vectors/copy-icon.svg'
-import ArrowIcon from 'assets/vectors/arrow-down.svg'
+import LinkIcon from 'assets/vectors/link-icon.svg?component'
+import CopyIcon from 'assets/vectors/copy-icon.svg?component'
+import ArrowIcon from 'assets/vectors/arrow-down.svg?component'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { COLORS_DARK_THEME } from 'theme/colors'
 
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
 import { styles } from './styles'
@@ -18,7 +20,7 @@ import { styles } from './styles'
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { address, accountName, connectedLedger } = useSelector(
+  const { address, accountName, connectedLedger, chosenNetwork } = useSelector(
     (state: RootState) => state.profile
   )
 
@@ -35,7 +37,7 @@ const UserInfo = () => {
   }
 
   const handleExplorer = () => {
-    window.open(`${import.meta.env.VITE_APP_EXPLORER_V2?.toString()}`, '_blank')
+    window.open(`${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL].toString()}`, '_blank')
   }
 
   const handleDisconnect = () => {
@@ -51,7 +53,8 @@ const UserInfo = () => {
         delegations: [],
         redelegations: [],
         undelegations: [],
-        connectedLedger: ''
+        connectedLedger: '',
+        chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK
       })
     )
     navigate('/')
@@ -78,21 +81,18 @@ const UserInfo = () => {
             </Typography>
           </Typography>
           <Box>
-            <img
+            <ArrowIcon
               style={{
-                cursor: 'pointer',
-                transform: open ? 'rotate(180deg)' : 'rotate(360deg)',
                 position: 'absolute',
                 right: 15,
-                top: 20
+                top: 20,
+                transform: open ? 'rotate(180deg)' : 'rotate(360deg)'
               }}
-              src={ArrowIcon}
-              alt="Arrow Icon"
             />
           </Box>
         </Box>
       </Box>
-      <Collapse sx={{ marginTop: '-28px', zIndex: '-1' }} in={open}>
+      <Collapse sx={{ position: 'absolute', top: 21, zIndex: '-1' }} in={open}>
         <Box sx={styles.dropdownMenuContainer}>
           <Box sx={{ marginTop: '40px' }}>
             <Box sx={{ display: 'flex' }}>
@@ -116,18 +116,26 @@ const UserInfo = () => {
                 onClick={() => handleCopy(address)}
                 title={copied ? 'Copied' : 'Copy to clipboard'}
               >
-                <img
-                  style={{ marginLeft: '10px', cursor: 'pointer' }}
-                  src={CopyIcon}
-                  alt="Copy"
-                />
+                <Box>
+                  <CopyIcon
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: COLORS_DARK_THEME.PRIMARY_BLUE
+                    }}
+                  />
+                </Box>
               </Tooltip>
               <Tooltip onClick={() => handleExplorer()} title="Go to Explorer">
-                <img
-                  style={{ marginLeft: '10px', cursor: 'pointer' }}
-                  src={LinkIcon}
-                  alt="Link"
-                />
+                <Box>
+                  <LinkIcon
+                    style={{
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      color: COLORS_DARK_THEME.PRIMARY_BLUE
+                    }}
+                  />
+                </Box>
               </Tooltip>
             </Box>
             <Box

@@ -9,6 +9,7 @@ import { RootState } from 'store'
 import SuccessIcon from 'assets/vectors/success.svg'
 import { formatBigNum } from 'utils/projectUtils'
 import { ModalContainer, CancelRoundedIcon } from './styles'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type SuccessProps = {
   modalProps: VotingModalProps
@@ -16,7 +17,7 @@ type SuccessProps = {
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { address } = useSelector(({ profile }: RootState) => profile)
+  const { address, chosenNetwork } = useSelector(({ profile }: RootState) => profile)
   const { type, title, id, fee, hash } = modalProps
 
   const handleClose = () => {
@@ -107,7 +108,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                 window
                   .open(
                     `${
-                      import.meta.env.VITE_APP_EXPLORER_V2
+                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
                     }/transactions/${hash}`,
                     '_blank'
                   )

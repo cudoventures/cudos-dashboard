@@ -20,7 +20,8 @@ const MyDelegations = () => {
     redelegations,
     undelegations,
     stakedValidators,
-    address
+    address,
+    chosenNetwork
   } = useSelector((state: RootState) => state.profile)
   const { validator } = useSelector(
     (state: RootState) => state.validatorDetails
@@ -78,19 +79,23 @@ const MyDelegations = () => {
     const fetchData = async () => {
       try {
         const { validatorArray } = await fetchRewards(
+          chosenNetwork!,
           address,
           controller.signal
         )
 
         const { redelegationsArray } = await fetchRedelegations(
+          chosenNetwork!,
           address,
           controller.signal
         )
         const { undelegationsArray } = await fetchUndedelegations(
+          chosenNetwork!,
           address,
           controller.signal
         )
         const { delegationsArray } = await fetchDelegations(
+          chosenNetwork!,
           address,
           controller.signal
         )
