@@ -21,7 +21,7 @@ const ProposalDetails = () => {
   return (
     <>
       <Fade in timeout={500}>
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="flex" flexDirection="column" gap={2} paddingRight='2rem'>
           <Navigation />
           {!overview?.content['@type'] ? (
             <Box

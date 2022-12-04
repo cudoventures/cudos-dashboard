@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { getMenuItems, MenuItems } from './menuHelpers'
-import { useMidlowResCheck } from './hooks/useScreenChecks'
+import { useIsScreenLessThan } from './hooks/useScreenChecks'
 
 import { styles } from './styles'
 
@@ -13,7 +13,7 @@ const Menu = () => {
   const [menuItems, setMenuItems] = useState<MenuItems[]>([])
   const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
   const { pathname } = useLocation()
-  const isMidLowRes = useMidlowResCheck()
+  const isScreenWidthLessThan1440px = useIsScreenLessThan('1440px', 'width')
 
   useEffect(() => {
 
@@ -56,7 +56,7 @@ const Menu = () => {
             }}
           >
             <Tooltip
-              title={isMidLowRes ? item.text : ''}
+              title={isScreenWidthLessThan1440px ? item.text : ''}
               placement="right"
               componentsProps={{
                 tooltip: {
@@ -79,7 +79,7 @@ const Menu = () => {
                 onClick={() => setSelected(index)}
               >
                 {item.icon}
-                {isMidLowRes ? null : <Typography
+                {isScreenWidthLessThan1440px ? null : <Typography
                   marginLeft={2.5}
                   variant='subtitle2'
                   color={selected === index ? 'white' : 'inherit'}
