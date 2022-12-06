@@ -13,8 +13,11 @@ import useVotingModal from '../../../components/VotingModal/hooks'
 import useDepositModal from '../../../components/DepositModal/hooks'
 import { CHAIN_DETAILS } from 'utils/constants'
 import { COLORS_DARK_THEME } from 'theme/colors'
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
 
 import { styles } from '../../../styles'
+import markDownStyle from '../../../markdown-styles.module.css'
 
 const ProposalInformation = () => {
   const { overview } = useSelector((state: RootState) => state.proposalDetails)
@@ -29,6 +32,7 @@ const ProposalInformation = () => {
     )
   }
 
+  console.log(overview.description)
   return (
     <Card>
       <Box sx={{ position: 'relative' }}>
@@ -121,9 +125,15 @@ const ProposalInformation = () => {
             </Box>
           ) : null}
         </Box>
-        <Box color="text.secondary" sx={styles.proposalContent}>
+        <ReactMarkdown
+          className={markDownStyle.reactMarkDown}
+          remarkPlugins={[gfm]}
+        >
+          {overview.description}
+        </ReactMarkdown>
+        {/* <Box color="text.secondary" sx={styles.proposalContent}>
           <Typography>{overview.description}</Typography>
-        </Box>
+        </Box> */}
         <Box sx={{ display: 'flex', width: '100%' }}>
           <Box
             sx={{
