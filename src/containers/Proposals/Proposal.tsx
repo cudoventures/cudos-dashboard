@@ -21,12 +21,9 @@ import useVotingModal from './components/VotingModal/hooks'
 import useDepositModal from './components/DepositModal/hooks'
 import { proposalStatus } from './proposalStatus'
 import { CHAIN_DETAILS } from 'utils/constants'
-import ReactMarkdown from 'react-markdown'
-import gfm from 'remark-gfm'
 import { COLORS_DARK_THEME } from 'theme/colors'
-
+import Markdown from 'components/Markdown'
 import { styles } from './styles'
-import markDownStyle from './markdown-styles.module.css'
 
 const Proposal = () => {
   const proposalState = useSelector((state: RootState) => state.proposals)
@@ -203,12 +200,7 @@ const Proposal = () => {
                 ) : null}
               </Box>
               <Box color="text.secondary" sx={styles.proposalContent}>
-                <ReactMarkdown
-                  className={markDownStyle.reactMarkDown}
-                  remarkPlugins={[gfm]}
-                >
-                  {proposal.description}
-                </ReactMarkdown>
+                <Markdown text={proposal.description} />
               </Box>
               <Box sx={{ display: 'flex', width: '100%' }}>
                 <Box

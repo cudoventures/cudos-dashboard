@@ -13,7 +13,7 @@ import useVotingModal from '../../../components/VotingModal/hooks'
 import useDepositModal from '../../../components/DepositModal/hooks'
 import { CHAIN_DETAILS } from 'utils/constants'
 import { COLORS_DARK_THEME } from 'theme/colors'
-
+import Markdown from 'components/Markdown'
 import { styles } from '../../../styles'
 
 const ProposalInformation = () => {
@@ -29,6 +29,7 @@ const ProposalInformation = () => {
     )
   }
 
+  console.log(overview.description)
   return (
     <Card>
       <Box sx={{ position: 'relative' }}>
@@ -121,9 +122,7 @@ const ProposalInformation = () => {
             </Box>
           ) : null}
         </Box>
-        <Box color="text.secondary" sx={styles.proposalContent}>
-          <Typography>{overview.description}</Typography>
-        </Box>
+        <Markdown text={overview.description} />
         <Box sx={{ display: 'flex', width: '100%' }}>
           <Box
             sx={{

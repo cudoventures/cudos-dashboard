@@ -18,7 +18,7 @@ const Dashboard = () => {
   const theme = useTheme()
   const isBigScreen = useMediaQuery(theme.breakpoints.up('lg'))
   const isVeryBigScreen = useMediaQuery(theme.breakpoints.up('xl'))
-  const isScreenWidthLessThan1400px = useIsScreenLessThan('1400px', 'width')
+  const isScreenWidthLessThan1350px = useIsScreenLessThan('1350px', 'width')
 
   return (
     <Fade in timeout={500}>
@@ -45,7 +45,7 @@ const Dashboard = () => {
               item
               xs={12}
               md={12}
-              lg={isScreenWidthLessThan1400px ? 12 : 9}
+              lg={isScreenWidthLessThan1350px ? 12 : 9}
               xl={6}
             >
               <WalletInformation />
@@ -60,7 +60,7 @@ const Dashboard = () => {
               item
               xs={12}
               md={12}
-              lg={isScreenWidthLessThan1400px ? 12 : 3}
+              lg={isScreenWidthLessThan1350px ? 12 : 3}
               xl={2}
             >
               <NetworkStatistics />
