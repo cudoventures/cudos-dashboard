@@ -1012,6 +1012,11 @@
   resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.11.tgz#d6b447cfd9cf7613ec485b57327819b14735cf13"
   integrity sha512-CkmNPmYn07UhP0z3PxGRRpgTcBJ/gS1ay/J2jfYsBi/4gnXvpQ3xOZdMU0qdxhFOjh1Xt7kflYsztk9ljMnJcw==
 
+"@cosmostation/extension-client@^0.1.9":
+  version "0.1.15"
+  resolved "https://registry.yarnpkg.com/@cosmostation/extension-client/-/extension-client-0.1.15.tgz#cdc6d8fce42217704c1c0d5814f0ee7ce27e8dab"
+  integrity sha512-HlXYJjFrNpjiV/GUKhri1UL8/bhlOIFFLpRF78YDSqq16x0+plIqx5CAvEusFcKTDpVfpeD5sfUHiKvP7euNFg==
+
 "@cosmostation/wc-modal@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@cosmostation/wc-modal/-/wc-modal-0.0.4.tgz#61442b0c51201dda9ee90cfcb3002848eadc7ba2"
@@ -3257,17 +3262,20 @@ csstype@^3.0.11, csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.11.tgz#d66700c5eacfac1940deb4e3ee5642792d85cd33"
   integrity sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==
 
-cudosjs@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.1.1.tgz#2e9bfcf910c37559d2a4d86976f9d418794d2383"
-  integrity sha512-IPIO0+9jQ3ovl/6LGI/NwKP2r3yl36R7evDSaeiQj1hxfDdY3M0IcTbxYAqOhkptmdsqpPVre/MZAqVR00mAUA==
+cudosjs@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/cudosjs/-/cudosjs-1.2.5.tgz#b491316aea38399ea7800c0b4bc3d615481fd7e7"
+  integrity sha512-LignXN62Ni355FlU+5A8liwoktKkXffV2rHpCKmrRKPljIPEyrRrtjs0YOHFDbbioouqmZXlQb+z2mgfErPknw==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.28.4"
     "@cosmjs/crypto" "^0.28.4"
     "@cosmjs/proto-signing" "^0.28.4"
     "@cosmjs/stargate" "^0.28.4"
     "@cosmjs/tendermint-rpc" "^0.28.4"
+    "@cosmostation/cosmos-client" "^0.0.4"
+    "@cosmostation/extension-client" "^0.1.9"
     bignumber.js "^9.0.2"
+    detect-browser "^5.3.0"
     yarn "^1.22.19"
 
 damerau-levenshtein@^1.0.7:
@@ -7293,6 +7301,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+svg-loaders-react@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/svg-loaders-react/-/svg-loaders-react-2.2.1.tgz#d546cea2a895144cfd652e1bd846166d8a07d2ed"
+  integrity sha512-ATfg5pAMOla2GqPcwGRDrNTLlTQzl2fMvfW290j20qH7qpB61C3SQAnu+T9t8Z+V4IKKN2Bm1d/SaCv5IR1DDA==
 
 svg-parser@^2.0.2:
   version "2.0.4"

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Fragment, useEffect, useState } from 'react'
-import { Box, Button, CircularProgress, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Tooltip, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
@@ -10,16 +10,25 @@ import InfoIcon from 'assets/vectors/info-icon.svg'
 import Header from 'components/Layout/Header'
 import { useNotifications } from 'components/NotificationPopup/hooks'
 import { switchLedgerType } from 'ledgers/utils'
-import { COLORS_DARK_THEME } from 'theme/colors'
+import { ThreeDots as ThreeDotsLoading } from 'svg-loaders-react'
 import LinkIcon from 'assets/vectors/link-icon.svg?component'
+
+import {
+  detectUserBrowser,
+  getExtensionUrlForBrowser,
+  getSupportedBrowsersForWallet,
+  getSupportedWallets,
+  isExtensionAvailableForBrowser,
+  isExtensionEnabled,
+  isSupportedBrowser,
+  SUPPORTED_BROWSER,
+  SUPPORTED_WALLET
+} from 'cudosjs'
 
 import {
   connectUser,
   delay,
-  getUserBrowserType,
-  SUPPORTED_BROWSERS,
-  SUPPORTED_LEDGERS,
-  WALLET_EXTENSIONS_URL
+  SUPPORTED_WALLET_LOGOS
 } from 'utils/projectUtils'
 
 import { styles } from './styles'
@@ -30,36 +39,32 @@ const ConnectWallet = () => {
   const { lastLoggedAddress, chosenNetwork: currentNetwork } = useSelector((state: RootState) => state.profile)
   const { setWarning } = useNotifications()
   const [loading, setLoading] = useState(new Map())
-  const [availableLedgers, setAvailableLedgers] = useState<Record<string, boolean>>({})
-  const [userBrowser, setUserBrowser] = useState<SUPPORTED_BROWSERS | undefined>(undefined)
+  const [userBrowser, setUserBrowser] = useState<SUPPORTED_BROWSER | undefined>(undefined)
 
-  const redirectToExtension = (ledgerType: string, browserType: SUPPORTED_BROWSERS | undefined) => {
-
-    let url = WALLET_EXTENSIONS_URL[ledgerType][browserType!] || ''
-
-    if (url) {
-      window.open(url, '_blank')?.focus()
+  const redirectToExtension = (extensionUrl: string | undefined) => {
+    if (extensionUrl) {
+      window.open(extensionUrl, '_blank')?.focus()
     }
   }
 
-  const connect = async (chosenNetwork: string, ledgerType: string) => {
+  const connect = async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
 
     try {
-      setLoading(new Map(loading.set(ledgerType, true)))
+      setLoading(new Map(loading.set(walletName, true)))
       await delay(1000)
-      const { address } = await switchLedgerType(chosenNetwork, ledgerType)
+      const { address } = await switchLedgerType(chosenNetwork, walletName)
 
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
 
-      const connectedUser = await connectUser(chosenNetwork, ledgerType)
+      const connectedUser = await connectUser(chosenNetwork, walletName)
       dispatch(updateUser(connectedUser))
       navigate('dashboard')
 
     } catch (error) {
       setWarning(
-        `Failed connecting to wallet! Please check your ${ledgerType} installation.`
+        `Failed connecting to wallet! Please check your ${walletName} installation.`
       )
 
     } finally {
@@ -67,44 +72,31 @@ const ConnectWallet = () => {
     }
   }
 
-  const click = (ledgerType: string) => {
+  const click = (walletName: SUPPORTED_WALLET) => {
 
-    if (availableLedgers[ledgerType]) {
-      connect(currentNetwork, ledgerType)
+    if (isExtensionEnabled(walletName)) {
+      connect(currentNetwork, walletName)
       return
     }
 
-    redirectToExtension(ledgerType, userBrowser)
+    const extensionUrl = getExtensionUrlForBrowser(walletName, userBrowser!)
+    redirectToExtension(extensionUrl)
   }
 
-  const btnText = (ledgerType: string): string | JSX.Element => {
+  const btnText = (walletName: SUPPORTED_WALLET): string | JSX.Element => {
 
-    if (loading.get(ledgerType)) {
-      return (
-        <Fragment>
-          <Typography sx={{ position: 'relative' }}>
-            Loading...
-          </Typography>
-          <CircularProgress
-            style={{
-              position: 'absolute',
-              right: 35,
-              color: COLORS_DARK_THEME.PRIMARY_BLUE
-            }}
-            size={30}
-          />
-        </Fragment>
-      )
+    if (loading.get(walletName)) {
+      return <LoadingButtonComponent />
     }
 
-    if (availableLedgers[ledgerType]) {
-      return `Connect ${ledgerType} wallet`
+    if (isExtensionEnabled(walletName)) {
+      return `Connect ${walletName} wallet`
     }
 
-    if (WALLET_EXTENSIONS_URL[ledgerType][userBrowser!]) {
+    if (isExtensionAvailableForBrowser(walletName, userBrowser!)) {
       return (
         <Typography variant='subtitle2' sx={{ display: 'flex', alignItems: 'center' }}>
-          {`Get ${ledgerType} plugin`}
+          {`Get ${walletName} plugin`}
           <LinkIcon style={{ marginLeft: '5px', color: 'white' }} />
         </Typography>
       )
@@ -113,55 +105,63 @@ const ConnectWallet = () => {
     return 'Unsupported browser'
   }
 
-  const btnTooltip = (ledgerType: string): string => {
+  const btnTooltip = (walletName: SUPPORTED_WALLET): string => {
 
     let tooltipText = ''
 
-    if (!WALLET_EXTENSIONS_URL[ledgerType][userBrowser!]) {
-      tooltipText = `${ledgerType} supports: ${Object.entries(
-        WALLET_EXTENSIONS_URL[ledgerType]).map(([key]) => {
-          return ` ${key}`
-        })}`
+    // We only need a tooltip for a wallet not supported by the current browser
+    if (!isExtensionAvailableForBrowser(walletName, userBrowser!)) {
+      tooltipText = `${walletName} supports: ${getSupportedBrowsersForWallet(walletName).map((browser) => {
+        return ` ${browser}`
+      })}`
     }
 
     return tooltipText
   }
 
-  const isDisabledBtn = (ledgerType: string): boolean => {
+  const isDisabledBtn = (walletName: SUPPORTED_WALLET): boolean => {
 
-    // Disabling the Btn if cicked into loading state
-    if (loading.get(ledgerType)) {
+    // Disabling the Btn if into loading state
+    if (loading.get(walletName)) {
       return true
     }
 
-    // Disabling the btn, when other btnType is loading
+    // Disabling the btn, when other btn is loading
     if (loading.size > 0) {
       return true
     }
 
     // Disabling the btn if no extension is available for the current user browser
-    if (!WALLET_EXTENSIONS_URL[ledgerType][userBrowser!]) {
+    if (!isExtensionAvailableForBrowser(walletName, userBrowser!)) {
       return true
     }
 
     return false
   }
 
-  useEffect(() => {
-
-    const userLedgers: Record<string, boolean> = {}
-
-    for (const ledger of SUPPORTED_LEDGERS) {
-      userLedgers[ledger.type] = ledger.isInstalled()
+  const displayLogo = (walletName: SUPPORTED_WALLET): JSX.Element => {
+    if (loading.get(walletName)) {
+      return <Fragment></Fragment>
     }
 
-    setAvailableLedgers(userLedgers)
+    return SUPPORTED_WALLET_LOGOS[walletName] || <Fragment></Fragment>
+  }
 
-  }, [loading])
+  const LoadingButtonComponent = (): JSX.Element => {
+    return (
+      <ThreeDotsLoading
+        style={{ width: '30px', height: '30px' }}
+      />
+    )
+  }
 
   useEffect(() => {
-
-    setUserBrowser(getUserBrowserType())
+    const userBrowser = detectUserBrowser()
+    if (isSupportedBrowser(userBrowser)) {
+      setUserBrowser(userBrowser as SUPPORTED_BROWSER)
+      return
+    }
+    setUserBrowser(undefined)
   }, [])
 
   return (
@@ -178,19 +178,19 @@ const ConnectWallet = () => {
               order to continue you need to connect your Keplr Wallet.
             </Typography>
           </Box>
-          {SUPPORTED_LEDGERS.map((ledger) => {
+          {getSupportedWallets().map((wallet) => {
             return (
-              <Tooltip placement='right' title={btnTooltip(ledger.type)}>
+              <Tooltip placement='right' title={btnTooltip(wallet)}>
                 <Box>
                   <Button
                     sx={styles.connectButton}
                     variant="contained"
                     color="primary"
-                    disabled={isDisabledBtn(ledger.type)}
-                    onClick={() => click(ledger.type)}
+                    disabled={isDisabledBtn(wallet)}
+                    onClick={() => click(wallet)}
                   >
-                    {ledger.logo}
-                    {btnText(ledger.type)}
+                    {displayLogo(wallet)}
+                    {btnText(wallet)}
                   </Button>
                 </Box>
               </Tooltip>

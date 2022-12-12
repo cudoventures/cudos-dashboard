@@ -56,7 +56,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(chosenNetwork, connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger!)
 
       const walletBalance = await client.getDelegation(
         address,
@@ -91,7 +91,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
-      const client = await signingClient(chosenNetwork, connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger!)
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -136,7 +136,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
-    const client = await signingClient(chosenNetwork, connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -177,7 +177,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         validator?.address || '',
         amount || '',
         '',
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({

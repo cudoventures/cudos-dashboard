@@ -29,6 +29,7 @@ import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
 import { CHAIN_DETAILS } from 'utils/constants'
 import NetworkChangingLoading from 'components/NetworkChangeLoading'
 import { networkLoadingStyles } from 'components/NetworkChangeLoading/styles'
+import { isExtensionEnabled, SUPPORTED_WALLET } from 'cudosjs'
 
 const App = () => {
   const location = useLocation()
@@ -46,10 +47,10 @@ const App = () => {
 
   const dispatch = useDispatch()
 
-  const connectAccount = useCallback(async (chosenNetwork: string, ledgerType: string) => {
+  const connectAccount = useCallback(async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
     try {
 
-      const { address } = await switchLedgerType(chosenNetwork!, ledgerType)
+      const { address } = await switchLedgerType(chosenNetwork!, walletName)
       if (address !== lastLoggedAddress || lastLoggedAddress === '') {
         dispatch(
           updateUserTransactions({
@@ -61,7 +62,7 @@ const App = () => {
         )
       }
 
-      const connectedUser = await connectUser(chosenNetwork, ledgerType)
+      const connectedUser = await connectUser(chosenNetwork, walletName)
       dispatch(updateUser(connectedUser))
 
     } catch (e) {
@@ -81,21 +82,21 @@ const App = () => {
         })
       )
 
-      await connectAccount(currentNetwork, CosmosNetworkConfig.KEPLR_LEDGER)
+      await connectAccount(currentNetwork, SUPPORTED_WALLET.Keplr)
     })
 
-    if (window.cosmostation) {
+    if (isExtensionEnabled(SUPPORTED_WALLET.Cosmostation)) {
       window.cosmostation.cosmos.on('accountChanged', async () => {
-        await connectAccount(currentNetwork, CosmosNetworkConfig.COSMOSTATION_LEDGER)
+        await connectAccount(currentNetwork, SUPPORTED_WALLET.Cosmostation)
       })
     }
 
     return () => {
       window.removeEventListener('keplr_keystorechange', async () => {
-        await connectAccount(currentNetwork, CosmosNetworkConfig.KEPLR_LEDGER)
+        await connectAccount(currentNetwork, SUPPORTED_WALLET.Keplr)
       })
       window.removeEventListener('accountChanged', async () => {
-        await connectAccount(currentNetwork, CosmosNetworkConfig.COSMOSTATION_LEDGER)
+        await connectAccount(currentNetwork, SUPPORTED_WALLET.Cosmostation)
       })
     }
   }, [])

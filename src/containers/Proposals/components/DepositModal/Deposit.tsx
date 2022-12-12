@@ -51,7 +51,7 @@ const Deposit: React.FC<DepositProps> = ({ handleModal, modalProps }) => {
         depositorAddress,
         proposalId,
         amount,
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({

@@ -66,7 +66,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   useEffect(() => {
     let isMounted = true
     const loadBalance = async () => {
-      const client = await signingClient(chosenNetwork, connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger!)
 
       const walletBalance = await client.getBalance(
         address,
@@ -104,7 +104,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const client = await signingClient(chosenNetwork, connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -167,7 +167,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         validator?.address || '',
         amount || '',
         '',
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({
