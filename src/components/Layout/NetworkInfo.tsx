@@ -58,7 +58,8 @@ const NetworkInfo = () => {
     setOpen(false)
   }
 
-  const collapsable = networksToDisplayInMenu.length > 1
+  // const collapsable = networksToDisplayInMenu.length > 1
+  const collapsable = false
 
   return (
 
