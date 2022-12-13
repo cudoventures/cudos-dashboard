@@ -42,7 +42,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
         voterAddress,
         proposalId,
         votingOption,
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({

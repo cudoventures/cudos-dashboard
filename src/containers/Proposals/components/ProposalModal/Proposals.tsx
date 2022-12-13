@@ -99,7 +99,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         chosenNetwork,
         proposalData,
         proposerAddress,
-        connectedLedger
+        connectedLedger!
       )
       handleModal({
         open: true,

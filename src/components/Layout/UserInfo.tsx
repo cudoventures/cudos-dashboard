@@ -15,6 +15,7 @@ import { CHAIN_DETAILS } from 'utils/constants'
 import { COLORS_DARK_THEME } from 'theme/colors'
 
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
+import { SUPPORTED_WALLET } from 'cudosjs'
 import { styles } from './styles'
 
 const UserInfo = () => {
@@ -66,7 +67,7 @@ const UserInfo = () => {
         <Box sx={styles.userInnerContainer}>
           <Box>
             <img
-              src={connectedLedger === 'Keplr' ? KeplrLogo : CosmostationLogo}
+              src={connectedLedger === SUPPORTED_WALLET.Keplr ? KeplrLogo : CosmostationLogo}
               alt="Logo"
               style={{ position: 'absolute', left: 15, top: 12 }}
             />

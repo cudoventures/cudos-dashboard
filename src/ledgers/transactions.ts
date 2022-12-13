@@ -31,7 +31,8 @@ import {
   MsgDepositEncodeObject,
   MsgSubmitProposalEncodeObject,
   MsgUndelegateEncodeObject,
-  DEFAULT_GAS_MULTIPLIER
+  DEFAULT_GAS_MULTIPLIER,
+  SUPPORTED_WALLET
 } from 'cudosjs'
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
@@ -72,7 +73,7 @@ export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
 export const getFee = async (
   chosenNetwork: string,
   address: string,
-  ledgerType: string,
+  ledgerType: SUPPORTED_WALLET,
   message: any[],
   memo: string
 ) => {
@@ -92,7 +93,7 @@ export const delegate = async (
   validatorAddress: string,
   amount: string,
   memo: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ): Promise<DeliverTxResponse> => {
   const delegationAmount = {
     amount: new BigNumber(amount)
@@ -138,7 +139,7 @@ export const undelegate = async (
   validatorAddress: string,
   amount: string,
   memo: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ): Promise<DeliverTxResponse> => {
   const undelegationAmount = {
     amount: new BigNumber(amount || 0)
@@ -185,7 +186,7 @@ export const redelegate = async (
   validatorDstAddress: string,
   amount: string,
   memo: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ): Promise<DeliverTxResponse> => {
   const msg = MsgBeginRedelegate.fromPartial({
     delegatorAddress,
@@ -227,7 +228,7 @@ export const claimRewards = async (
     withdrawCommission: boolean
     claimAndRestakeSeparateMsg: boolean
   },
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const { restake, withdrawCommission, claimAndRestakeSeparateMsg } = options
   const msgMemo = ''
@@ -332,7 +333,7 @@ export const voteProposal = async (
   voterAddress: string,
   proposalId: number | undefined,
   votingOption: number,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const msg = MsgVote.fromPartial({
     proposalId,
@@ -369,7 +370,7 @@ export const depositProposal = async (
   depositorAddress: string,
   proposalId: number | undefined,
   amount: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const msg = MsgDeposit.fromPartial({
     proposalId,
@@ -508,7 +509,7 @@ export const createProposal = async (
   chosenNetwork: string,
   proposalData: any,
   proposerAddress: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const client = await signingClient(chosenNetwork, ledgerType)
 
