@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
+import { SUPPORTED_WALLET } from 'cudosjs'
 import { CHAIN_DETAILS } from 'utils/constants'
 
 export enum TooltipMessages {
@@ -12,7 +13,7 @@ export enum TooltipMessages {
 export interface WalletState {
   address: string
   accountName: string
-  connectedLedger: string
+  connectedLedger: SUPPORTED_WALLET | undefined
   chosenNetwork: string
   loadingState: boolean
   lastLoggedAddress: string
@@ -37,7 +38,7 @@ export interface WalletState {
 const initialState: WalletState = {
   address: '',
   accountName: '',
-  connectedLedger: '',
+  connectedLedger: undefined,
   chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK,
   loadingState: false,
   lastLoggedAddress: '',

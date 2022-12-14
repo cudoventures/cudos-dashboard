@@ -14,6 +14,7 @@ import { detect as detectBrowser } from 'detect-browser'
 import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import { styles } from 'containers/ConnectWallet/styles'
+import { SUPPORTED_WALLET } from 'cudosjs'
 
 export const isValidCudosAddress = (address: string) => {
   if (address === '' || address === undefined) {
@@ -93,11 +94,11 @@ export const addEndingEllipsis = (
   return input
 }
 
-export const connectUser = async (chosenNetwork: string, ledgerType: string): Promise<any> => {
+export const connectUser = async (chosenNetwork: string, walletName: SUPPORTED_WALLET): Promise<any> => {
 
   try {
 
-    const { address, accountName } = await switchLedgerType(chosenNetwork!, ledgerType)
+    const { address, accountName } = await switchLedgerType(chosenNetwork!, walletName)
     const balance = await getWalletBalance(chosenNetwork, address!)
     const stakedAmountBalance = await getStakedBalance(chosenNetwork, address!)
     const { totalRewards, validatorArray } = await fetchRewards(chosenNetwork, address!)
@@ -110,7 +111,7 @@ export const connectUser = async (chosenNetwork: string, ledgerType: string): Pr
       chosenNetwork,
       address,
       lastLoggedAddress: address,
-      connectedLedger: ledgerType,
+      connectedLedger: walletName,
       accountName,
       balance: new BigNumber(balance),
       availableRewards: new BigNumber(totalRewards),
@@ -149,63 +150,11 @@ export const handleAvailableNetworks = (defaultNetwork: string): networkToDispla
   return [CHAIN_DETAILS.PUBLIC, CHAIN_DETAILS.MAINNET]
 }
 
-export const isKeplrInstalled = () => {
-  return window.keplr?.enable.length > 0
-}
-
-export const isCosmostationInstalled = () => {
-  if (window.cosmostation) {
-    return true
-  }
-
-  return false
-}
-
 export const delay = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-export const SUPPORTED_LEDGERS = [
-  {
-    type: CosmosNetworkConfig.KEPLR_LEDGER,
-    logo: <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />,
-    isInstalled: isKeplrInstalled
-  },
-  {
-    type: CosmosNetworkConfig.COSMOSTATION_LEDGER,
-    logo: <img style={styles.cosmostationLogo} src={CosmostationLogo} alt="Cosmostation Logo" />,
-    isInstalled: isCosmostationInstalled
-  }
-]
-
-export enum SUPPORTED_BROWSERS {
-  chrome = 'chrome',
-  firefox = 'firefox',
-  edge = 'edge'
-}
-
-export const WALLET_EXTENSIONS_URL = {
-  [CosmosNetworkConfig.KEPLR_LEDGER]: {
-      [SUPPORTED_BROWSERS.chrome]: 'https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en',
-      [SUPPORTED_BROWSERS.firefox]: 'https://addons.mozilla.org/en-US/firefox/addon/keplr/',
-      [SUPPORTED_BROWSERS.edge]: 'https://microsoftedge.microsoft.com/addons/detail/keplr/efknohjclbjfppcmniflbmnokbihoofp?hl=en-GB'
-  },
-  [CosmosNetworkConfig.COSMOSTATION_LEDGER]: {
-      [SUPPORTED_BROWSERS.chrome]: 'https://chrome.google.com/webstore/detail/cosmostation/fpkhgmpbidmiogeglndfbkegfdlnajnf?utm_source=chrome-ntp-icon'
-  }
-}
-
-export const getUserBrowserType = (): SUPPORTED_BROWSERS | undefined => {
-
-  let detectedBrowser = detectBrowser()?.name
-
-  if (detectedBrowser === 'edge-chromium') {
-    detectedBrowser = 'edge'
-  }
-
-  if (SUPPORTED_BROWSERS[detectedBrowser as SUPPORTED_BROWSERS]) {
-    return detectedBrowser as SUPPORTED_BROWSERS
-  }
-
-  return undefined
+export const SUPPORTED_WALLET_LOGOS = {
+  [SUPPORTED_WALLET.Keplr]: <img style={styles.keplrLogo} src={KeplrLogo} alt="Keplr Logo" />,
+  [SUPPORTED_WALLET.Cosmostation]: <img style={styles.cosmostationLogo} src={CosmostationLogo} alt="Cosmostation Logo" />
 }

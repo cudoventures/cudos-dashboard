@@ -90,7 +90,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
           withdrawCommission: isValidator,
           claimAndRestakeSeparateMsg
         },
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({

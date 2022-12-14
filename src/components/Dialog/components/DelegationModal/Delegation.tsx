@@ -5,7 +5,6 @@ import {
   InputAdornment,
   Button,
   Stack,
-  Tooltip
 } from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
@@ -25,7 +24,6 @@ import {
 } from 'store/modal'
 import { calculateFee, delegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
-import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import AvatarName from 'components/AvatarName'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
@@ -38,12 +36,12 @@ import { updateUser } from 'store/profile'
 import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import { fetchDelegations } from 'api/getAccountDelegations'
 import { CHAIN_DETAILS } from 'utils/constants'
-
+import { customInputProps } from './helpers'
 import {
   ModalContainer,
   StyledTextField,
   SummaryContainer,
-  CancelRoundedIcon
+  CancelRoundedIcon,
 } from '../styles'
 
 const gasPrice = GasPrice.fromString(
@@ -68,7 +66,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   useEffect(() => {
     let isMounted = true
     const loadBalance = async () => {
-      const client = await signingClient(chosenNetwork, connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger!)
 
       const walletBalance = await client.getBalance(
         address,
@@ -106,7 +104,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const client = await signingClient(chosenNetwork, connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -134,12 +132,6 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       fee,
       amount
     })
-  }
-
-  const handleAmountChange = (
-    ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setDelegationAmount(ev.target.value)
   }
 
   const delayInput = _.debounce((value) => handleAmount(value), 500)
@@ -175,7 +167,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         validator?.address || '',
         amount || '',
         '',
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({
@@ -266,7 +258,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                   >
                     {
                       CHAIN_DETAILS.CHAIN_NAME[
-                        chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME
                       ]
                     }
                   </Typography>
@@ -371,44 +363,19 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
               </Box>
               <StyledTextField
                 variant="standard"
-                margin="dense"
                 type="number"
                 fullWidth
-                placeholder="0 CUDOS"
-                value={delegationAmount || ''}
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    padding: 0
-                  },
-                  inputProps: {
-                    style: {
-                      padding: '0 10px'
-                    }
-                  },
-                  startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
-                  endAdornment: (
-                    <Tooltip title="Total balance minus the highest estimated fee (estimated transaction fee x4)">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        sx={() => ({
-                          padding: '4px 15px',
-                          fontWeight: 600
-                        })}
-                        onClick={handleMaxAmount}
-                      >
-                        MAX
-                      </Button>
-                    </Tooltip>
+                onPaste={(e) => e.preventDefault()}
+                InputProps={
+                  customInputProps(
+                    delegationAmount,
+                    setDelegationAmount,
+                    handleMaxAmount
                   )
-                }}
+                }
                 sx={(theme) => ({
                   background: theme.custom.backgrounds.light
                 })}
-                size="small"
-                onChange={(e) => handleAmountChange(e)}
               />
             </Box>
           </Box>

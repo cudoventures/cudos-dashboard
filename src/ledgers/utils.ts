@@ -1,8 +1,10 @@
 import {
+  isExtensionEnabled,
   OfflineAminoSigner,
   OfflineSigner,
   SigningStargateClient,
-  StargateClient
+  StargateClient,
+  SUPPORTED_WALLET
 } from 'cudosjs'
 import { getOfflineSigner as cosmostationSigner } from '@cosmostation/cosmos-client'
 import {
@@ -10,11 +12,9 @@ import {
   SignAminoDoc
 } from '@cosmostation/extension-client/types/message'
 import { cosmos, Cosmos } from '@cosmostation/extension-client'
-import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { connectKeplrLedger } from './KeplrLedger'
 import { connectCosmostationLedger } from './CosmoStationLedger'
 import { CHAIN_DETAILS } from 'utils/constants'
-import { isCosmostationInstalled, isKeplrInstalled } from 'utils/projectUtils'
 
 const colors = {
   staking: '#3d5afe',
@@ -449,13 +449,15 @@ export const unknownMessage = {
   displayName: 'Unknown'
 }
 
-export const switchLedgerType = async (chosenNetwork: string, ledgerType: string) => {
+export const switchLedgerType = async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
 
-  if (ledgerType === CosmosNetworkConfig.KEPLR_LEDGER && isKeplrInstalled()) {
+  const isInstalled = isExtensionEnabled(walletName)
+
+  if (walletName === SUPPORTED_WALLET.Keplr && isInstalled) {
     return connectKeplrLedger(chosenNetwork)
   }
 
-  if (ledgerType === CosmosNetworkConfig.COSMOSTATION_LEDGER && isCosmostationInstalled()) {
+  if (walletName === SUPPORTED_WALLET.Cosmostation && isInstalled) {
     return connectCosmostationLedger(chosenNetwork)
   }
 
@@ -498,16 +500,16 @@ export const getLedgerSigner = async (
 
 const switchSigningClient = async (
   chosenNetwork: string,
-  ledgerType: string
+  walletName: SUPPORTED_WALLET
 ): Promise<OfflineSigner | undefined> => {
   let client
-  switch (ledgerType) {
-    case CosmosNetworkConfig.KEPLR_LEDGER:
+  switch (walletName) {
+    case SUPPORTED_WALLET.Keplr:
       client = await window.getOfflineSignerAuto(
         CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID]
       )
       return client
-    case CosmosNetworkConfig.COSMOSTATION_LEDGER: {
+    case SUPPORTED_WALLET.Cosmostation: {
       const connector = await cosmos()
 
       const connectedAccount = await connector.requestAccount(
@@ -528,10 +530,10 @@ const switchSigningClient = async (
   }
 }
 
-export const signingClient = async (chosenNetwork: string, ledgerType: string) => {
-  const offlineSigner = await switchSigningClient(chosenNetwork, ledgerType)
+export const signingClient = async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
+  const offlineSigner = await switchSigningClient(chosenNetwork, walletName)
 
-  if (window.keplr) {
+  if (isExtensionEnabled(walletName)) {
     window.keplr.defaultOptions = {
       sign: {
         preferNoSetFee: true
