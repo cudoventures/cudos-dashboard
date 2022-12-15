@@ -1,0 +1,24 @@
+import { Box, CircularProgress, Typography } from "@mui/material"
+import { Fragment } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "store"
+import { CHAIN_DETAILS } from "utils/constants"
+
+const NetworkChangingLoading = () => {
+
+    const { chosenNetwork } = useSelector((state: RootState) => state.profile)
+    const aliasChainName = CHAIN_DETAILS[chosenNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME
+
+    return (
+        <Fragment>
+            <Box gap={2} sx={{ height: '100%', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignContent: 'center', alignItems: 'center' }}>
+                <CircularProgress />
+                <Typography variant="h5">
+                    Connecting to {aliasChainName}...
+                </Typography>
+            </Box>
+        </Fragment>
+    )
+}
+
+export default NetworkChangingLoading

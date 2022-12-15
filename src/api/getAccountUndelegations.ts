@@ -1,7 +1,9 @@
 import axios from 'axios'
+import { CHAIN_DETAILS } from 'utils/constants'
 import { AccountUndelegationsDocument } from '../graphql/account_actions'
 
 export const fetchUndedelegations = async (
+  chosenNetwork: string,
   address: string,
   signal?: AbortSignal
 ) => {
@@ -13,7 +15,7 @@ export const fetchUndedelegations = async (
 
   try {
     const { data } = await axios.post(
-      import.meta.env.VITE_GRAPHQL_URL?.toString(),
+      CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_URL].toString(),
       {
         variables: { address },
         query: AccountUndelegationsDocument

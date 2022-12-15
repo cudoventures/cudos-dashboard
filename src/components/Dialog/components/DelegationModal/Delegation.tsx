@@ -5,14 +5,18 @@ import {
   InputAdornment,
   Button,
   Stack,
-  Tooltip
 } from '@mui/material'
 import {
   AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon,
   ArrowCircleRightRounded as ArrowCircleRightRoundedIcon
 } from '@mui/icons-material'
 import { MsgDelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
-import { coin, GasPrice, MsgDelegateEncodeObject } from 'cudosjs'
+import {
+  coin,
+  DEFAULT_GAS_MULTIPLIER,
+  GasPrice,
+  MsgDelegateEncodeObject
+} from 'cudosjs'
 import {
   ModalStatus,
   DelegationModalProps,
@@ -20,7 +24,6 @@ import {
 } from 'store/modal'
 import { calculateFee, delegate } from 'ledgers/transactions'
 import getMiddleEllipsis from 'utils/get_middle_ellipsis'
-import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import AvatarName from 'components/AvatarName'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
@@ -30,18 +33,19 @@ import { formatNumber, formatToken } from 'utils/format_token'
 import _ from 'lodash'
 import { signingClient } from 'ledgers/utils'
 import { updateUser } from 'store/profile'
-import { getStakedBalance } from 'utils/projectUtils'
+import { getStakedBalance, getWalletBalance } from 'utils/projectUtils'
 import { fetchDelegations } from 'api/getAccountDelegations'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { customInputProps } from './helpers'
 import {
   ModalContainer,
   StyledTextField,
   SummaryContainer,
-  CancelRoundedIcon
+  CancelRoundedIcon,
 } from '../styles'
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 type DelegationProps = {
@@ -54,28 +58,33 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const [delegationAmount, setDelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
-  const { address, connectedLedger } = useSelector(
+  const { address, connectedLedger, chosenNetwork } = useSelector(
     ({ profile }: RootState) => profile
   )
   const dispatch = useDispatch()
 
   useEffect(() => {
+    let isMounted = true
     const loadBalance = async () => {
-      const client = await signingClient(connectedLedger)
+      const client = await signingClient(chosenNetwork, connectedLedger!)
 
       const walletBalance = await client.getBalance(
         address,
         CosmosNetworkConfig.CURRENCY_DENOM
       )
-
-      setBalance(
-        new BigNumber(walletBalance.amount)
-          .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
-          .toString(10)
-      )
+      if (isMounted) {
+        setBalance(
+          new BigNumber(walletBalance.amount)
+            .dividedBy(CosmosNetworkConfig.CURRENCY_1_CUDO)
+            .toString(10)
+        )
+      }
     }
 
     loadBalance()
+    return () => {
+      isMounted = false
+    }
   }, [address])
 
   const getEstimatedFee = async (amount: string) => {
@@ -95,11 +104,11 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const client = await signingClient(connectedLedger)
+    const client = await signingClient(chosenNetwork, connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
-    const gasLimit = Math.round(gasUsed * feeMultiplier)
+    const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
     const calculatedFee = calculateFee(gasLimit, gasPrice).amount[0]
 
@@ -123,12 +132,6 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       fee,
       amount
     })
-  }
-
-  const handleAmountChange = (
-    ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setDelegationAmount(ev.target.value)
   }
 
   const delayInput = _.debounce((value) => handleAmount(value), 500)
@@ -159,11 +162,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
     try {
       const delegationResult = await delegate(
+        chosenNetwork,
         address,
         validator?.address || '',
         amount || '',
         '',
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({
@@ -172,11 +176,19 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         txHash: delegationResult.transactionHash
       })
 
-      const { delegationsArray } = await fetchDelegations(address)
-      const stakedAmountBalance = await getStakedBalance(address)
+      const walletBalance = await getWalletBalance(chosenNetwork!, address)
+      const { delegationsArray } = await fetchDelegations(
+        chosenNetwork!,
+        address
+      )
+      const stakedAmountBalance = await getStakedBalance(
+        chosenNetwork!,
+        address
+      )
 
       dispatch(
         updateUser({
+          balance: walletBalance,
           delegations: delegationsArray,
           stakedBalance: new BigNumber(stakedAmountBalance)
         })
@@ -244,7 +256,11 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {import.meta.env.VITE_APP_CHAIN_NAME}
+                    {
+                      CHAIN_DETAILS.CHAIN_NAME[
+                      chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME
+                      ]
+                    }
                   </Typography>
                 </Box>
               </Box>
@@ -347,44 +363,19 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
               </Box>
               <StyledTextField
                 variant="standard"
-                margin="dense"
                 type="number"
                 fullWidth
-                placeholder="0 CUDOS"
-                value={delegationAmount || ''}
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    padding: 0
-                  },
-                  inputProps: {
-                    style: {
-                      padding: '0 10px'
-                    }
-                  },
-                  startAdornment: <img src={CudosLogo} alt="cudos-logo" />,
-                  endAdornment: (
-                    <Tooltip title="Total balance minus the highest estimated fee (estimated transaction fee x4)">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        sx={() => ({
-                          padding: '4px 15px',
-                          fontWeight: 600
-                        })}
-                        onClick={handleMaxAmount}
-                      >
-                        MAX
-                      </Button>
-                    </Tooltip>
+                onPaste={(e) => e.preventDefault()}
+                InputProps={
+                  customInputProps(
+                    delegationAmount,
+                    setDelegationAmount,
+                    handleMaxAmount
                   )
-                }}
+                }
                 sx={(theme) => ({
                   background: theme.custom.backgrounds.light
                 })}
-                size="small"
-                onChange={(e) => handleAmountChange(e)}
               />
             </Box>
           </Box>
@@ -394,9 +385,12 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
             sx={() => ({
               width: '50%'
             })}
-            onClick={handleSubmit}
+            onClick={() => handleSubmit()}
             disabled={
-              Number(amount) > Number(balance) || !amount || Number(amount) <= 0
+              Number(amount) > Number(balance) ||
+              !amount ||
+              Number(amount) <= 0 ||
+              fee.length <= 0
             }
           >
             Submit

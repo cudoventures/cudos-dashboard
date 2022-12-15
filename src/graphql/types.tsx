@@ -13983,6 +13983,24 @@ export type AccountDelegationRewardsQueryVariables = Exact<{
 
 export type AccountDelegationRewardsQuery = { delegationRewards?: Array<{ __typename?: 'ActionDelegationReward', coins?: Array<any | null> | null, validatorAddress: string } | null> | null };
 
+export type GetGravityMessagesByAddressListenerSubscriptionVariables = Exact<{
+  address?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['bigint']>;
+  offset?: InputMaybe<Scalars['bigint']>;
+}>;
+
+
+export type GetGravityMessagesByAddressListenerSubscription = { messagesByAddress: Array<{ __typename?: 'message', transaction: { __typename?: 'transaction', height: any, hash: string, success: boolean, messages: any, logs?: any | null, block: { __typename?: 'block', height: any, timestamp: any } } }> };
+
+export type GetGravityMessagesByAddressQueryVariables = Exact<{
+  address?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['bigint']>;
+  offset?: InputMaybe<Scalars['bigint']>;
+}>;
+
+
+export type GetGravityMessagesByAddressQuery = { messagesByAddress: Array<{ __typename?: 'message', transaction: { __typename?: 'transaction', height: any, hash: string, success: boolean, messages: any, logs?: any | null, block: { __typename?: 'block', height: any, timestamp: any } } }> };
+
 export type MarketDataQueryVariables = Exact<{
   denom?: InputMaybe<Scalars['String']>;
 }>;
@@ -14357,6 +14375,99 @@ export function useAccountDelegationRewardsLazyQuery(baseOptions?: Apollo.LazyQu
 export type AccountDelegationRewardsQueryHookResult = ReturnType<typeof useAccountDelegationRewardsQuery>;
 export type AccountDelegationRewardsLazyQueryHookResult = ReturnType<typeof useAccountDelegationRewardsLazyQuery>;
 export type AccountDelegationRewardsQueryResult = Apollo.QueryResult<AccountDelegationRewardsQuery, AccountDelegationRewardsQueryVariables>;
+export const GetGravityMessagesByAddressListenerDocument = gql`
+    subscription GetGravityMessagesByAddressListener($address: String, $limit: bigint = 50, $offset: bigint = 0) {
+  messagesByAddress: gravity_messages_by_address(
+    args: {receiver_addr: $address, limit: $limit, offset: $offset}
+  ) {
+    transaction {
+      height
+      hash
+      success
+      messages
+      logs
+      block {
+        height
+        timestamp
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetGravityMessagesByAddressListenerSubscription__
+ *
+ * To run a query within a React component, call `useGetGravityMessagesByAddressListenerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetGravityMessagesByAddressListenerSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGravityMessagesByAddressListenerSubscription({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetGravityMessagesByAddressListenerSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetGravityMessagesByAddressListenerSubscription, GetGravityMessagesByAddressListenerSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetGravityMessagesByAddressListenerSubscription, GetGravityMessagesByAddressListenerSubscriptionVariables>(GetGravityMessagesByAddressListenerDocument, options);
+      }
+export type GetGravityMessagesByAddressListenerSubscriptionHookResult = ReturnType<typeof useGetGravityMessagesByAddressListenerSubscription>;
+export type GetGravityMessagesByAddressListenerSubscriptionResult = Apollo.SubscriptionResult<GetGravityMessagesByAddressListenerSubscription>;
+export const GetGravityMessagesByAddressDocument = gql`
+    query GetGravityMessagesByAddress($address: String, $limit: bigint = 50, $offset: bigint = 0) {
+  messagesByAddress: gravity_messages_by_address(
+    args: {receiver_addr: $address, limit: $limit, offset: $offset}
+  ) {
+    transaction {
+      height
+      hash
+      success
+      messages
+      logs
+      block {
+        height
+        timestamp
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetGravityMessagesByAddressQuery__
+ *
+ * To run a query within a React component, call `useGetGravityMessagesByAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGravityMessagesByAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGravityMessagesByAddressQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetGravityMessagesByAddressQuery(baseOptions?: Apollo.QueryHookOptions<GetGravityMessagesByAddressQuery, GetGravityMessagesByAddressQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGravityMessagesByAddressQuery, GetGravityMessagesByAddressQueryVariables>(GetGravityMessagesByAddressDocument, options);
+      }
+export function useGetGravityMessagesByAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGravityMessagesByAddressQuery, GetGravityMessagesByAddressQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGravityMessagesByAddressQuery, GetGravityMessagesByAddressQueryVariables>(GetGravityMessagesByAddressDocument, options);
+        }
+export type GetGravityMessagesByAddressQueryHookResult = ReturnType<typeof useGetGravityMessagesByAddressQuery>;
+export type GetGravityMessagesByAddressLazyQueryHookResult = ReturnType<typeof useGetGravityMessagesByAddressLazyQuery>;
+export type GetGravityMessagesByAddressQueryResult = Apollo.QueryResult<GetGravityMessagesByAddressQuery, GetGravityMessagesByAddressQueryVariables>;
 export const MarketDataDocument = gql`
     query MarketData($denom: String) {
   communityPool: community_pool(order_by: {height: desc}, limit: 1) {

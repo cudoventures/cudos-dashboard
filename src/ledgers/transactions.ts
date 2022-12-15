@@ -24,14 +24,15 @@ import {
 import {
   DeliverTxResponse,
   GasPrice,
-  SigningStargateClient,
   coins,
   coin,
   MsgDelegateEncodeObject,
   MsgVoteEncodeObject,
   MsgDepositEncodeObject,
   MsgSubmitProposalEncodeObject,
-  MsgUndelegateEncodeObject
+  MsgUndelegateEncodeObject,
+  DEFAULT_GAS_MULTIPLIER,
+  SUPPORTED_WALLET
 } from 'cudosjs'
 import { encode } from 'uint8-to-base64'
 import Long from 'long'
@@ -40,6 +41,7 @@ import { toValidatorAddress } from 'utils/prefix_convert'
 import { ClientUpdateProposal, UpgradeProposal } from './ibc-go/codec/client'
 import CosmosNetworkConfig from './CosmosNetworkConfig'
 import { signingClient } from './utils'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 const PROPOSAL_TYPES = {
   PROPOSAL_TYPE_TEXT: 1,
@@ -51,9 +53,8 @@ const PROPOSAL_TYPES = {
   PROPOSAL_TYPE_IBC_UPGRADE: 7
 }
 
-const feeMultiplier = import.meta.env.VITE_APP_FEE_MULTIPLIER
 const gasPrice = GasPrice.fromString(
-  `${import.meta.env.VITE_APP_GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
+  `${CHAIN_DETAILS.GAS_PRICE}${CosmosNetworkConfig.CURRENCY_DENOM}`
 )
 
 export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
@@ -70,15 +71,16 @@ export const calculateFee = (gasLimit: number, gasPrice: string | GasPrice) => {
 }
 
 export const getFee = async (
+  chosenNetwork: string,
   address: string,
-  ledgerType: string,
+  ledgerType: SUPPORTED_WALLET,
   message: any[],
   memo: string
 ) => {
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
   const gasUsed = await client.simulate(address, message, memo)
 
-  const gasLimit = Math.round(gasUsed * feeMultiplier)
+  const gasLimit = Math.round(gasUsed * DEFAULT_GAS_MULTIPLIER)
 
   const fee = calculateFee(gasLimit, gasPrice)
 
@@ -86,11 +88,12 @@ export const getFee = async (
 }
 
 export const delegate = async (
+  chosenNetwork: string,
   delegatorAddress: string,
   validatorAddress: string,
   amount: string,
   memo: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ): Promise<DeliverTxResponse> => {
   const delegationAmount = {
     amount: new BigNumber(amount)
@@ -115,9 +118,9 @@ export const delegate = async (
     value: msg
   }
 
-  const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
+  const fee = await getFee(chosenNetwork, delegatorAddress, ledgerType, [msgAny], memo)
 
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const result = await client.delegateTokens(
     delegatorAddress,
@@ -131,11 +134,12 @@ export const delegate = async (
 }
 
 export const undelegate = async (
+  chosenNetwork: string,
   delegatorAddress: string,
   validatorAddress: string,
   amount: string,
   memo: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ): Promise<DeliverTxResponse> => {
   const undelegationAmount = {
     amount: new BigNumber(amount || 0)
@@ -160,9 +164,9 @@ export const undelegate = async (
     value: msg
   }
 
-  const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
+  const fee = await getFee(chosenNetwork, delegatorAddress, ledgerType, [msgAny], memo)
 
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const result = await client.undelegateTokens(
     delegatorAddress,
@@ -176,12 +180,13 @@ export const undelegate = async (
 }
 
 export const redelegate = async (
+  chosenNetwork: string,
   delegatorAddress: string,
   validatorSrcAddress: string,
   validatorDstAddress: string,
   amount: string,
   memo: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ): Promise<DeliverTxResponse> => {
   const msg = MsgBeginRedelegate.fromPartial({
     delegatorAddress,
@@ -200,9 +205,9 @@ export const redelegate = async (
     value: msg
   }
 
-  const fee = await getFee(delegatorAddress, ledgerType, [msgAny], memo)
+  const fee = await getFee(chosenNetwork, delegatorAddress, ledgerType, [msgAny], memo)
 
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const result = await client.signAndBroadcast(
     delegatorAddress,
@@ -215,6 +220,7 @@ export const redelegate = async (
 }
 
 export const claimRewards = async (
+  chosenNetwork: string,
   stakedValidators: { address: string; amount: string }[],
   address: string,
   options: {
@@ -222,7 +228,7 @@ export const claimRewards = async (
     withdrawCommission: boolean
     claimAndRestakeSeparateMsg: boolean
   },
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const { restake, withdrawCommission, claimAndRestakeSeparateMsg } = options
   const msgMemo = ''
@@ -274,13 +280,13 @@ export const claimRewards = async (
     })
   }
 
-  fee = await getFee(address, ledgerType, [...msgAny], msgMemo)
+  fee = await getFee(chosenNetwork, address, ledgerType, [...msgAny], msgMemo)
 
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const result = await client.signAndBroadcast(address, msgAny, fee, msgMemo)
 
-  if (claimAndRestakeSeparateMsg) {
+  if (claimAndRestakeSeparateMsg && restake) {
     stakedValidators.forEach((validator) => {
       if (Number(validator.amount) > 0) {
         msgRestake.push({
@@ -301,9 +307,9 @@ export const claimRewards = async (
       }
     })
 
-    const client = await signingClient(ledgerType)
+    const client = await signingClient(chosenNetwork, ledgerType)
 
-    restakeFee = await getFee(address, ledgerType, [...msgRestake], msgMemo)
+    restakeFee = await getFee(chosenNetwork, address, ledgerType, [...msgRestake], msgMemo)
 
     restakeTx = await client.signAndBroadcast(
       address,
@@ -323,10 +329,11 @@ export const claimRewards = async (
 }
 
 export const voteProposal = async (
+  chosenNetwork: string,
   voterAddress: string,
   proposalId: number | undefined,
   votingOption: number,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const msg = MsgVote.fromPartial({
     proposalId,
@@ -341,9 +348,9 @@ export const voteProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const fee = await getFee(voterAddress, ledgerType, [msgAny], memo)
+  const fee = await getFee(chosenNetwork, voterAddress, ledgerType, [msgAny], memo)
 
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const result = await client.signAndBroadcast(
     voterAddress,
@@ -359,10 +366,11 @@ export const voteProposal = async (
 }
 
 export const depositProposal = async (
+  chosenNetwork: string,
   depositorAddress: string,
   proposalId: number | undefined,
   amount: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
   const msg = MsgDeposit.fromPartial({
     proposalId,
@@ -384,9 +392,9 @@ export const depositProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const fee = await getFee(depositorAddress, ledgerType, [msgAny], memo)
+  const fee = await getFee(chosenNetwork, depositorAddress, ledgerType, [msgAny], memo)
 
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const result = await client.signAndBroadcast(
     depositorAddress,
@@ -498,11 +506,12 @@ export const getProposalContent = (proposalData: any) => {
 }
 
 export const createProposal = async (
+  chosenNetwork: string,
   proposalData: any,
   proposerAddress: string,
-  ledgerType: string
+  ledgerType: SUPPORTED_WALLET
 ) => {
-  const client = await signingClient(ledgerType)
+  const client = await signingClient(chosenNetwork, ledgerType)
 
   const content = getProposalContent(proposalData)
 
@@ -526,7 +535,7 @@ export const createProposal = async (
 
   const memo = 'Sent via CUDOS Dashboard'
 
-  const fee = await getFee(proposerAddress, ledgerType, [msgAny], memo)
+  const fee = await getFee(chosenNetwork, proposerAddress, ledgerType, [msgAny], memo)
 
   const result = await client.signAndBroadcast(
     proposerAddress,

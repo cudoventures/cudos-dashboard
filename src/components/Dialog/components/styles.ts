@@ -1,5 +1,6 @@
 import { styled, Box, TextField, BoxProps } from '@mui/material'
 import { CancelRounded } from '@mui/icons-material'
+import { COLORS_DARK_THEME } from 'theme/colors'
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   background: theme.custom.backgrounds.dark,
@@ -49,3 +50,13 @@ export const CancelRoundedIcon = styled(CancelRounded)(({ theme }) => ({
   right: 32,
   cursor: 'pointer'
 }))
+
+export const customInputStyle = {
+  color: 'white',
+  outline: 'none',
+  border: '0px',
+  background: COLORS_DARK_THEME.LIGHT_BACKGROUND,
+  height: '30px',
+  width: '100%',
+  padding: '0 10px'
+}

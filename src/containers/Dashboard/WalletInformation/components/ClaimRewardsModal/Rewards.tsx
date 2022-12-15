@@ -33,6 +33,8 @@ import {
 import { ValidatorType } from 'store/validator'
 import { toValidatorAddress } from 'utils/prefix_convert'
 import useValidators from 'containers/Staking/components/Validators/components/Table/hooks'
+import { getWalletBalance } from 'utils/projectUtils'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type RewardsProps = {
   modalProps: RewardsModalProps
@@ -43,13 +45,23 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   const [restake, setRestake] = useState<boolean>(true)
   const [claimAndRestakeSeparateMsg, setClaimAndRestakeSeparateMsg] =
     useState<boolean>(false)
-  const { amount } = modalProps
+  const { amount, isSingleRewardWithdraw } = modalProps
   const { setError } = useNotifications()
   const dispatch = useDispatch()
   const { state: validatorsState } = useValidators()
 
   const { address, balance, availableRewards, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
+  )
+
+  const { stakedValidators, chosenNetwork } = useSelector((state: RootState) => state.profile)
+
+  const { validator } = useSelector(
+    (state: RootState) => state.validatorDetails
+  )
+
+  const getSingleReward = stakedValidators.filter(
+    (value) => value.address === validator
   )
 
   const handleSubmit = async (): Promise<void> => {
@@ -61,7 +73,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         return
       }
 
-      const { validatorArray } = await fetchRewards(address)
+      const { validatorArray } = await fetchRewards(chosenNetwork!, address)
 
       const isValidator =
         validatorsState.items.findIndex(
@@ -70,14 +82,15 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         ) > -1
 
       const { result, fee, restakeTx } = await claimRewards(
-        validatorArray,
+        chosenNetwork,
+        isSingleRewardWithdraw ? getSingleReward : validatorArray,
         address,
         {
           restake,
           withdrawCommission: isValidator,
           claimAndRestakeSeparateMsg
         },
-        connectedLedger
+        connectedLedger!
       )
 
       handleModal({
@@ -90,7 +103,15 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         fee: formatToken(fee, CosmosNetworkConfig.CURRENCY_DENOM).value
       })
 
-      dispatch(updateUser({ availableRewards: new BigNumber(0) }))
+      const { validatorArray: updatedValidatorArray, totalRewards } =
+        await fetchRewards(chosenNetwork!, address)
+
+      dispatch(
+        updateUser({
+          availableRewards: new BigNumber(totalRewards),
+          stakedValidators: updatedValidatorArray
+        })
+      )
     } catch (err) {
       handleModal({
         status: ModalStatus.FAILURE,
@@ -116,7 +137,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
   }
 
   useEffect(() => {
-    if (availableRewards.isGreaterThan(balance)) {
+    if (new BigNumber(availableRewards).isGreaterThan(balance)) {
       setClaimAndRestakeSeparateMsg(true)
     } else {
       setClaimAndRestakeSeparateMsg(false)
@@ -154,7 +175,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
                 Network
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                {import.meta.env.VITE_APP_CHAIN_NAME}
+                {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
               </Typography>
             </Box>
           </Box>
@@ -203,7 +224,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
             margin="dense"
             fullWidth
             disabled
-            value={formatNumber(Number(availableRewards).toFixed(2) || '0', 2)}
+            value={formatNumber(amount || '0', 2)}
             sx={{
               '& .MuiInputBase-input.Mui-disabled': {
                 WebkitTextFillColor: 'white'

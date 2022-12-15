@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Fade } from '@mui/material'
+import { Box, CircularProgress, Fade, Grid } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import Navigation from './components/Navigation'
@@ -21,7 +21,7 @@ const ProposalDetails = () => {
   return (
     <>
       <Fade in timeout={500}>
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="flex" flexDirection="column" gap={2} paddingRight='2rem'>
           <Navigation />
           {!overview?.content['@type'] ? (
             <Box
@@ -35,12 +35,20 @@ const ProposalDetails = () => {
               <CircularProgress size={60} />
             </Box>
           ) : (
-            <>
-              <ProposalInformation />
-              <ProposalVoting />
-              <VotingStatistics />
-              <Deposits />
-            </>
+            <Grid justifyContent="center" gap={2} container>
+              <Grid xl={8} lg={12} md={12} sm={12} xs={12} item>
+                <ProposalInformation />
+              </Grid>
+              <Grid xl={8} lg={12} md={12} sm={12} xs={12} item>
+                <ProposalVoting />
+              </Grid>
+              <Grid xl={8} lg={12} md={12} sm={12} xs={12} item>
+                <VotingStatistics />
+              </Grid>
+              <Grid xl={8} lg={12} md={12} sm={12} xs={12} item>
+                <Deposits />
+              </Grid>
+            </Grid>
           )}
         </Box>
       </Fade>

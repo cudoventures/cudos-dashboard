@@ -17,6 +17,9 @@ import moment from 'moment'
 import NoData from 'components/NoData'
 import { RedelegationsType, RedelegationType } from '../../types'
 import { redelegationsColumns } from '../../utils'
+import { CHAIN_DETAILS } from 'utils/constants'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 
 type RedelegationsProps = {
   redelegations: RedelegationsType
@@ -25,6 +28,8 @@ type RedelegationsProps = {
 
 const Redelegations: React.FC<RedelegationsProps> = (props) => {
   const { redelegations, handlePageCallback } = props
+
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
 
   const { page, rowsPerPage, handleChangePage } = usePagination({
     pageChangeCallback: handlePageCallback
@@ -51,7 +56,7 @@ const Redelegations: React.FC<RedelegationsProps> = (props) => {
           onClick={() =>
             window
               .open(
-                `${import.meta.env.VITE_APP_EXPLORER_V2}/accounts/${
+                `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/accounts/${
                   item.address
                 }`,
                 '_blank'
@@ -77,7 +82,7 @@ const Redelegations: React.FC<RedelegationsProps> = (props) => {
           onClick={() =>
             window
               .open(
-                `${import.meta.env.VITE_APP_EXPLORER_V2}/validators/${item.to}`,
+                `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/validators/${item.to}`,
                 '_blank'
               )
               ?.focus()

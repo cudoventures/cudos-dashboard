@@ -48,6 +48,7 @@ const initialState: AccountDetailState = {
 }
 
 export const useStatistics = () => {
+  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { validatorId } = useParams()
   const [state, setState] = useState<AccountDetailState>(initialState)
   const selfDelegateAddress = useSelector(
@@ -182,12 +183,12 @@ export const useStatistics = () => {
 
   const fetchBalance = async () => {
     const promises = [
-      fetchCommission(selfDelegateAddress),
-      fetchAvailableBalances(selfDelegateAddress),
-      fetchDelegationBalance(selfDelegateAddress),
-      fetchUnbondingBalance(selfDelegateAddress),
-      fetchRewards(selfDelegateAddress),
-      fetchVotingPower(validatorId!)
+      fetchCommission(chosenNetwork, selfDelegateAddress),
+      fetchAvailableBalances(chosenNetwork, selfDelegateAddress),
+      fetchDelegationBalance(chosenNetwork, selfDelegateAddress),
+      fetchUnbondingBalance(chosenNetwork, selfDelegateAddress),
+      fetchRewards(chosenNetwork, selfDelegateAddress),
+      fetchVotingPower(chosenNetwork, validatorId!)
     ]
     const [commission, available, delegation, unbonding, rewards, votingPower] =
       await Promise.allSettled(promises)

@@ -15,7 +15,7 @@ const initialState: UserTransactionState = {
 }
 
 export const columnNames = [
-  { key: 'block', label: 'Block Height', width: 150, colSpan: 1 },
+  { key: 'block', label: 'Block Height', width: 100, colSpan: 1 },
   { key: 'txHash', label: 'Transaction Hash', colSpan: 1 },
   { key: 'action', label: 'Action', colSpan: 1 },
   { key: 'date', label: 'Date', colSpan: 1 }

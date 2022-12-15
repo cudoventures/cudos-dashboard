@@ -1,6 +1,6 @@
 import { Box, Button, InputAdornment, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { AccountBalanceWalletRounded as AccountBalanceWalletRoundedIcon } from '@mui/icons-material'
 import Dropdown from 'components/Dropdown'
@@ -15,6 +15,8 @@ import {
   ProposalModalProps,
   ProposalTypes
 } from 'store/modal'
+import { getWalletBalance } from 'utils/projectUtils'
+import { updateUser } from 'store/profile'
 import {
   CancelRoundedIcon,
   InputContainer,
@@ -23,6 +25,7 @@ import {
 } from './styles'
 import { typeSwitch } from './ProposalTypes/types'
 import { validateInput } from './ProposalTypes/validateInput'
+import { CHAIN_DETAILS } from 'utils/constants'
 
 type ProposalProps = {
   modalProps: ProposalModalProps
@@ -31,7 +34,7 @@ type ProposalProps = {
 
 const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const { setError } = useNotifications()
-  const { address, connectedLedger } = useSelector(
+  const { address, connectedLedger, chosenNetwork } = useSelector(
     ({ profile }: RootState) => profile
   )
 
@@ -39,6 +42,8 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
   const [proposal, setProposal] = useState<string>('1')
   const [title, setTitle] = useState<string>('')
   const [proposalError, setProposalError] = useState<boolean>()
+
+  const dispatch = useDispatch()
 
   const delayInput = _.debounce(
     (value) =>
@@ -91,9 +96,10 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         }
       })
       const { result, gasFee } = await createProposal(
+        chosenNetwork,
         proposalData,
         proposerAddress,
-        connectedLedger
+        connectedLedger!
       )
       handleModal({
         open: true,
@@ -101,6 +107,14 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
         fee: new BigNumber(gasFee),
         hash: result.transactionHash
       })
+
+      const walletBalance = await getWalletBalance(chosenNetwork!, address)
+
+      dispatch(
+        updateUser({
+          balance: walletBalance
+        })
+      )
     } catch (error) {
       handleModal({
         open: true,
@@ -156,7 +170,7 @@ const Proposals: React.FC<ProposalProps> = ({ handleModal, modalProps }) => {
                 Network
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                {import.meta.env.VITE_APP_CHAIN_NAME}
+                {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
               </Typography>
             </Box>
           </Box>

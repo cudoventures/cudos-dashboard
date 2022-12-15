@@ -1,24 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { CssBaseline } from '@mui/material'
-import { ApolloProvider } from '@apollo/client'
+import { Box, CssBaseline } from '@mui/material'
+import { ApolloClient, ApolloProvider, NormalizedCacheObject } from '@apollo/client'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
-import { fetchRedelegations } from 'api/getAccountRedelegations'
-import { fetchUndedelegations } from 'api/getAccountUndelegations'
-import BigNumber from 'bignumber.js'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
-import { fetchRewards } from 'api/getRewards'
 import NotificationPopup from 'components/NotificationPopup'
-import { fetchDelegations } from 'api/getAccountDelegations'
 import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
-import { connectKeplrLedger } from 'ledgers/KeplrLedger'
-import { connectCosmostationLedger } from 'ledgers/CosmoStationLedger'
 import { switchLedgerType } from 'ledgers/utils'
-import { getUnbondingBalance } from 'api/getUnbondingBalance'
-import { getStakedBalance, getWalletBalance } from './utils/projectUtils'
+import { connectUser } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
 import RequireLedger from './components/RequireLedger/RequireLedger'
@@ -33,19 +25,32 @@ import theme from './theme'
 import { RootState } from './store'
 
 import '@fontsource/poppins'
+import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
+import { CHAIN_DETAILS } from 'utils/constants'
+import NetworkChangingLoading from 'components/NetworkChangeLoading'
+import { networkLoadingStyles } from 'components/NetworkChangeLoading/styles'
+import { isExtensionEnabled, SUPPORTED_WALLET } from 'cudosjs'
 
 const App = () => {
   const location = useLocation()
-
   const themeColor = useSelector((state: RootState) => state.settings.theme)
-  const apolloClient = useApollo(null)
-  const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
+  const newApolloClient = useApollo(null)
+  const [currentApolloClient, setCurrentApolloClient] = useState<ApolloClient<NormalizedCacheObject>>(
+    newApolloClient(defaultApolloLinks)
+  )
+  const {
+    lastLoggedAddress,
+    chosenNetwork: currentNetwork,
+    connectedLedger,
+    loadingState
+  } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
 
-  const connectAccount = useCallback(async (ledgerType: string) => {
+  const connectAccount = useCallback(async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
     try {
-      const { address, accountName } = await switchLedgerType(ledgerType)
+
+      const { address } = await switchLedgerType(chosenNetwork!, walletName)
       if (address !== lastLoggedAddress || lastLoggedAddress === '') {
         dispatch(
           updateUserTransactions({
@@ -56,36 +61,10 @@ const App = () => {
           })
         )
       }
-      const balance = await getWalletBalance(address!)
 
-      const stakedAmountBalance = await getStakedBalance(address!)
+      const connectedUser = await connectUser(chosenNetwork, walletName)
+      dispatch(updateUser(connectedUser))
 
-      const { totalRewards, validatorArray } = await fetchRewards(address!)
-
-      const { delegationsArray } = await fetchDelegations(address)
-
-      const { redelegationsArray } = await fetchRedelegations(address)
-
-      const { undelegationsArray } = await fetchUndedelegations(address)
-
-      const { unbondingBalance } = await getUnbondingBalance(address)
-
-      dispatch(
-        updateUser({
-          address,
-          lastLoggedAddress: address,
-          connectedLedger: ledgerType,
-          accountName,
-          balance: new BigNumber(balance),
-          availableRewards: new BigNumber(totalRewards),
-          stakedValidators: validatorArray,
-          stakedBalance: new BigNumber(stakedAmountBalance),
-          unbondingBalance: new BigNumber(unbondingBalance),
-          delegations: delegationsArray,
-          redelegations: redelegationsArray,
-          undelegations: undelegationsArray
-        })
-      )
     } catch (e) {
       throw new Error('Failed to connect!')
     }
@@ -103,28 +82,47 @@ const App = () => {
         })
       )
 
-      await connectAccount(CosmosNetworkConfig.KEPLR_LEDGER)
+      await connectAccount(currentNetwork, SUPPORTED_WALLET.Keplr)
     })
 
-    if (window.cosmostation) {
+    if (isExtensionEnabled(SUPPORTED_WALLET.Cosmostation)) {
       window.cosmostation.cosmos.on('accountChanged', async () => {
-        await connectAccount(CosmosNetworkConfig.COSMOSTATION_LEDGER)
+        await connectAccount(currentNetwork, SUPPORTED_WALLET.Cosmostation)
       })
     }
 
     return () => {
       window.removeEventListener('keplr_keystorechange', async () => {
-        await connectAccount(CosmosNetworkConfig.KEPLR_LEDGER)
+        await connectAccount(currentNetwork, SUPPORTED_WALLET.Keplr)
       })
       window.removeEventListener('accountChanged', async () => {
-        await connectAccount(CosmosNetworkConfig.COSMOSTATION_LEDGER)
+        await connectAccount(currentNetwork, SUPPORTED_WALLET.Cosmostation)
       })
     }
   }, [])
 
+
+  useEffect(() => {
+    dispatch(updateUser({ loadingState: true })
+    )
+    const newApolloLinks: ApolloLinks = {
+      uri: CHAIN_DETAILS.GRAPHQL_URL[currentNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_URL],
+      url: CHAIN_DETAILS.GRAPHQL_WS[currentNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_WS]
+    }
+
+    setCurrentApolloClient(newApolloClient(newApolloLinks))
+
+    if (connectedLedger) {
+      connectAccount(currentNetwork, connectedLedger)
+    }
+
+    setTimeout(() => { dispatch(updateUser({ loadingState: false })) }, 4000)
+
+  }, [currentNetwork])
+
   return (
-    <ApolloProvider client={apolloClient}>
-      <ThemeProvider theme={theme[themeColor]}>
+    <ApolloProvider client={currentApolloClient!}>
+      <ThemeProvider theme={theme[themeColor!]}>
         <CssBaseline />
         {location.pathname !== '/' ? null : (
           <>
@@ -136,31 +134,38 @@ const App = () => {
         )}
         {location.pathname === '/' ? null : (
           <Layout>
-            <Routes>
-              <Route element={<RequireLedger />}>
-                <Route path="dashboard">
-                  <Route index element={<Dashboard />} />
+            {loadingState ? <NetworkChangingLoading /> : null}
+            <Box style={loadingState ? networkLoadingStyles.hidden : networkLoadingStyles.visible}>
+              <Routes>
+                <Route element={<RequireLedger />}>
+                  <Route path="dashboard">
+                    <Route index element={<Dashboard />} />
+                  </Route>
+                  <Route path="staking">
+                    <Route index element={<Staking />} />
+                    <Route path=":validatorId" element={<ValidatorDetails />} />
+                  </Route>
+                  <Route path="proposals">
+                    <Route index element={<Proposals />} />
+                    <Route path=":proposalId" element={<ProposalDetails />} />
+                  </Route>
                 </Route>
-                <Route path="staking">
-                  <Route index element={<Staking />} />
-                  <Route path=":validatorId" element={<ValidatorDetails />} />
-                </Route>
-                <Route path="proposals">
-                  <Route index element={<Proposals />} />
-                  <Route path=":proposalId" element={<ProposalDetails />} />
-                </Route>
-              </Route>
-              {import.meta.env.VITE_CHAIN_STATUS !== 'mainnet' && (
-                <Route path="faucet">
-                  <Route index element={<Faucet />} />
-                </Route>
-              )}
-              <Route path="*" element={<Navigate to="/dashboard" />} />
-            </Routes>
-            <NotificationPopup type="error" />
-            <NotificationPopup type="warning" />
-            <NotificationPopup type="info" />
+                {
+                  CHAIN_DETAILS.CHAIN_ID[currentNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID]
+                    === CHAIN_DETAILS.CHAIN_ID.MAINNET ? null : (
+                    <Route path="faucet">
+                      <Route index element={<Faucet />} />
+                    </Route>
+                  )}
+                <Route path="*" element={<Navigate to="/dashboard" />} />
+              </Routes>
+
+              <NotificationPopup type="error" />
+              <NotificationPopup type="warning" />
+              <NotificationPopup type="info" />
+            </Box>
           </Layout>
+
         )}
       </ThemeProvider>
     </ApolloProvider>

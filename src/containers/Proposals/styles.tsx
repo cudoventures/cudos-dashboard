@@ -53,6 +53,7 @@ export const styles: SxMap = {
   },
   proposalContent: {
     display: 'flex',
+    flexDirection: 'column',
     marginLeft: '50px',
     marginTop: '10px',
     width: '50%',
@@ -94,6 +95,7 @@ export const styles: SxMap = {
   },
   tableContainer: {
     width: '100%',
+    maxHeight: '80vh',
     flex: 1,
     overflow: 'scroll',
     padding: '0 20px'
