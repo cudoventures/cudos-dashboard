@@ -22,6 +22,7 @@ export type VoteDetails = {
   proposer: string
   content: {
     ['@type']: string
+    changes: any[]
     title: string
     description: string
   }
@@ -41,6 +42,7 @@ export const initialState: ProposalDetailsState = {
     proposer: '',
     content: {
       '@type': '',
+      changes: [],
       title: '',
       description: ''
     },
