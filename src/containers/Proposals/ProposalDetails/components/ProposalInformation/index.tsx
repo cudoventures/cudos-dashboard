@@ -209,7 +209,7 @@ const ProposalInformation = () => {
           <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 4, gridRow: 2 }} >
             Value
           </Typography>
-          {overview.content.changes.map((item: Change, idx: number) => {
+          {overview.content.changes?.map((item: Change, idx: number) => {
             return (
               <Fragment>
                 <Typography variant='subtitle2' sx={{ gridColumn: 2, gridRow: idx + 3 }} >
