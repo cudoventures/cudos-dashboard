@@ -15,6 +15,13 @@ import { CHAIN_DETAILS } from 'utils/constants'
 import { COLORS_DARK_THEME } from 'theme/colors'
 import Markdown from 'components/Markdown'
 import { styles } from '../../../styles'
+import { Fragment } from 'react'
+
+interface Change {
+  key: string;
+  value: string;
+  subspace: string;
+}
 
 const ProposalInformation = () => {
   const { overview } = useSelector((state: RootState) => state.proposalDetails)
@@ -29,7 +36,6 @@ const ProposalInformation = () => {
     )
   }
 
-  console.log(overview.description)
   return (
     <Card>
       <Box sx={{ position: 'relative' }}>
@@ -189,6 +195,35 @@ const ProposalInformation = () => {
               <Box>{proposalStatus(overview.status)}</Box>
             </Box>
           </Box>
+        </Box>
+        <Box sx={{ display: 'grid', margin: '20px 0px 10px 50px' }}>
+          <Typography fontSize={14} sx={{ gridColumn: 1, gridRow: 1 }}>
+            Changes
+          </Typography>
+          <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 2, gridRow: 2 }} >
+            Subspace
+          </Typography>
+          <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 3, gridRow: 2 }} >
+            Key
+          </Typography>
+          <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 4, gridRow: 2 }} >
+            Value
+          </Typography>
+          {overview.content.changes?.map((item: Change, idx: number) => {
+            return (
+              <Fragment>
+                <Typography variant='subtitle2' sx={{ gridColumn: 2, gridRow: idx + 3 }} >
+                  {item.subspace}
+                </Typography>
+                <Typography variant='subtitle2' sx={{ gridColumn: 3, gridRow: idx + 3 }} >
+                  {item.key}
+                </Typography>
+                <Typography variant='subtitle2' sx={{ gridColumn: 4, gridRow: idx + 3 }} >
+                  {item.value}
+                </Typography>
+              </Fragment>
+            )
+          })}
         </Box>
         <Divider
           sx={{

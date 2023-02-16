@@ -85,7 +85,7 @@ const Form = () => {
       handleModal({ open: true, status: ModalStatus.LOADING })
 
       const response = await getFaucetTokens(
-        CHAIN_DETAILS.FAUCET_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_ADDRESS],
+        CHAIN_DETAILS.FAUCET_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_URL],
         data
       )
 

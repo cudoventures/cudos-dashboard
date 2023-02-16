@@ -31,7 +31,9 @@ const colors = {
   cosmwasm: '#212c6f',
   gravity: '#469990',
   cudosNft: '#ff1493',
-  cudosAdmin: '#535da8'
+  cudosAdmin: '#535da8',
+  marketplace: '#BA0086',
+  addressbook: '#FF720C'
 }
 
 export const defaultMessages = {
@@ -440,7 +442,88 @@ export const defaultMessages = {
     typeUrl: 'gravity.v1.MsgValsetUpdatedClaim',
     color: colors.gravity,
     displayName: 'Valset Updated Claim'
-  }
+  },
+  // ========================
+  // marketplace
+  // ========================
+  '/cudoventures.cudosnode.marketplace.MsgRemoveAdmin': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgRemoveAdmin',
+    color: colors.marketplace,
+    displayName: 'Remove Marketplace Admin'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgBuyNft': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgBuyNft',
+    color: colors.marketplace,
+    displayName: 'Buy NFT'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgUpdateRoyalties': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgUpdateRoyalties',
+    color: colors.marketplace,
+    displayName: 'Update NFT Royalties'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgUpdatePrice': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgUpdatePrice',
+    color: colors.marketplace,
+    displayName: 'Update NFT Price'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgRemoveNft': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgRemoveNft',
+    color: colors.marketplace,
+    displayName: 'Remove NFT from Sale'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgPublishNft': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgPublishNft',
+    color: colors.marketplace,
+    displayName: 'Publish NFT for Sale'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgMintNft': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgMintNft',
+    color: colors.marketplace,
+    displayName: 'Mint NFT'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgAddAdmin': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgAddAdmin',
+    color: colors.marketplace,
+    displayName: 'Add Marketplace Admin'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgUnverifyCollection': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgUnverifyCollection',
+    color: colors.marketplace,
+    displayName: 'Unverify NFT Collection'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgVerifyCollection': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgVerifyCollection',
+    color: colors.marketplace,
+    displayName: 'Verify NFT Collection'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgPublishCollection': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgPublishCollection',
+    color: colors.marketplace,
+    displayName: 'Publish NFT Collection'
+  },
+  '/cudoventures.cudosnode.marketplace.MsgCreateCollection': {
+    typeUrl: 'cudoventures.cudosnode.marketplace.MsgCreateCollection',
+    color: colors.marketplace,
+    displayName: 'Create NFT Collection'
+  },
+  // ========================
+  // addressbook
+  // ========================
+  '/cudoventures.cudosnode.addressbook.MsgDeleteAddress': {
+    typeUrl: 'cudoventures.cudosnode.addressbook.MsgDeleteAddress',
+    color: colors.addressbook,
+    displayName: 'Delete address'
+  },
+  '/cudoventures.cudosnode.addressbook.MsgUpdateAddress': {
+    typeUrl: 'cudoventures.cudosnode.addressbook.MsgUpdateAddress',
+    color: colors.addressbook,
+    displayName: 'Update address'
+  },
+  '/cudoventures.cudosnode.addressbook.MsgCreateAddress': {
+    typeUrl: 'cudoventures.cudosnode.addressbook.MsgCreateAddress',
+    color: colors.addressbook,
+    displayName: 'Create address'
+  },
 }
 
 export const unknownMessage = {
