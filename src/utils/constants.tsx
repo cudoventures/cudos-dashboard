@@ -9,6 +9,13 @@ export const CHAIN_DETAILS = {
         PUBLIC: import.meta.env.VITE_APP_PUBLIC_CAPTCHA_SITE_KEY || process.env.VITE_APP_PUBLIC_CAPTCHA_SITE_KEY || "",
         MAINNET: ''
     },
+    FAUCET_URL: {
+        LOCAL: import.meta.env.VITE_APP_LOCAL_FAUCET_URL || process.env.VITE_APP_LOCAL_FAUCET_URL || "",
+        DEV: import.meta.env.VITE_APP_DEV_FAUCET_URL || process.env.VITE_APP_DEV_FAUCET_URL || "",
+        PRIVATE: import.meta.env.VITE_APP_PRIVATE_FAUCET_URL || process.env.VITE_APP_PRIVATE_FAUCET_URL || "",
+        PUBLIC: import.meta.env.VITE_APP_PUBLIC_FAUCET_URL || process.env.VITE_APP_PUBLIC_FAUCET_URL || "",
+        MAINNET: ''
+    },
     FAUCET_ADDRESS: {
         LOCAL: import.meta.env.VITE_APP_LOCAL_FAUCET_ADDRESS || process.env.VITE_APP_LOCAL_FAUCET_ADDRESS || "",
         DEV: import.meta.env.VITE_APP_DEV_FAUCET_ADDRESS || process.env.VITE_APP_DEV_FAUCET_ADDRESS || "",
