@@ -103,6 +103,7 @@ const Form = () => {
       }
 
       captchaRef.current.reset()
+      checkCaptcha()
       setAmount('')
     } catch (error) {
       handleModal({
@@ -114,6 +115,7 @@ const Form = () => {
         }
       })
       captchaRef.current.reset()
+      checkCaptcha()
     }
   }
 

@@ -178,9 +178,9 @@ const ConnectWallet = () => {
               order to continue you need to connect your Keplr Wallet.
             </Typography>
           </Box>
-          {getSupportedWallets().map((wallet) => {
+          {getSupportedWallets().map((wallet, idx) => {
             return (
-              <Tooltip placement='right' title={btnTooltip(wallet)}>
+              <Tooltip key={idx} placement='right' title={btnTooltip(wallet)}>
                 <Box>
                   <Button
                     sx={styles.connectButton}
