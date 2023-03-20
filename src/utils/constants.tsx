@@ -109,6 +109,10 @@ export const CHAIN_DETAILS = {
 }
 
 // GENERAL APP CONFIGURATIONS
+export const APP_DETAILS = {
+    DEPLOYMENT_VERSION: import.meta.env.VITE_APP_DEPLOYMENT_VERSION || process.env.VITE_APP_DEPLOYMENT_VERSION || ""
+}
+
 export const SCREEN_RESOLUTIONS = {
     HIGH: 1600,
     MID_LOW: 1300,
