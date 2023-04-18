@@ -54,7 +54,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
     ({ profile }: RootState) => profile
   )
 
-  const { stakedValidators, chosenNetwork } = useSelector((state: RootState) => state.profile)
+  const { stakedValidators } = useSelector((state: RootState) => state.profile)
 
   const { validator } = useSelector(
     (state: RootState) => state.validatorDetails
@@ -73,7 +73,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         return
       }
 
-      const { validatorArray } = await fetchRewards(chosenNetwork!, address)
+      const { validatorArray } = await fetchRewards(address)
 
       const isValidator =
         validatorsState.items.findIndex(
@@ -82,7 +82,6 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
         ) > -1
 
       const { result, fee, restakeTx } = await claimRewards(
-        chosenNetwork,
         isSingleRewardWithdraw ? getSingleReward : validatorArray,
         address,
         {
@@ -104,7 +103,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
       })
 
       const { validatorArray: updatedValidatorArray, totalRewards } =
-        await fetchRewards(chosenNetwork!, address)
+        await fetchRewards(address)
 
       dispatch(
         updateUser({
@@ -175,7 +174,7 @@ const Rewards: React.FC<RewardsProps> = ({ modalProps, handleModal }) => {
                 Network
               </Typography>
               <Typography variant="body2" fontWeight={700} color="primary.main">
-                {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
+                {CHAIN_DETAILS.CHAIN_NAME}
               </Typography>
             </Box>
           </Box>

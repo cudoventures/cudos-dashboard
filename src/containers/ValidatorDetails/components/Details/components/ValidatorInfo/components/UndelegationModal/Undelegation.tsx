@@ -50,13 +50,13 @@ const Undelegation: React.FC<UndelegationProps> = ({
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address, connectedLedger, chosenNetwork } = useSelector(
+  const { address, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
   )
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(chosenNetwork, connectedLedger!)
+      const client = await signingClient(connectedLedger!)
 
       const walletBalance = await client.getDelegation(
         address,
@@ -91,7 +91,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         value: msg
       }
 
-      const client = await signingClient(chosenNetwork, connectedLedger!)
+      const client = await signingClient(connectedLedger!)
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -136,7 +136,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
       value: msg
     }
 
-    const client = await signingClient(chosenNetwork, connectedLedger!)
+    const client = await signingClient(connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -172,7 +172,6 @@ const Undelegation: React.FC<UndelegationProps> = ({
 
     try {
       const undelegationResult = await undelegate(
-        chosenNetwork,
         address,
         validator?.address || '',
         amount || '',
@@ -185,7 +184,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
         gasUsed: undelegationResult.gasUsed,
         txHash: undelegationResult.transactionHash
       })
-      const { undelegationsArray } = await fetchUndedelegations(chosenNetwork!, address)
+      const { undelegationsArray } = await fetchUndedelegations(address)
       dispatch(
         updateUser({
           undelegations: undelegationsArray
@@ -254,7 +253,7 @@ const Undelegation: React.FC<UndelegationProps> = ({
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
+                    {CHAIN_DETAILS.CHAIN_NAME}
                   </Typography>
                 </Box>
               </Box>

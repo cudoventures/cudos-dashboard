@@ -14,7 +14,6 @@ export interface WalletState {
   address: string
   accountName: string
   connectedLedger: SUPPORTED_WALLET | undefined
-  chosenNetwork: string
   loadingState: boolean
   lastLoggedAddress: string
   balance: BigNumber
@@ -39,7 +38,6 @@ const initialState: WalletState = {
   address: '',
   accountName: '',
   connectedLedger: undefined,
-  chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK,
   loadingState: false,
   lastLoggedAddress: '',
   balance: new BigNumber(0),

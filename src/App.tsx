@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { ThemeProvider } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, CssBaseline } from '@mui/material'
-import { ApolloClient, ApolloProvider, NormalizedCacheObject } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import NotificationPopup from 'components/NotificationPopup'
-import CosmosNetworkConfig from 'ledgers/CosmosNetworkConfig'
 import { switchLedgerType } from 'ledgers/utils'
 import { connectUser } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
@@ -25,7 +24,7 @@ import theme from './theme'
 import { RootState } from './store'
 
 import '@fontsource/poppins'
-import { ApolloLinks, defaultApolloLinks } from 'graphql/helpers'
+import { defaultApolloLinks } from 'graphql/helpers'
 import { CHAIN_DETAILS } from 'utils/constants'
 import NetworkChangingLoading from 'components/NetworkChangeLoading'
 import { networkLoadingStyles } from 'components/NetworkChangeLoading/styles'
@@ -35,22 +34,20 @@ const App = () => {
   const location = useLocation()
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const newApolloClient = useApollo(null)
-  const [currentApolloClient, setCurrentApolloClient] = useState<ApolloClient<NormalizedCacheObject>>(
-    newApolloClient(defaultApolloLinks)
-  )
+  const isMainnet = CHAIN_DETAILS.CHAIN_ID === 'cudos-1'
+
   const {
     lastLoggedAddress,
-    chosenNetwork: currentNetwork,
     connectedLedger,
     loadingState
   } = useSelector((state: RootState) => state.profile)
 
   const dispatch = useDispatch()
 
-  const connectAccount = useCallback(async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
+  const connectAccount = useCallback(async (walletName: SUPPORTED_WALLET) => {
     try {
 
-      const { address } = await switchLedgerType(chosenNetwork!, walletName)
+      const { address } = await switchLedgerType(walletName)
       if (address !== lastLoggedAddress || lastLoggedAddress === '') {
         dispatch(
           updateUserTransactions({
@@ -62,7 +59,7 @@ const App = () => {
         )
       }
 
-      const connectedUser = await connectUser(chosenNetwork, walletName)
+      const connectedUser = await connectUser(walletName)
       dispatch(updateUser(connectedUser))
 
     } catch (e) {
@@ -82,46 +79,27 @@ const App = () => {
         })
       )
 
-      await connectAccount(currentNetwork, SUPPORTED_WALLET.Keplr)
+      await connectAccount(SUPPORTED_WALLET.Keplr)
     })
 
     if (isExtensionEnabled(SUPPORTED_WALLET.Cosmostation)) {
       window.cosmostation.cosmos.on('accountChanged', async () => {
-        await connectAccount(currentNetwork, SUPPORTED_WALLET.Cosmostation)
+        await connectAccount(SUPPORTED_WALLET.Cosmostation)
       })
     }
 
     return () => {
       window.removeEventListener('keplr_keystorechange', async () => {
-        await connectAccount(currentNetwork, SUPPORTED_WALLET.Keplr)
+        await connectAccount(SUPPORTED_WALLET.Keplr)
       })
       window.removeEventListener('accountChanged', async () => {
-        await connectAccount(currentNetwork, SUPPORTED_WALLET.Cosmostation)
+        await connectAccount(SUPPORTED_WALLET.Cosmostation)
       })
     }
   }, [])
 
-
-  useEffect(() => {
-    dispatch(updateUser({ loadingState: true })
-    )
-    const newApolloLinks: ApolloLinks = {
-      uri: CHAIN_DETAILS.GRAPHQL_URL[currentNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_URL],
-      url: CHAIN_DETAILS.GRAPHQL_WS[currentNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_WS]
-    }
-
-    setCurrentApolloClient(newApolloClient(newApolloLinks))
-
-    if (connectedLedger) {
-      connectAccount(currentNetwork, connectedLedger)
-    }
-
-    setTimeout(() => { dispatch(updateUser({ loadingState: false })) }, 4000)
-
-  }, [currentNetwork])
-
   return (
-    <ApolloProvider client={currentApolloClient!}>
+    <ApolloProvider client={newApolloClient(defaultApolloLinks)}>
       <ThemeProvider theme={theme[themeColor!]}>
         <CssBaseline />
         {location.pathname !== '/' ? null : (
@@ -150,13 +128,11 @@ const App = () => {
                     <Route path=":proposalId" element={<ProposalDetails />} />
                   </Route>
                 </Route>
-                {
-                  CHAIN_DETAILS.CHAIN_ID[currentNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID]
-                    === CHAIN_DETAILS.CHAIN_ID.MAINNET ? null : (
-                    <Route path="faucet">
-                      <Route index element={<Faucet />} />
-                    </Route>
-                  )}
+                {isMainnet ? null : (
+                  <Route path="faucet">
+                    <Route index element={<Faucet />} />
+                  </Route>
+                )}
                 <Route path="*" element={<Navigate to="/dashboard" />} />
               </Routes>
 

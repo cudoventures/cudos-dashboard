@@ -21,7 +21,7 @@ import { styles } from './styles'
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { address, accountName, connectedLedger, chosenNetwork } = useSelector(
+  const { address, accountName, connectedLedger } = useSelector(
     (state: RootState) => state.profile
   )
 
@@ -38,7 +38,7 @@ const UserInfo = () => {
   }
 
   const handleExplorer = () => {
-    window.open(`${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL].toString()}`, '_blank')
+    window.open(`${CHAIN_DETAILS.EXPLORER_URL}`, '_blank')
   }
 
   const handleDisconnect = () => {
@@ -54,8 +54,7 @@ const UserInfo = () => {
         delegations: [],
         redelegations: [],
         undelegations: [],
-        connectedLedger: '',
-        chosenNetwork: CHAIN_DETAILS.DEFAULT_NETWORK
+        connectedLedger: ''
       })
     )
     navigate('/')

@@ -9,8 +9,6 @@ import { fetchDelegations } from 'api/getAccountDelegations'
 import { fetchRedelegations } from 'api/getAccountRedelegations'
 import { fetchUndedelegations } from 'api/getAccountUndelegations'
 import { getUnbondingBalance } from 'api/getUnbondingBalance'
-import { CHAIN_DETAILS } from './constants'
-import { detect as detectBrowser } from 'detect-browser'
 import CosmostationLogo from 'assets/vectors/cosmostation-logo.svg'
 import KeplrLogo from 'assets/vectors/keplr-logo.svg'
 import { styles } from 'containers/ConnectWallet/styles'
@@ -45,8 +43,8 @@ export const formatAddress = (text: string, sliceIndex: number): string => {
   return `${text.slice(0, sliceIndex)}...${text.slice(len - 4, len)}`
 }
 
-export const getWalletBalance = async (chosenNetwork: string, address: string) => {
-  const queryClient = await getQueryClient(chosenNetwork)
+export const getWalletBalance = async (address: string) => {
+  const queryClient = await getQueryClient()
   const updateWalletBalance = await queryClient.getBalance(address, CosmosNetworkConfig.CURRENCY_DENOM)
 
   return new BigNumber(updateWalletBalance.amount)
@@ -54,8 +52,8 @@ export const getWalletBalance = async (chosenNetwork: string, address: string) =
     .toString(10)
 }
 
-export const getStakedBalance = async (chosenNetwork: string, address: string) => {
-  const queryClient = await getQueryClient(chosenNetwork)
+export const getStakedBalance = async (address: string) => {
+  const queryClient = await getQueryClient()
   const updateWalletBalance = await queryClient.getBalanceStaked(address)
 
   if (updateWalletBalance === null) {
@@ -94,21 +92,20 @@ export const addEndingEllipsis = (
   return input
 }
 
-export const connectUser = async (chosenNetwork: string, walletName: SUPPORTED_WALLET): Promise<any> => {
+export const connectUser = async (walletName: SUPPORTED_WALLET): Promise<any> => {
 
   try {
 
-    const { address, accountName } = await switchLedgerType(chosenNetwork!, walletName)
-    const balance = await getWalletBalance(chosenNetwork, address!)
-    const stakedAmountBalance = await getStakedBalance(chosenNetwork, address!)
-    const { totalRewards, validatorArray } = await fetchRewards(chosenNetwork, address!)
-    const { delegationsArray } = await fetchDelegations(chosenNetwork, address)
-    const { redelegationsArray } = await fetchRedelegations(chosenNetwork, address)
-    const { undelegationsArray } = await fetchUndedelegations(chosenNetwork, address)
-    const { unbondingBalance } = await getUnbondingBalance(chosenNetwork, address)
+    const { address, accountName } = await switchLedgerType(walletName)
+    const balance = await getWalletBalance(address!)
+    const stakedAmountBalance = await getStakedBalance(address!)
+    const { totalRewards, validatorArray } = await fetchRewards(address!)
+    const { delegationsArray } = await fetchDelegations(address)
+    const { redelegationsArray } = await fetchRedelegations(address)
+    const { undelegationsArray } = await fetchUndedelegations(address)
+    const { unbondingBalance } = await getUnbondingBalance(address)
 
     const connectedUser = {
-      chosenNetwork,
       address,
       lastLoggedAddress: address,
       connectedLedger: walletName,
@@ -131,23 +128,19 @@ export const connectUser = async (chosenNetwork: string, walletName: SUPPORTED_W
 
 }
 
-export const handleAvailableNetworks = (defaultNetwork: string): networkToDisplay[] => {
+export const getChainPrettyName = (chainId: string): string => {
+  switch (chainId) {
+    case 'cudos-testnet-private-3':
+      return 'Private Testnet'
 
-  if (
-    CHAIN_DETAILS[defaultNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME ===
-    CHAIN_DETAILS.LOCAL.ALIAS_NAME
-  ) {
-    return [CHAIN_DETAILS.LOCAL]
+    case 'cudos-testnet-public-3':
+      return 'Public Testnet'
+
+    case 'cudos-1':
+      return 'Main Network'
+
+    default: return chainId
   }
-
-  if (
-    CHAIN_DETAILS[defaultNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME ===
-    CHAIN_DETAILS.PRIVATE.ALIAS_NAME
-  ) {
-    return [CHAIN_DETAILS.PRIVATE]
-  }
-
-  return [CHAIN_DETAILS.PUBLIC, CHAIN_DETAILS.MAINNET]
 }
 
 export const delay = (ms: number) => {

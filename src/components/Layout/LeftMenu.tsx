@@ -11,15 +11,15 @@ import { styles } from './styles'
 const Menu = () => {
   const [selected, setSelected] = useState<number>(0)
   const [menuItems, setMenuItems] = useState<MenuItems[]>([])
-  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
+  const { loadingState } = useSelector((state: RootState) => state.profile)
   const { pathname } = useLocation()
   const isScreenWidthLessThan1440px = useIsScreenLessThan('1440px', 'width')
 
   useEffect(() => {
 
-    setMenuItems(getMenuItems(chosenNetwork, loadingState))
+    setMenuItems(getMenuItems(loadingState))
 
-  }, [chosenNetwork, loadingState])
+  }, [loadingState])
 
   useEffect(() => {
 

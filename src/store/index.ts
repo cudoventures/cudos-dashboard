@@ -12,6 +12,7 @@ import userTransactionsReducer from './userTransactions'
 import validatorDetailsReducer from './validatorDetails'
 import notificationsReducer from './notifications'
 import modalReducer from './modal'
+import { APP_DETAILS } from 'utils/constants'
 
 const rootReducer = combineReducers({
   profile: profileReducer,
@@ -48,7 +49,7 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false
     }),
-  devTools: import.meta.env.NODE_ENV !== 'production'
+  devTools: APP_DETAILS.NODE_ENV.toLowerCase() !== 'production'
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
