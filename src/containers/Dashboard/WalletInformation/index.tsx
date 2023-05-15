@@ -49,8 +49,7 @@ const WalletInformation: React.FC = () => {
     unbondingBalance,
     address,
     stakedValidators,
-    lastLoggedAddress,
-    chosenNetwork
+    lastLoggedAddress
   } = state
   const dispatch = useDispatch()
   const { setError } = useNotifications()
@@ -80,13 +79,12 @@ const WalletInformation: React.FC = () => {
     const fetchData = async () => {
       try {
         const { totalRewards, validatorArray } = await fetchRewards(
-          chosenNetwork!,
           address,
           controller.signal
         )
-        const walletBalance = await getWalletBalance(chosenNetwork!, address)
-        const stakedAmountBalance = await getStakedBalance(chosenNetwork!, address)
-        const { unbondingBalance } = await getUnbondingBalance(chosenNetwork!, address)
+        const walletBalance = await getWalletBalance(address)
+        const stakedAmountBalance = await getStakedBalance(address)
+        const { unbondingBalance } = await getUnbondingBalance(address)
 
         dispatch(
           updateUser({
@@ -110,7 +108,7 @@ const WalletInformation: React.FC = () => {
       clearInterval(timer)
       controller?.abort()
     }
-  }, [address, dispatch, lastLoggedAddress, chosenNetwork])
+  }, [address, dispatch, lastLoggedAddress])
 
   return (
     <Card
@@ -162,9 +160,7 @@ const WalletInformation: React.FC = () => {
               title="Go to Explorer"
               onClick={() =>
                 window
-                  .open(
-                    `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
-                    }/accounts/${address}`,
+                  .open(`${CHAIN_DETAILS.EXPLORER_URL}/accounts/${address}`,
                     '_blank'
                   )
                   ?.focus()

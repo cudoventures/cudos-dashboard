@@ -5,14 +5,11 @@ import {
   useGetMessagesByAddressQuery
 } from 'graphql/types'
 import { ActivityState } from './types'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store'
 import { CHAIN_DETAILS } from 'utils/constants'
 
 const LIMIT = 50
 
 export const useActivity = () => {
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const [state, setState] = useState<ActivityState>({
     items: [],
     loading: false
@@ -48,7 +45,7 @@ export const useActivity = () => {
         }
       })
       .filter(
-        (item: any) => item.address !== CHAIN_DETAILS.FAUCET_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_ADDRESS]
+        (item: any) => item.address !== CHAIN_DETAILS.FAUCET_ADDRESS
       )
 
     return formattedItems
@@ -58,7 +55,7 @@ export const useActivity = () => {
     variables: {
       limit: LIMIT,
       offset: 0,
-      address: `{${CHAIN_DETAILS.FAUCET_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_ADDRESS]}}`,
+      address: `{${CHAIN_DETAILS.FAUCET_ADDRESS}}`,
       types: `{cosmos.bank.v1beta1.MsgSend}`
     },
     onCompleted: (data: any) => {
@@ -77,7 +74,7 @@ export const useActivity = () => {
       variables: {
         limit: LIMIT + 1,
         offset: 0,
-        address: `{${CHAIN_DETAILS.FAUCET_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.FAUCET_ADDRESS]}}`
+        address: `{${CHAIN_DETAILS.FAUCET_ADDRESS}}`
       },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev

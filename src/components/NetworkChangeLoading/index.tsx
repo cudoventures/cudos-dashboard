@@ -1,13 +1,11 @@
 import { Box, CircularProgress, Typography } from "@mui/material"
 import { Fragment } from "react"
-import { useSelector } from "react-redux"
-import { RootState } from "store"
 import { CHAIN_DETAILS } from "utils/constants"
+import { getChainPrettyName } from "utils/projectUtils"
 
 const NetworkChangingLoading = () => {
 
-    const { chosenNetwork } = useSelector((state: RootState) => state.profile)
-    const aliasChainName = CHAIN_DETAILS[chosenNetwork as keyof typeof CHAIN_DETAILS].ALIAS_NAME
+    const aliasChainName = getChainPrettyName(CHAIN_DETAILS.CHAIN_ID)
 
     return (
         <Fragment>

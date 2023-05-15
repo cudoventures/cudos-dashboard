@@ -46,7 +46,7 @@ type InfoProps = {
 const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
   const [openActionsDropdown, setOpenActionsDropdown] = useState<boolean>(false)
   const info = useSelector((state: RootState) => state.notifications.info)
-  const { stakedValidators, chosenNetwork } = useSelector(
+  const { stakedValidators } = useSelector(
     (state: RootState) => state.profile
   )
   const { validator } = useSelector(
@@ -110,11 +110,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
             onClick={() =>
               window
                 .open(
-                  `${
-                    CHAIN_DETAILS.EXPLORER_URL[
-                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
-                    ]
-                  }/validators/${overview.operatorAddress}`,
+                  `${CHAIN_DETAILS.EXPLORER_URL}/validators/${overview.operatorAddress}`,
                   '_blank'
                 )
                 ?.focus()
@@ -412,7 +408,7 @@ const ValidatorInfo: React.FC<InfoProps> = ({ overview, status }) => {
               borderRadius: '10px',
               background:
                 theme.custom.statuses[
-                  statusTheme.status as keyof typeof theme.custom.statuses
+                statusTheme.status as keyof typeof theme.custom.statuses
                 ],
               fontWeight: 700,
               letterSpacing: '2px'

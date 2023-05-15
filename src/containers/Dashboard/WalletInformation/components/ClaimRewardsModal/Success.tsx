@@ -19,8 +19,6 @@ type SuccessProps = {
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
   const { gasUsed, txHash, fee, txRestakeHash } = modalProps
 
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
-  
   const handleClose = () => {
     handleModal({
       ...initialRewardsModalProps
@@ -80,10 +78,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               sx={{ textDecoration: 'underline' }}
               onClick={() =>
                 window
-                  .open(
-                    `${
-                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
-                    }/transactions/${txHash}`,
+                  .open(`${CHAIN_DETAILS.EXPLORER_URL}/transactions/${txHash}`,
                     '_blank'
                   )
                   ?.focus()
@@ -111,10 +106,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
                 sx={{ textDecoration: 'underline' }}
                 onClick={() =>
                   window
-                    .open(
-                      `${
-                        CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
-                      }/transactions/${txRestakeHash}`,
+                    .open(`${CHAIN_DETAILS.EXPLORER_URL}/transactions/${txRestakeHash}`,
                       '_blank'
                     )
                     ?.focus()

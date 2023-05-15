@@ -6,6 +6,6 @@ export interface ApolloLinks {
 }
 
 export const defaultApolloLinks: ApolloLinks = {
-    uri: CHAIN_DETAILS.GRAPHQL_URL[CHAIN_DETAILS.DEFAULT_NETWORK! as keyof typeof CHAIN_DETAILS.GRAPHQL_URL],
-    url: CHAIN_DETAILS.GRAPHQL_WS[CHAIN_DETAILS.DEFAULT_NETWORK! as keyof typeof CHAIN_DETAILS.GRAPHQL_WS]
+    uri: CHAIN_DETAILS.GRAPHQL_URL,
+    url: CHAIN_DETAILS.GRAPHQL_WS
 }

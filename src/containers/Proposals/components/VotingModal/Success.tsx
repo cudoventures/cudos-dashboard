@@ -17,7 +17,7 @@ type SuccessProps = {
 }
 
 const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
-  const { address, chosenNetwork } = useSelector(({ profile }: RootState) => profile)
+  const { address } = useSelector(({ profile }: RootState) => profile)
   const { type, title, id, fee, hash } = modalProps
 
   const handleClose = () => {
@@ -106,10 +106,7 @@ const Success: React.FC<SuccessProps> = ({ modalProps, handleModal }) => {
               sx={{ textDecoration: 'underline' }}
               onClick={() =>
                 window
-                  .open(
-                    `${
-                      CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]
-                    }/transactions/${hash}`,
+                  .open(`${CHAIN_DETAILS.EXPLORER_URL}/transactions/${hash}`,
                     '_blank'
                   )
                   ?.focus()
