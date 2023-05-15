@@ -14,8 +14,6 @@ import CudosLogo from 'assets/vectors/cudos-logo.svg'
 import NoData from 'components/NoData'
 import { DelegationsType, DelegationType } from '../../types'
 import { delegationsColumns } from '../../utils'
-import { useSelector } from 'react-redux'
-import { RootState } from 'store'
 import { CHAIN_DETAILS } from 'utils/constants'
 
 type DelegationsProps = {
@@ -25,8 +23,6 @@ type DelegationsProps = {
 
 const Delegations: React.FC<DelegationsProps> = (props) => {
   const { delegations, handlePageCallback } = props
-
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
 
   const { page, rowsPerPage, handleChangePage } = usePagination({
     pageChangeCallback: handlePageCallback
@@ -53,7 +49,7 @@ const Delegations: React.FC<DelegationsProps> = (props) => {
           onClick={() =>
             window
               .open(
-                `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]}/accounts/${
+                `${CHAIN_DETAILS.EXPLORER_URL}/accounts/${
                   item.address
                 }`,
                 '_blank'

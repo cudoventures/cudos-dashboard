@@ -36,7 +36,7 @@ import { styles } from './styles'
 const ConnectWallet = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { lastLoggedAddress, chosenNetwork: currentNetwork } = useSelector((state: RootState) => state.profile)
+  const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
   const { setWarning } = useNotifications()
   const [loading, setLoading] = useState(new Map())
   const [userBrowser, setUserBrowser] = useState<SUPPORTED_BROWSER | undefined>(undefined)
@@ -47,18 +47,18 @@ const ConnectWallet = () => {
     }
   }
 
-  const connect = async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
+  const connect = async (walletName: SUPPORTED_WALLET) => {
 
     try {
       setLoading(new Map(loading.set(walletName, true)))
       await delay(1000)
-      const { address } = await switchLedgerType(chosenNetwork, walletName)
+      const { address } = await switchLedgerType(walletName)
 
       if (address !== lastLoggedAddress) {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
 
-      const connectedUser = await connectUser(chosenNetwork, walletName)
+      const connectedUser = await connectUser(walletName)
       dispatch(updateUser(connectedUser))
       navigate('dashboard')
 
@@ -75,7 +75,7 @@ const ConnectWallet = () => {
   const click = (walletName: SUPPORTED_WALLET) => {
 
     if (isExtensionEnabled(walletName)) {
-      connect(currentNetwork, walletName)
+      connect(walletName)
       return
     }
 
@@ -178,9 +178,9 @@ const ConnectWallet = () => {
               order to continue you need to connect your Keplr Wallet.
             </Typography>
           </Box>
-          {getSupportedWallets().map((wallet) => {
+          {getSupportedWallets().map((wallet, idx) => {
             return (
-              <Tooltip placement='right' title={btnTooltip(wallet)}>
+              <Tooltip key={idx} placement='right' title={btnTooltip(wallet)}>
                 <Box>
                   <Button
                     sx={styles.connectButton}

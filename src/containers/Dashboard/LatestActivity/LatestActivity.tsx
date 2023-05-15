@@ -25,7 +25,6 @@ import { styles } from '../styles'
 
 const LatestActivity = () => {
   const { state } = useUserTransactions()
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { data, loading, hasActivity } = state
 
   const theme = useTheme()
@@ -49,11 +48,7 @@ const LatestActivity = () => {
             onClick={() =>
               window
                 .open(
-                  `${
-                    CHAIN_DETAILS.EXPLORER_URL[
-                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
-                    ]
-                  }/blocks/${tx.height}`,
+                  `${CHAIN_DETAILS.EXPLORER_URL}/blocks/${tx.height}`,
                   '_blank'
                 )
                 ?.focus()
@@ -73,12 +68,7 @@ const LatestActivity = () => {
             sx={{ cursor: 'pointer' }}
             onClick={() =>
               window
-                .open(
-                  `${
-                    CHAIN_DETAILS.EXPLORER_URL[
-                      chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL
-                    ]
-                  }/transactions/${tx.hash}`,
+                .open(`${CHAIN_DETAILS.EXPLORER_URL}/transactions/${tx.hash}`,
                   '_blank'
                 )
                 ?.focus()

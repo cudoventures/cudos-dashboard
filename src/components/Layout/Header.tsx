@@ -19,8 +19,8 @@ const Header = () => {
   const nagivate = useNavigate()
   const isMidLowewRes = useMidLowerResCheck()
   const isMidLowRes = useMidlowResCheck()
-  const { chosenNetwork, loadingState } = useSelector((state: RootState) => state.profile)
-  const isMainnet = CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID] === CHAIN_DETAILS.CHAIN_ID.MAINNET
+  const { loadingState } = useSelector((state: RootState) => state.profile)
+  const isMainnet = CHAIN_DETAILS.CHAIN_ID === 'cudos-1'
   const isWelcomePage = location.pathname === '/'
   const [logoComponent, setLogoComponent] = useState<JSX.Element>()
 
@@ -51,7 +51,7 @@ const Header = () => {
               gap={1}
               sx={headerStyles.linkHolder}
               onClick={() => window
-                .open(CHAIN_DETAILS.BRIDGE_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.BRIDGE_URL], '_blank')
+                .open(CHAIN_DETAILS.BRIDGE_URL, '_blank')
                 ?.focus()}
             >
               <CudosLogo />

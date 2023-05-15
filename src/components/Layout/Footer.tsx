@@ -8,6 +8,7 @@ import MediumIcon from 'assets/vectors/medium.svg?component'
 import YouTubeIcon from 'assets/vectors/youtube.svg?component'
 import FacebookIcon from 'assets/vectors/facebook.svg?component'
 import SpotifyIcon from 'assets/vectors/spotify.svg?component'
+import { APP_DETAILS } from 'utils/constants'
 import { styles } from './styles'
 
 const linksLeft = [
@@ -17,7 +18,8 @@ const linksLeft = [
   },
   { text: 'Privacy Policy', url: 'https://www.cudos.org/privacy-policy' },
   { text: 'cudos.org', url: 'https://www.cudos.org/' },
-  { text: `License © 2018 - ${moment().year()}`, url: 'https://www.cudos.org/' }
+  { text: `License © 2018 - ${moment().year()}`, url: 'https://www.cudos.org/' },
+  { text: `${APP_DETAILS.DEPLOYMENT_VERSION}`, url: `https://github.com/CudoVentures/cudos-dashboard/releases/tag/${APP_DETAILS.DEPLOYMENT_VERSION}` }
 ]
 
 const linksRight = [

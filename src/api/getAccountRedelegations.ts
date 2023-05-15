@@ -4,7 +4,6 @@ import { CHAIN_DETAILS } from 'utils/constants'
 import { AccountRedelegationsDocument } from '../graphql/account_actions'
 
 export const fetchRedelegations = async (
-  chosenNetwork: string,
   address: string,
   signal?: AbortSignal
 ) => {
@@ -16,7 +15,7 @@ export const fetchRedelegations = async (
 
   try {
     const { data } = await axios.post(
-      CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_URL].toString(),
+      CHAIN_DETAILS.GRAPHQL_URL,
       {
         variables: { address },
         query: AccountRedelegationsDocument

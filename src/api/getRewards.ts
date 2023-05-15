@@ -5,13 +5,13 @@ import { formatBigNum } from '../utils/projectUtils'
 import { AccountDelegationRewardsDocument } from '../graphql/account_actions'
 import { CHAIN_DETAILS } from 'utils/constants'
 
-export const fetchRewards = async (chosenNetwork: string, address: string, signal?: AbortSignal) => {
+export const fetchRewards = async (address: string, signal?: AbortSignal) => {
   const defaultReturnValue = new BigNumber(0)
   const rewardArray: Array<BigNumber> = []
   const validatorArray: { address: string; amount: string }[] = []
   try {
     const { data } = await axios.post(
-      CHAIN_DETAILS.GRAPHQL_URL[chosenNetwork! as keyof typeof CHAIN_DETAILS.GRAPHQL_URL].toString(),
+      CHAIN_DETAILS.GRAPHQL_URL,
       {
         variables: { address },
         query: AccountDelegationRewardsDocument

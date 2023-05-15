@@ -23,7 +23,7 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
 
   const { id, title } = modalProps
 
-  const { address, connectedLedger, chosenNetwork } = useSelector(
+  const { address, connectedLedger } = useSelector(
     (state: RootState) => state.profile
   )
 
@@ -38,7 +38,6 @@ const Vote: React.FC<VotingProps> = ({ handleModal, modalProps }) => {
       })
 
       const { gasFee, result } = await voteProposal(
-        chosenNetwork,
         voterAddress,
         proposalId,
         votingOption,

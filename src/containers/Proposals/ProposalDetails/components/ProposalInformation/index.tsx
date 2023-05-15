@@ -25,13 +25,12 @@ interface Change {
 
 const ProposalInformation = () => {
   const { overview } = useSelector((state: RootState) => state.proposalDetails)
-  const { chosenNetwork } = useSelector((state: RootState) => state.profile)
   const { handleModal: handleVotingModal } = useVotingModal()
   const { handleModal: handleDepositModal } = useDepositModal()
 
   const handleExplorer = (address: string) => {
     window.open(
-      `${CHAIN_DETAILS.EXPLORER_URL[chosenNetwork as keyof typeof CHAIN_DETAILS.EXPLORER_URL]?.toString()}/accounts/${address}`,
+      `${CHAIN_DETAILS.EXPLORER_URL}/accounts/${address}`,
       '_blank'
     )
   }

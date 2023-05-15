@@ -10,7 +10,7 @@ export interface MenuItems {
     text: string;
 }
 
-export const getMenuItems = (chosenNetwork: string, loadingState: boolean): MenuItems[] => {
+export const getMenuItems = (loadingState: boolean): MenuItems[] => {
 
     const MenuItems = [
         { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
@@ -18,8 +18,8 @@ export const getMenuItems = (chosenNetwork: string, loadingState: boolean): Menu
         { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' },
     ]
 
-    if (CHAIN_DETAILS.CHAIN_ID[chosenNetwork! as keyof typeof CHAIN_DETAILS.CHAIN_ID]
-        !== CHAIN_DETAILS.CHAIN_ID.MAINNET && !loadingState) {
+    if (CHAIN_DETAILS.CHAIN_ID
+        !== 'cudos-1' && !loadingState) {
         MenuItems.push({ icon: <FaucetIcon />, link: '/faucet', text: 'Faucet' })
     }
 

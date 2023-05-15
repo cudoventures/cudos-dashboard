@@ -143,21 +143,21 @@ declare global {
   }
 
   interface ImportMetaEnv {
-    VITE_APP_CHAIN_ID: string
+    VITE_APP_DEPLOYMENT_VERSION: string
+    VITE_APP_NODE_ENV: string
+    VITE_APP_GAS_PRICE: number
+    VITE_APP_CAPTCHA_SITE_KEY: string
+    VITE_APP_FAUCET_URL: string
+    VITE_APP_FAUCET_ADDRESS: string
+    VITE_APP_BRIDGE_URL: string
+    VITE_APP_GRAPHQL_URL: string
+    VITE_APP_GRAPHQL_WS: string
     VITE_APP_RPC: string
-    VITE_GRAPHQL_URL: string
-    VITE_GRAPHQL_WS: string
-    VITE_APP_GAS_PRICE: decimal
-    VITE_APP_CHAIN_NAME: string
     VITE_APP_API: string
-    VITE_APP_EXPLORER_V2: string
-    VITE_APP_FEE_MULTIPLIER: number
-    VITE_BRIDGE_URL: string
-    VITE_FAUCET_ADDRESS: string
-    VITE_CHAIN_STATUS: string
-    VITE_CAPTCHA_SITE_KEY: string
-    VITE_FAUCET_URL: string
     VITE_APP_STAKING_URL: string
+    VITE_APP_EXPLORER_URL: string
+    VITE_APP_CHAIN_NAME: string
+    VITE_APP_CHAIN_ID: string
   }
 
   interface SxMap {

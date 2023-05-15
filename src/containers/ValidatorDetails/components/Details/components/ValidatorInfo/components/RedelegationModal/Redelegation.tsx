@@ -52,7 +52,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
   const { validator, amount, fee } = modalProps
   const dispatch = useDispatch()
 
-  const { address, connectedLedger, chosenNetwork } = useSelector(
+  const { address, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
   )
   const validators = useSelector(({ validator }: RootState) => validator.items)
@@ -87,7 +87,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
   useEffect(() => {
     const loadBalance = async () => {
-      const client = await signingClient(chosenNetwork, connectedLedger!)
+      const client = await signingClient(connectedLedger!)
 
       const walletBalance = await client.getDelegation(
         address,
@@ -128,7 +128,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         value: msg
       }
 
-      const client = await signingClient(chosenNetwork, connectedLedger!)
+      const client = await signingClient(connectedLedger!)
 
       const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -174,7 +174,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
       value: msg
     }
 
-    const client = await signingClient(chosenNetwork, connectedLedger!)
+    const client = await signingClient(connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -221,7 +221,6 @@ const Redelegation: React.FC<RedelegationProps> = ({
 
     try {
       const redelegationResult = await redelegate(
-        chosenNetwork,
         address,
         validator?.address || '',
         redelegationAddress,
@@ -236,7 +235,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
         txHash: redelegationResult.transactionHash
       })
 
-      const { redelegationsArray } = await fetchRedelegations(chosenNetwork!, address)
+      const { redelegationsArray } = await fetchRedelegations(address)
       dispatch(
         updateUser({
           redelegations: redelegationsArray
@@ -302,7 +301,7 @@ const Redelegation: React.FC<RedelegationProps> = ({
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]}
+                    {CHAIN_DETAILS.CHAIN_NAME}
                   </Typography>
                 </Box>
               </Box>

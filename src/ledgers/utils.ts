@@ -532,27 +532,26 @@ export const unknownMessage = {
   displayName: 'Unknown'
 }
 
-export const switchLedgerType = async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
+export const switchLedgerType = async (walletName: SUPPORTED_WALLET) => {
 
   const isInstalled = isExtensionEnabled(walletName)
 
   if (walletName === SUPPORTED_WALLET.Keplr && isInstalled) {
-    return connectKeplrLedger(chosenNetwork)
+    return connectKeplrLedger()
   }
 
   if (walletName === SUPPORTED_WALLET.Cosmostation && isInstalled) {
-    return connectCosmostationLedger(chosenNetwork)
+    return connectCosmostationLedger()
   }
 
   throw new Error("Invalid ledger")
 }
 
 export const getLedgerSigner = async (
-  chosenNetwork: string,
   connector: Cosmos,
   accountInfo: RequestAccountResponse
 ) => {
-  const chainName = CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]
+  const chainName = CHAIN_DETAILS.CHAIN_NAME
   const signer: OfflineAminoSigner = {
     getAccounts: async () => {
       return [
@@ -582,29 +581,28 @@ export const getLedgerSigner = async (
 }
 
 const switchSigningClient = async (
-  chosenNetwork: string,
   walletName: SUPPORTED_WALLET
 ): Promise<OfflineSigner | undefined> => {
   let client
   switch (walletName) {
     case SUPPORTED_WALLET.Keplr:
       client = await window.getOfflineSignerAuto(
-        CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID]
+        CHAIN_DETAILS.CHAIN_ID
       )
       return client
     case SUPPORTED_WALLET.Cosmostation: {
       const connector = await cosmos()
 
       const connectedAccount = await connector.requestAccount(
-        CHAIN_DETAILS.CHAIN_NAME[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME]
+        CHAIN_DETAILS.CHAIN_NAME
       )
 
       if (connectedAccount.isLedger) {
-        client = await getLedgerSigner(chosenNetwork, connector, connectedAccount)
+        client = await getLedgerSigner(connector, connectedAccount)
         return client
       }
 
-      client = await cosmostationSigner(CHAIN_DETAILS.CHAIN_ID[chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_ID])
+      client = await cosmostationSigner(CHAIN_DETAILS.CHAIN_ID)
 
       return client
     }
@@ -613,8 +611,8 @@ const switchSigningClient = async (
   }
 }
 
-export const signingClient = async (chosenNetwork: string, walletName: SUPPORTED_WALLET) => {
-  const offlineSigner = await switchSigningClient(chosenNetwork, walletName)
+export const signingClient = async (walletName: SUPPORTED_WALLET) => {
+  const offlineSigner = await switchSigningClient(walletName)
 
   if (isExtensionEnabled(walletName)) {
     window.keplr.defaultOptions = {
@@ -629,15 +627,15 @@ export const signingClient = async (chosenNetwork: string, walletName: SUPPORTED
   }
 
   return SigningStargateClient.connectWithSigner(
-    CHAIN_DETAILS.RPC_ADDRESS[chosenNetwork as keyof typeof CHAIN_DETAILS.RPC_ADDRESS],
+    CHAIN_DETAILS.RPC_ADDRESS,
     offlineSigner
   )
 }
 
-export const getQueryClient = async (chosenNetwork: string): Promise<StargateClient> => {
+export const getQueryClient = async (): Promise<StargateClient> => {
 
   try {
-    const client = await StargateClient.connect(CHAIN_DETAILS.RPC_ADDRESS[chosenNetwork! as keyof typeof CHAIN_DETAILS.RPC_ADDRESS])
+    const client = await StargateClient.connect(CHAIN_DETAILS.RPC_ADDRESS)
     return client
 
   } catch (error) {

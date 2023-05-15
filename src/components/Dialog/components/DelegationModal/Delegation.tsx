@@ -58,7 +58,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   const [delegationAmount, setDelegationAmount] = useState<string>('')
   const { validator, amount, fee } = modalProps
 
-  const { address, connectedLedger, chosenNetwork } = useSelector(
+  const { address, connectedLedger } = useSelector(
     ({ profile }: RootState) => profile
   )
   const dispatch = useDispatch()
@@ -66,7 +66,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
   useEffect(() => {
     let isMounted = true
     const loadBalance = async () => {
-      const client = await signingClient(chosenNetwork, connectedLedger!)
+      const client = await signingClient(connectedLedger!)
 
       const walletBalance = await client.getBalance(
         address,
@@ -104,7 +104,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
       value: msg
     }
 
-    const client = await signingClient(chosenNetwork, connectedLedger!)
+    const client = await signingClient(connectedLedger!)
 
     const gasUsed = await client.simulate(address, [msgAny], 'memo')
 
@@ -162,7 +162,6 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
 
     try {
       const delegationResult = await delegate(
-        chosenNetwork,
         address,
         validator?.address || '',
         amount || '',
@@ -176,13 +175,11 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
         txHash: delegationResult.transactionHash
       })
 
-      const walletBalance = await getWalletBalance(chosenNetwork!, address)
+      const walletBalance = await getWalletBalance(address)
       const { delegationsArray } = await fetchDelegations(
-        chosenNetwork!,
         address
       )
       const stakedAmountBalance = await getStakedBalance(
-        chosenNetwork!,
         address
       )
 
@@ -256,11 +253,7 @@ const Delegation: React.FC<DelegationProps> = ({ modalProps, handleModal }) => {
                     fontWeight={700}
                     color="primary.main"
                   >
-                    {
-                      CHAIN_DETAILS.CHAIN_NAME[
-                      chosenNetwork as keyof typeof CHAIN_DETAILS.CHAIN_NAME
-                      ]
-                    }
+                    {CHAIN_DETAILS.CHAIN_NAME}
                   </Typography>
                 </Box>
               </Box>
