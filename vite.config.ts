@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import alias from '@rollup/plugin-alias'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import svgr from '@honkhonk/vite-plugin-svgr'
+import inject from '@rollup/plugin-inject'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +20,7 @@ export default defineConfig({
     target: 'esnext',
     chunkSizeWarningLimit: 4000,
     rollupOptions: {
+      plugins: [inject({ Buffer: ['buffer', 'Buffer'] })],
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
