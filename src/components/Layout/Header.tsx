@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Divider, Typography } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store'
 import { headerStyles } from './headerstyles'
@@ -12,6 +12,7 @@ import TestNetLogoHeader from 'assets/vectors/testnet-logo-header.svg?component'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import LinkIcon from 'assets/vectors/link-icon.svg?component'
 import { useEffect, useState } from 'react'
+import ChangeIcon from 'assets/vectors/change-icon.svg?component'
 
 const Header = () => {
 
@@ -51,6 +52,19 @@ const Header = () => {
               gap={1}
               sx={headerStyles.linkHolder}
               onClick={() => window
+                .open('https://frontier.osmosis.zone/?from=ATOM&to=CUDOS', 'Swap Cudos')
+                ?.focus()}
+            >
+              <ChangeIcon />
+              <Typography variant="body2" fontWeight={700}>
+                Swap
+              </Typography>
+            </Box>
+            <Divider orientation='vertical' style={headerStyles.divider} />
+            <Box
+              gap={1}
+              sx={headerStyles.linkHolder}
+              onClick={() => window
                 .open(CHAIN_DETAILS.BRIDGE_URL, '_blank')
                 ?.focus()}
             >
@@ -58,9 +72,9 @@ const Header = () => {
               <Typography variant="body2" fontWeight={700}>
                 Cudos Bridge
               </Typography>
-              <LinkIcon style={{ color: 'white' }} />
+              <LinkIcon />
             </Box>
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', marginLeft: '10px' }}>
               <NetworkInfo />
               <UserInfo />
             </Box>
