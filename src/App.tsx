@@ -8,7 +8,6 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { updateUser } from 'store/profile'
 import { updateUserTransactions } from 'store/userTransactions'
 import NotificationPopup from 'components/NotificationPopup'
-import { switchLedgerType } from 'ledgers/utils'
 import { connectUser } from './utils/projectUtils'
 import { useApollo } from './graphql/client'
 import Layout from './components/Layout'
@@ -35,30 +34,11 @@ const App = () => {
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const newApolloClient = useApollo(null)
   const isMainnet = CHAIN_DETAILS.CHAIN_ID === 'cudos-1'
-
-  const {
-    lastLoggedAddress,
-    connectedLedger,
-    loadingState
-  } = useSelector((state: RootState) => state.profile)
-
+  const state = useSelector((state: RootState) => state.userTransactions)
   const dispatch = useDispatch()
 
   const connectAccount = useCallback(async (walletName: SUPPORTED_WALLET) => {
     try {
-
-      const { address } = await switchLedgerType(walletName)
-      if (address !== lastLoggedAddress || lastLoggedAddress === '') {
-        dispatch(
-          updateUserTransactions({
-            offsetCount: 0,
-            data: [],
-            hasActivity: false,
-            loading: true
-          })
-        )
-      }
-
       const connectedUser = await connectUser(walletName)
       dispatch(updateUser(connectedUser))
 
@@ -112,8 +92,8 @@ const App = () => {
         )}
         {location.pathname === '/' ? null : (
           <Layout>
-            {loadingState ? <NetworkChangingLoading /> : null}
-            <Box style={loadingState ? networkLoadingStyles.hidden : networkLoadingStyles.visible}>
+            {state.loading ? <NetworkChangingLoading /> : null}
+            <Box style={state.loading ? networkLoadingStyles.hidden : networkLoadingStyles.visible}>
               <Routes>
                 <Route element={<RequireLedger />}>
                   <Route path="dashboard">
