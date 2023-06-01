@@ -1,7 +1,12 @@
 import { CircularProgress, Typography } from '@mui/material'
 import { ModalContainer } from './styles'
+import { useSelector } from 'react-redux'
+import { RootState } from 'store'
 
 const Loading: React.FC = () => {
+
+  const { connectedLedger } = useSelector((state: RootState) => state.profile)
+
   return (
     <ModalContainer sx={{ minWidth: '600px', padding: '4rem' }}>
       <CircularProgress thickness={5} sx={{ borderRadius: '20px' }} />
@@ -9,7 +14,7 @@ const Loading: React.FC = () => {
         Processing...
       </Typography>
       <Typography color="primary.main" fontWeight={900} letterSpacing={1}>
-        Check details in your Keplr Wallet
+        {`Check details in your ${connectedLedger} Wallet`}
       </Typography>
     </ModalContainer>
   )
