@@ -1,15 +1,23 @@
+import { COLORS_DARK_THEME } from "theme/colors";
+
 export const headerStyles = {
   linkHolder: {
     cursor: 'pointer',
     width: 'max-content',
-    marginRight: '10px',
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    '&:hover': {
+      color: COLORS_DARK_THEME.PRIMARY_BLUE
+    }
   },
   logoHolder: {
     cursor: 'pointer',
     display: 'flex',
     textDecoration: 'none'
+  },
+  divider: {
+    height: '20px',
+    background: '#7D87AA'
   },
   headerContainer: {
     padding: '2rem',
