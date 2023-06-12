@@ -12,7 +12,7 @@ import TestNetLogoHeader from 'assets/vectors/testnet-logo-header.svg?component'
 import CudosLogo from 'assets/vectors/cudos-logo.svg?component'
 import LinkIcon from 'assets/vectors/link-icon.svg?component'
 import { useEffect, useState } from 'react'
-import ChangeIcon from 'assets/vectors/change-icon.svg?component'
+import OsmosisIcon from 'assets/vectors/osmosis-icon.svg?component'
 
 const Header = () => {
 
@@ -55,7 +55,7 @@ const Header = () => {
                 .open('https://frontier.osmosis.zone/?from=ATOM&to=CUDOS', 'Swap Cudos')
                 ?.focus()}
             >
-              <ChangeIcon />
+              <OsmosisIcon />
               <Typography variant="body2" fontWeight={700}>
                 Swap
               </Typography>
