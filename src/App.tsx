@@ -34,7 +34,6 @@ const App = () => {
   const themeColor = useSelector((state: RootState) => state.settings.theme)
   const newApolloClient = useApollo(null)
   const isMainnet = CHAIN_DETAILS.CHAIN_ID === 'cudos-1'
-  const state = useSelector((state: RootState) => state.userTransactions)
   const dispatch = useDispatch()
 
   const connectAccount = useCallback(async (walletName: SUPPORTED_WALLET) => {
@@ -92,8 +91,7 @@ const App = () => {
         )}
         {location.pathname === '/' ? null : (
           <Layout>
-            {state.loading ? <NetworkChangingLoading /> : null}
-            <Box style={state.loading ? networkLoadingStyles.hidden : networkLoadingStyles.visible}>
+            <Box style={networkLoadingStyles.visible}>
               <Routes>
                 <Route element={<RequireLedger />}>
                   <Route path="dashboard">

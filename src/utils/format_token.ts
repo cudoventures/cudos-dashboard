@@ -46,8 +46,13 @@ export const formatToken = (
     return results
   }
 
+  let bigValue = Big(value)
+  if (Number.isNaN(bigValue)) {
+    return results
+  }
+  
   const ratio = 10 ** selectedDenom.exponent
-  results.value = Big(value).div(ratio).toPrecision()
+  results.value = bigValue.div(ratio).toPrecision()
   results.displayDenom = selectedDenom.display
   return results
 }
@@ -79,9 +84,8 @@ export const formatNumber = (tokenUnit: string, toFixed: number): string => {
     // merge the full number together and return it.
     // If for some insane reason after removing all the 0s we ended up with
     // '' in the decimal place we just return the full number
-    return `${formatWholeNumber}${
-      formatDecimal.length ? '.' : ''
-    }${formatDecimal}`
+    return `${formatWholeNumber}${formatDecimal.length ? '.' : ''
+      }${formatDecimal}`
   }
 
   // else we return whole number
