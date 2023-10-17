@@ -3,17 +3,22 @@ import react from '@vitejs/plugin-react'
 import alias from '@rollup/plugin-alias'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import svgr from '@honkhonk/vite-plugin-svgr'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  define: {
-    'process.env': {}
-  },
   plugins: [
     alias(),
     react(),
     tsconfigPaths(),
-    svgr({ keepEmittedAssets: true })
+    svgr({ keepEmittedAssets: true }),
+    nodePolyfills({
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      }
+    }),
   ],
   build: {
     target: 'esnext',
