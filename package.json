@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "export NODE_OPTIONS=--max-old-space-size=8192 && tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky install"
   },
