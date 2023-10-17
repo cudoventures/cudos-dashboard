@@ -50,9 +50,9 @@ const Dashboard = () => {
             >
               <WalletInformation />
               <Grid marginTop="15px" item xs={12} md={12} lg={12} xl={12}>
-                <Box>
-                  <LatestActivity />
-                </Box>
+                  <Box>
+                    <LatestActivity />
+                  </Box>
               </Grid>
             </Grid>
             <Grid
