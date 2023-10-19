@@ -8,7 +8,7 @@ subscription ProposalsListener ($limit: Int = 7, $offset: Int = 0) {
     voting_start_time
     voting_end_time
     proposer_address
-    proposal_type
+    content
   }
 }
 
@@ -22,7 +22,7 @@ query Proposals ($limit: Int = 7, $offset: Int = 0) {
     voting_start_time
     voting_end_time
     proposer_address
-    proposal_type
+    content
   }
   total: proposal_aggregate {
     aggregate {

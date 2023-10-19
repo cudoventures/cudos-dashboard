@@ -6,11 +6,8 @@ generates:
   ./src/graphql/types.tsx:
     documents:
       - './src/**/*.graphql'
-    schema: https://explorer-gql.testnet.cudos.org/v1/graphql
+    schema: ${VITE_APP_GRAPHQL_URL}
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo' # To generate custom hooks per query
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
