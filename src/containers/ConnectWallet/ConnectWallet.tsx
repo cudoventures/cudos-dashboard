@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { Box, Button, Tooltip, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,6 +36,7 @@ import { styles } from './styles'
 const ConnectWallet = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const isMounted = useRef(true);
   const { lastLoggedAddress } = useSelector((state: RootState) => state.profile)
   const { setWarning } = useNotifications()
   const [loading, setLoading] = useState(new Map())
@@ -58,9 +59,11 @@ const ConnectWallet = () => {
         dispatch(updateUserTransactions({ offsetCount: 0, data: [] }))
       }
 
-      const connectedUser = await connectUser(walletName)
-      dispatch(updateUser(connectedUser))
-      navigate('dashboard')
+      if (isMounted.current) { // <-- Check if the component is still mounted
+        const connectedUser = await connectUser(walletName)
+        dispatch(updateUser(connectedUser))
+        navigate('dashboard')
+      }
 
     } catch (error) {
       setWarning(
@@ -68,7 +71,9 @@ const ConnectWallet = () => {
       )
 
     } finally {
-      setLoading(new Map())
+      if (isMounted.current) {
+        setLoading(new Map())
+      }
     }
   }
 
@@ -162,6 +167,9 @@ const ConnectWallet = () => {
       return
     }
     setUserBrowser(undefined)
+    return () => {
+      isMounted.current = false;
+    };
   }, [])
 
   return (
