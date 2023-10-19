@@ -10,6 +10,7 @@ import {
   useProposalsQuery,
   ProposalsQuery
 } from '../../graphql/types'
+import { extractProposalTypeFromContent } from './proposalType'
 
 export const useProposals = () => {
   const dispatch = useDispatch()
@@ -28,7 +29,7 @@ export const useProposals = () => {
         id: x.proposalId,
         title,
         status: x.status,
-        proposalType: x.proposal_type,
+        proposalType: extractProposalTypeFromContent(x.content),
         proposerAddress: x.proposer_address,
         submitTime: x.submit_time,
         votingEndTime: x.voting_end_time,
@@ -118,7 +119,7 @@ export const useProposalsSubscription = () => {
         id: x.proposalId,
         title,
         status: x.status,
-        proposalType: x.proposal_type,
+        proposalType: extractProposalTypeFromContent(x.content),
         proposerAddress: x.proposer_address,
         submitTime: x.submit_time,
         votingEndTime: x.voting_end_time,
@@ -169,7 +170,7 @@ export const useProposalsSearch = () => {
         id: x.proposalId,
         title,
         status: x.status,
-        proposalType: x.proposal_type,
+        proposalType: extractProposalTypeFromContent(x.content),
         proposerAddress: x.proposer_address,
         submitTime: x.submit_time,
         votingEndTime: x.voting_end_time,

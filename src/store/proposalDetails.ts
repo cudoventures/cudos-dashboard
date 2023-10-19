@@ -20,12 +20,13 @@ export type VotesGraphState = {
 
 export type VoteDetails = {
   proposer: string
-  content: {
+  content: [{
     ['@type']: string
     changes: any[]
     title: string
     description: string
-  }
+    content: any
+  }]
   title: string
   id: number
   description: string
@@ -40,12 +41,13 @@ export const initialState: ProposalDetailsState = {
   id: 0,
   overview: {
     proposer: '',
-    content: {
+    content: [{
       '@type': '',
       changes: [],
       title: '',
-      description: ''
-    },
+      description: '',
+      content: ''
+    }],
     title: '',
     id: 0,
     description: '',

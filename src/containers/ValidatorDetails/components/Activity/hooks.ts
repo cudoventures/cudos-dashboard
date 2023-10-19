@@ -38,14 +38,14 @@ export const useActivity = () => {
       //   const messages = convertMsgsToModels(transaction)
 
       return {
-        height: transaction.height,
-        hash: transaction.hash,
+        height: transaction?.height,
+        hash: transaction?.hash,
         messages: {
-          count: transaction.messages.length,
-          items: transaction.messages
+          count: transaction?.messages.length,
+          items: transaction?.messages
         },
-        success: transaction.success,
-        timestamp: transaction.block.timestamp
+        success: transaction?.success,
+        timestamp: transaction?.block.timestamp
       }
     })
   }

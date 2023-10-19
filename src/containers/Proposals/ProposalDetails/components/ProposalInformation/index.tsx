@@ -7,7 +7,6 @@ import BigNumber from 'bignumber.js'
 import { RootState } from 'store'
 import { formatAddress, formatDateTime } from 'utils/projectUtils'
 import { proposalStatus } from 'containers/Proposals/proposalStatus'
-import { proposalType } from 'containers/Proposals/proposalType'
 import { ModalStatus } from 'store/modal'
 import useVotingModal from '../../../components/VotingModal/hooks'
 import useDepositModal from '../../../components/DepositModal/hooks'
@@ -15,8 +14,17 @@ import { CHAIN_DETAILS } from 'utils/constants'
 import { COLORS_DARK_THEME } from 'theme/colors'
 import Markdown from 'components/Markdown'
 import { styles } from '../../../styles'
-import { Fragment } from 'react'
+import { useEffect, useState } from 'react'
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import json from 'react-syntax-highlighter/dist/esm/languages/hljs/json';
+import blue from 'react-syntax-highlighter/dist/esm/styles/hljs/an-old-hope';
+import { isLegacyProposal } from 'containers/Proposals/proposalType'
 
+SyntaxHighlighter.registerLanguage('json', json);
+
+type Props = {
+  data: any;
+}
 interface Change {
   key: string;
   value: string;
@@ -27,6 +35,20 @@ const ProposalInformation = () => {
   const { overview } = useSelector((state: RootState) => state.proposalDetails)
   const { handleModal: handleVotingModal } = useVotingModal()
   const { handleModal: handleDepositModal } = useDepositModal()
+  const [content, setContent] = useState<any>()
+
+  const PrettyPrintJson: React.FC<Props> = ({ data }) => {
+    const prettyJson = JSON.stringify(data, null, 2);
+    return (
+   
+        <SyntaxHighlighter 
+         wrapLongLines language="json" over style={blue}
+         customStyle={{fontSize: '12px', maxWidth: "60%", background: COLORS_DARK_THEME.LIGHT_BACKGROUND}}
+         >
+          {prettyJson}
+        </SyntaxHighlighter>
+    )
+  }
 
   const handleExplorer = (address: string) => {
     window.open(
@@ -34,6 +56,18 @@ const ProposalInformation = () => {
       '_blank'
     )
   }
+
+
+
+  useEffect(() => {
+    if (overview.content.length) {
+        if (isLegacyProposal(overview.content[0]["@type"])) {
+          setContent(overview.content[0].content)
+        } else {
+          setContent(overview.content)
+        }
+    }
+  }, [overview.content])
 
   return (
     <Card>
@@ -131,29 +165,14 @@ const ProposalInformation = () => {
         <Box sx={{ display: 'flex', width: '100%' }}>
           <Box
             sx={{
+              gap: "20px",
               display: 'flex',
               marginLeft: '50px',
               marginTop: '50px',
               width: '85%'
             }}
           >
-            <Box sx={{ flex: '0 1 15%' }}>
-              <Typography
-                sx={{
-                  fontSize: '14px'
-                }}
-              >
-                Proposal Type
-              </Typography>
-              <Box>
-                <Typography color="text.secondary" sx={styles.proposerAddress}>
-                  {overview?.content['@type'].length
-                    ? proposalType(overview?.content['@type'])
-                    : null}
-                </Typography>
-              </Box>
-            </Box>
-
+            <PrettyPrintJson data={content} />
             <Box sx={{ flex: '0 1 25%' }}>
               <Typography
                 sx={{
@@ -195,35 +214,7 @@ const ProposalInformation = () => {
             </Box>
           </Box>
         </Box>
-        <Box sx={{ display: 'grid', margin: '20px 0px 10px 50px' }}>
-          <Typography fontSize={14} sx={{ gridColumn: 1, gridRow: 1 }}>
-            Changes
-          </Typography>
-          <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 2, gridRow: 2 }} >
-            Subspace
-          </Typography>
-          <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 3, gridRow: 2 }} >
-            Key
-          </Typography>
-          <Typography variant='subtitle2' color={'text.secondary'} sx={{ gridColumn: 4, gridRow: 2 }} >
-            Value
-          </Typography>
-          {overview.content.changes?.map((item: Change, idx: number) => {
-            return (
-              <Fragment>
-                <Typography variant='subtitle2' sx={{ gridColumn: 2, gridRow: idx + 3 }} >
-                  {item.subspace}
-                </Typography>
-                <Typography variant='subtitle2' sx={{ gridColumn: 3, gridRow: idx + 3 }} >
-                  {item.key}
-                </Typography>
-                <Typography variant='subtitle2' sx={{ gridColumn: 4, gridRow: idx + 3 }} >
-                  {item.value}
-                </Typography>
-              </Fragment>
-            )
-          })}
-        </Box>
+
         <Divider
           sx={{
             width: '92%',

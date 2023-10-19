@@ -1,3 +1,12 @@
+interface ProposalData {
+  "@type": string;
+  content?: {
+    "@type": string;
+    [key: string]: any;
+  };
+  [key: string]: any;
+}
+
 export const proposalType = (type: string) => {
   switch (type) {
     case '/cosmos.gov.v1beta1.TextProposal':
@@ -15,6 +24,21 @@ export const proposalType = (type: string) => {
     case '/cosmos.params.v1beta1.ParameterChangeProposal':
       return 'Parameter Change'
     default:
-      return {}
+      return type.split('.').pop() || type
   }
+}
+
+export const extractProposalTypeFromContent = (data: any): string => {
+  let type = "Unknown"
+  if (data[0]) {
+    let parsedData: ProposalData = JSON.parse(JSON.stringify(data[0]));
+    if (parsedData.content) {
+      type = parsedData.content["@type"]
+    }
+  }
+  return proposalType(type)
+}
+
+export const isLegacyProposal = (type: string): boolean => {
+  return type.includes("LegacyContent")
 }

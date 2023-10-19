@@ -23,7 +23,7 @@ const ProposalDetails = () => {
       <Fade in timeout={500}>
         <Box display="flex" flexDirection="column" gap={2} paddingRight='2rem'>
           <Navigation />
-          {!overview?.content['@type'] ? (
+          {!overview?.content.length ? (
             <Box
               sx={{
                 position: 'absolute',

@@ -23,7 +23,7 @@ export const useUserTransactions = () => {
     const formattedData = data.messagesByAddress
     const sortedData = formattedData
       .sort(
-        (a, b) => b.transaction.block.timestamp - a.transaction.block.timestamp
+        (a, b) => b.transaction?.block.timestamp - a.transaction?.block.timestamp
       )
       .slice(0, LIMIT)
 
@@ -35,11 +35,11 @@ export const useUserTransactions = () => {
       // =============================
 
       return {
-        height: transaction.height,
-        hash: transaction.hash,
-        messages: transaction.messages,
-        success: transaction.success,
-        timestamp: transaction.block.timestamp
+        height: transaction?.height,
+        hash: transaction?.hash,
+        messages: transaction?.messages,
+        success: transaction?.success,
+        timestamp: transaction?.block.timestamp
       }
     })
   }
