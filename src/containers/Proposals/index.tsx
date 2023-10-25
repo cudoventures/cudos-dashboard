@@ -69,7 +69,7 @@ const Proposals = () => {
             Here you can see the existing proposals’ statuses or create new one
           </Typography>
         </Box>
-        <Grid justifyContent="center" container>
+        <Grid sx={styles.proposalsGrid}>
           <Grid xl={7} item>
             <Card onScroll={handleScroll} sx={styles.tableContainer}>
               <Box sx={styles.tableHeader}>

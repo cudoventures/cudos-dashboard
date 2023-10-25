@@ -24,6 +24,12 @@ export const styles: SxMap = {
     width: '100%',
     zIndex: '5'
   }),
+  proposalsGrid: {
+    maxWidth: "1920px",
+    alignSelf: "center",
+    width: "100%",
+    justifyContent: "center"
+  },
   subheaderStyle: {
     fontWeight: '600',
     letterSpacing: '2px',
