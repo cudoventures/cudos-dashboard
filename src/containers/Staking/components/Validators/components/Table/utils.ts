@@ -1,4 +1,28 @@
 import { Column } from 'components/Table/types'
+import { gql } from '@apollo/client';
+import { Coin } from 'cudosjs';
+
+export interface Delegation {
+  validator_address: string;
+  coins: Coin[];
+  delegator_address: string;
+}
+
+export interface ActionValidatorDelegations {
+  delegations: Delegation[];
+}
+
+export interface DelegationsResponse {
+  action_validator_delegations: ActionValidatorDelegations;
+}
+
+export const FETCH_DELEGATIONS = gql`
+query FetchDelegations($validatorAddress: String!, $limit: Int!) {
+  action_validator_delegations(address: $validatorAddress, limit: $limit) {
+    delegations
+  }
+}
+`;
 
 const columns: Column[] = [
   {

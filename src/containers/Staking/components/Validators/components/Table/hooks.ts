@@ -9,9 +9,23 @@ import { getValidatorCondition } from 'utils/get_validator_condition'
 import { formatToken } from 'utils/format_token'
 import { useValidatorsQuery, ValidatorsQuery } from 'graphql/types'
 import { StakingParams, SlashingParams } from 'models'
+import { useApolloClient } from '@apollo/client';
+import { Delegation, DelegationsResponse, FETCH_DELEGATIONS } from './utils'
 
 export default () => {
   const dispatch = useDispatch()
+  const client = useApolloClient()
+
+  const fetchDelegationsForValidator = async (validatorAddress: string): Promise<Delegation[]> => {
+    const result = await client.query<DelegationsResponse>({
+      query: FETCH_DELEGATIONS,
+      variables: {
+        validatorAddress,
+        limit: 10
+      }
+    });
+    return result.data.action_validator_delegations.delegations
+  };
 
   const sortKey = useSelector((state: RootState) => state.validator.sortKey)
   const filter = useSelector((state: RootState) => state.validator.filter)
@@ -33,7 +47,7 @@ export default () => {
     dispatch(updateValidators({ ...stateChange }))
   }
 
-  const formatValidators = (data: ValidatorsQuery) => {
+  const formatValidators = async (data: ValidatorsQuery) => {
     const stakingParams = StakingParams.fromJson(
       R.pathOr({}, ['stakingParams', 0, 'params'], data)
     )
@@ -50,9 +64,12 @@ export default () => {
 
     const { signedBlockWindow } = slashingParams
 
-    let formattedItems: ValidatorType[] = data.validator
+    let formattedItemsPromises: Promise<ValidatorType>[] = data.validator
       .filter((x) => x.validatorInfo)
-      .map((x) => {
+      .map(async (x) => {
+
+        const delegations = await fetchDelegationsForValidator(x.validatorInfo?.operatorAddress!)
+
         const votingPower = R.pathOr(
           0,
           ['validatorVotingPowers', 0, 'votingPower'],
@@ -60,17 +77,17 @@ export default () => {
         )
         const votingPowerPercent =
           numeral((votingPower / votingPowerOverall) * 100).value() || 0
-        const totalDelegations = x.validatorInfo?.delegations.reduce((a, b) => {
+        const totalDelegations = delegations.reduce((a, b) => {
           return (
-            a + (numeral(R.pathOr(0, ['amount', 'amount'], b)).value() || 0)
+            a + (numeral(R.pathOr(0, ['coins', 0, 'amount'], b)).value() || 0)
           )
         }, 0)
 
-        const [selfDelegation] = x.validatorInfo?.delegations.filter((y) => {
-          return y.delegatorAddress === x.validatorInfo?.selfDelegateAddress
+        const [selfDelegation] = delegations.filter((y) => {
+          return y.delegator_address === x.validatorInfo?.selfDelegateAddress
         }) || [0]
         const self = numeral(
-          R.pathOr(0, ['amount', 'amount'], selfDelegation)
+          R.pathOr(0, ['coins', 0, 'amount'], selfDelegation)
         ).value()
         const selfPercent = ((self || 0) / (totalDelegations || 1)) * 100
 
@@ -83,8 +100,8 @@ export default () => {
           signedBlockWindow,
           missedBlockCounter
         )
-        const myDelegation = x.validatorInfo?.delegations.find(
-          (delegation) => delegation.delegatorAddress === address
+        const myDelegation = delegations.find(
+          (delegation) => delegation.delegator_address === address
         )
 
         return {
@@ -103,14 +120,16 @@ export default () => {
             ['validatorSigningInfos', 0, 'tombstoned'],
             x
           ),
-          delegators: x.validatorInfo?.delegations.length || 0,
+          delegators: delegations.length || 0,
           avatarUrl: R.pathOr('', ['validatorDescription', 0, 'avatarUrl'], x),
           moniker: R.pathOr('', ['validatorDescription', 0, 'moniker'], x),
           myDelegation: myDelegation
-            ? Number(myDelegation?.amount.amount)
+            ? Number(myDelegation?.coins[0].amount)
             : undefined
         }
       })
+
+    let formattedItems: ValidatorType[] = await Promise.all(formattedItemsPromises)
 
     // get the top 34% validators
     formattedItems = formattedItems.sort((a, b) => {
@@ -214,21 +233,23 @@ export default () => {
   // Fetch Data
   // ==========================
   const validatorsQuery = useValidatorsQuery({
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
+      const formattedData = await formatValidators(data)
       handleSetState({
         loading: false,
-        ...formatValidators(data)
+        ...formattedData
       })
     }
   })
 
   useEffect(() => {
     const fetchValidators = async () => {
-      await validatorsQuery.fetchMore({}).then(({ data }) => {
+      await validatorsQuery.fetchMore({}).then(async ({ data }) => {
+        const formattedData = await formatValidators(data)
         handleSetState({
           delegations: {
             loading: false,
-            ...formatValidators(data)
+            ...formattedData
           }
         })
       })

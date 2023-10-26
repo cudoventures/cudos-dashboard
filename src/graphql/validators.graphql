@@ -24,10 +24,6 @@ query Validators {
     validatorInfo: validator_info {
       operatorAddress: operator_address
       selfDelegateAddress: self_delegate_address
-      delegations {
-        amount
-        delegatorAddress: delegator_address
-      }
     }
     validatorVotingPowers: validator_voting_powers(
       offset: 0
