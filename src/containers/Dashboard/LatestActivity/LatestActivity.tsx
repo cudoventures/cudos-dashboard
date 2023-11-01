@@ -30,87 +30,88 @@ const LatestActivity = () => {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md' || 'xs'))
 
-  const formattedItems = data.map((tx: any, idx) => {
-    const txType: string = tx.messages[0]['@type']
-    const txBadge =
-      defaultMessages[txType as keyof typeof defaultMessages] || unknownMessage
+  const formattedItems = data.flatMap((tx: any, idx) => {
+    return tx.messages.map((message: any) => {
+      const txType: string = message['@type'];
+      const txBadge = defaultMessages[txType as keyof typeof defaultMessages] || unknownMessage;
 
-    return {
-      idx,
-      block: (
-        <Tooltip title="View in explorer" placement="right">
+      return {
+        idx,
+        block: (
+          <Tooltip title="View in explorer" placement="right">
+            <Typography
+              variant="body2"
+              component="span"
+              color="primary.main"
+              fontWeight={700}
+              sx={{ cursor: 'pointer' }}
+              onClick={() =>
+                window
+                  .open(
+                    `${CHAIN_DETAILS.EXPLORER_URL}/blocks/${tx.height}`,
+                    '_blank'
+                  )
+                  ?.focus()
+              }
+            >
+              {numeral(tx.height).format('0,0')}
+            </Typography>
+          </Tooltip>
+        ),
+        txHash: (
+          <Tooltip title="View in explorer" placement="right">
+            <Typography
+              variant="body2"
+              component="span"
+              color="primary.main"
+              fontWeight={700}
+              sx={{ cursor: 'pointer' }}
+              onClick={() =>
+                window
+                  .open(`${CHAIN_DETAILS.EXPLORER_URL}/transactions/${tx.hash}`,
+                    '_blank'
+                  )
+                  ?.focus()
+              }
+            >
+              {getMiddleEllipsis(tx.hash, {
+                beginning: isSmallScreen ? 5 : 10,
+                ending: isSmallScreen ? 3 : 12
+              })}
+            </Typography>
+          </Tooltip>
+        ),
+        action: (
           <Typography
-            variant="body2"
             component="span"
-            color="primary.main"
-            fontWeight={700}
-            sx={{ cursor: 'pointer' }}
-            onClick={() =>
-              window
-                .open(
-                  `${CHAIN_DETAILS.EXPLORER_URL}/blocks/${tx.height}`,
-                  '_blank'
-                )
-                ?.focus()
-            }
+            sx={{
+              background: txBadge.color,
+              textTransform: 'uppercase',
+              borderRadius: '10px',
+              color: 'white',
+              padding: '6px 17px',
+              fontSize: '11px',
+              fontWeight: '600',
+              letterSpacing: '1px'
+            }}
           >
-            {numeral(tx.height).format('0,0')}
-          </Typography>
-        </Tooltip>
-      ),
-      txHash: (
-        <Tooltip title="View in explorer" placement="right">
-          <Typography
-            variant="body2"
-            component="span"
-            color="primary.main"
-            fontWeight={700}
-            sx={{ cursor: 'pointer' }}
-            onClick={() =>
-              window
-                .open(`${CHAIN_DETAILS.EXPLORER_URL}/transactions/${tx.hash}`,
-                  '_blank'
-                )
-                ?.focus()
-            }
-          >
-            {getMiddleEllipsis(tx.hash, {
-              beginning: isSmallScreen ? 5 : 10,
-              ending: isSmallScreen ? 3 : 12
+            {addEndingEllipsis(txBadge.displayName, {
+              begining: isSmallScreen ? 6 : 0
             })}
           </Typography>
-        </Tooltip>
-      ),
-      action: (
-        <Typography
-          component="span"
-          sx={{
-            background: txBadge.color,
-            textTransform: 'uppercase',
-            borderRadius: '10px',
-            color: 'white',
-            padding: '6px 17px',
-            fontSize: '11px',
-            fontWeight: '600',
-            letterSpacing: '1px'
-          }}
-        >
-          {addEndingEllipsis(txBadge.displayName, {
-            begining: isSmallScreen ? 6 : 0
-          })}
-        </Typography>
-      ),
-      date: (
-        <Stack direction="row" gap={1} alignItems="center">
-          <AccessTimeRoundedIcon color="primary" />
-          <Typography fontSize={12} color="text.secondary">
-            {moment(new Date(moment(tx.timestamp).parseZone().toLocaleString()))
-              .format('DD MMM YYYY LTS')
-              .toLocaleString()}
-          </Typography>
-        </Stack>
-      )
-    }
+        ),
+        date: (
+          <Stack direction="row" gap={1} alignItems="center">
+            <AccessTimeRoundedIcon color="primary" />
+            <Typography fontSize={12} color="text.secondary">
+              {moment(new Date(moment(tx.timestamp).parseZone().toLocaleString()))
+                .format('DD MMM YYYY LTS')
+                .toLocaleString()}
+            </Typography>
+          </Stack>
+        )
+      }
+    })
   })
 
   const hasLatestActivity = loading ? (
