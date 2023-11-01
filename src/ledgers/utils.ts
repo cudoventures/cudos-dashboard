@@ -421,7 +421,7 @@ export const defaultMessages = {
   '/gravity.v1.MsgSendToCosmosClaim': {
     typeUrl: 'gravity.v1.MsgSendToCosmosClaim',
     color: colors.gravity,
-    displayName: 'Send to Cosmos claim'
+    displayName: 'Send to Cosmos'
   },
   '/gravity.v1.MsgSendToEth': {
     typeUrl: 'gravity.v1.MsgSendToEth',
