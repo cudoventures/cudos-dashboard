@@ -408,6 +408,11 @@ export const defaultMessages = {
     color: colors.gravity,
     displayName: 'Send to ETH claim'
   },
+  '/gravity.v1.MsgCancelSendToEth': {
+    typeUrl: 'gravity.v1.MsgCancelSendToEth',
+    color: colors.gravity,
+    displayName: 'Cancel Send to ETH'
+  },
   '/gravity.v1.MsgConfirmBatch': {
     typeUrl: 'gravity.v1.MsgConfirmBatch',
     color: colors.gravity,
