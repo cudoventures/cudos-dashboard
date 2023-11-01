@@ -52,7 +52,7 @@ const Header = () => {
               gap={1}
               sx={headerStyles.linkHolder}
               onClick={() => window
-                .open('https://frontier.osmosis.zone/?from=ATOM&to=CUDOS', 'Swap Cudos')
+                .open('https://app.osmosis.zone/?from=CUDOS&to=OSMO', 'Swap Cudos')
                 ?.focus()}
             >
               <OsmosisIcon />
