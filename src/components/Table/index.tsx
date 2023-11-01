@@ -28,7 +28,7 @@ const Table: React.FC<TableProps> = ({
   handleSort,
   sortDirection,
   pagination,
-  handleScroll = () => {}
+  handleScroll = () => { }
 }) => {
   return (
     <>
@@ -107,7 +107,7 @@ const Table: React.FC<TableProps> = ({
           <TableBody>
             {items.map((item: any, index: number) => (
               <TableRow
-                key={item.idx}
+                key={`${item.idx}-${index}`} // Avoid duplicate component key
                 sx={({ custom }) => ({
                   background: index % 2 !== 0 ? custom.backgrounds.light : null
                 })}
