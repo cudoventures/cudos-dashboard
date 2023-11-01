@@ -80,11 +80,11 @@ export const useUserTransactions = () => {
   }, [isBridgeLoading, isRegularLoading])
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading || regularMsgs.length > 0 || bridgeMsgs.length > 0) {
       const timer = setTimeout(() => setUpdateReceived(true), 500);
       return () => clearTimeout(timer);
     }
-  }, [isLoading])
+  }, [isLoading, regularMsgs, bridgeMsgs])
 
   // Update global state
   useEffect(() => {
