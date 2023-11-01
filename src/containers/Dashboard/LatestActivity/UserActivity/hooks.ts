@@ -45,15 +45,10 @@ export const useUserTransactions = () => {
   const state = useSelector((state: RootState) => state.userTransactions)
   const [bridgeMsgs, setBridgeMsgs] = useState<any[]>([])
   const [regularMsgs, setRegularMsgs] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isBridgeLoading, setIsBridgeLoading] = useState(true)
+  const [isRegularLoading, setIsRegularLoading] = useState(true)
   const [updateReceived, setUpdateReceived] = useState(false)
-
-  const processUpdates = () => {
-    if (updateReceived) {
-      setIsLoading(false)
-      setUpdateReceived(false)
-    }
-  }
+  const [isLoading, setIsLoading] = useState(false)
 
   // GetGravityMsgs
   useGetGravityMessagesByAddressListenerSubscription({
@@ -62,7 +57,7 @@ export const useUserTransactions = () => {
     },
     onSubscriptionData: (data: any) => {
       setBridgeMsgs(data.subscriptionData.data.messagesByAddress)
-      setUpdateReceived(!data.subscriptionData.loading)
+      setIsBridgeLoading(data.subscriptionData.loading)
     }
   })
 
@@ -75,35 +70,48 @@ export const useUserTransactions = () => {
     },
     onSubscriptionData: (data: any) => {
       setRegularMsgs(data.subscriptionData.data.messagesByAddress)
-      setUpdateReceived(!data.subscriptionData.loading)
+      setIsRegularLoading(data.subscriptionData.loading)
     }
   })
 
-  // Handle smoother UX on subscription update
+  // Handle smoother UX
   useEffect(() => {
-    if (updateReceived) {
-      setIsLoading(true)
-      const timer = setTimeout(processUpdates, 500)
-      return () => clearTimeout(timer)
+    setIsLoading(isBridgeLoading || isRegularLoading)
+  }, [isBridgeLoading, isRegularLoading])
+
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => setUpdateReceived(true), 500);
+      return () => clearTimeout(timer);
     }
-  }, [updateReceived])
+  }, [isLoading])
 
   // Update global state
   useEffect(() => {
-    const combinedMsgs = [...bridgeMsgs, ...regularMsgs]
-    const hasMessages = combinedMsgs.length > 0;
-    const dataForFormatting = { messagesByAddress: combinedMsgs };
-    const formattedData = hasMessages ? formatTransactions(dataForFormatting) : []
+    if (updateReceived) {
+      const combinedMsgs = [...bridgeMsgs, ...regularMsgs]
+      const hasMessages = combinedMsgs.length > 0
+      const dataForFormatting = { messagesByAddress: combinedMsgs }
+      const formattedData = hasMessages ? formatTransactions(dataForFormatting) : []
 
-    const stateChange = {
-      data: formattedData,
-      offsetCount: state.offsetCount + LIMIT,
-      hasActivity: hasMessages,
-      loading: isLoading
+      const stateChange = {
+        data: formattedData,
+        offsetCount: state.offsetCount + LIMIT,
+        hasActivity: hasMessages,
+        loading: isLoading
+      };
+
+      dispatch(updateUserTransactions(stateChange))
+      setUpdateReceived(false)
     }
+  }, [updateReceived])
 
-    dispatch(updateUserTransactions(stateChange))
-  }, [bridgeMsgs.length, regularMsgs.length, isLoading])
+  useEffect(() => {
+    setIsBridgeLoading(true)
+    setIsRegularLoading(true)
+    setBridgeMsgs([])
+    setRegularMsgs([])
+  }, [address])
 
   return {
     state
