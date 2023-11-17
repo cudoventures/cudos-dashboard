@@ -4,7 +4,7 @@ import { RootState } from 'store'
 import { headerStyles } from './headerstyles'
 import { useMidLowerResCheck, useMidlowResCheck } from './hooks/useScreenChecks'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { CHAIN_DETAILS } from 'utils/constants'
+import { APP_DETAILS, CHAIN_DETAILS } from 'utils/constants'
 import NetworkInfo from './NetworkInfo'
 import UserInfo from './UserInfo'
 import LogoHeader from 'assets/vectors/logo-header.svg?component'
@@ -52,7 +52,7 @@ const Header = () => {
               gap={1}
               sx={headerStyles.linkHolder}
               onClick={() => window
-                .open('https://app.osmosis.zone/?from=CUDOS&to=OSMO', 'Swap Cudos')
+                .open(APP_DETAILS.OSMOSIS_URL, 'Swap Cudos')
                 ?.focus()}
             >
               <OsmosisIcon />

@@ -1,3 +1,5 @@
+import { DappsFromEnv } from "containers/Dapps/types"
+
 // APP SPECIFIC CHAIN CONFIGURATIONS
 export const CHAIN_DETAILS = {
     GAS_PRICE: import.meta.env.VITE_APP_GAS_PRICE || process.env.VITE_APP_GAS_PRICE || "",
@@ -19,6 +21,7 @@ export const CHAIN_DETAILS = {
 export const APP_DETAILS = {
     DEPLOYMENT_VERSION: import.meta.env.VITE_APP_DEPLOYMENT_VERSION || process.env.VITE_APP_DEPLOYMENT_VERSION || "",
     NODE_ENV: import.meta.env.VITE_APP_NODE_ENV || process.env.VITE_APP_NODE_ENV || "",
+    OSMOSIS_URL: 'https://app.osmosis.zone/?from=CUDOS&to=OSMO'
 }
 
 export const SCREEN_RESOLUTIONS = {
@@ -30,3 +33,4 @@ export const SCREEN_RESOLUTIONS = {
     MID_LOWEST: 450,
     LOWEST: 200
 }
+export const DAPPS_FROM_ENV: DappsFromEnv = JSON.parse(import.meta.env.VITE_APP_DAPPS || process.env.VITE_APP_DAPPS || '{}') || {};

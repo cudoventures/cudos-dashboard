@@ -158,6 +158,7 @@ declare global {
     VITE_APP_EXPLORER_URL: string
     VITE_APP_CHAIN_NAME: string
     VITE_APP_CHAIN_ID: string
+    VITE_APP_DAPPS: string
   }
 
   interface SxMap {

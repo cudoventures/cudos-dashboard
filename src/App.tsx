@@ -25,7 +25,7 @@ import { RootState } from './store'
 import '@fontsource/poppins'
 import { defaultApolloLinks } from 'graphql/helpers'
 import { CHAIN_DETAILS } from 'utils/constants'
-import NetworkChangingLoading from 'components/NetworkChangeLoading'
+import Dapps from 'containers/Dapps'
 import { networkLoadingStyles } from 'components/NetworkChangeLoading/styles'
 import { isExtensionEnabled, SUPPORTED_WALLET } from 'cudosjs'
 
@@ -104,6 +104,9 @@ const App = () => {
                   <Route path="proposals">
                     <Route index element={<Proposals />} />
                     <Route path=":proposalId" element={<ProposalDetails />} />
+                  </Route>
+                  <Route path="dapps">
+                    <Route index element={<Dapps />} />
                   </Route>
                 </Route>
                 {isMainnet ? null : (

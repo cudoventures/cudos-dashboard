@@ -1,5 +1,6 @@
 import DashboardIcon from 'assets/vectors/dashboard.svg?component'
 import ProposalsIcon from 'assets/vectors/proposals.svg?component'
+import DappsIcon from 'assets/vectors/dapps-icon.svg?component'
 import StakingIcon from 'assets/vectors/staking.svg?component'
 import FaucetIcon from 'assets/vectors/faucet.svg?component'
 import { CHAIN_DETAILS } from 'utils/constants'
@@ -16,6 +17,7 @@ export const getMenuItems = (loadingState: boolean): MenuItems[] => {
         { icon: <DashboardIcon />, link: '/dashboard', text: 'Dashboard' },
         { icon: <StakingIcon />, link: '/staking', text: 'Staking' },
         { icon: <ProposalsIcon />, link: '/proposals', text: 'Proposals' },
+        { icon: <DappsIcon />, link: '/dapps', text: 'dApps' },
     ]
 
     if (CHAIN_DETAILS.CHAIN_ID
