@@ -33,7 +33,39 @@ const colors = {
   cudosNft: '#ff1493',
   cudosAdmin: '#535da8',
   marketplace: '#BA0086',
-  addressbook: '#FF720C'
+  addressbook: '#FF720C',
+  group: '#125180'
+}
+
+export enum GroupMsgs {
+  MsgCreateGroup = 'MsgCreateGroup',
+  MsgUpdateGroupMembers = 'MsgUpdateGroupMembers',
+  MsgUpdateGroupAdmin = 'MsgUpdateGroupAdmin',
+  MsgUpdateGroupMetadata = 'MsgUpdateGroupMetadata',
+  MsgCreateGroupPolicy = 'MsgCreateGroupPolicy',
+  MsgCreateGroupWithPolicy = 'MsgCreateGroupWithPolicy',
+  MsgUpdateGroupPolicyAdmin = 'MsgUpdateGroupPolicyAdmin',
+  MsgUpdateGroupPolicyDecisionPolicy = 'MsgUpdateGroupPolicyDecisionPolicy',
+  MsgUpdateGroupPolicyMetadata = 'MsgUpdateGroupPolicyMetadata',
+  MsgSubmitProposal = 'MsgSubmitProposal',
+  MsgWithdrawProposal = 'MsgWithdrawProposal',
+  MsgVote = 'MsgVote',
+  MsgExec = 'MsgExec',
+  MsgLeaveGroup = 'MsgLeaveGroup'
+}
+
+export const getGoupType = (msgType: GroupMsgs, displayName: string): {
+  [key: string]: { typeUrl: string, color: string, displayName: string }
+} => {
+  const typeUrl = `cosmos.group.v1.${msgType}`
+  const baseUrl = `/${typeUrl}`
+  return {
+    [baseUrl]: {
+      typeUrl,
+      color: colors.group,
+      displayName
+    }
+  }
 }
 
 export const defaultMessages = {
@@ -529,6 +561,23 @@ export const defaultMessages = {
     color: colors.addressbook,
     displayName: 'Create address'
   },
+  // ========================
+  // group
+  // ========================
+  ...getGoupType(GroupMsgs.MsgCreateGroup, 'Create Group'),
+  ...getGoupType(GroupMsgs.MsgCreateGroupPolicy, 'Create Group Policy'),
+  ...getGoupType(GroupMsgs.MsgCreateGroupWithPolicy, 'Create Group with Policy'),
+  ...getGoupType(GroupMsgs.MsgExec, 'Execute'),
+  ...getGoupType(GroupMsgs.MsgLeaveGroup, 'Leave Group'),
+  ...getGoupType(GroupMsgs.MsgSubmitProposal, 'Submit Proposal'),
+  ...getGoupType(GroupMsgs.MsgUpdateGroupAdmin, 'Update Group Admin'),
+  ...getGoupType(GroupMsgs.MsgUpdateGroupMembers, 'Update Group Members'),
+  ...getGoupType(GroupMsgs.MsgUpdateGroupMetadata, 'Update Group Metadata'),
+  ...getGoupType(GroupMsgs.MsgUpdateGroupPolicyAdmin, 'Update Policy Admin'),
+  ...getGoupType(GroupMsgs.MsgUpdateGroupPolicyDecisionPolicy, 'Update Decision Policy'),
+  ...getGoupType(GroupMsgs.MsgUpdateGroupPolicyMetadata, 'Update Policy Metadata'),
+  ...getGoupType(GroupMsgs.MsgVote, 'Vote'),
+  ...getGoupType(GroupMsgs.MsgWithdrawProposal, 'Withdraw Proposal'),
 }
 
 export const unknownMessage = {
